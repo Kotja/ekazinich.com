@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, Copy, Linkedin, ArrowRight, Circle, AlertCircle, ArrowLeft, Grid, ArrowDown, Check, Mail, X } from 'lucide-react';
 import profileImage from './assets/profile.png';
-import projectBooking from './assets/booking-automation.png';
-import projectB2B from './assets/b2b-platform.png';
-import projectCollector from './assets/platform.png';
+import projectBooking from './assets/project-booking-hero.png';
+import projectB2B from './assets/project-b2b-hero.png';
+import projectB2BChallenge from './assets/b2b-challenge.png';
+import projectB2BProcess from './assets/b2b-process.png';
+import projectCollector from './assets/project-collector-hero.png';
 import projectCollectorChallenge from './assets/platform-challenge.png';
 import projectCollectorProcess from './assets/platform-process.png';
-import projectPortfolio from './assets/client-converting-portfolio.png';
+import projectPortfolio from './assets/project-portfolio-hero.png';
 import projectPortfolioChallenge from './assets/portfolio-challenge.png';
 import projectPortfolioProcess from './assets/portfolio-process.png';
 
@@ -50,7 +52,7 @@ const Portfolio = () => {
       tags: ["UX/UI Design", "Mobile First", "CMS Integration"],
       challenge: "The client’s existing portfolio was actively hindering their business. A cluttered, disorganised structure made it nearly impossible for potential leads to find relevant work, while a dated, non-responsive design created a lack of trust. This friction meant the photographer was losing opportunities simply because their digital presence couldn't keep up with the quality of their photography.",
       role: "I led the complete UX/UI overhaul, transforming the product from a source of frustration into a primary business tool. I began by auditing and restructuring the information architecture into a logical, category-based hierarchy. Then, I designed a minimalist, \"frame-less\" aesthetic that prioritises the artwork. Finally, I worked closely with developers to implement a custom CMS, empowering the client to manage their own content independently.",
-      process: "My goal was invisibility—creating a design that steps back so the photography can step forward. I started by abandoning the ambiguous layout in favour of a strict category-based navigation, ensuring Art Directors could find relevant examples in under three clicks. Adopting a mobile-first strategy, I designed the grid system for vertical screens to guarantee that the high-resolution imagery remained immersive on any device. Ultimately, by stripping away decorative elements and utilising generous white space, I crafted an interface that acts as a quiet gallery wall, focusing all attention purely on the work.",
+      process: "My goal was invisibility - creating a design that steps back so the photography can step forward. I started by abandoning the ambiguous layout in favour of a strict category-based navigation, ensuring Art Directors could find relevant examples in under three clicks. Adopting a mobile-first strategy, I designed the grid system for vertical screens to guarantee that the high-resolution imagery remained immersive on any device. Ultimately, by stripping away decorative elements and utilising generous white space, I crafted an interface that acts as a quiet gallery wall, focusing all attention purely on the work.",
       impact: "The redesign transformed the portfolio into a high-converting asset. The intuitive structure and seamless mobile experience capture previously lost traffic, while the custom CMS empowers the client to independently manage their content.",
       images: [
         projectPortfolio,
@@ -60,7 +62,7 @@ const Portfolio = () => {
     },
     {
       id: 0,
-      title: "Automated Studio Booking",
+      title: "Zero-Admin Studio Booking",
       desc: "A streamlined SaaS solution reducing admin time by 40% for creative studios.",
       tags: ["UX Research", "UI Design", "React Native"],
       challenge: "Mid-sized creative studios were losing 40% of billable hours to administrative overhead. The legacy booking systems were fragmented, causing double-bookings and payment delays.",
@@ -78,14 +80,14 @@ const Portfolio = () => {
       title: "B2B Mobile Layout Change",
       desc: "Optimizing complex data tables for mobile viewports without losing fidelity.",
       tags: ["Mobile First", "Data Viz", "Figma"],
-      challenge: "The existing B2B dashboard was density-heavy and relied on wide spreadsheets, making it unusable for field agents on mobile devices who needed real-time data.",
-      role: "UI Specialist. Focused on responsive behaviour, component systems, and accessibility standards.",
-      process: "We utilised a card-based collapsing system. Instead of shrinking the table, we transformed rows into expandable cards that prioritised actionable metrics while keeping granular data accessible via drill-downs.",
-      impact: "Field agents reported a 50% increase in data entry speed. The new mobile layout was adopted as the standard pattern for the entire product suite.",
+      challenge: "The problem wasn't technical; it was situational. B2B customers were getting stuck at the checkout counter, thumb-scrolling through a mobile interface designed for a desktop mindset. The screen was cluttered with marketing banners and \"Welcome\" messages, while the only thing the user actually needed - their barcode and account ID - was buried below the fold. This created awkward, stressful delays at the point of sale, frustrating both the trade customer trying to get back to the job site and the staff trying to clear the queue.",
+      role: "I led the UX redesign with a specific focus on \"on-the-go\" utility. My role involved auditing the existing information hierarchy and realigning it with the physical reality of the user's environment. I championed a \"Zero-Scroll\" philosophy, ensuring that no B2B customer would ever need to swipe to find the data required to complete a transaction.",
+      process: "I realised we were forcing \"shopper\" logic onto a \"payer\" situation. A trade customer standing at a counter doesn't need a search bar or a hamburger menu taking up prime real estate. They aren't there to explore the catalogue; they are there to identify themselves and settle the bill. The old layout asked them to dig, but I decided they shouldn't even have to tap. I inverted the architecture completely and treated the Account Page less like a website and more like a digital ID card. I stripped away the navigational clutter and pulled the \"Transaction Keys,\" specifically the Account ID, Credit Limit, and Barcode, out from the shadows. By placing them firmly at the top, the goal became simple: if the user opens the app in-store, the job is already done.",
+      impact: "The redesign eliminated checkout lag by providing immediate, above-the-fold access to account data. This significantly reduced transaction times, creating a smoother, faster interaction for both clients and staff.",
       images: [
         projectB2B,
-        "/api/placeholder/800/800?text=Card+System+UI",
-        "/api/placeholder/800/800?text=Responsive+Grid+Layout"
+        projectB2BProcess,
+        projectB2BChallenge
       ]
     },
     {
@@ -370,7 +372,7 @@ const Portfolio = () => {
         <>
           {/* ================= HOME VIEW ================= */}
 
-          <section id="project-section" className="min-h-[100dvh] w-full flex flex-col md:flex-row relative pt-20 md:pt-0">
+          <section id="project-section" className="min-h-[100dvh] w-full flex flex-col md:flex-row relative pt-20 md:pt-0 max-w-screen-2xl mx-auto">
 
             {/* Left Column: Text */}
             <div className="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-24 relative z-20">
@@ -382,7 +384,7 @@ const Portfolio = () => {
                 {currentWords.map((word, i) => (
                   <h1
                     key={i}
-                    className={`font-playfair md:text-[8vw] text-[15vw] leading-[1.1] md:leading-[0.9] duration-700 ease-in-out
+                    className={`font-playfair md:text-[8vw] xl:text-[6vw] 2xl:text-[5.5rem] text-[15vw] leading-[1.1] md:leading-[0.9] duration-700 ease-in-out
                       ${mode === 'wandering' ? 'italic opacity-90' : ''}
                       ${hoverHero && mode === 'wandering' ? 'translate-x-2 md:translate-x-12 opacity-80' : ''}
                     `}
@@ -531,7 +533,7 @@ const Portfolio = () => {
 
 
           {/* About Section */}
-          <section id="about-section" className="min-h-[80vh] w-full flex flex-col md:flex-row items-center px-6 md:px-24 py-24 relative overflow-hidden">
+          <section id="about-section" className="min-h-[80vh] w-full flex flex-col md:flex-row items-center px-6 md:px-24 py-24 relative overflow-hidden max-w-screen-2xl mx-auto">
             <div className="w-full md:w-1/2 pr-0 md:pr-12 md:pl-20 z-10 mb-12 md:mb-0">
               <h2 className="font-playfair text-5xl md:text-7xl mb-8">About.</h2>
               <p className={`font-lato text-lg leading-relaxed mb-6 max-w-md ${theme.subText}`}>
