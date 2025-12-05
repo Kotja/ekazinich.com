@@ -2,7 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Send, Copy, Linkedin, ArrowRight, Circle, AlertCircle, ArrowLeft, Grid, ArrowDown, Check, Mail, X } from 'lucide-react';
 import profileImage from './assets/profile.png';
 import projectBooking from './assets/project-booking-hero.png';
+import projectBookingChallenge from './assets/studio-booking-challenge.png';
+import projectBookingProcess from './assets/studio-booking-process.png';
 import projectB2B from './assets/project-b2b-hero.png';
+import projectB2BNew from './assets/b2b-hero-new.png';
+import projectB2BChallengeNew from './assets/b2b-challenge-new.png';
+import projectB2BProcessNew from './assets/b2b-process-new.png';
 import projectB2BChallenge from './assets/b2b-challenge.png';
 import projectB2BProcess from './assets/b2b-process.png';
 import projectCollector from './assets/project-collector-hero.png';
@@ -65,14 +70,14 @@ const Portfolio = () => {
       title: "Zero-Admin Studio Booking",
       desc: "A streamlined SaaS solution reducing admin time by 40% for creative studios.",
       tags: ["UX Research", "UI Design", "React Native"],
-      challenge: "Mid-sized creative studios were losing 40% of billable hours to administrative overhead. The legacy booking systems were fragmented, causing double-bookings and payment delays.",
-      role: "Lead Product Designer. Responsible for user research, wireframing, and high-fidelity prototyping. Collaborated closely with two developers.",
-      process: "We started with shadow sessions at three partner studios to understand the friction points. The key insight was that 'booking' wasn't just a calendar event, but a financial agreement. We redesigned the flow to treat bookings as tentative contracts until payment, reducing conflict.",
-      impact: "Post-launch, admin time dropped by 40% within the first month. The 'tentative contract' model reduced payment disputes by 90%.",
+      challenge: "Before the redesign, the client was trapped in an administrative loop. The website functioned like a blog, burying class details and forcing every single booking into a manual phone call.\n\nThis wasn't just a usability issue; it was an operational bottleneck. The lack of a structured digital agreement meant the client spent hours chasing payments and resolving misunderstandings. The manual burden was so high that it was consuming time meant for teaching, while the high-friction process caused potential customers to abandon the site before they even picked up the phone.",
+      role: "As the Lead Product Designer, I drove the end-to-end transformation from a manual service to an automated product. My strategy focused on identifying and eliminating every administrative touchpoint.",
+      process: "During discovery, I identified that the \"phone-tag\" booking method was the root cause of both user drop-off and the client's payment disputes. I used Figma to prototype a new flow centred on a 'tentative contract' model. This feature required users to agree to terms and availability digitally before the booking was confirmed.\n\nI restructured the site’s architecture to make information instantly accessible, removing the need for \"inquiry\" emails. By mapping the user journey specifically to remove manual intervention, I delivered a solution that automated the trust and transaction process simultaneously.",
+      impact: "Achieving a \"zero-admin\" state, we slashed admin workload by 40% in the first month. The new 'tentative contract' model reduced payment disputes by 90%, while the frictionless flow drove a 36% revenue increase and a 28% drop in bounce rate. The system now works for the client, not the other way around.",
       images: [
         projectBooking,
-        "/api/placeholder/800/800?text=Mobile+Calendar+Flow",
-        "/api/placeholder/800/800?text=User+Journey+Map"
+        projectBookingChallenge,
+        projectBookingProcess
       ]
     },
     {
@@ -84,11 +89,7 @@ const Portfolio = () => {
       role: "I led the UX redesign with a specific focus on \"on-the-go\" utility. My role involved auditing the existing information hierarchy and realigning it with the physical reality of the user's environment. I championed a \"Zero-Scroll\" philosophy, ensuring that no B2B customer would ever need to swipe to find the data required to complete a transaction.",
       process: "I realised we were forcing \"shopper\" logic onto a \"payer\" situation. A trade customer standing at a counter doesn't need a search bar or a hamburger menu taking up prime real estate. They aren't there to explore the catalogue; they are there to identify themselves and settle the bill. The old layout asked them to dig, but I decided they shouldn't even have to tap. I inverted the architecture completely and treated the Account Page less like a website and more like a digital ID card. I stripped away the navigational clutter and pulled the \"Transaction Keys,\" specifically the Account ID, Credit Limit, and Barcode, out from the shadows. By placing them firmly at the top, the goal became simple: if the user opens the app in-store, the job is already done.",
       impact: "The redesign eliminated checkout lag by providing immediate, above-the-fold access to account data. This significantly reduced transaction times, creating a smoother, faster interaction for both clients and staff.",
-      images: [
-        projectB2B,
-        projectB2BProcess,
-        projectB2BChallenge
-      ]
+      images: [projectB2BNew, projectB2BChallengeNew, projectB2BProcessNew]
     },
     {
       id: 2,
@@ -703,9 +704,11 @@ const Portfolio = () => {
               </div>
             </div>
 
-            <div className={`w-full aspect-video overflow-hidden shadow-lg ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[0])}>
-              <img src={project.images[0]} alt="Hero" draggable="false" className="w-full h-full object-contain" />
-            </div>
+            {project.images && project.images[0] && (
+              <div className={`w-full aspect-video overflow-hidden shadow-lg ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[0])}>
+                <img src={project.images[0]} alt="Hero" draggable="false" className="w-full h-full object-contain" />
+              </div>
+            )}
 
             {/* Section: Impact (Moved Up) */}
             <div className="max-w-5xl mx-auto text-center py-12">
@@ -716,14 +719,16 @@ const Portfolio = () => {
             </div>
 
             {/* Section 1: Challenge (Text Left, Img Right) */}
-            <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className={`grid ${project.images && project.images[1] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
               <div className="order-2 md:order-1">
                 <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] border-b border-[#C25E00] inline-block pb-2">The Challenge.</h3>
                 <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>{project.challenge}</p>
               </div>
-              <div className={`aspect-square overflow-hidden shadow-sm order-1 md:order-2 ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[1])}>
-                <img src={project.images[1]} alt="Challenge Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-              </div>
+              {project.images && project.images[1] && (
+                <div className={`aspect-square overflow-hidden shadow-sm order-1 md:order-2 ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[1])}>
+                  <img src={project.images[1]} alt="Challenge Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                </div>
+              )}
             </div>
 
             {/* Section 2: Role (Text Block) */}
@@ -733,10 +738,12 @@ const Portfolio = () => {
             </div>
 
             {/* Section 3: Process (Img Left, Text Right) */}
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className={`aspect-square overflow-hidden ${(project.id === 2 || project.id === 3) ? '' : 'shadow-sm'} ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[2])}>
-                <img src={project.images[2]} alt="Process Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-              </div>
+            <div className={`grid ${project.images && project.images[2] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
+              {project.images && project.images[2] && (
+                <div className={`aspect-square overflow-hidden ${(project.id === 2 || project.id === 3) ? '' : 'shadow-sm'} ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[2])}>
+                  <img src={project.images[2]} alt="Process Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                </div>
+              )}
               <div>
                 <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] border-b border-[#C25E00] inline-block pb-2">The Process.</h3>
                 <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>{project.process}</p>
