@@ -8,7 +8,7 @@ const toAbsolute = (p) => path.resolve(__dirname, p)
 const template = fs.readFileSync(toAbsolute('dist/index.html'), 'utf-8')
 const { render } = await import('./dist/server/entry-server.js')
 
-const appHtml = render()
+const appHtml = render('/')
 
 const html = template.replace(`<!--app-html-->`, appHtml).replace(
     `<div id="root"></div>`,

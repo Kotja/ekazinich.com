@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { hydrateRoot, createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 
@@ -9,13 +10,17 @@ if (rootElement.hasChildNodes()) {
   hydrateRoot(
     rootElement,
     <StrictMode>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </StrictMode>,
   )
 } else {
   createRoot(rootElement).render(
     <StrictMode>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </StrictMode>,
   )
 }

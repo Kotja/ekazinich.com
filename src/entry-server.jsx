@@ -3,10 +3,14 @@ import { renderToString } from 'react-dom/server'
 import App from './App'
 import './index.css'
 
-export function render() {
+import { StaticRouter } from 'react-router-dom'
+
+export function render(url) {
     return renderToString(
         <StrictMode>
-            <App />
+            <StaticRouter location={url}>
+                <App />
+            </StaticRouter>
         </StrictMode>
     )
 }
