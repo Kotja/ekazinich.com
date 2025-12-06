@@ -14,3 +14,5 @@ export function render(url) {
         </StrictMode>
     )
 }
+
+export { PROJECTS } from './data/projects';
