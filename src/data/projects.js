@@ -17,7 +17,7 @@ import projectPortfolioProcess from '../assets/portfolio-process.png';
 export const PROJECTS = [
     {
         id: 3,
-        title: "Client-Converting Portfolio",
+        title: "Mobile-First Photography Portfolio",
         desc: "A user-centric overhaul of a photographer's portfolio to recapture lost business through improved UX and mobile responsiveness.",
         tags: ["UX/UI Design", "Mobile First", "CMS Integration"],
         challenge: "The client’s existing portfolio was actively hindering their business. A cluttered, disorganised structure made it nearly impossible for potential leads to find relevant work, while a dated, non-responsive design created a lack of trust. This friction meant the photographer was losing opportunities simply because their digital presence couldn't keep up with the quality of their photography.",
