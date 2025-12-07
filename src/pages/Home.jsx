@@ -93,7 +93,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
             // REPLACE THESE WITH YOUR ACTUAL EMAILJS KEYS
             const SERVICE_ID = 'service_wq60eto';
             const TEMPLATE_ID = 'template_1df4kxc';
-            const PUBLIC_KEY = 'Y37ejt9ZKC30gtKM3h';
+            const PUBLIC_KEY = '37ejt9ZKC30gtKM3h';
 
             const templateParams = {
                 from_name: formState.name,
