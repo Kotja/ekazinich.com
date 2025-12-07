@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowDown, Check, Copy, Linkedin, Mail, ArrowRight, AlertCircle } from 'lucide-react';
+import cvFile from '../assets/Katerina Zinich UX _ Product designer CV.pdf';
+import { ArrowDown, Check, Copy, Linkedin, Mail, ArrowRight, AlertCircle, X, Download } from 'lucide-react';
 import profileImage from '../assets/profile.png';
 import { PROJECTS } from '../data/projects';
-
 import emailjs from '@emailjs/browser';
 
 const Home = ({ mode, playSound, scrollToSection }) => {
@@ -13,6 +13,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
     const [formState, setFormState] = useState({ name: '', email: '', message: '' });
     const [errors, setErrors] = useState({});
     const [isSending, setIsSending] = useState(false);
+    const [showCV, setShowCV] = useState(false);
 
     // --- THEME ENGINE ---
     const isWandering = mode === 'wandering';
@@ -280,9 +281,12 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                                 className="w-full h-full object-cover"
                             />
                         </div>
-                        <div className={`absolute -bottom-4 -right-4 w-24 h-24 border rounded-full flex items-center justify-center z-10 
-                 ${theme.borderSolid} ${theme.bg} ${theme.text}`}>
-                            <span className="font-playfair italic text-xl">me</span>
+                        <div
+                            className={`absolute -bottom-4 -right-4 w-24 h-24 border rounded-full flex items-center justify-center z-10 
+                                ${theme.borderSolid} ${theme.bg} ${theme.text} cursor-pointer hover:scale-105 transition-transform duration-300 group`}
+                            onClick={() => setShowCV(true)}
+                        >
+                            <span className="font-playfair italic text-xl group-hover:text-[#C25E00] transition-colors">CV</span>
                         </div>
                     </div>
                     {mode === 'wandering' && (
@@ -397,6 +401,44 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                     </div>
                 </div>
             </section>
+
+            {/* CV Overlay */}
+            {showCV && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-8">
+                    <div className="relative w-full max-w-5xl h-[90vh] bg-white rounded-lg shadow-2xl flex flex-col overflow-hidden animate-fade-in-up">
+
+                        {/* Toolbar */}
+                        <div className="flex items-center justify-between px-6 py-4 bg-[#1A1A1A] text-[#FDFBF7] border-b border-gray-700">
+                            <h3 className="font-playfair italic text-xl">Curriculum Vitae</h3>
+                            <div className="flex items-center gap-4">
+                                <a
+                                    href={cvFile}
+                                    download="Eka_Zinich_CV.pdf"
+                                    className="flex items-center gap-2 text-sm uppercase tracking-widest hover:text-[#C25E00] transition-colors"
+                                >
+                                    <Download size={18} />
+                                    <span className="hidden md:inline">Download</span>
+                                </a>
+                                <button
+                                    onClick={() => setShowCV(false)}
+                                    className="hover:text-[#C25E00] transition-colors"
+                                >
+                                    <X size={24} />
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* PDF Viewer */}
+                        <div className="flex-1 w-full h-full bg-gray-100 overflow-hidden">
+                            <iframe
+                                src={cvFile}
+                                className="w-full h-full"
+                                title="CV Preview"
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 };
