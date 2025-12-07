@@ -4,12 +4,15 @@ import { ArrowDown, Check, Copy, Linkedin, Mail, ArrowRight, AlertCircle } from 
 import profileImage from '../assets/profile.png';
 import { PROJECTS } from '../data/projects';
 
+import emailjs from '@emailjs/browser';
+
 const Home = ({ mode, playSound, scrollToSection }) => {
     const navigate = useNavigate();
     const [hoverHero, setHoverHero] = useState(false);
     const [emailCopied, setEmailCopied] = useState(false);
     const [formState, setFormState] = useState({ name: '', email: '', message: '' });
     const [errors, setErrors] = useState({});
+    const [isSending, setIsSending] = useState(false);
 
     // --- THEME ENGINE ---
     const isWandering = mode === 'wandering';
@@ -83,9 +86,33 @@ const Home = ({ mode, playSound, scrollToSection }) => {
         if (!formState.email) newErrors.email = true;
         if (!formState.message) newErrors.message = true;
         setErrors(newErrors);
+
         if (Object.keys(newErrors).length === 0) {
-            alert("Message sent!");
-            setFormState({ name: '', email: '', message: '' });
+            setIsSending(true);
+
+            // REPLACE THESE WITH YOUR ACTUAL EMAILJS KEYS
+            const SERVICE_ID = 'service_wq60eto';
+            const TEMPLATE_ID = 'template_1df4kxc';
+            const PUBLIC_KEY = 'Y37ejt9ZKC30gtKM3h';
+
+            const templateParams = {
+                from_name: formState.name,
+                from_email: formState.email,
+                message: formState.message,
+                to_email: 'ekazinich@gmail.com'
+            };
+
+            emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
+                .then((response) => {
+                    console.log('SUCCESS!', response.status, response.text);
+                    alert("Message sent successfully!");
+                    setFormState({ name: '', email: '', message: '' });
+                    setIsSending(false);
+                }, (err) => {
+                    console.log('FAILED...', err);
+                    alert("Failed to send message. Please try again later or email directly.");
+                    setIsSending(false);
+                });
         }
     };
 
@@ -321,12 +348,13 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                                 {errors.message && <AlertCircle className="absolute right-0 top-3" size={16} style={{ color: COLOURS.highlight }} />}
                             </div>
                             <button
-                                className="self-start mt-4 flex items-center gap-2 text-sm uppercase tracking-widest transition-colors hover:opacity-80"
+                                className="self-start mt-4 flex items-center gap-2 text-sm uppercase tracking-widest transition-colors hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed"
                                 style={{ color: COLOURS.cream }}
-                                onMouseEnter={(e) => e.currentTarget.style.color = COLOURS.highlight}
-                                onMouseLeave={(e) => e.currentTarget.style.color = COLOURS.cream}
+                                onMouseEnter={(e) => !isSending && (e.currentTarget.style.color = COLOURS.highlight)}
+                                onMouseLeave={(e) => !isSending && (e.currentTarget.style.color = COLOURS.cream)}
+                                disabled={isSending}
                             >
-                                Send Message <ArrowRight size={16} />
+                                {isSending ? 'Sending...' : 'Send Message'} {!isSending && <ArrowRight size={16} />}
                             </button>
                         </form>
                     </div>

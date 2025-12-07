@@ -2,9 +2,9 @@ import projectBooking from '../assets/project-booking-hero.png';
 import projectBookingChallenge from '../assets/studio-booking-challenge.png';
 import projectBookingProcess from '../assets/studio-booking-process.png';
 import projectB2B from '../assets/project-b2b-hero.png';
-import projectB2BNew from '../assets/b2b-hero-new.png';
+import projectB2BNew from '../assets/b2b-hero-v2.png';
 import projectB2BChallengeNew from '../assets/b2b-challenge-new.png';
-import projectB2BProcessNew from '../assets/b2b-process-new.png';
+import projectB2BProcessNew from '../assets/b2b-flow-audit.svg';
 import projectB2BChallenge from '../assets/b2b-challenge.png';
 import projectB2BProcess from '../assets/b2b-process.png';
 import projectCollector from '../assets/project-collector-hero.png';
@@ -38,7 +38,7 @@ export const PROJECTS = [
         challenge: "Before the redesign, the client was trapped in an administrative loop. The website functioned like a blog, burying class details and forcing every single booking into a manual phone call.\n\nThis wasn't just a usability issue; it was an operational bottleneck. The lack of a structured digital agreement meant the client spent hours chasing payments and resolving misunderstandings. The manual burden was so high that it was consuming time meant for teaching, while the high-friction process caused potential customers to abandon the site before they even picked up the phone.",
         role: "As the Lead Product Designer, I drove the end-to-end transformation from a manual service to an automated product. My strategy focused on identifying and eliminating every administrative touchpoint.",
         process: "During discovery, I identified that the \"phone-tag\" booking method was the root cause of both user drop-off and the client's payment disputes. I used Figma to prototype a new flow centred on a 'tentative contract' model. This feature required users to agree to terms and availability digitally before the booking was confirmed.\n\nI restructured the site’s architecture to make information instantly accessible, removing the need for \"inquiry\" emails. By mapping the user journey specifically to remove manual intervention, I delivered a solution that automated the trust and transaction process simultaneously.",
-        impact: "Achieving a \"zero-admin\" state, we slashed admin workload by 40% in the first month. The new 'tentative contract' model reduced payment disputes by 90%, while the frictionless flow drove a 36% revenue increase and a 28% drop in bounce rate. The system now works for the client, not the other way around.",
+        impact: "Achieving a \"zero-admin\" state, we slashed workload by 40% in month one. The 'tentative contract' model cut disputes by 90%, while the frictionless flow drove a 36% revenue increase and 28% lower bounce rate. The system finally works for the client.",
         images: [
             projectBooking,
             projectBookingChallenge,
