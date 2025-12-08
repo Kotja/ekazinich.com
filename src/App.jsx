@@ -6,7 +6,6 @@ import ProjectDetail from './pages/ProjectDetail';
 const App = () => {
   // --- STATE MANAGEMENT ---
   const [mode, setMode] = useState('hr');
-  const [overDark, setOverDark] = useState({}); // Track which menu items are over dark section
   const [menuHover, setMenuHover] = useState(null); // Track which menu item is being hovered
   const buttonRefs = useRef({}); // Refs for menu buttons
 
@@ -72,45 +71,6 @@ const App = () => {
     }
   }, [location]);
 
-  // --- SCROLL DETECTION FOR DYNAMIC MENU COLORS ---
-  useEffect(() => {
-    const handleScroll = () => {
-      // Only check on Home page where contact section exists
-      const contactSection = document.getElementById('contact-section');
-      if (!contactSection) {
-        setOverDark({});
-        return;
-      }
-
-      const contactRect = contactSection.getBoundingClientRect();
-      const newOverDark = {};
-
-      ['Projects', 'About', 'Get in Touch'].forEach(item => {
-        const btn = buttonRefs.current[item];
-        if (btn) {
-          const btnRect = btn.getBoundingClientRect();
-          const btnCenterY = btnRect.top + btnRect.height / 2;
-          const isOver = btnCenterY >= contactRect.top && btnCenterY <= contactRect.bottom;
-          newOverDark[item] = isOver;
-        }
-      });
-
-      setOverDark(prev => {
-        const isDifferent = Object.keys(newOverDark).some(key => newOverDark[key] !== prev[key]);
-        return isDifferent ? newOverDark : prev;
-      });
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleScroll);
-    handleScroll(); // Initial check
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-    };
-  }, [location.pathname]); // Re-run if path changes
-
   return (
     <div className={`min-h-[100dvh] transition-colors duration-700 ${theme.bg} ${theme.text} font-lato overflow-x-hidden selection:bg-[#FFD1A3] selection:text-[#C25E00] pb-28 md:pb-0`}>
 
@@ -167,9 +127,7 @@ const App = () => {
                 onMouseLeave={() => setMenuHover(null)}
                 className={`relative group flex items-center justify-center md:w-auto md:pt-[4px] md:pr-[10px] md:pb-[4px] md:pl-[10px] md:rounded-[16px] whitespace-nowrap ${isWandering ? 'md:self-center md:justify-center md:bg-[#1A1A1A]' : 'md:self-end md:justify-end md:mr-8 md:bg-[#FDFBF7]'}`}
                 style={{
-                  // In HR mode: if over dark section, use Cream. Else use default (Charcoal).
-                  // In Wandering mode: always Cream (default text color is already cream/white-ish).
-                  color: (mode === 'hr' && overDark[item]) ? COLOURS.cream : 'inherit'
+                  color: 'inherit'
                 }}
               >
                 {/* Desktop Label Logic */}
@@ -183,7 +141,7 @@ const App = () => {
                 </span>
 
                 {/* Active/Hover Dot - Repositioned to be clearly visible outside the tight padding */}
-                <span className={`w-1.5 h-1.5 rounded-full absolute -bottom-2 md:bottom-auto md:-right-3 md:top-1/2 md:-translate-y-1/2 transition-opacity opacity-0 group-hover:opacity-100 ${isWandering ? 'bg-white' : (overDark[item] ? 'bg-white' : 'bg-black')}`} />
+                <span className={`w-1.5 h-1.5 rounded-full absolute -bottom-2 md:bottom-auto md:-right-3 md:top-1/2 md:-translate-y-1/2 transition-opacity opacity-0 group-hover:opacity-100 ${isWandering ? 'bg-white' : 'bg-black'}`} />
               </button>
             );
           })}
