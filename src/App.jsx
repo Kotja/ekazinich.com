@@ -165,7 +165,7 @@ const App = () => {
                 onClick={() => scrollToSection(targetScrollId)}
                 onMouseEnter={() => { if (mode === 'wandering') setMenuHover(initial); }}
                 onMouseLeave={() => setMenuHover(null)}
-                className="relative group flex items-center justify-center md:justify-end md:w-32 md:pr-8"
+                className={`relative group flex items-center justify-center md:w-auto md:pt-[4px] md:pr-[10px] md:pb-[4px] md:pl-[10px] md:rounded-[16px] whitespace-nowrap ${isWandering ? 'md:self-center md:justify-center md:bg-[#1A1A1A]' : 'md:self-end md:justify-end md:mr-8 md:bg-[#FDFBF7]'}`}
                 style={{
                   // In HR mode: if over dark section, use Cream. Else use default (Charcoal).
                   // In Wandering mode: always Cream (default text color is already cream/white-ish).
@@ -182,8 +182,8 @@ const App = () => {
                   {mode === 'wandering' ? initial : item}
                 </span>
 
-                {/* Active/Hover Dot - Simplified for Router: just show on hover or if over dark */}
-                <span className={`w-1.5 h-1.5 rounded-full absolute -bottom-2 md:bottom-auto md:right-4 md:top-1/2 md:-translate-y-1/2 transition-opacity opacity-0 group-hover:opacity-100 ${isWandering ? 'bg-white' : (overDark[item] ? 'bg-white' : 'bg-black')}`} />
+                {/* Active/Hover Dot - Repositioned to be clearly visible outside the tight padding */}
+                <span className={`w-1.5 h-1.5 rounded-full absolute -bottom-2 md:bottom-auto md:-right-3 md:top-1/2 md:-translate-y-1/2 transition-opacity opacity-0 group-hover:opacity-100 ${isWandering ? 'bg-white' : (overDark[item] ? 'bg-white' : 'bg-black')}`} />
               </button>
             );
           })}

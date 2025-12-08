@@ -1,6 +1,7 @@
 import projectBooking from '../assets/project-booking-hero.png';
 import projectBookingChallenge from '../assets/studio-booking-challenge.png';
-import projectBookingProcess from '../assets/studio-booking-process.png';
+
+import projectBookingProcess from '../assets/booking-process-new.png';
 import projectB2B from '../assets/project-b2b-hero.png';
 import projectB2BNew from '../assets/b2b-hero-v2.png';
 import projectB2BChallengeNew from '../assets/b2b-challenge-new.png';
