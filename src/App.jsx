@@ -112,7 +112,7 @@ const App = () => {
         </div>
 
         {/* Menu Items */}
-        <div className="pointer-events-auto flex flex-row md:flex-col gap-6 md:gap-12 text-sm font-bold tracking-widest order-1 md:order-2">
+        <div className="pointer-events-auto flex flex-row md:flex-col gap-6 md:gap-12 text-sm font-bold tracking-widest order-1 md:order-2 md:w-full">
           {['Projects', 'About', 'Get in Touch'].map((item, idx) => {
             const initial = item.charAt(0);
             const targetId = item.toLowerCase().replace(/ /g, '-');
@@ -125,7 +125,7 @@ const App = () => {
                 onClick={() => scrollToSection(targetScrollId)}
                 onMouseEnter={() => { if (mode === 'wandering') setMenuHover(initial); }}
                 onMouseLeave={() => setMenuHover(null)}
-                className={`relative group flex items-center justify-center md:w-auto md:pt-[4px] md:pr-[10px] md:pb-[4px] md:pl-[10px] md:rounded-[16px] whitespace-nowrap ${isWandering ? 'md:self-center md:justify-center md:bg-[#1A1A1A]' : 'md:self-end md:justify-end md:mr-8 md:bg-[#FDFBF7]'}`}
+                className={`relative group flex items-center justify-center md:w-auto md:pt-[4px] md:pr-[10px] md:pb-[4px] md:pl-[10px] md:rounded-[16px] whitespace-nowrap ${isWandering ? 'md:self-end md:mr-12 md:justify-end md:bg-[#1A1A1A]' : 'md:self-end md:justify-end md:mr-8 md:bg-[#FDFBF7]'}`}
                 style={{
                   color: 'inherit'
                 }}
