@@ -10,7 +10,7 @@ import projectB2BChallenge from '../assets/b2b-challenge.png';
 import projectB2BProcess from '../assets/b2b-process.png';
 import projectCollector from '../assets/project-collector-hero.png';
 import projectCollectorChallenge from '../assets/platform-challenge.png';
-import projectCollectorProcess from '../assets/platform-process.png';
+import projectCollectorProcess from '../assets/direct_to_collector_process_new.jpg';
 import projectPortfolio from '../assets/project-portfolio-hero.png';
 import projectPortfolioChallenge from '../assets/portfolio-challenge.png';
 import projectPortfolioProcess from '../assets/portfolio-process.png';
