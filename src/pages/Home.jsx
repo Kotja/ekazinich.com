@@ -162,11 +162,11 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                                 front: 'rounded-full', back: 'rounded-none',
                                 gradient: 'linear-gradient(to bottom, #CC9900, #FFD700)', // Dark to Light Yellow
                                 className: 'md:-mt-48', // Moved even higher (First 1/3)
-                                mobileMargin: 'ml-10 mt-10',
-                                frameMobileMargin: '',
+                                mobileMargin: 'ml-[3rem] mt-[3rem]',
+                                frameMobileMargin: '-ml-4 -mt-4',
                                 desktopMargin: 'md:ml-10 md:mt-10',
                                 frameDesktopMargin: '',
-                                textPos: 'items-start justify-start text-left pl-4 pt-4'
+                                textPos: 'items-start justify-start text-left pl-3 pt-3'
                             }, // TL: Client Converting Portfolio
                             {
                                 front: 'rounded-none', back: 'rounded-full',
@@ -248,7 +248,6 @@ const Home = ({ mode, playSound, scrollToSection }) => {
 
                 {/* Wandering Decorations */}
                 <div className={`absolute inset-0 pointer-events-none transition-opacity duration-1000 ${mode === 'wandering' ? 'opacity-100' : 'opacity-0'}`}>
-                    <div className="hidden md:block absolute top-[50%] right-[8%] w-96 h-[2px] bg-[#C25E00]/30 rotate-0" />
                 </div>
 
                 {/* Scroll Down Arrow */}

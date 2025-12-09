@@ -83,36 +83,53 @@ const App = () => {
       <nav className={`
         fixed z-50 flex items-center justify-between pointer-events-none transition-all duration-300
         /* Mobile Styles (Bottom Bar) */
-        bottom-0 left-0 w-full h-20 flex-row px-6 border-t backdrop-blur-lg ${theme.navBg} ${theme.borderSoft}
+        bottom-0 left-0 w-full h-20 flex-row px-4 border-t backdrop-blur-lg ${theme.navBg} ${theme.borderSoft}
         /* Desktop Styles (Right Sidebar) */
         md:right-0 md:top-0 md:h-full md:w-32 md:flex-col md:py-10 md:bottom-auto md:left-auto md:px-0 md:border-t-0 md:bg-transparent md:backdrop-blur-none
         ${theme.text}
       `}>
 
         {/* Mode Switcher Group */}
-        <div className="pointer-events-auto flex md:flex-col items-center gap-4 md:gap-2 md:mt-24 order-2 md:order-1">
-          <div className="flex md:flex-col items-center gap-2 md:mb-8">
-            <div
-              className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 
-                ${isWandering ? 'border-white' : 'border-black'} 
-                ${mode === 'hr' ? (isWandering ? 'bg-white' : 'bg-black') : 'bg-transparent'}`}
-              onClick={() => { setMode('hr'); playSound('mode'); }}
-              title="HR Mode (Rushing)"
-            />
-            {/* Connector Line */}
-            <div className={`w-8 h-[1px] md:h-8 md:w-[1px] transition-colors duration-300 ${mode === 'wandering' ? 'bg-[#C25E00]' : (isWandering ? 'bg-white/20' : 'bg-black/20')}`}></div>
-            <div
-              className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 
-                ${isWandering ? 'border-white' : 'border-black'} 
-                ${mode === 'wandering' ? (isWandering ? 'bg-white' : 'bg-black') : 'bg-transparent'}`}
-              onClick={() => { setMode('wandering'); playSound('mode'); }}
-              title="Wandering Mode (Curious)"
-            />
+        <div className="pointer-events-auto flex md:flex-col items-center gap-2 md:mt-24 order-2 md:order-1 flex-shrink-0">
+          <div className="flex md:flex-col items-center gap-2 md:mb-8 relative group/mode">
+
+            {/* Focus Mode Button */}
+            <div className="relative group/btn">
+              <div
+                className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 
+                    ${isWandering ? 'border-white' : 'border-black'} 
+                    ${mode === 'hr' ? (isWandering ? 'bg-white' : 'bg-black') : 'bg-transparent'}`}
+                onClick={() => { setMode('hr'); playSound('mode'); }}
+                aria-label="Focus Mode"
+              />
+              {/* Desktop Tooltip */}
+              <span className="hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-[9px] tracking-widest uppercase opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none text-[#E6944C]">
+                Focus Mode
+              </span>
+            </div>
+
+            {/* Connector Line - Flexible in Mobile */}
+            <div className={`h-[1px] w-2 flex-grow md:flex-grow-0 md:w-[1px] md:h-8 transition-colors duration-300 ${mode === 'wandering' ? 'bg-[#C25E00]' : (isWandering ? 'bg-white/20' : 'bg-black/20')}`}></div>
+
+            {/* Explore Mode Button */}
+            <div className="relative group/btn">
+              <div
+                className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 
+                    ${isWandering ? 'border-white' : 'border-black'} 
+                    ${mode === 'wandering' ? (isWandering ? 'bg-white' : 'bg-black') : 'bg-transparent'}`}
+                onClick={() => { setMode('wandering'); playSound('mode'); }}
+                aria-label="Explore Mode"
+              />
+              {/* Desktop Tooltip */}
+              <span className="hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-[9px] tracking-widest uppercase opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none text-[#E6944C]">
+                Explore Mode
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Menu Items */}
-        <div className="pointer-events-auto flex flex-row md:flex-col gap-6 md:gap-12 text-sm font-bold tracking-widest order-1 md:order-2 md:w-full">
+        <div className={`pointer-events-auto flex flex-row md:flex-col md:gap-12 text-sm font-bold tracking-widest order-1 md:order-2 md:w-full flex-grow md:justify-start pr-6 md:pr-0 ${isWandering ? 'justify-start gap-8' : 'justify-between'}`}>
           {['Projects', 'About', 'Get in Touch'].map((item, idx) => {
             const initial = item.charAt(0);
             const targetId = item.toLowerCase().replace(/ /g, '-');
@@ -136,7 +153,7 @@ const App = () => {
                 </span>
 
                 {/* Mobile Label Logic */}
-                <span className="md:hidden block text-xs">
+                <span className="md:hidden block text-[10px] xs:text-xs">
                   {mode === 'wandering' ? initial : item}
                 </span>
 
