@@ -2,6 +2,7 @@ import projectBooking from '../assets/project-booking-hero.png';
 import projectBookingChallenge from '../assets/studio-booking-challenge.png';
 
 import projectBookingProcess from '../assets/booking-process-new.png';
+import projectBookingFlow from '../assets/studio-booking-flow.png';
 import projectB2B from '../assets/project-b2b-hero.png';
 import projectB2BNew from '../assets/b2b-hero-v2.png';
 import projectB2BChallengeNew from '../assets/b2b-challenge-new.png';
@@ -43,8 +44,10 @@ export const PROJECTS = [
         images: [
             projectBooking,
             projectBookingChallenge,
-            projectBookingProcess
-        ]
+            projectBookingProcess,
+            projectBookingFlow
+        ],
+        refinement: "Refining the Booking Logic: Early iterations of this flow treated 'Class Trials' as a separate product, creating a disjointed experience. In this final architecture, I integrated the 'Trial vs. Term' choice as a decision node within the main class flow. This allows users to verify that a specific class fits their schedule before deciding on their level of commitment, resulting in a more intuitive and flexible path to purchase."
     },
     {
         id: 1,

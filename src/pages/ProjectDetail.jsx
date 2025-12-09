@@ -145,6 +145,23 @@ const ProjectDetail = ({ mode, playSound }) => {
                     </div>
                 </div>
 
+                {/* Section 4: Refinement (Text Left, Img Right - Optional) */}
+                {project.refinement && isWandering && (
+                    <div className={`grid ${project.images && project.images[3] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
+                        <div className="order-2 md:order-1">
+                            <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>
+                                {project.refinement.split(': ')[0] && <span className="block font-playfair text-2xl mb-4 text-[#C25E00]">{project.refinement.split(': ')[0]}.</span>}
+                                {project.refinement.includes(': ') ? project.refinement.split(': ').slice(1).join(': ') : project.refinement}
+                            </p>
+                        </div>
+                        {project.images && project.images[3] && (
+                            <div className={`w-full h-auto overflow-hidden shadow-sm order-1 md:order-2 ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[3])}>
+                                <img src={project.images[3]} alt="Refinement Detail" draggable="false" className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700" />
+                            </div>
+                        )}
+                    </div>
+                )}
+
 
             </div>
 
