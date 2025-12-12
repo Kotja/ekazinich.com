@@ -150,7 +150,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                 </div>
 
                 {/* Right Column: Geometric Project Navigation */}
-                <div className="w-full md:w-1/2 grid grid-cols-1 md:grid-cols-2 gap-20 md:gap-16 p-2 md:pr-48 relative z-20 mt-12 md:mt-0 content-center justify-items-center">
+                <div className="w-full md:w-1/2 grid grid-cols-1 md:grid-cols-2 gap-20 md:gap-8 p-[10px] md:pr-48 relative z-20 mt-12 md:mt-0 content-center justify-items-center">
 
                     {PROJECTS.slice(0, 4).map((proj, idx) => {
                         // Rename B2B project on the fly
@@ -161,7 +161,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                             {
                                 front: 'rounded-full', back: 'rounded-none',
                                 gradient: 'linear-gradient(to bottom, #CC9900, #FFD700)', // Dark to Light Yellow
-                                className: 'md:-mt-48', // Moved even higher (First 1/3)
+                                className: 'md:-mt-32', // Pushed down by ~4rem (from -48 to -32)
                                 mobileMargin: 'ml-[3rem] mt-[3rem]',
                                 frameMobileMargin: '-ml-4 -mt-4',
                                 desktopMargin: 'md:ml-10 md:mt-10',
@@ -171,7 +171,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                             {
                                 front: 'rounded-none', back: 'rounded-full',
                                 gradient: 'linear-gradient(to bottom, #FFA500, #C27000)', // Light to Dark Orange
-                                className: 'md:translate-y-20', // Moved up by ~half size
+                                className: 'md:translate-y-10', // Significantly reduced from 20 (approx half)
                                 mobileMargin: 'ml-0 mt-0',
                                 frameMobileMargin: 'ml-10 mt-[5.5rem]',
                                 desktopMargin: 'md:ml-0 md:mt-0',
@@ -191,7 +191,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                             {
                                 front: 'rounded-full', back: 'rounded-none',
                                 gradient: 'linear-gradient(to bottom, #FFD700, #CC9900)', // Light to Dark Yellow
-                                className: 'md:translate-y-[15.4rem]', // Moved up ~10px
+                                className: 'md:translate-y-36', // Pushed down by ~4rem (from 20 to 36)
                                 mobileMargin: 'ml-0 mt-0',
                                 frameMobileMargin: 'ml-10 mt-12',
                                 desktopMargin: 'md:ml-0 md:mt-0',
@@ -216,7 +216,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                                 onMouseEnter={() => playSound('general')}
                             >
                                 {/* Back Frame (Outline + Title) */}
-                                <div className={`col-start-1 row-start-1 w-36 h-36 md:w-48 md:h-48 relative border-2 ${theme.borderSolid} ${config.back} flex ${config.textPos} transition-transform duration-500 group-hover:scale-105 z-0 ${config.frameMobileMargin || ''} ${config.frameDesktopMargin || ''}`}>
+                                <div className={`col-start-1 row-start-1 w-36 h-36 md:w-48 md:h-48 relative border-2 ${theme.borderSolid} ${config.back} flex ${config.textPos} transition-colors duration-500 group-hover:border-[#C25E00] z-0 ${config.frameMobileMargin || ''} ${config.frameDesktopMargin || ''}`}>
                                     <span className={`font-playfair italic text-sm ${theme.text} leading-tight max-w-[90%]`}>
                                         {displayTitle}
                                     </span>
@@ -226,19 +226,12 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                                 <div
                                     className={`col-start-1 row-start-1 w-36 h-36 md:w-48 md:h-48 relative ${config.front} overflow-hidden shadow-lg transition-transform duration-500 group-hover:scale-95 z-10 bg-white ${config.mobileMargin} ${config.desktopMargin}`}
                                 >
-                                    {/* Image (Always present, revealed on hover) */}
+                                    {/* Image (Visible by default: B&W -> Color on Hover) */}
                                     <img
                                         src={proj.images[0]}
                                         alt={displayTitle}
-                                        className="w-full h-full object-cover grayscale"
+                                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                     />
-
-                                    {/* Color Overlay (Fades out on hover) */}
-                                    <div
-                                        className="absolute inset-0 transition-opacity duration-500 group-hover:opacity-0 flex items-center justify-center"
-                                        style={{ background: config.gradient }}
-                                    >
-                                    </div>
                                 </div>
                             </div>
                         );

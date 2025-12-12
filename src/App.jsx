@@ -93,36 +93,36 @@ const App = () => {
         <div className="pointer-events-auto flex md:flex-col items-center gap-2 md:mt-24 order-2 md:order-1 flex-shrink-0">
           <div className="flex md:flex-col items-center gap-2 md:mb-8 relative group/mode">
 
-            {/* Focus Mode Button */}
+            {/* Focus Mode Button -> Impact Mode */}
             <div className="relative group/btn">
               <div
                 className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 
                     ${isWandering ? 'border-white' : 'border-black'} 
                     ${mode === 'hr' ? (isWandering ? 'bg-white' : 'bg-black') : 'bg-transparent'}`}
                 onClick={() => { setMode('hr'); playSound('mode'); }}
-                aria-label="Focus Mode"
+                aria-label="Impact Mode"
               />
               {/* Desktop Tooltip */}
               <span className="hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-[9px] tracking-widest uppercase opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none text-[#E6944C]">
-                Focus Mode
+                Impact Mode
               </span>
             </div>
 
             {/* Connector Line - Flexible in Mobile */}
             <div className={`h-[1px] w-2 flex-grow md:flex-grow-0 md:w-[1px] md:h-8 transition-colors duration-300 ${mode === 'wandering' ? 'bg-[#C25E00]' : (isWandering ? 'bg-white/20' : 'bg-black/20')}`}></div>
 
-            {/* Explore Mode Button */}
+            {/* Explore Mode Button -> Process Mode */}
             <div className="relative group/btn">
               <div
                 className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 
                     ${isWandering ? 'border-white' : 'border-black'} 
                     ${mode === 'wandering' ? (isWandering ? 'bg-white' : 'bg-black') : 'bg-transparent'}`}
                 onClick={() => { setMode('wandering'); playSound('mode'); }}
-                aria-label="Explore Mode"
+                aria-label="Process Mode"
               />
               {/* Desktop Tooltip */}
               <span className="hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-[9px] tracking-widest uppercase opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none text-[#E6944C]">
-                Explore Mode
+                Process Mode
               </span>
             </div>
           </div>
