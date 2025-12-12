@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cvFile from '../assets/Katerina Zinich UX _ Product designer CV.pdf';
 import { ArrowDown, Check, Copy, Linkedin, Mail, ArrowRight, AlertCircle, X, Download } from 'lucide-react';
-import profileImage from '../assets/profile.png';
+import profileImage from '../assets/profile.webp';
 import { PROJECTS } from '../data/projects';
 import emailjs from '@emailjs/browser';
 
@@ -230,6 +230,9 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                                     <img
                                         src={proj.images[0]}
                                         alt={displayTitle}
+                                        loading={idx > 1 ? "lazy" : "eager"}
+                                        width="800"
+                                        height="600"
                                         className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                     />
                                 </div>
@@ -270,6 +273,9 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                             <img
                                 src={profileImage}
                                 alt="Eka Profile"
+                                width="300"
+                                height="400"
+                                loading="lazy"
                                 className="w-full h-full object-cover"
                             />
                         </div>

@@ -1,20 +1,20 @@
-import projectBooking from '../assets/project-booking-hero.png';
-import projectBookingChallenge from '../assets/studio-booking-challenge.png';
+import projectBooking from '../assets/project-booking-hero.webp';
+import projectBookingChallenge from '../assets/studio-booking-challenge.webp';
 
-import projectBookingProcess from '../assets/booking-process-new.png';
-import projectBookingFlow from '../assets/studio-booking-flow.png';
-import projectB2B from '../assets/project-b2b-hero.png';
-import projectB2BNew from '../assets/b2b-hero-v2.png';
-import projectB2BChallengeNew from '../assets/b2b-challenge-new.png';
+import projectBookingProcess from '../assets/booking-process-new.webp';
+import projectBookingFlow from '../assets/studio-booking-flow.webp';
+import projectB2B from '../assets/project-b2b-hero.webp';
+import projectB2BNew from '../assets/b2b-hero-v2.webp';
+import projectB2BChallengeNew from '../assets/b2b-challenge-new.webp';
 import projectB2BProcessNew from '../assets/b2b-flow-audit.svg';
-import projectB2BChallenge from '../assets/b2b-challenge.png';
-import projectB2BProcess from '../assets/b2b-process.png';
-import projectCollector from '../assets/project-collector-hero.png';
-import projectCollectorChallenge from '../assets/platform-challenge.png';
-import projectCollectorProcess from '../assets/direct_to_collector_process_new.jpg';
-import projectPortfolio from '../assets/project-portfolio-hero.png';
-import projectPortfolioChallenge from '../assets/portfolio-challenge.png';
-import projectPortfolioProcess from '../assets/portfolio-process.png';
+import projectB2BChallenge from '../assets/b2b-challenge.webp';
+import projectB2BProcess from '../assets/b2b-process.webp';
+import projectCollector from '../assets/project-collector-hero.webp';
+import projectCollectorChallenge from '../assets/platform-challenge.webp';
+import projectCollectorProcess from '../assets/direct_to_collector_process_new.webp';
+import projectPortfolio from '../assets/project-portfolio-hero.webp';
+import projectPortfolioChallenge from '../assets/portfolio-challenge.webp';
+import projectPortfolioProcess from '../assets/portfolio-process.webp';
 
 export const PROJECTS = [
     {
