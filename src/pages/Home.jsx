@@ -225,15 +225,24 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                                 {/* Front Shape (Color -> Image) */}
                                 <div
                                     className={`col-start-1 row-start-1 w-36 h-36 md:w-48 md:h-48 relative ${config.front} overflow-hidden shadow-lg transition-transform duration-500 group-hover:scale-95 z-10 bg-white ${config.mobileMargin} ${config.desktopMargin}`}
+                                    style={{ background: isWandering ? config.gradient : 'white' }}
                                 >
-                                    {/* Image (Visible by default: B&W -> Color on Hover) */}
+                                    {/* Image Logic:
+                                        - Wandering (Process): Hidden by default (showing gradient), Visible on Hover
+                                        - HR (Impact): Visible B&W by default, Color on Hover
+                                    */}
                                     <img
                                         src={proj.images[0]}
                                         alt={displayTitle}
                                         loading={idx > 1 ? "lazy" : "eager"}
                                         width="800"
                                         height="600"
-                                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                                        className={`w-full h-full object-cover transition-all duration-500
+                                            ${isWandering
+                                                ? 'opacity-0 group-hover:opacity-100' // Process: Hide image initially
+                                                : 'grayscale group-hover:grayscale-0'   // Impact: B&W -> Color
+                                            }
+                                        `}
                                     />
                                 </div>
                             </div>
