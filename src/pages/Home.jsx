@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import cvFile from '../assets/Katerina Zinich UX _ Product designer CV.pdf';
+import cvFile from '../assets/Katerina (Eka) Zinich Product designer CV.pdf';
 import { ArrowDown, Check, Copy, Linkedin, Mail, ArrowRight, AlertCircle, X, Download } from 'lucide-react';
 import profileImage from '../assets/profile.webp';
 import { PROJECTS } from '../data/projects';
@@ -420,7 +420,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                             <div className="flex items-center gap-4">
                                 <a
                                     href={cvFile}
-                                    download="Eka_Zinich_CV.pdf"
+                                    download="Katerina_(Eka)_Zinich_Product_designer_CV.pdf"
                                     className="flex items-center gap-2 text-sm uppercase tracking-widest hover:text-[#C25E00] transition-colors"
                                 >
                                     <Download size={18} />
