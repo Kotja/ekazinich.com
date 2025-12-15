@@ -111,18 +111,18 @@ const App = () => {
             {/* Connector Line - Flexible in Mobile */}
             <div className={`h-[1px] w-2 flex-grow md:flex-grow-0 md:w-[1px] md:h-8 transition-colors duration-300 ${mode === 'wandering' ? 'bg-[#C25E00]' : (isWandering ? 'bg-white/20' : 'bg-black/20')}`}></div>
 
-            {/* Explore Mode Button -> Process Mode */}
+            {/* Explore Mode Button -> In-Depth Mode */}
             <div className="relative group/btn">
               <div
                 className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 
                     ${isWandering ? 'border-white' : 'border-black'} 
                     ${mode === 'wandering' ? (isWandering ? 'bg-white' : 'bg-black') : 'bg-transparent'}`}
                 onClick={() => { setMode('wandering'); playSound('mode'); }}
-                aria-label="Process Mode"
+                aria-label="In-Depth Mode"
               />
               {/* Desktop Tooltip */}
               <span className="hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-[9px] tracking-widest uppercase opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none text-[#E6944C]">
-                Process Mode
+                In-Depth Mode
               </span>
             </div>
           </div>
