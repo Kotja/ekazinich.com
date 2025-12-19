@@ -217,7 +217,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                             >
                                 {/* Back Frame (Outline + Title) */}
                                 <div className={`col-start-1 row-start-1 w-36 h-36 md:w-48 md:h-48 relative border-2 ${theme.borderSolid} ${config.back} flex ${config.textPos} transition-colors duration-500 group-hover:border-[#C25E00] z-0 ${config.frameMobileMargin || ''} ${config.frameDesktopMargin || ''}`}>
-                                    <span className={`font-playfair italic text-sm ${theme.text} leading-tight max-w-[90%]`}>
+                                    <span className={`font-lato text-sm ${theme.text} leading-tight max-w-[90%]`}>
                                         {displayTitle}
                                     </span>
                                 </div>
