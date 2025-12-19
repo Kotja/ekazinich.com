@@ -174,7 +174,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                                 frameMobileMargin: 'ml-10 mt-[5.5rem]',
                                 desktopMargin: 'md:ml-0 md:mt-0',
                                 frameDesktopMargin: 'md:ml-10 md:mt-[4.5rem]',
-                                textPos: 'items-end justify-end text-right pr-12 pb-6 md:pr-12'
+                                textPos: 'items-end justify-end text-right pr-7 pb-6 md:pb-8' // Align right with Hero Image
                             }, // TR: Studio Booking
                             {
                                 front: 'rounded-none', back: 'rounded-none',
