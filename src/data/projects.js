@@ -19,7 +19,7 @@ import projectPortfolioProcess from '../assets/portfolio-process.webp';
 export const PROJECTS = [
     {
         id: 3,
-        title: "Mobile-First Photography Portfolio",
+        title: "Brand Scaling & Client Acquisition Platform",
         desc: "A user-centric overhaul of a photographer's portfolio to recapture lost business through improved UX and mobile responsiveness.",
         tags: ["UX/UI Design", "Mobile First", "CMS Integration"],
         challenge: "The client’s existing portfolio was actively hindering their business. A cluttered, disorganised structure made it nearly impossible for potential leads to find relevant work, while a dated, non-responsive design created a lack of trust. This friction meant the photographer was losing opportunities simply because their digital presence couldn't keep up with the quality of their photography.",
@@ -34,7 +34,7 @@ export const PROJECTS = [
     },
     {
         id: 0,
-        title: "Zero-Admin Studio Booking",
+        title: "Service Automation: Zero-Touch Model",
         desc: "A streamlined SaaS solution reducing admin time by 40% for creative studios.",
         tags: ["Service Design", "Product Strategy", "UX/UI"],
         challenge: "Before the redesign, the client was trapped in an administrative loop. The website functioned like a blog, burying class details and forcing every single booking into a manual phone call.\n\nThis wasn't just a usability issue; it was an operational bottleneck. The lack of a structured digital agreement meant the client spent hours chasing payments and resolving misunderstandings. The manual burden was so high that it was consuming time meant for teaching, while the high-friction process caused potential customers to abandon the site before they even picked up the phone.",
@@ -51,7 +51,7 @@ export const PROJECTS = [
     },
     {
         id: 1,
-        title: "B2B Mobile Layout Change",
+        title: "Optimising B2B Workflow & Retention",
         desc: "Optimizing complex data tables for mobile viewports without losing fidelity.",
         tags: ["Mobile First", "Data Viz", "Figma"],
         challenge: "The problem wasn't technical; it was situational. B2B customers rely on their 30-day credit accounts to streamline expense tracking and keep business purchasing separate from personal shopping. However, the mobile interface wasn't optimised for the checkout line. Customers were forced to thumb-scroll through the page just to locate their digital card, creating awkward, time-consuming delays at the point of sale when they just needed to pay and get back to the job site.",
@@ -62,7 +62,7 @@ export const PROJECTS = [
     },
     {
         id: 2,
-        title: "Direct-to-Collector Platform",
+        title: "DTC Transformation & Immersive Commerce",
         desc: "Created the brand identity and designed the full digital platform for the artist to exhibit and sell her work independently. The site enabled her to reach collectors directly and retain earnings that would otherwise be lost to nearly 50% gallery commission fees.",
         tags: ["Web Design", "E-commerce", "Strategy"],
         challenge: "The primary challenge was twofold: solving both a critical business problem and a core user problem. For the artist, the challenge was overcoming the traditional gallery model that claimed 40-50% of her revenue and severed her connection to collectors. For the user, the challenge was the \"context barrier\"; art collectors were highly hesitant to purchase expensive pieces online because they couldn't accurately judge a work's scale, texture, or how it would look in their own home, a problem a physical gallery naturally solves.",

@@ -153,9 +153,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                 <div className="w-full md:w-1/2 grid grid-cols-1 md:grid-cols-2 gap-20 md:gap-8 p-[10px] md:pr-48 relative z-20 mt-12 md:mt-0 content-center justify-items-center">
 
                     {PROJECTS.slice(0, 4).map((proj, idx) => {
-                        // Rename B2B project on the fly
                         let displayTitle = proj.title;
-                        if (proj.id === 1) displayTitle = "B2B Mobile Layout Redesign";
 
                         const geometricConfig = [
                             {
