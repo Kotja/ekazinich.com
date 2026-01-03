@@ -1,10 +1,133 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cvFile from '../assets/Katerina (Eka) Zinich Product designer CV.pdf';
 import { ArrowDown, Check, Copy, Linkedin, Mail, ArrowRight, AlertCircle, X, Download } from 'lucide-react';
 import profileImage from '../assets/profile.webp';
 import { PROJECTS } from '../data/projects';
 import emailjs from '@emailjs/browser';
+
+// --- SUB-COMPONENT: PROJECT ITEM ---
+const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) => {
+    const videoRef = useRef(null);
+    let displayTitle = proj.title;
+
+    const geometricConfig = [
+        {
+            front: 'rounded-full', back: 'rounded-none',
+            gradient: 'linear-gradient(to bottom, #CC9900, #FFD700)', // Dark to Light Yellow
+            className: 'md:-mt-32',
+            mobileMargin: 'ml-[3rem] mt-[3rem]',
+            frameMobileMargin: '-ml-4 -mt-4',
+            desktopMargin: 'md:ml-10 md:mt-10',
+            frameDesktopMargin: '',
+            textPos: 'items-start justify-start text-left pl-3 pt-3'
+        }, // TL
+        {
+            front: 'rounded-none', back: 'rounded-full',
+            gradient: 'linear-gradient(to bottom, #FFA500, #C27000)', // Light to Dark Orange
+            className: 'md:translate-y-10',
+            mobileMargin: 'ml-0 mt-0',
+            frameMobileMargin: 'ml-10 mt-[5.5rem]',
+            desktopMargin: 'md:ml-5 md:-mt-4',
+            frameDesktopMargin: 'md:ml-10 md:mt-[4.5rem] md:translate-x-4',
+            textPos: 'items-end justify-end text-right pb-10 pr-8',
+            titleContainer: 'absolute -bottom-20 -right-10 w-64 text-right z-20',
+            titleStyle: 'font-lato text-2xl leading-tight'
+        }, // TR
+        {
+            front: 'rounded-none', back: 'rounded-none',
+            gradient: 'linear-gradient(to bottom, #C27000, #FFA500)', // Dark to Light Orange
+            className: '',
+            mobileMargin: 'ml-10 mt-0',
+            frameMobileMargin: 'mt-16',
+            desktopMargin: 'md:ml-10 md:mt-0',
+            frameDesktopMargin: 'md:mt-16',
+            textPos: 'items-end justify-start text-left pl-4 pb-4'
+        }, // BL
+        {
+            front: 'rounded-full', back: 'rounded-none',
+            gradient: 'linear-gradient(to bottom, #FFD700, #CC9900)', // Light to Dark Yellow
+            className: 'md:translate-y-36',
+            mobileMargin: 'ml-0 mt-0',
+            frameMobileMargin: 'ml-10 mt-12',
+            desktopMargin: 'md:ml-0 md:mt-0',
+            frameDesktopMargin: 'md:ml-10 md:mt-16',
+            textPos: 'items-end justify-end text-right pr-4 pb-4'
+        }, // BR
+    ];
+
+    const config = geometricConfig[idx];
+
+    let orderClass = '';
+    if (idx === 0) orderClass = 'order-1';
+    if (idx === 1) orderClass = 'order-3 md:order-2';
+    if (idx === 2) orderClass = 'order-2 md:order-3';
+    if (idx === 3) orderClass = 'order-4';
+
+    const titleContainerClass = config.titleContainer || 'absolute -bottom-16 left-1/2 -translate-x-1/2 w-full text-center z-20';
+    const titleStyleClass = config.titleStyle || 'font-playfair italic text-xl';
+
+    const handleMouseEnter = () => {
+        playSound('general');
+        if (proj.video && videoRef.current) {
+            videoRef.current.play().catch(e => console.log("Video play error:", e));
+        }
+    };
+
+    const handleMouseLeave = () => {
+        if (proj.video && videoRef.current) {
+            videoRef.current.pause();
+            videoRef.current.currentTime = 0; // Reset to start
+        }
+    };
+
+    return (
+        <div
+            className={`relative grid grid-cols-1 grid-rows-1 w-fit h-fit group cursor-pointer ${config.className} ${orderClass}`}
+            onClick={() => openProject(proj)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
+            {/* Back Frame */}
+            <div className={`col-start-1 row-start-1 w-36 h-36 md:w-48 md:h-48 relative border-2 ${theme.borderSolid} ${config.back} flex ${config.textPos} transition-colors duration-500 group-hover:border-[#C25E00] z-0 ${config.frameMobileMargin || ''} ${config.frameDesktopMargin || ''}`}>
+                <span className={`font-lato text-xs md:text-sm ${theme.text} leading-tight max-w-[95%] break-words text-balance`}>
+                    {displayTitle}
+                </span>
+            </div>
+
+            {/* Front Shape */}
+            <div
+                className={`col-start-1 row-start-1 w-36 h-36 md:w-48 md:h-48 relative ${config.front} overflow-hidden shadow-lg transition-transform duration-500 group-hover:scale-95 z-10 bg-white ${config.mobileMargin} ${config.desktopMargin}`}
+                style={{ background: isWandering ? config.gradient : 'white' }}
+            >
+                {proj.video ? (
+                    <video
+                        ref={videoRef}
+                        src={proj.video}
+                        muted
+                        loop
+                        playsInline
+                        className={`w-full h-full object-cover transition-all duration-500 ${isWandering ? 'opacity-0 group-hover:opacity-100' : 'grayscale group-hover:grayscale-0'
+                            }`}
+                    />
+                ) : (
+                    <img
+                        src={proj.images[0]}
+                        alt={displayTitle}
+                        loading={idx > 1 ? "lazy" : "eager"}
+                        width="800"
+                        height="600"
+                        className={`w-full h-full object-cover transition-all duration-500 ${isWandering ? 'opacity-0 group-hover:opacity-100' : 'grayscale group-hover:grayscale-0'
+                            }`}
+                    />
+                )}
+            </div>
+
+            {/* Title Outside - REMOVED as title is now in frame */}
+            {/* <div className={titleContainerClass}> ... </div> */}
+        </div>
+    );
+};
 
 const Home = ({ mode, playSound, scrollToSection }) => {
     const navigate = useNavigate();
@@ -152,100 +275,17 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                 {/* Right Column: Geometric Project Navigation */}
                 <div className="w-full md:w-1/2 grid grid-cols-1 md:grid-cols-2 gap-20 md:gap-8 p-[10px] md:pr-48 relative z-20 mt-12 md:mt-0 content-center justify-items-center">
 
-                    {PROJECTS.slice(0, 4).map((proj, idx) => {
-                        let displayTitle = proj.title;
-
-                        const geometricConfig = [
-                            {
-                                front: 'rounded-full', back: 'rounded-none',
-                                gradient: 'linear-gradient(to bottom, #CC9900, #FFD700)', // Dark to Light Yellow
-                                className: 'md:-mt-32', // Pushed down by ~4rem (from -48 to -32)
-                                mobileMargin: 'ml-[3rem] mt-[3rem]',
-                                frameMobileMargin: '-ml-4 -mt-4',
-                                desktopMargin: 'md:ml-10 md:mt-10',
-                                frameDesktopMargin: '',
-                                textPos: 'items-start justify-start text-left pl-3 pt-3'
-                            }, // TL: Client Converting Portfolio
-                            {
-                                front: 'rounded-none', back: 'rounded-full',
-                                gradient: 'linear-gradient(to bottom, #FFA500, #C27000)', // Light to Dark Orange
-                                className: 'md:translate-y-10', // Significantly reduced from 20 (approx half)
-                                mobileMargin: 'ml-0 mt-0',
-                                frameMobileMargin: 'ml-10 mt-[5.5rem]',
-                                desktopMargin: 'md:ml-0 md:mt-0',
-                                frameDesktopMargin: 'md:ml-10 md:mt-[4.5rem]',
-                                textPos: 'items-end justify-end text-right pr-7 pb-6 md:pb-8' // Align right with Hero Image
-                            }, // TR: Studio Booking
-                            {
-                                front: 'rounded-none', back: 'rounded-none',
-                                gradient: 'linear-gradient(to bottom, #C27000, #FFA500)', // Dark to Light Orange
-                                className: '',
-                                mobileMargin: 'ml-10 mt-0',
-                                frameMobileMargin: 'mt-16',
-                                desktopMargin: 'md:ml-10 md:mt-0',
-                                frameDesktopMargin: 'md:mt-16',
-                                textPos: 'items-end justify-start text-left pl-4 pb-4'
-                            }, // BL: B2B
-                            {
-                                front: 'rounded-full', back: 'rounded-none',
-                                gradient: 'linear-gradient(to bottom, #FFD700, #CC9900)', // Light to Dark Yellow
-                                className: 'md:translate-y-36', // Pushed down by ~4rem (from 20 to 36)
-                                mobileMargin: 'ml-0 mt-0',
-                                frameMobileMargin: 'ml-10 mt-12',
-                                desktopMargin: 'md:ml-0 md:mt-0',
-                                frameDesktopMargin: 'md:ml-10 md:mt-16',
-                                textPos: 'items-end justify-end text-right pr-4 pb-4'
-                            }, // BR: Collector
-                        ];
-
-                        const config = geometricConfig[idx];
-
-                        let orderClass = '';
-                        if (idx === 0) orderClass = 'order-1';
-                        if (idx === 1) orderClass = 'order-3 md:order-2';
-                        if (idx === 2) orderClass = 'order-2 md:order-3';
-                        if (idx === 3) orderClass = 'order-4';
-
-                        return (
-                            <div
-                                key={proj.id}
-                                className={`relative grid grid-cols-1 grid-rows-1 w-fit h-fit group cursor-pointer ${config.className} ${orderClass}`}
-                                onClick={() => openProject(proj)}
-                                onMouseEnter={() => playSound('general')}
-                            >
-                                {/* Back Frame (Outline + Title) */}
-                                <div className={`col-start-1 row-start-1 w-36 h-36 md:w-48 md:h-48 relative border-2 ${theme.borderSolid} ${config.back} flex ${config.textPos} transition-colors duration-500 group-hover:border-[#C25E00] z-0 ${config.frameMobileMargin || ''} ${config.frameDesktopMargin || ''}`}>
-                                    <span className={`font-lato text-sm ${theme.text} leading-tight max-w-[90%]`}>
-                                        {displayTitle}
-                                    </span>
-                                </div>
-
-                                {/* Front Shape (Color -> Image) */}
-                                <div
-                                    className={`col-start-1 row-start-1 w-36 h-36 md:w-48 md:h-48 relative ${config.front} overflow-hidden shadow-lg transition-transform duration-500 group-hover:scale-95 z-10 bg-white ${config.mobileMargin} ${config.desktopMargin}`}
-                                    style={{ background: isWandering ? config.gradient : 'white' }}
-                                >
-                                    {/* Image Logic:
-                                        - Wandering (Process): Hidden by default (showing gradient), Visible on Hover
-                                        - HR (Impact): Visible B&W by default, Color on Hover
-                                    */}
-                                    <img
-                                        src={proj.images[0]}
-                                        alt={displayTitle}
-                                        loading={idx > 1 ? "lazy" : "eager"}
-                                        width="800"
-                                        height="600"
-                                        className={`w-full h-full object-cover transition-all duration-500
-                                            ${isWandering
-                                                ? 'opacity-0 group-hover:opacity-100' // Process: Hide image initially
-                                                : 'grayscale group-hover:grayscale-0'   // Impact: B&W -> Color
-                                            }
-                                        `}
-                                    />
-                                </div>
-                            </div>
-                        );
-                    })}
+                    {PROJECTS.slice(0, 4).map((proj, idx) => (
+                        <ProjectItem
+                            key={proj.id}
+                            proj={proj}
+                            idx={idx}
+                            openProject={openProject}
+                            playSound={playSound}
+                            theme={theme}
+                            isWandering={isWandering}
+                        />
+                    ))}
 
                 </div>
 
@@ -266,7 +306,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
             {/* About Section */}
             <section id="about-section" className="min-h-[80vh] w-full flex flex-col md:flex-row items-center px-6 md:px-24 py-24 relative overflow-hidden max-w-screen-2xl mx-auto">
                 <div className="w-full md:w-1/2 pr-0 md:pr-12 md:pl-20 z-10 mb-12 md:mb-0">
-                    <h2 className="font-playfair text-5xl md:text-7xl mb-8">About.</h2>
+                    <h2 className="font-playfair text-5xl md:text-7xl mb-8">About</h2>
                     <p className={`font-lato text-lg leading-relaxed mb-6 max-w-md ${theme.subText}`}>
                         Hi, I’m Eka. I’m a Product Designer who turns complex business requirements into clean, effective interfaces. I&nbsp;focus on removing friction for the user -analysing where they get stuck and fixing the flow to improve your bottom&nbsp;line.
                     </p>
@@ -304,7 +344,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
 
             {/* Contact Section */}
             <section id="contact-section" className="min-h-[60vh] w-full flex flex-col justify-center items-center px-6 md:px-24 pt-32 pb-40 md:pb-24" style={{ backgroundColor: COLOURS.charcoal, color: COLOURS.cream }}>
-                <h2 className="font-playfair text-5xl md:text-7xl mb-12 text-center">Let's Connect.</h2>
+                <h2 className="font-playfair text-5xl md:text-7xl mb-12 text-center">Let's Connect</h2>
                 <div className="flex flex-col md:flex-row gap-12 w-full max-w-4xl">
                     <div className="flex-1">
                         <form className="flex flex-col gap-6" onSubmit={handleFormSubmit}>
@@ -367,7 +407,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                             </button>
                         </form>
                     </div>
-                    <div className="flex-1 flex flex-col justify-center gap-8 md:pl-12 border-l-0 md:border-l border-white/10">
+                    <div className="flex-1 flex col justify-center gap-8 md:pl-12 border-l-0 md:border-l border-white/10">
                         <a
                             href="https://www.linkedin.com/in/katerina-eka-zinich"
                             target="_blank"

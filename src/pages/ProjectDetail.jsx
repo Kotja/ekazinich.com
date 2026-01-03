@@ -3,6 +3,50 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, X } from 'lucide-react';
 import { PROJECTS } from '../data/projects';
 
+const BoomerangVideo = ({ src }) => {
+    const videoRef = React.useRef(null);
+    const cycleCount = React.useRef(0);
+
+    React.useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        video.playbackRate = 1.0;
+        cycleCount.current = 0;
+        video.play().catch(e => console.log("Video autoplay blocked", e));
+
+        const handleEnded = () => {
+            // Reached end, reverse
+            video.playbackRate = -1.0;
+            video.play().catch(e => console.log("Video reverse play error", e));
+        };
+
+        const handleTimeUpdate = () => {
+            if (video.playbackRate < 0 && video.currentTime < 0.1) {
+                // Reached start (approx)
+                cycleCount.current += 1;
+                if (cycleCount.current < 2) {
+                    video.playbackRate = 1.0;
+                    video.play().catch(e => console.log("Video cycle play error", e));
+                } else {
+                    video.pause();
+                    video.currentTime = 0;
+                }
+            }
+        };
+
+        video.addEventListener('ended', handleEnded);
+        video.addEventListener('timeupdate', handleTimeUpdate);
+
+        return () => {
+            video.removeEventListener('ended', handleEnded);
+            video.removeEventListener('timeupdate', handleTimeUpdate);
+        };
+    }, [src]);
+
+    return <video ref={videoRef} src={src} muted playsInline className="w-full h-full object-cover" />;
+};
+
 const ProjectDetail = ({ mode, playSound }) => {
     const { slug } = useParams();
     const navigate = useNavigate();
@@ -84,11 +128,11 @@ const ProjectDetail = ({ mode, playSound }) => {
                 </button>
             </div>
 
-            {/* Expanded Content Layout */}
-            <div className="flex-1 w-full max-w-6xl mx-auto px-6 py-12 flex flex-col gap-20">
+            {/* Expanded Content Layout - WIDER CONTAINER for Hero, Text Constrained */}
+            <div className="flex-1 w-full max-w-[1920px] mx-auto py-12 flex flex-col gap-20">
 
-                {/* Header & Hero */}
-                <div className="text-center max-w-3xl mx-auto mb-8">
+                {/* Header - Constrained */}
+                <div className="w-full max-w-6xl mx-auto px-6 text-center max-w-3xl mb-8">
                     <h1 className={`font-playfair text-4xl md:text-7xl mb-6 leading-tight ${theme.text}`}>{project.title}</h1>
                     <div className="flex justify-center gap-3 flex-wrap">
                         {project.tags.map(tag => (
@@ -99,24 +143,31 @@ const ProjectDetail = ({ mode, playSound }) => {
                     </div>
                 </div>
 
-                {project.images && project.images[0] && (
-                    <div className={`w-full aspect-video overflow-hidden shadow-lg ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[0])}>
-                        <img src={project.images[0]} alt="Hero" draggable="false" className="w-full h-full object-contain" />
+                {/* Hero Image/Video - FULL WIDTH (Less Constraint) */}
+                {project.video ? (
+                    <div className={`w-full aspect-video overflow-hidden shadow-lg ${theme.imagePlaceholderBg}`}>
+                        <BoomerangVideo src={project.video} />
                     </div>
+                ) : (
+                    project.images && project.images[0] && (
+                        <div className={`w-full aspect-video md:max-h-[85vh] overflow-hidden shadow-lg ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[0])}>
+                            <img src={project.images[0]} alt="Hero" draggable="false" className="w-full h-full object-cover" />
+                        </div>
+                    )
                 )}
 
-                {/* Section: Impact (Moved Up) */}
-                <div className="max-w-5xl mx-auto text-center py-12">
+                {/* Impact - Constrained */}
+                <div className="w-full max-w-5xl mx-auto px-6 text-center py-12">
                     <h3 className="font-lato text-sm font-bold uppercase tracking-[0.2em] text-gray-400 mb-8">The Solution Impact</h3>
                     <p className={`font-playfair text-2xl md:text-5xl leading-tight italic ${theme.text}`} style={{ textWrap: 'balance' }}>
                         "{project.impact}"
                     </p>
                 </div>
 
-                {/* Section 1: Challenge (Text Left, Img Right) */}
-                <div className={`grid ${project.images && project.images[1] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
+                {/* Section 1: Challenge (Constrained) */}
+                <div className={`w-full max-w-6xl mx-auto px-6 grid ${project.images && project.images[1] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
                     <div className="order-2 md:order-1">
-                        <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] border-b border-[#C25E00] inline-block pb-2">The Challenge.</h3>
+                        <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] border-b border-[#C25E00] inline-block pb-2">The Challenge</h3>
                         <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>{project.challenge}</p>
                     </div>
                     {project.images && project.images[1] && (
@@ -126,31 +177,33 @@ const ProjectDetail = ({ mode, playSound }) => {
                     )}
                 </div>
 
-                {/* Section 2: Role (Text Block) */}
-                <div className={`p-8 md:p-12 text-center border-y border-[#FFD1A3] ${theme.projectSectionBg}`}>
-                    <h3 className={`font-playfair text-3xl mb-4 ${theme.text}`}>My Role.</h3>
-                    <p className={`font-lato text-lg max-w-2xl mx-auto leading-relaxed ${theme.subText}`}>{project.role}</p>
+                {/* Section 2: Role (Full Width Background, Constrained Content) */}
+                <div className={`w-full border-y border-[#FFD1A3] ${theme.projectSectionBg}`}>
+                    <div className="max-w-6xl mx-auto px-6 py-12 text-center">
+                        <h3 className={`font-playfair text-3xl mb-4 ${theme.text}`}>My Role</h3>
+                        <p className={`font-lato text-lg max-w-2xl mx-auto leading-relaxed ${theme.subText}`}>{project.role}</p>
+                    </div>
                 </div>
 
-                {/* Section 3: Process (Img Left, Text Right) */}
-                <div className={`grid ${project.images && project.images[2] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
+                {/* Section 3: Process (Constrained) */}
+                <div className={`w-full max-w-6xl mx-auto px-6 grid ${project.images && project.images[2] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
                     {project.images && project.images[2] && (
                         <div className={`aspect-square overflow-hidden ${(project.id === 2 || project.id === 3) ? '' : 'shadow-sm'} ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[2])}>
                             <img src={project.images[2]} alt="Process Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
                         </div>
                     )}
                     <div>
-                        <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] border-b border-[#C25E00] inline-block pb-2">The Process.</h3>
+                        <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] border-b border-[#C25E00] inline-block pb-2">The Process</h3>
                         <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>{project.process}</p>
                     </div>
                 </div>
 
-                {/* Section 4: Refinement (Text Left, Img Right - Optional) */}
+                {/* Section 4: Refinement (Constrained) */}
                 {project.refinement && isWandering && (
-                    <div className={`grid ${project.images && project.images[3] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
+                    <div className={`w-full max-w-6xl mx-auto px-6 grid ${project.images && project.images[3] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
                         <div className="order-2 md:order-1">
                             <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>
-                                {project.refinement.split(': ')[0] && <span className="block font-playfair text-2xl mb-4 text-[#C25E00]">{project.refinement.split(': ')[0]}.</span>}
+                                {project.refinement.split(': ')[0] && <span className="block font-playfair text-2xl mb-4 text-[#C25E00]">{project.refinement.split(': ')[0]}</span>}
                                 {project.refinement.includes(': ') ? project.refinement.split(': ').slice(1).join(': ') : project.refinement}
                             </p>
                         </div>
@@ -161,8 +214,6 @@ const ProjectDetail = ({ mode, playSound }) => {
                         )}
                     </div>
                 )}
-
-
             </div>
 
             {/* Bottom Navigation (Explore Others) */}

@@ -15,6 +15,10 @@ import projectCollectorProcess from '../assets/direct_to_collector_process_new.w
 import projectPortfolio from '../assets/project-portfolio-hero.webp';
 import projectPortfolioChallenge from '../assets/portfolio-challenge.webp';
 import projectPortfolioProcess from '../assets/portfolio-process.webp';
+import projectBrandScalingHero from '../assets/brand-scaling-hero.webp';
+import projectServiceAutomationHero from '../assets/service-automation-hero-new.webp';
+
+import projectB2BVideo from '../assets/HeroB2BOW.mp4';
 
 export const PROJECTS = [
     {
@@ -27,7 +31,7 @@ export const PROJECTS = [
         process: "My goal was invisibility - creating a design that steps back so the photography can step forward. I started by abandoning the ambiguous layout in favour of a strict category-based navigation, ensuring Art Directors could find relevant examples in under three clicks. Adopting a mobile-first strategy, I designed the grid system for vertical screens to guarantee that the high-resolution imagery remained immersive on any device. Ultimately, by stripping away decorative elements and utilising generous white space, I crafted an interface that acts as a quiet gallery wall, focusing all attention purely on the work.",
         impact: "The redesign transformed the portfolio into a high-converting asset. The intuitive structure and seamless mobile experience capture previously lost traffic, while the custom CMS empowers the client to independently manage their content.",
         images: [
-            projectPortfolio,
+            projectBrandScalingHero,
             projectPortfolioChallenge,
             projectPortfolioProcess
         ]
@@ -42,7 +46,7 @@ export const PROJECTS = [
         process: "During discovery, I identified that the \"phone-tag\" booking method was the root cause of both user drop-off and the client's payment disputes. I used Figma to prototype a new flow centred on a 'tentative contract' model. This feature required users to agree to terms and availability digitally before the booking was confirmed.\n\nI restructured the site’s architecture to make information instantly accessible, removing the need for \"inquiry\" emails. By mapping the user journey specifically to remove manual intervention, I delivered a solution that automated the trust and transaction process simultaneously.",
         impact: "Achieving a \"zero-admin\" state, we slashed workload by 40% in month one. The 'tentative contract' model cut disputes by 90%, while the frictionless flow drove a 36% revenue increase and 28% lower bounce rate. The system finally works for the client.",
         images: [
-            projectBooking,
+            projectServiceAutomationHero,
             projectBookingChallenge,
             projectBookingProcess,
             projectBookingFlow
@@ -57,8 +61,9 @@ export const PROJECTS = [
         challenge: "The problem wasn't technical; it was situational. B2B customers rely on their 30-day credit accounts to streamline expense tracking and keep business purchasing separate from personal shopping. However, the mobile interface wasn't optimised for the checkout line. Customers were forced to thumb-scroll through the page just to locate their digital card, creating awkward, time-consuming delays at the point of sale when they just needed to pay and get back to the job site.",
         role: "I led the UX redesign with a specific focus on \"on-the-go\" utility. My role involved auditing the existing information hierarchy and realigning it with the physical reality of the user's environment. I championed a \"Zero-Scroll\" philosophy, ensuring that no B2B customer would ever need to swipe to find the data required to complete a transaction.",
         process: "The goal was to turn a search into a reflex. The old layout asked users to dig, but I decided they shouldn't even have to scroll. I completely inverted the architecture, pulling the Digital Card out of the list and placing it permanently in the top header. This shift transformed the in-store experience from a clumsy hunt to a simple two-step action: Log in and tap. Now, the Account ID and credit limit are immediately visible, and the barcode is just one tap away, treating the interface like a digital wallet rather than a browsing menu.",
-        impact: "The redesign eliminated checkout lag by providing immediate, above-the-fold access to account data. This significantly reduced transaction times, creating a smoother, faster interaction for both clients and staff.",
-        images: [projectB2BNew, projectB2BChallengeNew, projectB2BProcessNew]
+        impact: "The redesign eliminated checkout lag by providing immediate, aboveS-the-fold access to account data. This significantly reduced transaction times, creating a smoother, faster interaction for both clients and staff.",
+        images: [projectB2BNew, projectB2BChallengeNew, projectB2BProcessNew],
+        video: projectB2BVideo,
     },
     {
         id: 2,
