@@ -15,21 +15,21 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
         {
             front: 'rounded-full', back: 'rounded-none',
             gradient: 'linear-gradient(to bottom, #CC9900, #FFD700)', // Dark to Light Yellow
-            className: 'md:-mt-32',
+            className: 'lg:-mt-32',
             mobileMargin: 'ml-[3rem] mt-[3rem]',
             frameMobileMargin: '-ml-4 -mt-4',
-            desktopMargin: 'md:ml-10 md:mt-10',
+            desktopMargin: 'lg:ml-10 lg:mt-10',
             frameDesktopMargin: '',
             textPos: 'items-start justify-start text-left pl-3 pt-3'
         }, // TL
         {
             front: 'rounded-none', back: 'rounded-full',
             gradient: 'linear-gradient(to bottom, #FFA500, #C27000)', // Light to Dark Orange
-            className: 'md:translate-y-10',
+            className: 'lg:translate-y-10',
             mobileMargin: 'ml-0 mt-0',
             frameMobileMargin: 'ml-10 mt-[5.5rem]',
-            desktopMargin: 'md:ml-5 md:-mt-4',
-            frameDesktopMargin: 'md:ml-10 md:mt-[4.5rem] md:translate-x-4',
+            desktopMargin: 'lg:ml-5 lg:-mt-4',
+            frameDesktopMargin: 'lg:ml-10 lg:mt-[4.5rem] lg:translate-x-4',
             textPos: 'items-end justify-end text-right pb-10 pr-8',
             titleContainer: 'absolute -bottom-20 -right-10 w-64 text-right z-20',
             titleStyle: 'font-lato text-2xl leading-tight'
@@ -40,18 +40,18 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
             className: '',
             mobileMargin: 'ml-10 mt-0',
             frameMobileMargin: 'mt-16',
-            desktopMargin: 'md:ml-10 md:mt-0',
-            frameDesktopMargin: 'md:mt-16',
+            desktopMargin: 'lg:ml-10 lg:mt-0',
+            frameDesktopMargin: 'lg:mt-16',
             textPos: 'items-end justify-start text-left pl-4 pb-4'
         }, // BL
         {
             front: 'rounded-full', back: 'rounded-none',
             gradient: 'linear-gradient(to bottom, #FFD700, #CC9900)', // Light to Dark Yellow
-            className: 'md:translate-y-36',
+            className: 'lg:translate-y-36',
             mobileMargin: 'ml-0 mt-0',
             frameMobileMargin: 'ml-10 mt-12',
-            desktopMargin: 'md:ml-0 md:mt-0',
-            frameDesktopMargin: 'md:ml-10 md:mt-16',
+            desktopMargin: 'lg:ml-0 lg:mt-0',
+            frameDesktopMargin: 'lg:ml-10 lg:mt-16',
             textPos: 'items-end justify-end text-right pr-4 pb-4'
         }, // BR
     ];
@@ -174,8 +174,8 @@ const Home = ({ mode, playSound, scrollToSection }) => {
 
     const openProject = (project) => {
         playSound('general');
-        // Slugify title for URL
-        const slug = project.title.toLowerCase().replace(/ /g, '-');
+        // Slugify title for URL: Remove special chars/punctuation, then space to dash
+        const slug = project.title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/ /g, '-');
         navigate(`/projects/${slug}`);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -244,10 +244,10 @@ const Home = ({ mode, playSound, scrollToSection }) => {
         <>
             {/* ================= HOME VIEW ================= */}
 
-            <section id="project-section" className="min-h-[100dvh] w-full flex flex-col md:flex-row relative pt-20 md:pt-0 max-w-screen-2xl mx-auto">
+            <section id="project-section" className="min-h-[100dvh] w-full flex flex-col lg:flex-row relative pt-20 md:pt-0 max-w-screen-2xl mx-auto">
 
                 {/* Left Column: Text */}
-                <div className="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-24 relative z-20">
+                <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 md:px-24 relative z-20">
                     <div
                         className="cursor-default"
                         onMouseEnter={() => { setHoverHero(true); if (mode === 'wandering') playSound('general'); }}
@@ -273,7 +273,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                 </div>
 
                 {/* Right Column: Geometric Project Navigation */}
-                <div className="w-full md:w-1/2 grid grid-cols-1 md:grid-cols-2 gap-20 md:gap-8 p-[10px] md:pr-48 relative z-20 mt-12 md:mt-0 content-center justify-items-center">
+                <div className="w-full lg:w-1/2 grid grid-cols-1 lg:grid-cols-2 gap-20 md:gap-8 p-[10px] md:pr-48 relative z-20 mt-12 md:mt-24 lg:mt-0 content-center justify-items-center">
 
                     {PROJECTS.slice(0, 4).map((proj, idx) => (
                         <ProjectItem
