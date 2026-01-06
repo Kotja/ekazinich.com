@@ -371,7 +371,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 src={selectedImage}
                                 alt="Full Screen View"
                                 draggable="false"
-                                className="w-full h-full object-contain shadow-2xl"
+                                className={`w-full h-full object-contain shadow-2xl ${selectedImage.includes('brand-flow-chart') ? 'bg-white p-8' : ''}`}
                             />
                         </div>
                     </div>
