@@ -64,6 +64,12 @@ const ProjectDetail = ({ mode, playSound }) => {
 
     // --- THEME ENGINE ---
     const isWandering = mode === 'wandering';
+
+    // Select content based on mode
+    const displayContent = (isWandering && project.wanderingContent)
+        ? { ...project, ...project.wanderingContent }
+        : project;
+
     const theme = {
         bg: isWandering ? 'bg-[#1A1A1A]' : 'bg-[#FDFBF7]',
         text: isWandering ? 'text-[#FDFBF7]' : 'text-[#1A1A1A]',
@@ -159,16 +165,40 @@ const ProjectDetail = ({ mode, playSound }) => {
                 {/* Impact - Constrained */}
                 <div className="w-full max-w-5xl mx-auto px-6 text-center py-12">
                     <h3 className="font-lato text-sm font-bold uppercase tracking-[0.2em] text-gray-400 mb-8">The Solution Impact</h3>
-                    <p className={`font-playfair text-2xl md:text-5xl leading-tight italic ${theme.text}`} style={{ textWrap: 'balance' }}>
-                        "{project.impact}"
-                    </p>
+
+                    {typeof displayContent.impact === 'object' ? (
+                        <div className="flex flex-col items-center">
+                            <p className={`font-playfair text-2xl md:text-5xl leading-tight italic ${theme.text} mb-12`} style={{ textWrap: 'balance' }}>
+                                {displayContent.impact.description}
+                            </p>
+
+                            <div className={`w-full h-px ${isWandering ? 'bg-[#FDFBF7]/20' : 'bg-[#1A1A1A]/20'} mb-8`}></div>
+
+                            <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-[#C25E00] mb-8">Key Outcome</h4>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 w-full max-w-4xl">
+                                {displayContent.impact.outcomes && displayContent.impact.outcomes.map((outcome, i) => (
+                                    <div key={i} className="text-left flex flex-col gap-2">
+                                        <h5 className={`font-playfair text-xl italic font-bold ${theme.text}`}>{outcome.title}</h5>
+                                        <p className={`font-lato text-base ${theme.subText}`}>{outcome.desc}</p>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className={`w-full h-px ${isWandering ? 'bg-[#FDFBF7]/20' : 'bg-[#1A1A1A]/20'} mt-12`}></div>
+                        </div>
+                    ) : (
+                        <p className={`font-playfair text-2xl md:text-5xl leading-tight italic ${theme.text}`} style={{ textWrap: 'balance', whiteSpace: 'pre-line' }}>
+                            {displayContent.impact}
+                        </p>
+                    )}
                 </div>
 
                 {/* Section 1: Challenge (Constrained) */}
                 <div className={`w-full max-w-6xl mx-auto px-6 grid ${project.images && project.images[1] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
                     <div className="order-2 md:order-1">
                         <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] border-b border-[#C25E00] inline-block pb-2">The Challenge</h3>
-                        <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>{project.challenge}</p>
+                        <p className={`font-lato text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.challenge}</p>
                     </div>
                     {project.images && project.images[1] && (
                         <div className={`aspect-square overflow-hidden shadow-sm order-1 md:order-2 ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[1])}>
@@ -179,32 +209,120 @@ const ProjectDetail = ({ mode, playSound }) => {
 
                 {/* Section 2: Role (Full Width Background, Constrained Content) */}
                 <div className={`w-full border-y border-[#FFD1A3] ${theme.projectSectionBg}`}>
-                    <div className="max-w-6xl mx-auto px-6 py-12 text-center">
-                        <h3 className={`font-playfair text-3xl mb-4 ${theme.text}`}>My Role</h3>
-                        <p className={`font-lato text-lg max-w-2xl mx-auto leading-relaxed ${theme.subText}`}>{project.role}</p>
-                    </div>
-                </div>
+                    {isWandering ? (
+                        <div className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                            {displayContent.roleImage && (
+                                <div
+                                    className={`aspect-video overflow-hidden shadow-lg cursor-zoom-in ${theme.imagePlaceholderBg} order-2 md:order-1`}
+                                    onClick={() => setSelectedImage(displayContent.roleImage)}
+                                >
+                                    <img
+                                        src={displayContent.roleImage}
+                                        alt="Role Detail"
+                                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                                    />
+                                </div>
+                            )}
+                            <div className="order-1 md:order-2 text-left">
+                                <h3 className={`font-playfair text-3xl mb-4 ${theme.text}`}>My Role</h3>
+                                <p className={`font-lato text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.role}</p>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="max-w-6xl mx-auto px-6 py-12 text-center">
+                            <h3 className={`font-playfair text-3xl mb-4 ${theme.text}`}>My Role</h3>
+                            <p className={`font-lato text-lg max-w-2xl mx-auto leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.role}</p>
 
-                {/* Section 3: Process (Constrained) */}
-                <div className={`w-full max-w-6xl mx-auto px-6 grid ${project.images && project.images[2] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
-                    {project.images && project.images[2] && (
-                        <div className={`aspect-square overflow-hidden ${(project.id === 2 || project.id === 3) ? '' : 'shadow-sm'} ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[2])}>
-                            <img src={project.images[2]} alt="Process Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                            {displayContent.roleImage && (
+                                <div
+                                    className={`mt-12 max-w-lg mx-auto aspect-video overflow-hidden shadow-lg cursor-zoom-in ${theme.imagePlaceholderBg}`}
+                                    onClick={() => setSelectedImage(displayContent.roleImage)}
+                                >
+                                    <img
+                                        src={displayContent.roleImage}
+                                        alt="Role Detail"
+                                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                                    />
+                                </div>
+                            )}
                         </div>
                     )}
-                    <div>
-                        <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] border-b border-[#C25E00] inline-block pb-2">The Process</h3>
-                        <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>{project.process}</p>
-                    </div>
                 </div>
 
+                {/* Section 3: Process */}
+                {typeof displayContent.process === 'object' && displayContent.process.type === 'rich' ? (
+                    <div className="w-full">
+                        {displayContent.process.sections.map((section, idx) => {
+                            if (section.type === 'text') {
+                                return (
+                                    <div key={idx} className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center mb-12">
+                                        {/* Placeholder for Process Image if needed, or just keep text focus */}
+                                        {project.images && project.images[2] && project.id !== 3 && (
+                                            <div className={`aspect-square overflow-hidden ${(project.id === 2 || project.id === 3) ? '' : 'shadow-sm'} ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[2])}>
+                                                <img src={project.images[2]} alt="Process Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                                            </div>
+                                        )}
+                                        <div>
+                                            <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] border-b border-[#C25E00] inline-block pb-2">The Process</h3>
+                                            <p className={`font-lato text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{section.content}</p>
+                                        </div>
+                                    </div>
+                                );
+                            }
+                            if (section.type === 'comparison') {
+                                return (
+                                    <div key={idx} className="w-full py-12" style={{ backgroundColor: section.bg }}>
+                                        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                                            {section.items.map((item, i) => (
+                                                <div key={i} className="flex flex-col gap-6">
+                                                    <div
+                                                        className={`aspect-[4/3] w-full overflow-hidden shadow-sm bg-white cursor-zoom-in group`}
+                                                        onClick={() => item.img && setSelectedImage(item.img)}
+                                                    >
+                                                        {item.img && (
+                                                            <img
+                                                                src={item.img}
+                                                                alt={item.title}
+                                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                                            />
+                                                        )}
+                                                    </div>
+                                                    <div>
+                                                        <h4 className={`font-playfair text-xl font-bold mb-4 ${theme.text}`}>{item.title}</h4>
+                                                        <p className={`font-lato text-base leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
+                                                            {item.desc}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                );
+                            }
+                            return null;
+                        })}
+                    </div>
+                ) : (
+                    <div className={`w-full max-w-6xl mx-auto px-6 grid ${project.images && project.images[2] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
+                        {project.images && project.images[2] && (
+                            <div className={`aspect-square overflow-hidden ${(project.id === 2 || project.id === 3) ? '' : 'shadow-sm'} ${project.id === 3 ? 'bg-white' : theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[2])}>
+                                <img src={project.images[2]} alt="Process Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                            </div>
+                        )}
+                        <div>
+                            <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] border-b border-[#C25E00] inline-block pb-2">The Process</h3>
+                            <p className={`font-lato text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.process}</p>
+                        </div>
+                    </div>
+                )}
+
                 {/* Section 4: Refinement (Constrained) */}
-                {project.refinement && isWandering && (
+                {displayContent.refinement && isWandering && (
                     <div className={`w-full max-w-6xl mx-auto px-6 grid ${project.images && project.images[3] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
                         <div className="order-2 md:order-1">
                             <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>
-                                {project.refinement.split(': ')[0] && <span className="block font-playfair text-2xl mb-4 text-[#C25E00]">{project.refinement.split(': ')[0]}</span>}
-                                {project.refinement.includes(': ') ? project.refinement.split(': ').slice(1).join(': ') : project.refinement}
+                                {displayContent.refinement.split(': ')[0] && <span className={`block font-playfair text-2xl mb-4 ${theme.text}`}>{displayContent.refinement.split(': ')[0]}</span>}
+                                {displayContent.refinement.includes(': ') ? displayContent.refinement.split(': ').slice(1).join(': ') : displayContent.refinement}
                             </p>
                         </div>
                         {project.images && project.images[3] && (

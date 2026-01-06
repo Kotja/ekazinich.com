@@ -3,8 +3,12 @@ import projectBookingChallenge from '../assets/studio-booking-challenge.webp';
 
 import projectBookingProcess from '../assets/booking-process-new.webp';
 import projectBookingFlow from '../assets/studio-booking-flow.webp';
+import brandCms from '../assets/brand-cms.webp';
+import brandFlowChartBefore from '../assets/brand-flow-chart-before.webp';
+import brandFlowChartAfter from '../assets/brand-flow-chart-after.webp';
 import projectB2B from '../assets/project-b2b-hero.webp';
 import projectB2BNew from '../assets/b2b-hero-v2.webp';
+import brandChallengeV2 from '../assets/brand-challenge-v2.webp';
 import projectB2BChallengeNew from '../assets/b2b-challenge-new.webp';
 import projectB2BProcessNew from '../assets/b2b-flow-audit.svg';
 import projectB2BChallenge from '../assets/b2b-challenge.webp';
@@ -17,6 +21,7 @@ import projectPortfolioChallenge from '../assets/portfolio-challenge.webp';
 import projectPortfolioProcess from '../assets/portfolio-process.webp';
 import projectBrandScalingHero from '../assets/brand-scaling-hero.webp';
 import projectServiceAutomationHero from '../assets/service-automation-hero-new.webp';
+import brandTrustSignals from '../assets/brand-trust-signals.webp';
 
 import projectB2BVideo from '../assets/HeroB2BOW.mp4';
 
@@ -26,14 +31,59 @@ export const PROJECTS = [
         title: "Brand Scaling & Client Acquisition Platform",
         desc: "A user-centric overhaul of a photographer's portfolio to recapture lost business through improved UX and mobile responsiveness.",
         tags: ["UX/UI Design", "Mobile First", "CMS Integration"],
-        challenge: "The client’s existing portfolio was actively hindering their business. A cluttered, disorganised structure made it nearly impossible for potential leads to find relevant work, while a dated, non-responsive design created a lack of trust. This friction meant the photographer was losing opportunities simply because their digital presence couldn't keep up with the quality of their photography.",
-        role: "I led the complete UX/UI overhaul, transforming the product from a source of frustration into a primary business tool. I began by auditing and restructuring the information architecture into a logical, category-based hierarchy. Then, I designed a minimalist, \"frame-less\" aesthetic that prioritises the artwork. Finally, I worked closely with developers to implement a custom CMS, empowering the client to manage their own content independently.",
-        process: "My goal was invisibility - creating a design that steps back so the photography can step forward. I started by abandoning the ambiguous layout in favour of a strict category-based navigation, ensuring Art Directors could find relevant examples in under three clicks. Adopting a mobile-first strategy, I designed the grid system for vertical screens to guarantee that the high-resolution imagery remained immersive on any device. Ultimately, by stripping away decorative elements and utilising generous white space, I crafted an interface that acts as a quiet gallery wall, focusing all attention purely on the work.",
-        impact: "The redesign transformed the portfolio into a high-converting asset. The intuitive structure and seamless mobile experience capture previously lost traffic, while the custom CMS empowers the client to independently manage their content.",
+        challenge: "The Problem: Categorical Ambiguity. The previous digital presence failed to distinguish between the photographer's disparate disciplines. \"Action\" sports work was diluted by \"Fashion\" editorials, creating a confused brand signal that hindered specialist bookings.",
+        role: "End-to-End Product Architecture. Responsible for the strategic taxonomy audit, UI system design, and CMS integration.",
+        process: "Systemisation & \"Invisible\" UI.\n\nIA Strategy: Flattened the hierarchy. Users land directly on the category selector, eliminating the \"Mystery Meat\" navigation of the previous site.\n\nVisuals: Adopted a brutalist, utility-first aesthetic. White space is used as an active element to frame the work.\n\nTech: Implemented a high-performance lazy-loading stack to ensure the \"Action\" portfolio loads as fast as the \"Portraits,\" despite the heavy data payload.",
+        impact: {
+            description: "Taxonomy Migration & Funnel Optimisation. Transformed a generalist photography archive into a targeted B2B sales tool. By implementing a strict Category-First Architecture (Portraits, Action, Fashion), we reduced the user journey from \"Landing\" to \"Contact\" by roughly 60%.",
+            outcomes: [
+                { title: "Zero-Friction Inquiry", desc: "Users are never more than 2 clicks from booking." },
+                { title: "Operational Autonomy", desc: "Client manages all assets via a custom CMS, removing developer dependency." }
+            ]
+        },
+        wanderingContent: {
+            impact: {
+                description: "From Static Repository to Scalable Sales Product. The primary objective was to operationalise the client's digital presence. The previous site was a passive \"dumping ground\" that failed to convert traffic into revenue because it lacked commercial logic.",
+                outcomes: [
+                    { title: "Asset Discoverability", desc: "I engineered a new system focused on restructuring the taxonomy." },
+                    { title: "Lean Sales Tool", desc: "By implementing a self-serve CMS, we turned the website from a cost-centre into a conversion engine that filters High-Value Clients directly to the right specialist category." }
+                ]
+            },
+            challenge: "Information Architecture (IA) Failure. The core business risk was Audience Mismatch.\n\nAn Agency looking for high-speed Action photography viewed the site as \"too static.\"\n\nA Brand looking for Fashion editorials viewed the site as \"too rugged.\"\n\nBy housing these contradictions in a single stream, the portfolio was neutralising its own impact. The technical challenge was to engineer a system that supports high-fidelity imagery (Retina/4K) without compromising the \"instant\" load feel required for mobile retention.",
+            role: "Strategic Segmentation. My role was to enforce the \"Commercial Split.\"\n\nThe Audit: I analysed the client's body of work and defined the four-pillar taxonomy: Portraits, Action, Fashion, Project.\n\nThe Logic: \"Project\" was isolated to house personal/experimental work, ensuring it didn't pollute the commercial conversion funnels of the other three categories.\n\nThe Ops: I designed the backend schema to mirror this structure, ensuring the client cannot accidentally break the design system when uploading new assets.",
+            roleImage: brandCms,
+            process: {
+                type: 'rich',
+                sections: [
+                    {
+                        type: 'text',
+                        content: 'The "Utility" Interface: The design language is strictly functional. I removed all decorative borders and shadows. The typography is utilitarian, serving only to label the work. This "Zero-UI" approach ensures that 100% of the viewer\'s cognitive load is spent processing the photography, not the interface.'
+                    },
+                    {
+                        type: 'comparison',
+                        bg: 'transparent',
+                        items: [
+                            {
+                                title: 'Before: The Obstacle',
+                                desc: 'The previous architecture was a passive "dumping ground" with disparate categories mixed, creating a confused brand signal.',
+                                img: brandFlowChartBefore
+                            },
+                            {
+                                title: 'After: The Strategy',
+                                desc: 'The Navigation Strategy: We removed the traditional "Home" landing page in favour of immediate directory access. The navigation is persistent and minimal.',
+                                img: brandFlowChartAfter
+                            }
+                        ]
+                    }
+                ]
+            },
+            refinement: "Trust Signals: We brought business details (ABN, Contact) to the forefront of the footer hierarchy, subtly reinforcing that this is a commercial entity, not a hobbyist blog."
+        },
         images: [
             projectBrandScalingHero,
-            projectPortfolioChallenge,
-            projectPortfolioProcess
+            brandChallengeV2,
+            brandFlowChartAfter,
+            brandTrustSignals
         ]
     },
     {
