@@ -210,7 +210,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                 {/* Section 2: Role (Full Width Background, Constrained Content) */}
                 <div className={`w-full border-y border-[#FFD1A3] ${theme.projectSectionBg}`}>
                     {isWandering ? (
-                        <div className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div className={`max-w-6xl mx-auto px-6 py-12 ${displayContent.roleImage ? 'grid grid-cols-1 md:grid-cols-2 gap-12 items-center' : 'text-center'}`}>
                             {displayContent.roleImage && (
                                 <div
                                     className={`aspect-video overflow-hidden shadow-lg cursor-zoom-in ${theme.imagePlaceholderBg} order-2 md:order-1`}
@@ -223,7 +223,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                     />
                                 </div>
                             )}
-                            <div className="order-1 md:order-2 text-left">
+                            <div className={`${displayContent.roleImage ? 'order-1 md:order-2 text-left' : 'max-w-4xl mx-auto'}`}>
                                 <h3 className={`font-playfair text-3xl mb-4 ${theme.text}`}>My Role</h3>
                                 <p className={`font-lato text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.role}</p>
                             </div>

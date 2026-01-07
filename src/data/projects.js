@@ -11,6 +11,7 @@ import projectB2BNew from '../assets/b2b-hero-v2.webp';
 import brandChallengeV2 from '../assets/brand-challenge-v2.webp';
 import projectB2BChallengeNew from '../assets/b2b-challenge-new.webp';
 import projectB2BProcessNew from '../assets/b2b-flow-audit.svg';
+import OWChallengeHeatmap from '../assets/OW-challenge-heatmap.webp';
 import projectB2BChallenge from '../assets/b2b-challenge.webp';
 import projectB2BProcess from '../assets/b2b-process.webp';
 import projectCollector from '../assets/project-collector-hero.webp';
@@ -108,11 +109,29 @@ export const PROJECTS = [
         title: "Optimising B2B Workflow & Retention",
         desc: "Optimizing complex data tables for mobile viewports without losing fidelity.",
         tags: ["Mobile First", "Data Viz", "Figma"],
-        challenge: "The problem wasn't technical; it was situational. B2B customers rely on their 30-day credit accounts to streamline expense tracking and keep business purchasing separate from personal shopping. However, the mobile interface wasn't optimised for the checkout line. Customers were forced to thumb-scroll through the page just to locate their digital card, creating awkward, time-consuming delays at the point of sale when they just needed to pay and get back to the job site.",
-        role: "I led the UX redesign with a specific focus on \"on-the-go\" utility. My role involved auditing the existing information hierarchy and realigning it with the physical reality of the user's environment. I championed a \"Zero-Scroll\" philosophy, ensuring that no B2B customer would ever need to swipe to find the data required to complete a transaction.",
-        process: "The goal was to turn a search into a reflex. The old layout asked users to dig, but I decided they shouldn't even have to scroll. I completely inverted the architecture, pulling the Digital Card out of the list and placing it permanently in the top header. This shift transformed the in-store experience from a clumsy hunt to a simple two-step action: Log in and tap. Now, the Account ID and credit limit are immediately visible, and the barcode is just one tap away, treating the interface like a digital wallet rather than a browsing menu.",
-        impact: "The redesign eliminated checkout lag by providing immediate, aboveS-the-fold access to account data. This significantly reduced transaction times, creating a smoother, faster interaction for both clients and staff.",
-        images: [projectB2BNew, projectB2BChallengeNew, projectB2BProcessNew],
+        challenge: "Environmental Mismatch. The legacy mobile interface was not optimised for the physical constraints of the checkout line. Critical payment assets (Digital Card, Barcode) were buried below the fold, forcing users to \"thumb-scroll\" while under pressure at the register. This created measurable friction and delay at the point of revenue capture.",
+        role: "Mobile Strategy & Heuristic Audit. Lead UX Designer responsible for auditing the \"In-Store\" user journey and restructuring the mobile Information Architecture (IA) to support \"On-the-Go\" utility.",
+        process: "Architecture Inversion.\n\nThe Pivot: Migrated from a list-based hierarchy to a \"Header-First\" utility model.\n\nThe Execution: Pulled the Digital Card out of the content stream and pinned it to the top viewport.\n\nThe Result: Transformed the user flow from a \"Hunt\" (Login > Scroll > Find > Tap) to a \"Reflex\" (Login > Tap).",
+        impact: {
+            description: "Eliminating POS Latency. Transformed the dashboard into a \"Zero-Scroll\" Utility Interface. By prioritizing high-frequency data and elevating the digital payment card, we reduced time-to-pay by ~8 seconds per transaction.",
+            outcomes: [
+                { title: "Transaction Velocity", desc: "Reduced queue friction for trade customers." },
+                { title: "Staff Efficiency", desc: "Faster processing at the Point of Sale (POS), reducing checkout congestion during peak trade hours." }
+            ]
+        },
+        wanderingContent: {
+            process: "Execution Logic: The \"Digital Wallet\" Mental Model.\n\n1. Designing for Reflex: The goal was to eliminate cognitive load. In a high-pressure environment (the queue), users shouldn't have to think. I redesigned the header to function like a physical wallet—when you open it, the card is right there.\n\n2. The Two-Step Action: I streamlined the interaction cost down to the absolute minimum: Log In → Scan.\n\n3. Data Visibility: By placing the Account ID and Credit Limit immediately in the viewport, we provided \"Confidence Signals.\" The user knows instantly before they reach the counter if they have enough credit, preventing embarrassed declines and further speeding up the workflow.",
+            role: "Auditing the Physical Environment. My role extended beyond the screen. I analysed the Situational Context of the transaction.\nThe Audit: I identified that the \"Information Hierarchy\" was inverted—low-value data (recent orders) was pushing high-value data (payment card) off the screen.\nThe Strategy: I championed a \"Zero-Scroll\" Philosophy. I established a design rule that no transactional asset (Barcode, Credit Limit, Account ID) should ever require a swipe gesture to access.",
+            challenge: "Diagnosing the \"Checkout Gap\". B2B customers rely on 30-day credit accounts to separate business purchasing from personal expenses. This is a utility-driven behavior.\n\nHowever, the existing mobile architecture failed the \"One-Handed Heuristic.\" Traders on a job site or in a store often have only one hand free. The requirement to scroll and navigate through a dense list to find their Account ID or Barcode created a \"Friction Trap.\" The anxiety of holding up the queue caused users to fumble, damaging the perceived efficiency of the B2B service. The challenge was to respect the user's time by making the payment credential instantly accessible.",
+            impact: {
+                description: "Contextual Optimisation: From \"Browsing\" to \"Transacting\". The previous mobile layout treated the user as a \"Browser\" (someone sitting and reading), whereas the actual user was a \"Trader\" (someone standing in a queue, holding supplies, needing to pay instantly).",
+                outcomes: [
+                    { title: "The Digital Wallet", desc: "By inverting the hierarchy and treating the mobile view as a Digital Wallet rather than a website, I removed the cognitive load of \"searching\" for payment details." },
+                    { title: "Operational Throughput", desc: "This seemingly small UI shift had a compound effect on operational throughput at the checkout counter." }
+                ]
+            }
+        },
+        images: [projectB2BNew, OWChallengeHeatmap, projectB2BProcessNew],
         video: projectB2BVideo,
     },
     {

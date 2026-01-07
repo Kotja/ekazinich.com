@@ -2,10 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Home from './pages/Home';
 import ProjectDetail from './pages/ProjectDetail';
+import OnboardingModal from './components/OnboardingModal';
 
 const App = () => {
   // --- STATE MANAGEMENT ---
   const [mode, setMode] = useState('hr');
+  const [isOnboardingVisible, setIsOnboardingVisible] = useState(false); // Track visibility of Onboarding Modal
   const [menuHover, setMenuHover] = useState(null); // Track which menu item is being hovered
   const buttonRefs = useRef({}); // Refs for menu buttons
 
@@ -81,7 +83,7 @@ const App = () => {
 
       {/* --- RESPONSIVE NAVIGATION --- */}
       <nav className={`
-        fixed z-50 flex items-center justify-between pointer-events-none transition-all duration-300
+        fixed flex items-center justify-between pointer-events-none transition-all duration-300 ${isOnboardingVisible ? 'z-[105]' : 'z-50'}
         /* Mobile Styles (Bottom Bar) */
         bottom-0 left-0 w-full h-20 flex-row px-4 border-t backdrop-blur-lg ${theme.navBg} ${theme.borderSoft}
         /* Desktop Styles (Right Sidebar) */
@@ -90,7 +92,7 @@ const App = () => {
       `}>
 
         {/* Mode Switcher Group */}
-        <div className="pointer-events-auto flex md:flex-col items-center gap-2 md:mt-24 order-2 md:order-1 flex-shrink-0">
+        <div className={`pointer-events-auto flex md:flex-col items-center gap-2 md:mt-24 order-2 md:order-1 flex-shrink-0 relative transition-all duration-300 ${isOnboardingVisible ? 'z-[105]' : 'z-auto'}`}>
           <div className="flex md:flex-col items-center gap-2 md:mb-8 relative group/mode">
 
             {/* Focus Mode Button -> Impact Mode */}
@@ -121,7 +123,11 @@ const App = () => {
                 aria-label="In-Depth Mode"
               />
               {/* Desktop Tooltip */}
-              <span className="hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-[9px] tracking-widest uppercase opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none text-[#E6944C]">
+              <span className={`hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-[9px] tracking-widest uppercase transition-all duration-300 pointer-events-none 
+                ${isOnboardingVisible
+                  ? 'opacity-100 bg-[#FDFBF7] text-[#E6944C] px-4 py-2 rounded-full font-bold shadow-lg'
+                  : 'opacity-0 group-hover/btn:opacity-100 text-[#E6944C]'
+                }`}>
                 In-Depth Mode
               </span>
             </div>
@@ -129,7 +135,7 @@ const App = () => {
         </div>
 
         {/* Menu Items */}
-        <div className={`pointer-events-auto flex flex-row md:flex-col md:gap-12 text-sm font-bold tracking-widest order-1 md:order-2 md:w-full flex-grow md:justify-start pr-6 md:pr-0 ${isWandering ? 'justify-start gap-8' : 'justify-between'}`}>
+        <div className={`pointer-events-auto flex flex-row md:flex-col md:gap-12 text-sm font-bold tracking-widest order-1 md:order-2 md:w-full flex-grow md:justify-start pr-6 md:pr-0 transition-opacity duration-300 ${isWandering ? 'justify-start gap-8' : 'justify-between'} ${isOnboardingVisible ? 'opacity-20 blur-[1px]' : 'opacity-100'}`}>
           {['Projects', 'About', 'Get in Touch'].map((item, idx) => {
             const initial = item.charAt(0);
             const targetId = item.toLowerCase().replace(/ /g, '-');
@@ -172,6 +178,8 @@ const App = () => {
         <Route path="/" element={<Home mode={mode} playSound={playSound} scrollToSection={scrollToSection} />} />
         <Route path="/projects/:slug" element={<ProjectDetail mode={mode} playSound={playSound} />} />
       </Routes>
+
+      <OnboardingModal onVisibilityChange={setIsOnboardingVisible} />
 
     </div>
   );
