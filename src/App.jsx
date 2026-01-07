@@ -125,7 +125,7 @@ const App = () => {
               {/* Desktop Tooltip */}
               <span className={`hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-[9px] tracking-widest uppercase transition-all duration-300 pointer-events-none 
                 ${isOnboardingVisible
-                  ? 'opacity-100 bg-[#FDFBF7] text-[#E6944C] px-4 py-2 rounded-full font-bold shadow-lg'
+                  ? 'opacity-100 bg-[#FDFBF7] text-[#E6944C] px-5 py-3 rounded-full font-bold shadow-lg leading-none'
                   : 'opacity-0 group-hover/btn:opacity-100 text-[#E6944C]'
                 }`}>
                 In-Depth Mode
