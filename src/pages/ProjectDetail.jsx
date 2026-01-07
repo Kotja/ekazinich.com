@@ -168,15 +168,15 @@ const ProjectDetail = ({ mode, playSound }) => {
 
                     {typeof displayContent.impact === 'object' ? (
                         <div className="flex flex-col items-center">
-                            <p className={`font-playfair text-2xl md:text-5xl leading-tight italic ${theme.text} mb-12`} style={{ textWrap: 'balance' }}>
+                            <p className={`font-playfair text-2xl md:text-5xl leading-tight italic ${theme.text} mb-12`} style={{ textWrap: 'balance', whiteSpace: 'pre-line' }}>
                                 {displayContent.impact.description}
                             </p>
 
                             <div className={`w-full h-px ${isWandering ? 'bg-[#FDFBF7]/20' : 'bg-[#1A1A1A]/20'} mb-8`}></div>
 
-                            <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-[#C25E00] mb-8">Key Outcome</h4>
+                            <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-[#C25E00] mb-8">{displayContent.impact.outcomesTitle || "Key Outcome"}</h4>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 w-full max-w-4xl">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
                                 {displayContent.impact.outcomes && displayContent.impact.outcomes.map((outcome, i) => (
                                     <div key={i} className="text-left flex flex-col gap-2">
                                         <h5 className={`font-playfair text-xl italic font-bold ${theme.text}`}>{outcome.title}</h5>
@@ -257,9 +257,9 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 return (
                                     <div key={idx} className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center mb-12">
                                         {/* Placeholder for Process Image if needed, or just keep text focus */}
-                                        {project.images && project.images[2] && project.id !== 3 && (
-                                            <div className={`aspect-square overflow-hidden ${(project.id === 2 || project.id === 3) ? '' : 'shadow-sm'} ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[2])}>
-                                                <img src={project.images[2]} alt="Process Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                                        {(section.image || (project.images && project.images[2] && project.id !== 3)) && (
+                                            <div className={`aspect-square overflow-hidden ${(project.id === 2 || project.id === 3) ? '' : 'shadow-sm'} ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(section.image || project.images[2])}>
+                                                <img src={section.image || project.images[2]} alt="Process Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
                                             </div>
                                         )}
                                         <div>

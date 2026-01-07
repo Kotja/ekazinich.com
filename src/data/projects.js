@@ -25,6 +25,8 @@ import projectServiceAutomationHero from '../assets/service-automation-hero-new.
 import brandTrustSignals from '../assets/brand-trust-signals.webp';
 
 import projectB2BVideo from '../assets/HeroB2BOW.mp4';
+import projectCandidateVideo from '../assets/hero-candidate-pipeline.mp4';
+import candidateProcessIndepth from '../assets/Canidate-pipeline-process-indepth.webp';
 
 export const PROJECTS = [
     {
@@ -88,21 +90,47 @@ export const PROJECTS = [
         ]
     },
     {
-        id: 0,
-        title: "Service Automation: Zero-Touch Model",
-        desc: "A streamlined SaaS solution reducing admin time by 40% for creative studios.",
-        tags: ["Service Design", "Product Strategy", "UX/UI"],
-        challenge: "Before the redesign, the client was trapped in an administrative loop. The website functioned like a blog, burying class details and forcing every single booking into a manual phone call.\n\nThis wasn't just a usability issue; it was an operational bottleneck. The lack of a structured digital agreement meant the client spent hours chasing payments and resolving misunderstandings. The manual burden was so high that it was consuming time meant for teaching, while the high-friction process caused potential customers to abandon the site before they even picked up the phone.",
-        role: "As the Lead Product Designer, I drove the end-to-end transformation from a manual service to an automated product. My strategy focused on identifying and eliminating every administrative touchpoint.",
-        process: "During discovery, I identified that the \"phone-tag\" booking method was the root cause of both user drop-off and the client's payment disputes. I used Figma to prototype a new flow centred on a 'tentative contract' model. This feature required users to agree to terms and availability digitally before the booking was confirmed.\n\nI restructured the site’s architecture to make information instantly accessible, removing the need for \"inquiry\" emails. By mapping the user journey specifically to remove manual intervention, I delivered a solution that automated the trust and transaction process simultaneously.",
-        impact: "Achieving a \"zero-admin\" state, we slashed workload by 40% in month one. The 'tentative contract' model cut disputes by 90%, while the frictionless flow drove a 36% revenue increase and 28% lower bounce rate. The system finally works for the client.",
-        images: [
-            projectServiceAutomationHero,
-            projectBookingChallenge,
-            projectBookingProcess,
-            projectBookingFlow
-        ],
-        refinement: "Refining the Booking Logic: Early iterations of this flow treated 'Class Trials' as a separate product, creating a disjointed experience. In this final architecture, I integrated the 'Trial vs. Term' choice as a decision node within the main class flow. This allows users to verify that a specific class fits their schedule before deciding on their level of commitment, resulting in a more intuitive and flexible path to purchase."
+        id: 4,
+        title: "Candidate Pipeline & Application Architecture",
+        desc: "A streamlined platform for managing candidate applications and architectural workflows. (Placeholder)",
+        tags: ["Architecture", "Pipeline", "Management"],
+        challenge: "The Problem: Data Fragmentation. The modern job search is multi-channel and inherently mobile. Candidates using desktop-only tools (Excel) lose data while 'on the go.' The solution necessitated a Mobile-First architecture to eliminate this friction and capture progress in real-time.",
+        role: "Lead UX Researcher & Product Strategist. Responsible for the End-to-End Research Ops: Screener design, 1:1 qualitative interviews, affinity mapping, and Defining the MVP feature set.",
+        process: "Evidence-Based Product Definition.\n\nMethodology: Conducted 6 qualitative face-to-face interviews and dug into different industries by conducting a quantitative questionnaire around different countries.\n\nSynthesis: Used Affinity Mapping to cluster pain points into themes: \"Ghosting,\" \"Repetitive Entry,\" and \"Status Anxiety.\"\n\nOutcome: Defined the \"Job Wallet\" concept as a central repository for all application data.",
+        impact: {
+            outcomesTitle: "Key Discoveries",
+            description: "De-risking the 'Job Hunt' Vertical. Conducted foundational research to validate the market need for a candidate-centric Application Tracking System (ATS).",
+            outcomes: [
+                { title: "The Insight", desc: "Research revealed that the core friction isn't \"finding\" jobs, but \"managing the emotional data\" of the process." },
+                { title: "The Strategy", desc: "Shifted product focus from \"Aggregation\" (finding jobs) to \"Management\" (tracking status)." },
+                { title: "The Validation", desc: "Identified 3 critical \"Drop-off Points\" where users abandon the process due to anxiety." }
+            ]
+        },
+        wanderingContent: {
+            challenge: "The \"Spreadsheet of Doom\" Phenomenon. Qualitative research exposed a universal pain point: the \"Manual Tax.\"\n\nCognitive Overload: Users reported high anxiety when asked, \"Where did you apply last week?\" because the data was scattered.\n\nThe Feedback Void: The lack of status updates from companies creates an \"Open Loop\" in the user's mind. Existing tools don't close this loop; they just list it. The challenge was to design a system that captures this data automatically or with zero friction, acknowledging that unemployed users have low motivation for data entry.",
+            role: "From Ambiguity to Architecture. My role was to bring structure to a chaotic problem space.\n\nDiscovery: I didn't start with UI. I started with Mental Models. I conducted diary studies to map the emotional highs and lows of a 3-month job search.\n\nSynthesis: I translated raw qualitative data into actionable \"How Might We\" statements that formed the backlog for the design phase.",
+            process: {
+                type: 'rich',
+                sections: [
+                    {
+                        type: 'text',
+                        content: 'The Pivot: Designing for Low Motivation. Early concepts assumed users would want detailed analytics. The research proved this wrong. Users wanted "Minimal Viable Effort."\n\nKey Research Artifact: The Emotional Journey Map. We mapped the user\'s mood against the application timeline. We found that motivation crashes 2 weeks after applying if no response is received. The Design Decision: The interface must not just track applications; it must nudge users during these "Crash Points" with low-effort actions (e.g., "One-tap follow-up email generator"). This insight moved the product from a passive tracker to an active coach.',
+                        image: candidateProcessIndepth
+                    }
+                ]
+            },
+            impact: {
+                outcomesTitle: "Key Discoveries",
+                description: "Defining the Unmet Need. The hypothesis was that candidates needed a better way to find roles, but data disproved this.\n\nThe real problem was \"Application Amnesia\"—users apply to so many roles across disparate platforms that they lose track of follow-ups.",
+                outcomes: [
+                    { title: "The Pivot", desc: "Research shifted the product vision from a generic 'Job Board' to a \"Personal CRM for Careers\"." },
+                    { title: "The Crash Point", desc: "Motivation crashes 2 weeks after applying if no response is received. The system must intervene here." },
+                    { title: "Active Coaching", desc: "Moved from passive tracking to active nudging (e.g., 'Follow-up Generators') to close the feedback loop." }
+                ]
+            }
+        },
+        images: [],
+        video: projectCandidateVideo,
     },
     {
         id: 1,
@@ -135,18 +163,20 @@ export const PROJECTS = [
         video: projectB2BVideo,
     },
     {
-        id: 2,
-        title: "DTC Transformation & Immersive Commerce",
-        desc: "Created the brand identity and designed the full digital platform for the artist to exhibit and sell her work independently. The site enabled her to reach collectors directly and retain earnings that would otherwise be lost to nearly 50% gallery commission fees.",
-        tags: ["Web Design", "E-commerce", "Strategy"],
-        challenge: "The primary challenge was twofold: solving both a critical business problem and a core user problem. For the artist, the challenge was overcoming the traditional gallery model that claimed 40-50% of her revenue and severed her connection to collectors. For the user, the challenge was the \"context barrier\"; art collectors were highly hesitant to purchase expensive pieces online because they couldn't accurately judge a work's scale, texture, or how it would look in their own home, a problem a physical gallery naturally solves.",
-        role: "As the Lead UX/UI Designer and Brand Strategist, I was responsible for the entire end-to-end process. My work extended beyond just visual design to include conducting the initial stakeholder and user research, defining the brand identity, and architecting the complete user experience. A key part of my role was designing the complex, multi-step user flow for successful purchases, adding the AR \"View in Room\" feature, taking it from an initial concept to a fully-realised, high-fidelity interactive prototype.",
-        process: "I followed a structured design thinking framework to ensure the solution was user-centric and effective. The Discover phase involved deep interviews with the artist and qualitative research with collectors, which identified the \"context barrier\" as the primary purchasing blocker. After Defining this challenge with user personas, I moved to Design, where I developed the full brand identity and high-fidelity UI. A critical part of this phase was the strategic integration of an existing AR tool into the customer journey. I focused on mapping a frictionless user flow that bridged the gap between the bespoke shop interface and the external visualisation technology. Finally, after Delivering a comprehensive design system, the result is a cohesive e-commerce platform. The seamlessly embedded \"View in Room\" feature directly solves the collector's context problem by allowing them to render true-to-scale artwork in their space, while the immersive bio page and secure checkout solidify the trust needed to complete the purchase.",
-        impact: "The platform transformed the artist's business model, doubling her profit margins by retaining 100% of sales. The AR 'View in Room' feature directly increased conversion rates, driving $21k in revenue and four major sales in the first three months, proving the D2C model's success.",
+        id: 0,
+        title: "Service Automation: Zero-Touch Model",
+        desc: "A streamlined SaaS solution reducing admin time by 40% for creative studios.",
+        tags: ["Service Design", "Product Strategy", "UX/UI"],
+        challenge: "Before the redesign, the client was trapped in an administrative loop. The website functioned like a blog, burying class details and forcing every single booking into a manual phone call.\n\nThis wasn't just a usability issue; it was an operational bottleneck. The lack of a structured digital agreement meant the client spent hours chasing payments and resolving misunderstandings. The manual burden was so high that it was consuming time meant for teaching, while the high-friction process caused potential customers to abandon the site before they even picked up the phone.",
+        role: "As the Lead Product Designer, I drove the end-to-end transformation from a manual service to an automated product. My strategy focused on identifying and eliminating every administrative touchpoint.",
+        process: "During discovery, I identified that the \"phone-tag\" booking method was the root cause of both user drop-off and the client's payment disputes. I used Figma to prototype a new flow centred on a 'tentative contract' model. This feature required users to agree to terms and availability digitally before the booking was confirmed.\n\nI restructured the site’s architecture to make information instantly accessible, removing the need for \"inquiry\" emails. By mapping the user journey specifically to remove manual intervention, I delivered a solution that automated the trust and transaction process simultaneously.",
+        impact: "Achieving a \"zero-admin\" state, we slashed workload by 40% in month one. The 'tentative contract' model cut disputes by 90%, while the frictionless flow drove a 36% revenue increase and 28% lower bounce rate. The system finally works for the client.",
         images: [
-            projectCollector,
-            projectCollectorChallenge,
-            projectCollectorProcess
-        ]
-    }
+            projectServiceAutomationHero,
+            projectBookingChallenge,
+            projectBookingProcess,
+            projectBookingFlow
+        ],
+        refinement: "Refining the Booking Logic: Early iterations of this flow treated 'Class Trials' as a separate product, creating a disjointed experience. In this final architecture, I integrated the 'Trial vs. Term' choice as a decision node within the main class flow. This allows users to verify that a specific class fits their schedule before deciding on their level of commitment, resulting in a more intuitive and flexible path to purchase."
+    },
 ];

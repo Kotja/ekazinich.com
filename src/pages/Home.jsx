@@ -27,10 +27,10 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
             gradient: 'linear-gradient(to bottom, #FFA500, #C27000)', // Light to Dark Orange
             className: 'lg:translate-y-10',
             mobileMargin: 'ml-0 mt-0',
-            frameMobileMargin: 'ml-10 mt-[5.5rem]',
+            frameMobileMargin: 'ml-14 mt-[5rem]', // Brought up significantly
             desktopMargin: 'lg:ml-5 lg:-mt-4',
-            frameDesktopMargin: 'lg:ml-10 lg:mt-[4.5rem] lg:translate-x-4',
-            textPos: 'items-end justify-end text-right pb-10 pr-8',
+            frameDesktopMargin: 'lg:ml-14 lg:mt-[4.5rem] lg:translate-x-4', // Brought up significantly
+            textPos: 'items-end justify-end text-right pb-6 pr-12', // Moved left by increasing padding
             titleContainer: 'absolute -bottom-20 -right-10 w-64 text-right z-20',
             titleStyle: 'font-lato text-2xl leading-tight'
         }, // TR
