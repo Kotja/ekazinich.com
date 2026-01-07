@@ -310,7 +310,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                     <p className={`font-lato text-lg leading-relaxed mb-6 max-w-md ${theme.subText}`}>
                         Hi, I’m Eka. I’m a holistic Product Designer who looks at the entire ecosystem rather than just one slice of the experience. I enjoy the deep-dive research required to understand a new domain, and I use that insight to drive creative, non-linear solutions. I’m less concerned with sticking to one specific discipline and more focused on using whatever tool is best to solve the problem at hand.
                     </p>
-                    <p className="font-lato text-sm text-gray-500 border-l-2 border-[#C25E00] pl-4 italic">
+                    <p className={`font-lato text-sm ${theme.subText} border-l-2 border-[#C25E00] pl-4 italic`}>
                         "Design is intelligence made visible."
                     </p>
                 </div>
