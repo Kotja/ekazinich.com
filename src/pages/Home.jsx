@@ -308,7 +308,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                 <div className="w-full md:w-1/2 pr-0 md:pr-12 md:pl-20 z-10 mb-12 md:mb-0">
                     <h2 className="font-playfair text-5xl md:text-7xl mb-8">About</h2>
                     <p className={`font-lato text-lg leading-relaxed mb-6 max-w-md ${theme.subText}`}>
-                        Hi, I’m Eka. I’m a Product Designer who turns complex business requirements into clean, effective interfaces. I&nbsp;focus on removing friction for the user -analysing where they get stuck and fixing the flow to improve your bottom&nbsp;line.
+                        Hi, I’m Eka. I’m a Product Designer who turns complex business requirements into clean, effective interfaces. I&nbsp;focus on removing friction for the user by analysing where they get stuck and fixing the flow to improve your bottom&nbsp;line.
                     </p>
                     <p className="font-lato text-sm text-gray-500 border-l-2 border-[#C25E00] pl-4 italic">
                         "Design is intelligence made visible."
