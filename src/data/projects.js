@@ -27,6 +27,8 @@ import brandTrustSignals from '../assets/brand-trust-signals.webp';
 import projectB2BVideo from '../assets/HeroB2BOW.mp4';
 import projectCandidateVideo from '../assets/hero-candidate-pipeline.mp4';
 import candidateProcessIndepth from '../assets/Canidate-pipeline-process-indepth.webp';
+import candidateChallenge from '../assets/candidate-challenge.webp';
+import candidateOnTheGo from '../assets/candidate-on-the-go.webp';
 
 export const PROJECTS = [
     {
@@ -129,7 +131,7 @@ export const PROJECTS = [
                 ]
             }
         },
-        images: [],
+        images: [null, candidateChallenge, candidateOnTheGo],
         video: projectCandidateVideo,
     },
     {
