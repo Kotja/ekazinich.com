@@ -308,7 +308,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                 <div className="w-full md:w-1/2 pr-0 md:pr-12 md:pl-20 z-10 mb-12 md:mb-0">
                     <h2 className="font-playfair text-5xl md:text-7xl mb-8">About</h2>
                     <p className={`font-lato text-lg leading-relaxed mb-6 max-w-md ${theme.subText}`}>
-                        Hi, I’m Eka. I’m a Product Designer who turns complex business requirements into clean, effective interfaces. I&nbsp;focus on removing friction for the user by analysing where they get stuck and fixing the flow to improve your bottom&nbsp;line.
+                        Hi, I’m Eka. I’m a holistic Product Designer who looks at the entire ecosystem rather than just one slice of the experience. I enjoy the deep-dive research required to understand a new domain, and I use that insight to drive creative, non-linear solutions. I’m less concerned with sticking to one specific discipline and more focused on using whatever tool is best to solve the problem at hand.
                     </p>
                     <p className="font-lato text-sm text-gray-500 border-l-2 border-[#C25E00] pl-4 italic">
                         "Design is intelligence made visible."
@@ -407,20 +407,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                             </button>
                         </form>
                     </div>
-                    <div className="flex-1 flex col justify-center gap-8 md:pl-12 border-l-0 md:border-l border-white/10">
-                        <a
-                            href="https://www.linkedin.com/in/katerina-eka-zinich"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-4 text-xl font-playfair italic hover:translate-x-2 transition-transform duration-300"
-                            style={{ color: COLOURS.cream }}
-                            onMouseEnter={(e) => e.currentTarget.style.color = COLOURS.highlight}
-                            onMouseLeave={(e) => e.currentTarget.style.color = COLOURS.cream}
-                            onClick={() => playSound('general')}
-                        >
-                            <Linkedin size={24} />
-                            <span>LinkedIn Profile</span>
-                        </a>
+                    <div className="flex-1 flex flex-col justify-center gap-8 md:pl-12 border-l-0 md:border-l border-white/10">
                         <div className="flex items-center gap-4">
                             <a
                                 href="mailto:ekazinich@gmail.com"
@@ -443,6 +430,19 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                                 {emailCopied ? <Check size={20} /> : <Copy size={20} />}
                             </button>
                         </div>
+                        <a
+                            href="https://www.linkedin.com/in/katerina-eka-zinich"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-4 text-xl font-playfair italic hover:translate-x-2 transition-transform duration-300"
+                            style={{ color: COLOURS.cream }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = COLOURS.highlight}
+                            onMouseLeave={(e) => e.currentTarget.style.color = COLOURS.cream}
+                            onClick={() => playSound('general')}
+                        >
+                            <Linkedin size={24} />
+                            <span>LinkedIn Profile</span>
+                        </a>
                     </div>
                 </div>
             </section>
