@@ -44,18 +44,20 @@ export const PROJECTS = [
         role: "End-to-End Product Architecture. Responsible for the strategic taxonomy audit, UI system design, and CMS integration.",
         process: "Systemisation & \"Invisible\" UI.\n\nIA Strategy: Flattened the hierarchy. Users land directly on the category selector, eliminating the \"Mystery Meat\" navigation of the previous site.\n\nVisuals: Adopted a brutalist, utility-first aesthetic. White space is used as an active element to frame the work.\n\nTech: Implemented a high-performance lazy-loading stack to ensure the \"Action\" portfolio loads as fast as the \"Portraits,\" despite the heavy data payload.",
         impact: {
-            description: "Taxonomy Migration & Funnel Optimisation. Transformed a generalist photography archive into a targeted B2B sales tool. By implementing a strict Category-First Architecture (Portraits, Action, Fashion), we reduced the user journey from \"Landing\" to \"Contact\" by roughly 60%.",
+            description: "Taxonomy Migration & Funnel Optimisation. Transformed a generalist photography archive into a targeted B2B sales tool.",
             outcomes: [
                 { title: "Zero-Friction Inquiry", desc: "Users are never more than 2 clicks from booking." },
-                { title: "Operational Autonomy", desc: "Client manages all assets via a custom CMS, removing developer dependency." }
+                { title: "Operational Autonomy", desc: "Client manages all assets via a custom CMS, removing developer dependency." },
+                { title: "Funnel Optimisation", desc: "Reduced the user journey from \"Landing\" to \"Contact\" by roughly 60% via Category-First Architecture." }
             ]
         },
         wanderingContent: {
             impact: {
-                description: "From Static Repository to Scalable Sales Product. The primary objective was to operationalise the client's digital presence. The previous site was a passive \"dumping ground\" that failed to convert traffic into revenue because it lacked commercial logic.",
+                description: "From Static Repository to Scalable Sales Product. The primary objective was to operationalise the client's digital presence, replacing a passive archive with a commercial engine.",
                 outcomes: [
                     { title: "Asset Discoverability", desc: "I engineered a new system focused on restructuring the taxonomy." },
-                    { title: "Lean Sales Tool", desc: "By implementing a self-serve CMS, we turned the website from a cost-centre into a conversion engine that filters High-Value Clients directly to the right specialist category." }
+                    { title: "Lean Sales Tool", desc: "By implementing a self-serve CMS, we turned the website from a cost-centre into a conversion engine that filters High-Value Clients directly to the right specialist category." },
+                    { title: "Revenue Focus", desc: "Replaced the 'dumping ground' approach with commercial logic to actively convert traffic into revenue." }
                 ]
             },
             challenge: "Information Architecture (IA) Failure. The core business risk was Audience Mismatch.\n\nAn Agency looking for high-speed Action photography viewed the site as \"too static.\"\n\nA Brand looking for Fashion editorials viewed the site as \"too rugged.\"\n\nBy housing these contradictions in a single stream, the portfolio was neutralising its own impact. The technical challenge was to engineer a system that supports high-fidelity imagery (Retina/4K) without compromising the \"instant\" load feel required for mobile retention.",
