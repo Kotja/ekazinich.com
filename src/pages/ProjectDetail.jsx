@@ -150,16 +150,19 @@ const ProjectDetail = ({ mode, playSound }) => {
                 </div>
 
                 {/* Hero Image/Video - FULL WIDTH (Less Constraint) */}
-                {project.video ? (
-                    <div className={`w-full aspect-video overflow-hidden shadow-lg ${theme.imagePlaceholderBg}`}>
+                {project.video && (
+                    <div className={`hidden md:block w-full aspect-video overflow-hidden shadow-lg ${theme.imagePlaceholderBg}`}>
                         <BoomerangVideo src={project.video} />
                     </div>
-                ) : (
-                    project.images && project.images[0] && (
-                        <div className={`w-full aspect-video md:max-h-[85vh] overflow-hidden shadow-lg ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[0])}>
-                            <img src={project.images[0]} alt="Hero" draggable="false" className="w-full h-full object-cover" />
-                        </div>
-                    )
+                )}
+
+                {(project.images && project.images[0]) && (
+                    <div
+                        className={`w-full aspect-video md:max-h-[85vh] overflow-hidden shadow-lg ${theme.imagePlaceholderBg} cursor-zoom-in ${project.video ? 'md:hidden' : ''}`}
+                        onClick={() => setSelectedImage(project.images[0])}
+                    >
+                        <img src={project.images[0]} alt="Hero" draggable="false" className="w-full h-full object-cover" />
+                    </div>
                 )}
 
                 {/* Impact - Constrained */}

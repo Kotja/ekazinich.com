@@ -137,7 +137,7 @@ export const PROJECTS = [
                 ]
             }
         },
-        images: [null, candidateChallenge, candidateOnTheGo],
+        images: [candidateOnTheGo, candidateChallenge, candidateOnTheGo],
         video: projectCandidateVideo,
     },
     {

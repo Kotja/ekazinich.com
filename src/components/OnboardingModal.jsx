@@ -6,8 +6,8 @@ const OnboardingModal = ({ onVisibilityChange }) => {
     const [shouldRender, setShouldRender] = useState(false);
 
     useEffect(() => {
-        const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
-        // const hasSeenOnboarding = false; // Forced for review
+        // const hasSeenOnboarding = sessionStorage.getItem('hasSeenOnboarding');
+        const hasSeenOnboarding = false; // Forced for review: Always show on refresh
 
         if (!hasSeenOnboarding) {
             // Delay showing the modal for 0.4 seconds

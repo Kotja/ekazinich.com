@@ -100,25 +100,28 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
                 className={`col-start-1 row-start-1 w-36 h-36 md:w-48 md:h-48 relative ${config.front} overflow-hidden shadow-lg transition-transform duration-500 group-hover:scale-95 z-10 bg-white ${config.mobileMargin} ${config.desktopMargin}`}
                 style={{ background: isWandering ? config.gradient : 'white' }}
             >
-                {proj.video ? (
+                {/* Video - Desktop Only (if available) */}
+                {proj.video && (
                     <video
                         ref={videoRef}
                         src={proj.video}
                         muted
                         loop
                         playsInline
-                        className={`w-full h-full object-cover transition-all duration-500 ${isWandering ? 'opacity-0 group-hover:opacity-100' : 'grayscale group-hover:grayscale-0'
+                        className={`hidden md:block w-full h-full object-cover transition-all duration-500 ${isWandering ? 'opacity-0 group-hover:opacity-100' : 'grayscale group-hover:grayscale-0'
                             }`}
                     />
-                ) : (
+                )}
+
+                {/* Image - Mobile Fallback OR Default if no video */}
+                {(proj.images && proj.images[0]) && (
                     <img
                         src={proj.images[0]}
                         alt={displayTitle}
                         loading={idx > 1 ? "lazy" : "eager"}
                         width="800"
                         height="600"
-                        className={`w-full h-full object-cover transition-all duration-500 ${isWandering ? 'opacity-0 group-hover:opacity-100' : 'grayscale group-hover:grayscale-0'
-                            }`}
+                        className={`w-full h-full object-cover transition-all duration-500 ${isWandering ? 'opacity-0 group-hover:opacity-100' : 'grayscale group-hover:grayscale-0'} ${proj.video ? 'md:hidden' : ''}`}
                     />
                 )}
             </div>
