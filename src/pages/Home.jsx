@@ -100,28 +100,33 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
                 className={`col-start-1 row-start-1 w-36 h-36 md:w-48 md:h-48 relative ${config.front} overflow-hidden shadow-lg transition-transform duration-500 group-hover:scale-95 z-10 bg-white ${config.mobileMargin} ${config.desktopMargin}`}
                 style={{ background: isWandering ? config.gradient : 'white' }}
             >
-                {/* Video - Desktop Only (if available) */}
-                {proj.video && (
+                {/* Video - Visible on Mobile (Static First Frame) & Desktop (Hover Play) */}
+                {proj.video ? (
                     <video
                         ref={videoRef}
-                        src={proj.video}
+                        src={`${proj.video}#t=0.001`}
                         muted
                         loop
                         playsInline
-                        className={`hidden md:block w-full h-full object-cover transition-all duration-500 ${isWandering ? 'opacity-0 group-hover:opacity-100' : 'grayscale group-hover:grayscale-0'
+                        preload="metadata"
+                        className={`w-full h-full object-cover transition-all duration-500 
+                            ${isWandering
+                                ? 'opacity-100 md:opacity-0 md:group-hover:opacity-100'
+                                : 'grayscale md:grayscale group-hover:grayscale-0'
                             }`}
                     />
-                )}
-
-                {/* Image - Mobile Fallback OR Default if no video */}
-                {(proj.images && proj.images[0]) && (
+                ) : (
                     <img
                         src={proj.images[0]}
                         alt={displayTitle}
                         loading={idx > 1 ? "lazy" : "eager"}
                         width="800"
                         height="600"
-                        className={`w-full h-full object-cover transition-all duration-500 ${isWandering ? 'opacity-0 group-hover:opacity-100' : 'grayscale group-hover:grayscale-0'} ${proj.video ? 'md:hidden' : ''}`}
+                        className={`w-full h-full object-cover transition-all duration-500 
+                            ${isWandering
+                                ? 'opacity-100 md:opacity-0 md:group-hover:opacity-100'
+                                : 'grayscale md:grayscale group-hover:grayscale-0'
+                            }`}
                     />
                 )}
             </div>
