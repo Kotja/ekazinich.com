@@ -22,6 +22,10 @@ import projectPortfolioChallenge from '../assets/portfolio-challenge.webp';
 import projectPortfolioProcess from '../assets/portfolio-process.webp';
 import projectBrandScalingHero from '../assets/brand-scaling-hero.webp';
 import projectServiceAutomationHero from '../assets/service-automation-hero-new.webp';
+import automationHero from '../assets/automation-hero.webp';
+import decisionNode from '../assets/decision-node.png';
+import reviewAndSign from '../assets/review-and-sign.webp';
+import serviceBlueprint from '../assets/service-blue-print.webp';
 import brandTrustSignals from '../assets/brand-trust-signals.webp';
 
 import projectB2BVideo from '../assets/HeroB2BOW.mp4';
@@ -169,12 +173,52 @@ export const PROJECTS = [
         title: "Service Automation: Zero-Touch Model",
         desc: "A streamlined SaaS solution reducing admin time by 40% for creative studios.",
         tags: ["Service Design", "Product Strategy", "UX/UI"],
-        challenge: "Before the redesign, the client was trapped in an administrative loop. The website functioned like a blog, burying class details and forcing every single booking into a manual phone call.\n\nThis wasn't just a usability issue; it was an operational bottleneck. The lack of a structured digital agreement meant the client spent hours chasing payments and resolving misunderstandings. The manual burden was so high that it was consuming time meant for teaching, while the high-friction process caused potential customers to abandon the site before they even picked up the phone.",
-        role: "As the Lead Product Designer, I drove the end-to-end transformation from a manual service to an automated product. My strategy focused on identifying and eliminating every administrative touchpoint.",
-        process: "During discovery, I identified that the \"phone-tag\" booking method was the root cause of both user drop-off and the client's payment disputes. I used Figma to prototype a new flow centred on a 'tentative contract' model. This feature required users to agree to terms and availability digitally before the booking was confirmed.\n\nI restructured the site’s architecture to make information instantly accessible, removing the need for \"inquiry\" emails. By mapping the user journey specifically to remove manual intervention, I delivered a solution that automated the trust and transaction process simultaneously.",
-        impact: "Achieving a \"zero-admin\" state, we slashed workload by 40% in month one. The 'tentative contract' model cut disputes by 90%, while the frictionless flow drove a 36% revenue increase and 28% lower bounce rate. The system finally works for the client.",
+        challenge: "The Problem: Operational Paralysis. The legacy site functioned as a static blog, burying critical class details and forcing 100% of bookings into manual phone calls. This bottleneck capped the business’s growth potential.",
+        challengeImage: serviceBlueprint,
+        role: "Service Design & Product Strategy. Lead Product Designer responsible for the end-to-end transformation from a manual service to an automated product ecosystem.",
+        process: {
+            type: 'rich',
+            sections: [
+                {
+                    type: 'text',
+                    content: 'Logic Architecture & Flow Unification.\n\nDiscovery: Identified "Phone Tag" as the root cause of churn and disputes.\n\nArchitecture: Integrated "Class Trials" and "Full Terms" into a single decision tree, removing the disjointed experience of separate products.\n\nResult: A unified path to purchase that allows flexible commitment levels.',
+                    image: reviewAndSign
+                }
+            ]
+        },
+        impact: {
+            description: "Achieving the \"Zero-Admin\" State. Redesigned the service model to eliminate manual booking friction, resulting in a 40% reduction in administrative workload within month one.",
+            outcomes: [
+                { title: "The Shift", desc: "We replaced a high-touch \"Phone Tag\" model with a \"Tentative Contract\" System, allowing users to book and agree to terms digitally without staff intervention." },
+                { title: "Risk Reduction", desc: "The digital agreement model cut payment disputes by 90%." },
+                { title: "Growth Signal", desc: "The frictionless flow drove a 36% revenue increase and reduced bounce rates by 28%." }
+            ]
+        },
+        wanderingContent: {
+            challenge: "Diagnosing the \"Admin Loop.\" The issue wasn't just usability; it was an Operational Bottleneck.\n\nThe Friction Trap: Potential customers abandoned the site because the interaction cost (making a phone call) was too high compared to competitors.\n\nThe Dispute Cycle: The lack of a structured digital agreement meant terms were verbal and ambiguous, leading to hours spent resolving payment misunderstandings. The manual burden was consuming the client's actual teaching time.",
+            challengeImage: serviceBlueprint,
+            role: "Mapping the \"Zero-Touch\" Blueprint. My strategy focused on Service Blueprinting—identifying every point where a human had to intervene (emailing, calling, confirming) and designing a digital proxy to handle it. I didn't just design the interface; I engineered the business logic to automate the \"Trust and Transaction\" simultaneously.",
+            process: {
+                type: 'rich',
+                sections: [
+                    {
+                        type: 'text',
+                        content: 'Refining the Booking Logic (The Decision Node).\n\n1. The "Tentative" Protocol: I prototyped a flow where the contract isn\'t just a checkbox, but a confirmation step. This required users to agree to terms digitally before a booking is confirmed, creating a psychological commitment that reduced no-shows.\n\n2. The Integration of "Trials": Early iterations treated "Class Trials" as a separate product, which fragmented the user journey. I corrected this by integrating the choice as a Decision Node within the main class flow. This allows users to verify that a specific class fits their schedule before deciding on their level of commitment (Trial vs. Term), resulting in a more intuitive, flexible funnel.',
+                        image: decisionNode
+                    }
+                ]
+            },
+            impact: {
+                description: "We digitized trust via a \"Tentative Contract\" Model. By moving the \"Trial vs. Term\" decision node inside the main flow, we respected the user's need to verify schedules before committing.",
+                outcomes: [
+                    { title: "Risk Reduction", desc: "The digital agreement model cut payment disputes by 90%." },
+                    { title: "Growth Signal", desc: "The frictionless flow drove a 36% revenue increase and reduced bounce rates by 28%." },
+                    { title: "Unit Economics", desc: "Eliminated the \"Admin Tax,\" freeing the client to focus on teaching rather than chasing invoices." }
+                ]
+            }
+        },
         images: [
-            projectServiceAutomationHero,
+            automationHero,
             projectBookingChallenge,
             projectBookingProcess,
             projectBookingFlow

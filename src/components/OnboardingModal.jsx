@@ -10,7 +10,7 @@ const OnboardingModal = ({ onVisibilityChange }) => {
         // const hasSeenOnboarding = false; // Forced for review
 
         if (!hasSeenOnboarding) {
-            // Delay showing the modal for 4 seconds
+            // Delay showing the modal for 0.4 seconds
             const timer = setTimeout(() => {
                 setShouldRender(true);
                 // Trigger visibility in Parent (for z-index elevation)
@@ -18,7 +18,7 @@ const OnboardingModal = ({ onVisibilityChange }) => {
 
                 // Small buffer for animation
                 setTimeout(() => setIsVisible(true), 10);
-            }, 4000);
+            }, 400);
 
             return () => clearTimeout(timer);
         }

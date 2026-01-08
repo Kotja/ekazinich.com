@@ -195,17 +195,22 @@ const ProjectDetail = ({ mode, playSound }) => {
                 </div>
 
                 {/* Section 1: Challenge (Constrained) */}
-                <div className={`w-full max-w-6xl mx-auto px-6 grid ${project.images && project.images[1] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
-                    <div className="order-2 md:order-1">
-                        <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] border-b border-[#C25E00] inline-block pb-2">The Challenge</h3>
-                        <p className={`font-lato text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.challenge}</p>
-                    </div>
-                    {project.images && project.images[1] && (
-                        <div className={`aspect-square overflow-hidden shadow-sm order-1 md:order-2 ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[1])}>
-                            <img src={project.images[1]} alt="Challenge Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                {(() => {
+                    const challengeImage = displayContent.challengeImage || (project.images && project.images[1]);
+                    return (
+                        <div className={`w-full max-w-6xl mx-auto px-6 grid ${challengeImage ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-stretch`}>
+                            <div className="order-2 md:order-1 flex flex-col justify-center">
+                                <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] border-b border-[#C25E00] inline-block pb-2">The Challenge</h3>
+                                <p className={`font-lato text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.challenge}</p>
+                            </div>
+                            {challengeImage && (
+                                <div className={`w-full h-full min-h-[300px] overflow-hidden shadow-sm order-1 md:order-2 bg-transparent cursor-zoom-in`} onClick={() => setSelectedImage(challengeImage)}>
+                                    <img src={challengeImage} alt="Challenge Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
+                    );
+                })()}
 
                 {/* Section 2: Role (Full Width Background, Constrained Content) */}
                 <div className={`w-full border-y border-[#FFD1A3] ${theme.projectSectionBg}`}>
