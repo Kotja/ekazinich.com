@@ -453,6 +453,11 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                         </a>
                     </div>
                 </div>
+
+                {/* Copyright */}
+                <div className="w-full text-center mt-20 opacity-40 font-lato text-xs tracking-widest uppercase">
+                    © 2026 Eka Zinich. All rights reserved.
+                </div>
             </section>
 
             {/* CV Overlay */}

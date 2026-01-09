@@ -57,11 +57,11 @@ const OnboardingModal = ({ onVisibilityChange }) => {
                 </button>
 
                 <h3 className="font-playfair text-2xl italic text-[#1A1A1A] mb-4">
-                    Discover the Strategy
+                    Designed in Layers
                 </h3>
 
                 <p className="font-lato text-[#1A1A1A]/80 leading-relaxed mb-6">
-                    Switch to <span className="font-bold text-[#C25E00]">In-Depth Mode</span> to uncover the granular details and reasoning behind the work.
+                    Start with the results in <span className="font-bold">Impact Mode</span>. When you are ready for the full story, switch to <span className="font-bold text-[#C25E00]">In-Depth Mode</span> to uncover the strategy and design rationale.
                 </p>
 
                 {/* No Arrow */}
@@ -74,7 +74,7 @@ const OnboardingModal = ({ onVisibilityChange }) => {
                     onClick={handleClose}
                     className="mt-2 px-6 py-2 bg-[#1A1A1A] text-[#FDFBF7] font-lato text-xs tracking-[0.2em] uppercase hover:bg-[#C25E00] transition-colors rounded-full"
                 >
-                    Got it
+                    Start Exploring
                 </button>
             </div>
         </div>
