@@ -203,7 +203,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                     return (
                         <div className={`w-full max-w-6xl mx-auto px-6 grid ${challengeImage ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-stretch`}>
                             <div className="order-2 md:order-1 flex flex-col justify-center">
-                                <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] border-b border-[#C25E00] inline-block pb-2">The Challenge</h3>
+                                <h3 className="font-playfair text-3xl mb-4 text-[#C25E00]">The Challenge</h3>
                                 <p className={`font-lato text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.challenge}</p>
                             </div>
                             {challengeImage && (
@@ -271,7 +271,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                             </div>
                                         )}
                                         <div>
-                                            <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] border-b border-[#C25E00] inline-block pb-2">The Process</h3>
+                                            <h3 className="font-playfair text-3xl mb-4 text-[#C25E00]">The Process</h3>
                                             <p className={`font-lato text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{section.content}</p>
                                         </div>
                                     </div>
@@ -318,7 +318,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                             </div>
                         )}
                         <div>
-                            <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] border-b border-[#C25E00] inline-block pb-2">The Process</h3>
+                            <h3 className="font-playfair text-3xl mb-4 text-[#C25E00]">The Process</h3>
                             <p className={`font-lato text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.process}</p>
                         </div>
                     </div>
