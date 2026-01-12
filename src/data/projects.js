@@ -99,8 +99,8 @@ export const PROJECTS = [
     },
     {
         id: 4,
-        title: "Candidate Pipeline & Application Architecture",
-        desc: "A streamlined platform for managing candidate applications and architectural workflows. (Placeholder)",
+        title: "The 'Spreadsheet of Doom' & Personal CRM",
+        desc: "Pivoting to a 'Personal CRM' to solve candidate anxiety. A research-led strategy that uncovered the 'Spreadsheet of Doom'.",
         tags: ["Architecture", "Pipeline", "Management"],
         challenge: "The Problem: Data Fragmentation. The modern job search is multi-channel and inherently mobile. Candidates using desktop-only tools (Excel) lose data while 'on the go.' The solution necessitated a Mobile-First architecture to eliminate this friction and capture progress in real-time.",
         role: "Lead UX Researcher & Product Strategist. Responsible for the End-to-End Research Ops: Screener design, 1:1 qualitative interviews, affinity mapping, and Defining the MVP feature set.",
