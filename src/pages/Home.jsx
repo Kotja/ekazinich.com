@@ -183,7 +183,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
     const openProject = (project) => {
         playSound('general');
         // Slugify title for URL: Remove special chars/punctuation, then space to dash
-        const slug = project.title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/ /g, '-');
+        const slug = project.title.toLowerCase().replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-');
         navigate(`/projects/${slug}`);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };

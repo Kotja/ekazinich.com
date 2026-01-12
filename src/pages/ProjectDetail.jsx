@@ -53,7 +53,7 @@ const ProjectDetail = ({ mode, playSound }) => {
     const [selectedImage, setSelectedImage] = useState(null);
 
     // Find project by slug: Match the sanitized slug generation from Home.jsx
-    const project = PROJECTS.find(p => p.title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/ /g, '-') === slug);
+    const project = PROJECTS.find(p => p.title.toLowerCase().replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-') === slug);
 
     // Redirect if not found (or handle gracefully)
     useEffect(() => {
@@ -110,7 +110,7 @@ const ProjectDetail = ({ mode, playSound }) => {
 
     const openProject = (proj) => {
         playSound('general');
-        const newSlug = proj.title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/ /g, '-');
+        const newSlug = proj.title.toLowerCase().replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-');
         navigate(`/projects/${newSlug}`);
     };
 
