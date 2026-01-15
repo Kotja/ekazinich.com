@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useChat } from '@ai-sdk/react';
+import { DefaultChatTransport } from 'ai';
 import { Send, MessageCircle, Sparkles, RotateCcw } from 'lucide-react';
 import { Streamdown } from 'streamdown';
 
@@ -77,12 +78,9 @@ const AskChat = ({ mode, playSound }) => {
     assistantBubble: isWandering ? 'bg-[#333] text-[#FDFBF7]' : 'bg-[#F5F3ED] text-[#1A1A1A]',
   };
 
-  // AI SDK v6 useChat hook
-  console.log('useChat! API_URL', API_URL);
+  const transport = new DefaultChatTransport({ api: API_URL });
   const { messages, sendMessage, setMessages, status, error } = useChat({
-    transport: {
-      api: API_URL,
-    }
+    transport,
   });
 
   const isLoading = status === 'streaming' || status === 'submitted';
