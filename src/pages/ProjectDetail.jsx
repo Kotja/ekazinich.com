@@ -347,7 +347,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                 <div className="max-w-5xl mx-auto">
                     <h3 className="text-xs font-bold uppercase tracking-widest mb-6 text-gray-400">Explore Other Projects</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {PROJECTS.filter(p => p.title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/ /g, '-') !== slug).map((proj) => (
+                        {PROJECTS.filter(p => p.id !== project.id).map((proj) => (
                             <button
                                 key={proj.id}
                                 onClick={() => openProject(proj)}
