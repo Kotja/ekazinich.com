@@ -9,7 +9,7 @@ const STARTER_QUESTIONS = [
   "Tell me about your most impactful project",
 ];
 
-const API_URL = 'https://api.ekazinich.com/api/chat2';
+const API_URL = 'https://api.ekazinich.com/api/chat';
 const STORAGE_KEY = 'eka-chat-messages';
 
 // Helper to extract text content from UIMessage parts (AI SDK v6 format)
@@ -78,6 +78,7 @@ const AskChat = ({ mode, playSound }) => {
   };
 
   // AI SDK v6 useChat hook
+  console.log('useChat! API_URL', API_URL);
   const { messages, sendMessage, setMessages, status, error } = useChat({
     api: API_URL,
   });
