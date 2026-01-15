@@ -80,7 +80,9 @@ const AskChat = ({ mode, playSound }) => {
   // AI SDK v6 useChat hook
   console.log('useChat! API_URL', API_URL);
   const { messages, sendMessage, setMessages, status, error } = useChat({
-    api: API_URL,
+    transport: {
+      api: API_URL,
+    }
   });
 
   const isLoading = status === 'streaming' || status === 'submitted';
