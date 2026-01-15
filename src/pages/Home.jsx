@@ -5,6 +5,7 @@ import { ArrowDown, Check, Copy, Linkedin, Mail, ArrowRight, AlertCircle, X, Dow
 import profileImage from '../assets/profile.webp';
 import { PROJECTS } from '../data/projects';
 import emailjs from '@emailjs/browser';
+import AskChat from '../components/AskChat';
 
 // --- SUB-COMPONENT: PROJECT ITEM ---
 const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) => {
@@ -349,6 +350,9 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                     )}
                 </div>
             </section>
+
+            {/* Ask Chat Section */}
+            <AskChat mode={mode} playSound={playSound} />
 
             {/* Contact Section */}
             <section id="contact-section" className="min-h-[60vh] w-full flex flex-col justify-center items-center px-6 md:px-24 pt-32 pb-40 md:pb-24" style={{ backgroundColor: COLOURS.charcoal, color: COLOURS.cream }}>

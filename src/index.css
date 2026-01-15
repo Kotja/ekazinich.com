@@ -124,3 +124,219 @@ button:focus-visible {
 .hover-bg-suggestion:hover {
   background-color: #FFD1A3;
 }
+
+/* Streamdown Chat Styling */
+
+/* CSS variables for Streamdown's Tailwind classes (light mode - default) */
+.streamdown-content {
+  --background: #F5F3ED;
+  --foreground: #1A1A1A;
+  --muted: #E5E3DD;
+  --muted-foreground: #6B6B6B;
+  --border: #D4D2CC;
+  
+  font-family: 'Lato', sans-serif;
+  line-height: 1.7;
+}
+
+/* Dark mode variables (when inside dark assistant bubble) */
+.bg-\[\#333\] .streamdown-content {
+  --background: #444;
+  --foreground: #FDFBF7;
+  --muted: #555;
+  --muted-foreground: #AAA;
+  --border: #666;
+}
+
+/* Apply the CSS variables to Streamdown's utility classes */
+.streamdown-content .bg-background {
+  background-color: var(--background) !important;
+}
+
+.streamdown-content .text-foreground {
+  color: var(--foreground) !important;
+}
+
+.streamdown-content .text-muted-foreground {
+  color: var(--muted-foreground) !important;
+}
+
+.streamdown-content .border-border {
+  border-color: var(--border) !important;
+}
+
+.streamdown-content .hover\:text-foreground:hover {
+  color: var(--foreground) !important;
+}
+
+.streamdown-content .hover\:bg-muted\/40:hover {
+  background-color: color-mix(in srgb, var(--muted) 40%, transparent) !important;
+}
+
+.streamdown-content .shadow-lg {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Headings - use Playfair Display like the rest of the site */
+.streamdown-content h1,
+.streamdown-content h2,
+.streamdown-content h3,
+.streamdown-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.streamdown-content h1:first-child,
+.streamdown-content h2:first-child,
+.streamdown-content h3:first-child,
+.streamdown-content h4:first-child {
+  margin-top: 0;
+}
+
+.streamdown-content h1 { font-size: 1.5rem; }
+.streamdown-content h2 { font-size: 1.25rem; }
+.streamdown-content h3 { font-size: 1.1rem; }
+.streamdown-content h4 { font-size: 1rem; }
+
+/* Paragraphs */
+.streamdown-content p {
+  margin-bottom: 0.75rem;
+}
+
+.streamdown-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* Lists - need explicit list-style since Tailwind resets them */
+.streamdown-content ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  padding-left: 0;
+}
+
+.streamdown-content ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  padding-left: 0;
+}
+
+.streamdown-content ul ul {
+  list-style-type: circle;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.streamdown-content ul ul ul {
+  list-style-type: square;
+}
+
+.streamdown-content li {
+  margin-bottom: 0.25rem;
+  padding-left: 0.25rem;
+}
+
+.streamdown-content li:last-child {
+  margin-bottom: 0;
+}
+
+/* Inline code */
+.streamdown-content code {
+  background-color: rgba(0, 0, 0, 0.08);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Code blocks */
+.streamdown-content pre {
+  background-color: rgba(0, 0, 0, 0.06);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 0.75rem;
+}
+
+.streamdown-content pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.8125em;
+}
+
+/* Links - use the site's accent color */
+.streamdown-content a {
+  color: #C25E00;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+}
+
+.streamdown-content a:hover {
+  color: #E6944C;
+}
+
+/* Bold/Strong */
+.streamdown-content strong {
+  font-weight: 700;
+}
+
+/* Italic/Emphasis */
+.streamdown-content em {
+  font-style: italic;
+}
+
+/* Blockquotes */
+.streamdown-content blockquote {
+  border-left: 3px solid #C25E00;
+  padding-left: 1rem;
+  margin: 0.75rem 0;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+/* Horizontal rules */
+.streamdown-content hr {
+  border: none;
+  border-top: 1px solid currentColor;
+  opacity: 0.2;
+  margin: 1rem 0;
+}
+
+/* Tables */
+.streamdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.75rem;
+  font-size: 0.9em;
+}
+
+.streamdown-content th,
+.streamdown-content td {
+  border: 1px solid currentColor;
+  border-opacity: 0.2;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.streamdown-content th {
+  font-weight: 600;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+
+/* Dark mode adjustments (when inside dark assistant bubble) */
+.bg-\[\#333\] .streamdown-content code {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.bg-\[\#333\] .streamdown-content pre {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.bg-\[\#333\] .streamdown-content th {
+  background-color: rgba(255, 255, 255, 0.08);
+}
