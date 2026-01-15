@@ -9,8 +9,7 @@ const STARTER_QUESTIONS = [
   "Tell me about your most impactful project",
 ];
 
-// API URL - uses Vite env var in dev, relative path in production
-const API_URL = 'https://api.ekazinich.com/api/chat';
+const API_URL = 'https://api.ekazinich.com/api/chat2';
 const STORAGE_KEY = 'eka-chat-messages';
 
 // Helper to extract text content from UIMessage parts (AI SDK v6 format)
