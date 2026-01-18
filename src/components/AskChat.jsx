@@ -86,6 +86,8 @@ const AskChat = ({ mode, playSound }) => {
   const isLoading = status === 'streaming' || status === 'submitted';
   const hasStarted = messages.length > 0;
 
+  console.log('messages', messages, error, status);
+
   // Load messages from localStorage on mount (client-side only)
   useEffect(() => {
     try {
