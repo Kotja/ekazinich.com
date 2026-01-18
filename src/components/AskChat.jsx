@@ -26,36 +26,24 @@ const getMessageContent = (message) => {
   return message.content || '';
 };
 
-// Helper to extract suggested prompts from the response text
+// Helper to extract suggested prompts from tool calls
 const getSuggestedPrompts = (messages) => {
   if (!messages || messages.length === 0) return [];
   
   // Find the last assistant message
   const lastAssistantMessage = [...messages].reverse().find(m => m.role === 'assistant');
-  if (!lastAssistantMessage) return [];
+  if (!lastAssistantMessage || !lastAssistantMessage.parts) return [];
   
-  const content = getMessageContent(lastAssistantMessage);
-  if (!content) return [];
+  // Find tool call part for suggest_questions
+  const toolPart = lastAssistantMessage.parts.find(
+    part => part.type === 'tool-suggest_questions' && part.output
+  );
   
-  // Parse suggestions from the ---SUGGESTIONS--- format
-  const suggestionsMatch = content.match(/---SUGGESTIONS---\s*([\s\S]*?)$/i);
-  if (!suggestionsMatch) return [];
+  if (!toolPart || !toolPart.output?.questions) return [];
   
-  const suggestionsText = suggestionsMatch[1];
-  const suggestions = suggestionsText
-    .split('\n')
-    .map(line => line.replace(/^[-•*]\s*/, '').trim())
-    .filter(line => line.length > 0 && line.length < 100);
-  
-  return suggestions.slice(0, 2);
+  return toolPart.output.questions;
 };
 
-// Helper to get message content without suggestions section
-const getDisplayContent = (message) => {
-  const content = getMessageContent(message);
-  // Remove the suggestions section for display
-  return content.replace(/---SUGGESTIONS---[\s\S]*$/i, '').trim();
-};
 
 const AskChat = ({ mode, playSound }) => {
   const [input, setInput] = useState('');
@@ -255,8 +243,8 @@ const AskChat = ({ mode, playSound }) => {
                   }
                   
                   // Skip rendering assistant messages with no displayable content (e.g., during reasoning phase)
-                  const displayContent = message.role === 'assistant' ? getDisplayContent(message) : null;
-                  if (message.role === 'assistant' && !displayContent) {
+                  const content = message.role === 'assistant' ? getMessageContent(message) : null;
+                  if (message.role === 'assistant' && !content) {
                     return null;
                   }
                   
@@ -269,7 +257,7 @@ const AskChat = ({ mode, playSound }) => {
                     const lastMessage = messages[messages.length - 1];
                     const showLoading = isLoading && (
                       lastMessage?.role === 'user' || 
-                      (lastMessage?.role === 'assistant' && !getDisplayContent(lastMessage))
+                      (lastMessage?.role === 'assistant' && !getMessageContent(lastMessage))
                     );
                     
                     return (
@@ -288,7 +276,7 @@ const AskChat = ({ mode, playSound }) => {
                           
                           {/* Assistant responses after last user message */}
                           {remainingMessages.slice(1).map((m, i) => {
-                            const content = getDisplayContent(m);
+                            const content = getMessageContent(m);
                             if (!content) return null;
                             return (
                               <div key={m.id || (idx + 1 + i)} className="flex justify-start">
@@ -344,7 +332,7 @@ const AskChat = ({ mode, playSound }) => {
                               mode={isLoading && idx === messages.length - 1 ? 'streaming' : 'static'}
                               caret="circle"
                             >
-                              {displayContent}
+                              {content}
                             </Streamdown>
                           </div>
                         )}
