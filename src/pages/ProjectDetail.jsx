@@ -47,6 +47,47 @@ const BoomerangVideo = ({ src }) => {
     return <video ref={videoRef} src={src} muted playsInline className="w-full h-full object-cover" />;
 };
 
+const Lightbox = ({ src, onClose, isWandering, theme }) => {
+    const [zoom, setZoom] = useState(1);
+
+    return (
+        <div
+            className={`fixed inset-0 z-50 flex items-center justify-center animate-fade-in ${isWandering ? 'bg-[#1A1A1A]/95' : 'bg-[#FDFBF7]/95'} ${zoom > 1 ? 'overflow-auto cursor-zoom-out' : 'p-4 cursor-default'}`}
+            onClick={onClose}
+        >
+            <button
+                className={`fixed top-6 right-6 hover:opacity-70 transition-colors z-[60] ${theme.text}`}
+                onClick={(e) => { e.stopPropagation(); onClose(); }}
+            >
+                <X size={32} />
+            </button>
+
+            <div
+                className={`relative transition-all duration-75 flex items-center justify-center ${zoom > 1 ? 'min-h-full py-10' : 'w-[80vw] h-[80vh]'}`}
+                style={{ width: zoom > 1 ? `${zoom * 100}%` : (window.innerWidth < 768 ? '90vw' : '80vw'), height: zoom > 1 ? `${zoom * 100}%` : '80vh' }}
+                onClick={(e) => { if (zoom > 1) e.stopPropagation(); }}
+                onWheel={(e) => {
+                    e.stopPropagation();
+                    const delta = e.deltaY * -0.0001; // Ultra-fine sensitivity
+                    setZoom(prev => Math.min(Math.max(1, prev + delta), 3));
+                }}
+            >
+                <img
+                    src={src}
+                    alt="Full Screen View"
+                    draggable="false"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        // Gradual stepped zoom on click: 1 -> 1.25 -> 1.5 ... -> 3 -> 1
+                        setZoom(prev => (prev >= 3) ? 1 : prev + 0.25);
+                    }}
+                    className={`shadow-2xl p-[30px] transition-all duration-300 w-full h-full object-contain ${zoom > 1 ? 'cursor-zoom-out' : 'cursor-zoom-in'} ${src.includes('brand-flow-chart') ? (src.includes('in-depth') ? 'bg-[#1A1A1A]' : 'bg-[#FDFBF7]') : ''}`}
+                />
+            </div>
+        </div>
+    );
+};
+
 const ProjectDetail = ({ mode, playSound }) => {
     const { slug } = useParams();
     const navigate = useNavigate();
@@ -179,7 +220,7 @@ const ProjectDetail = ({ mode, playSound }) => {
 
                             <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-[#C25E00] mb-8">{displayContent.impact.outcomesTitle || "Key Outcome"}</h4>
 
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-24 w-full max-w-7xl">
                                 {displayContent.impact.outcomes && displayContent.impact.outcomes.map((outcome, i) => (
                                     <div key={i} className="text-left flex flex-col gap-2">
                                         <h5 className={`font-playfair text-xl italic font-bold ${theme.text}`}>{outcome.title}</h5>
@@ -207,8 +248,8 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 <p className={`font-lato text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.challenge}</p>
                             </div>
                             {challengeImage && (
-                                <div className={`w-full h-full min-h-[300px] overflow-hidden shadow-sm order-1 md:order-2 bg-transparent cursor-zoom-in`} onClick={() => setSelectedImage(challengeImage)}>
-                                    <img src={challengeImage} alt="Challenge Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                                <div className={`w-full h-full min-h-[300px] overflow-hidden shadow-sm order-1 md:order-2 ${theme.bg} p-[30px] cursor-zoom-in`} onClick={() => setSelectedImage(challengeImage)}>
+                                    <img src={challengeImage} alt="Challenge Detail" draggable="false" className={`w-full h-full object-cover hover:scale-105 transition-transform duration-700 ${!isWandering ? 'mix-blend-multiply' : ''}`} />
                                 </div>
                             )}
                         </div>
@@ -265,9 +306,9 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 return (
                                     <div key={idx} className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center mb-12">
                                         {/* Placeholder for Process Image if needed, or just keep text focus */}
-                                        {(section.image || (project.images && project.images[2] && project.id !== 3)) && (
-                                            <div className={`aspect-square overflow-hidden ${(project.id === 2 || project.id === 3) ? '' : 'shadow-sm'} ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(section.image || project.images[2])}>
-                                                <img src={section.image || project.images[2]} alt="Process Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                                        {(section.image || (project.images && project.images[2] && project.id !== 3 && !section.hideImage)) && (
+                                            <div className={`aspect-square overflow-hidden ${(project.id === 2 || project.id === 3 || project.id === 1) ? '' : 'shadow-sm'} ${(project.id === 3 || project.id === 1) ? (isWandering ? 'bg-[#1A1A1A]' : 'bg-[#FDFBF7]') : theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(section.image || project.images[2])}>
+                                                <img src={section.image || project.images[2]} alt="Process Detail" draggable="false" className={`w-full h-full ${(project.id === 3 || project.id === 1) ? 'object-contain' : 'object-cover'} hover:scale-105 transition-transform duration-700`} />
                                             </div>
                                         )}
                                         <div>
@@ -284,14 +325,14 @@ const ProjectDetail = ({ mode, playSound }) => {
                                             {section.items.map((item, i) => (
                                                 <div key={i} className="flex flex-col gap-6">
                                                     <div
-                                                        className={`aspect-[4/3] w-full overflow-hidden shadow-sm bg-white cursor-zoom-in group`}
+                                                        className={`aspect-[4/3] w-full overflow-hidden shadow-sm ${isWandering ? 'bg-[#1A1A1A]' : 'bg-white'} cursor-zoom-in group`}
                                                         onClick={() => item.img && setSelectedImage(item.img)}
                                                     >
                                                         {item.img && (
                                                             <img
                                                                 src={item.img}
                                                                 alt={item.title}
-                                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                                                className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
                                                             />
                                                         )}
                                                     </div>
@@ -307,14 +348,33 @@ const ProjectDetail = ({ mode, playSound }) => {
                                     </div>
                                 );
                             }
+                            if (section.type === 'gallery') {
+                                return (
+                                    <div key={idx} className="w-full max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-evenly items-start gap-8 mb-12">
+                                        {section.items.map((img, i) => (
+                                            <div
+                                                key={i}
+                                                className={`w-full md:w-64 aspect-auto overflow-hidden shadow-sm ${isWandering ? 'bg-[#1A1A1A]' : 'bg-white'} cursor-zoom-in group`}
+                                                onClick={() => setSelectedImage(img)}
+                                            >
+                                                <img
+                                                    src={img}
+                                                    alt={`Process variation ${i + 1}`}
+                                                    className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                );
+                            }
                             return null;
                         })}
                     </div>
                 ) : (
                     <div className={`w-full max-w-6xl mx-auto px-6 grid ${project.images && project.images[2] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
                         {project.images && project.images[2] && (
-                            <div className={`aspect-square overflow-hidden ${(project.id === 2 || project.id === 3) ? '' : 'shadow-sm'} ${project.id === 3 ? 'bg-white' : theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[2])}>
-                                <img src={project.images[2]} alt="Process Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                            <div className={`aspect-square overflow-hidden ${(project.id === 2 || project.id === 3) ? '' : 'shadow-sm'} ${project.id === 3 ? 'bg-[#FDFBF7]' : theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[2])}>
+                                <img src={project.images[2]} alt="Process Detail" draggable="false" className={`w-full h-full ${project.id === 3 ? 'object-contain' : 'object-cover'} hover:scale-105 transition-transform duration-700`} />
                             </div>
                         )}
                         <div>
@@ -324,18 +384,124 @@ const ProjectDetail = ({ mode, playSound }) => {
                     </div>
                 )}
 
-                {/* Section 4: Refinement (Constrained) */}
-                {displayContent.refinement && isWandering && (
-                    <div className={`w-full max-w-6xl mx-auto px-6 grid ${project.images && project.images[3] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
-                        <div className="order-2 md:order-1">
-                            <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>
-                                {displayContent.refinement.split(': ')[0] && <span className={`block font-playfair text-2xl mb-4 ${theme.text}`}>{displayContent.refinement.split(': ')[0]}</span>}
-                                {displayContent.refinement.includes(': ') ? displayContent.refinement.split(': ').slice(1).join(': ') : displayContent.refinement}
-                            </p>
+                {/* Key Takeaway Section (Impact Mode) */}
+                {!isWandering && displayContent.keyTakeaway && (
+                    <div className="w-full max-w-7xl mx-auto px-6 text-center py-12">
+                        <div className="w-full h-[0.5px] bg-[#D0CECB] mb-8"></div>
+
+                        <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-[#C25E00] mb-8">
+                            {displayContent.keyTakeaway.title || "Key Takeaway"}
+                        </h4>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-24 w-full max-w-7xl mx-auto">
+                            {displayContent.keyTakeaway.outcomes.map((outcome, i) => (
+                                <div key={i} className="text-left flex flex-col gap-2">
+                                    <h5 className={`font-playfair text-xl italic font-bold ${theme.text}`}>{outcome.title}</h5>
+                                    <p className={`font-lato text-base ${theme.subText}`}>{outcome.desc}</p>
+                                </div>
+                            ))}
                         </div>
-                        {project.images && project.images[3] && (
-                            <div className={`w-full h-auto overflow-hidden shadow-sm order-1 md:order-2 ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[3])}>
-                                <img src={project.images[3]} alt="Refinement Detail" draggable="false" className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700" />
+
+                        <div className="w-full h-[0.5px] bg-[#D0CECB] my-8"></div>
+
+                        {displayContent.keyTakeaway.image ? (
+                            <div className="mt-12 w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                                <div
+                                    className="w-full overflow-hidden cursor-zoom-in order-1"
+                                    onClick={() => setSelectedImage(displayContent.keyTakeaway.image)}
+                                >
+                                    <img
+                                        src={displayContent.keyTakeaway.image}
+                                        alt="Key Takeaway Visual"
+                                        className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700"
+                                    />
+                                </div>
+                                <div className="order-2 flex flex-col gap-8 text-left">
+                                    {displayContent.keyTakeaway.description && (
+                                        <div className={`font-lato text-lg leading-relaxed ${theme.text}`}>
+                                            {displayContent.keyTakeaway.description}
+                                        </div>
+                                    )}
+                                    {displayContent.keyTakeaway.imageCaption && (
+                                        <div className={`font-lato text-base italic ${theme.subText} flex flex-col gap-4`}>
+                                            {displayContent.keyTakeaway.imageCaption.split('\n\n').map((paragraph, index) => (
+                                                <p key={index}>{paragraph}</p>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        ) : (
+                            displayContent.keyTakeaway.description && (
+                                <div className={`font-lato text-lg leading-relaxed ${theme.text} mb-8`}>
+                                    {displayContent.keyTakeaway.description}
+                                </div>
+                            )
+                        )}
+                    </div>
+                )}
+
+                {/* Section 4: Refinement (Constrained) */}
+                {/* Section 4: Refinement */}
+                {displayContent.refinement && isWandering && (
+                    <div className="w-full">
+                        {typeof displayContent.refinement === 'object' ? (
+                            <div className="w-full max-w-7xl mx-auto px-6 text-center py-12">
+                                <div className={`w-full h-px ${isWandering ? 'bg-[#FDFBF7]/20' : 'bg-[#1A1A1A]/20'} mb-8`}></div>
+
+                                <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-[#C25E00] mb-8">
+                                    {displayContent.refinement.outcomesTitle || "Key Takeaway"}
+                                </h4>
+
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-24 w-full max-w-7xl mx-auto">
+                                    {displayContent.refinement.outcomes && displayContent.refinement.outcomes.map((outcome, i) => (
+                                        <div key={i} className="text-left flex flex-col gap-2">
+                                            <h5 className={`font-playfair text-xl italic font-bold ${theme.text}`}>{outcome.title}</h5>
+                                            <p className={`font-lato text-base ${theme.subText}`}>{outcome.desc}</p>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className={`w-full h-px ${isWandering ? 'bg-[#FDFBF7]/20' : 'bg-[#1A1A1A]/20'} my-8`}></div>
+
+                                {displayContent.refinement.description && (
+                                    <div className={`grid ${project.images && project.images[3] ? 'grid-cols-1 md:grid-cols-2 gap-12' : 'grid-cols-1'} items-center`}>
+                                        <div className="font-lato text-lg leading-relaxed text-left order-2 md:order-1">
+                                            {displayContent.refinement.description.split('\n\n').map((part, index) => (
+                                                <p key={index} className={`${index === 1 ? 'text-[#A2A19F]' : theme.text} ${index > 0 ? 'mt-8' : ''}`}>
+                                                    {part}
+                                                </p>
+                                            ))}
+                                        </div>
+                                        {project.images && project.images[3] && (
+                                            <div
+                                                className={`w-full h-auto overflow-hidden shadow-sm order-1 md:order-2 ${theme.imagePlaceholderBg} cursor-zoom-in`}
+                                                onClick={() => setSelectedImage(project.images[3])}
+                                            >
+                                                <img
+                                                    src={project.images[3]}
+                                                    alt="Refinement Detail"
+                                                    draggable="false"
+                                                    className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700"
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <div className={`w-full max-w-6xl mx-auto px-6 grid ${project.images && project.images[3] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
+                                <div className="order-2 md:order-1">
+                                    <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>
+                                        {displayContent.refinement.split(': ')[0] && <span className="block font-lato text-xs font-bold uppercase tracking-[0.15em] text-[#C25E00] mb-8">{displayContent.refinement.split(': ')[0]}</span>}
+                                        {displayContent.refinement.includes(': ') ? displayContent.refinement.split(': ').slice(1).join(': ') : displayContent.refinement}
+                                    </p>
+                                </div>
+                                {project.images && project.images[3] && (
+                                    <div className={`w-full h-auto overflow-hidden shadow-sm order-1 md:order-2 ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[3])}>
+                                        <img src={project.images[3]} alt="Refinement Detail" draggable="false" className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700" />
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
@@ -361,30 +527,18 @@ const ProjectDetail = ({ mode, playSound }) => {
                 </div>
             </div>
 
+
+
             {/* Lightbox Overlay */}
-            {
-                selectedImage && (
-                    <div
-                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 animate-fade-in"
-                        onClick={() => setSelectedImage(null)}
-                    >
-                        <button
-                            className="absolute top-6 right-6 text-white hover:text-gray-300 transition-colors z-50"
-                            onClick={() => setSelectedImage(null)}
-                        >
-                            <X size={32} />
-                        </button>
-                        <div className="relative w-[80vw] h-[80vh] flex items-center justify-center">
-                            <img
-                                src={selectedImage}
-                                alt="Full Screen View"
-                                draggable="false"
-                                className={`w-full h-full object-contain shadow-2xl ${selectedImage.includes('brand-flow-chart') ? 'bg-white p-8' : ''}`}
-                            />
-                        </div>
-                    </div>
-                )
-            }
+            {selectedImage && (
+                <Lightbox
+                    src={selectedImage}
+                    onClose={() => setSelectedImage(null)}
+                    isWandering={isWandering}
+                    theme={theme}
+                    key={selectedImage}
+                />
+            )}
         </div>
     );
 };

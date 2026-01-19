@@ -136,7 +136,7 @@ const App = () => {
 
         {/* Menu Items */}
         <div className={`pointer-events-auto flex flex-row md:flex-col md:gap-12 text-sm font-bold tracking-widest order-1 md:order-2 md:w-full flex-grow md:justify-start pr-6 md:pr-0 transition-opacity duration-300 ${isWandering ? 'justify-start gap-8' : 'justify-between'} ${isOnboardingVisible ? 'opacity-20 blur-[1px]' : 'opacity-100'}`}>
-          {['Projects', 'About', 'Ask AI', 'Get in Touch'].map((item, idx) => {
+          {['Projects', 'About', 'Ask AI', 'Get in Touch'].map((item) => {
             const initial = item.charAt(0);
             const targetId = item.toLowerCase().replace(/ /g, '-');
             const sectionMap = {
@@ -152,7 +152,7 @@ const App = () => {
                 key={item}
                 ref={el => buttonRefs.current[item] = el}
                 onClick={() => scrollToSection(targetScrollId)}
-                onMouseEnter={() => { if (mode === 'wandering') setMenuHover(initial); }}
+                onMouseEnter={() => { if (mode === 'wandering') setMenuHover(item); }}
                 onMouseLeave={() => setMenuHover(null)}
                 className={`relative group flex items-center justify-center md:w-auto md:pt-[4px] md:pr-[10px] md:pb-[4px] md:pl-[10px] md:rounded-[16px] whitespace-nowrap ${isWandering ? 'md:self-end md:mr-12 md:justify-end md:bg-[#1A1A1A]' : 'md:self-end md:justify-end md:mr-8 md:bg-[#FDFBF7]'}`}
                 style={{
@@ -161,7 +161,7 @@ const App = () => {
               >
                 {/* Desktop Label Logic */}
                 <span className="cursor-pointer hidden md:block transition-all duration-500 origin-right">
-                  {mode === 'wandering' && menuHover !== initial ? initial : item}
+                  {mode === 'wandering' && menuHover !== item ? initial : item}
                 </span>
 
                 {/* Mobile Label Logic */}

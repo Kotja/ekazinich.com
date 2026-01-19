@@ -65,8 +65,7 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
     if (idx === 2) orderClass = 'order-2 md:order-3';
     if (idx === 3) orderClass = 'order-4';
 
-    const titleContainerClass = config.titleContainer || 'absolute -bottom-16 left-1/2 -translate-x-1/2 w-full text-center z-20';
-    const titleStyleClass = config.titleStyle || 'font-playfair italic text-xl';
+
 
     const handleMouseEnter = () => {
         playSound('general');

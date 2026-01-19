@@ -1,38 +1,35 @@
-import projectBooking from '../assets/project-booking-hero.webp';
+
 import projectBookingChallenge from '../assets/studio-booking-challenge.webp';
 
 import projectBookingProcess from '../assets/booking-process-new.webp';
 import projectBookingFlow from '../assets/studio-booking-flow.webp';
+import brandTrustSignals from '../assets/brand-trust-signals.webp';
 import brandCms from '../assets/brand-cms.webp';
-import brandFlowChartBefore from '../assets/brand-flow-chart-before.webp';
-import brandFlowChartAfter from '../assets/brand-flow-chart-after.webp';
-import projectB2B from '../assets/project-b2b-hero.webp';
+import brandFlowChartBeforeInDepth from '../assets/process-brand-flow-chart-before-in-depth.webp';
+import brandFlowChartAfterImpact from '../assets/process-brand-flow-chart-after-impact.webp';
+import brandFlowChartAfterInDepth from '../assets/process-brand-flow-chart-after-in-depth.webp';
+import processBrandBeforeLayout from '../assets/process-brand-before-layout.png';
+import processBrandAfterLayout from '../assets/process-brand-after-layout.png';
 import projectB2BNew from '../assets/b2b-hero-v2.webp';
 import brandChallengeV2 from '../assets/brand-challenge-v2.webp';
-import projectB2BChallengeNew from '../assets/b2b-challenge-new.webp';
+import brandChallengeImpact from '../assets/challenge-brand-impact.webp';
+import brandChallengeInDepth from '../assets/challenge-brand-in-depth.webp';
 import projectB2BProcessNew from '../assets/b2b-flow-audit.svg';
 import OWChallengeHeatmap from '../assets/OW-challenge-heatmap.webp';
-import projectB2BChallenge from '../assets/b2b-challenge.webp';
-import projectB2BProcess from '../assets/b2b-process.webp';
-import projectCollector from '../assets/project-collector-hero.webp';
-import projectCollectorChallenge from '../assets/platform-challenge.webp';
-import projectCollectorProcess from '../assets/direct_to_collector_process_new.webp';
-import projectPortfolio from '../assets/project-portfolio-hero.webp';
-import projectPortfolioChallenge from '../assets/portfolio-challenge.webp';
-import projectPortfolioProcess from '../assets/portfolio-process.webp';
 import projectBrandScalingHero from '../assets/brand-scaling-hero.webp';
-import projectServiceAutomationHero from '../assets/service-automation-hero-new.webp';
 import automationHero from '../assets/automation-hero.webp';
 import decisionNode from '../assets/decision-node.png';
 import reviewAndSign from '../assets/review-and-sign.webp';
 import serviceBlueprint from '../assets/service-blue-print.webp';
-import brandTrustSignals from '../assets/brand-trust-signals.webp';
 
 import projectB2BVideo from '../assets/HeroB2BOW.mp4';
 import projectCandidateVideo from '../assets/hero-candidate-pipeline.mp4';
 import candidateProcessIndepth from '../assets/Canidate-pipeline-process-indepth.webp';
 import candidateChallenge from '../assets/candidate-challenge.webp';
 import candidateOnTheGo from '../assets/candidate-on-the-go.webp';
+import b2bGreetingVar3 from '../assets/main-body-b2b-greeting-page-var3.webp';
+import b2bGreetingVar4 from '../assets/main-body-b2b-greeting-page-var4.webp';
+import b2bGreetingVar8 from '../assets/main-body-b2b-greeting-page-var8-fin.webp';
 
 export const PROJECTS = [
     {
@@ -40,7 +37,8 @@ export const PROJECTS = [
         title: "Brand Scaling & Client Acquisition Platform",
         desc: "A user-centric overhaul of a photographer's portfolio to recapture lost business through improved UX and mobile responsiveness.",
         tags: ["UX/UI Design", "Mobile First", "CMS Integration"],
-        challenge: "The Problem: Categorical Ambiguity. The previous digital presence failed to distinguish between the photographer's disparate disciplines. \"Action\" sports work was diluted by \"Fashion\" editorials, creating a confused brand signal that hindered specialist bookings.",
+        challenge: "Categorical Ambiguity. The previous digital presence failed to distinguish between the photographer's disparate disciplines. High-energy \"Action\" shots of music performances were diluted by \"Fashion\" editorials, creating a confused brand signal that hindered specialist bookings.",
+        challengeImage: brandChallengeImpact,
         role: "End-to-End Product Architecture. Responsible for the strategic taxonomy audit, UI system design, and CMS integration.",
         process: "Systemisation & \"Invisible\" UI.\n\nIA Strategy: Flattened the hierarchy. Users land directly on the category selector, eliminating the \"Mystery Meat\" navigation of the previous site.\n\nVisuals: Adopted a brutalist, utility-first aesthetic. White space is used as an active element to frame the work.\n\nTech: Implemented a high-performance lazy-loading stack to ensure the \"Action\" portfolio loads as fast as the \"Portraits,\" despite the heavy data payload.",
         impact: {
@@ -51,7 +49,19 @@ export const PROJECTS = [
                 { title: "Funnel Optimisation", desc: "Reduced the user journey from \"Landing\" to \"Contact\" by roughly 60% via Category-First Architecture." }
             ]
         },
+        keyTakeaway: {
+            title: "Key Takeaway",
+            description: "My key takeaway from this project is the importance of simplification. The need to use the simplest words to define — so the user don't have to guess or think twice. This builds trust — the crucial part for the business-client relationship.",
+            outcomes: [
+                { title: "Clarity", desc: "Using the simplest words prevents user guessing, reduces cognitive friction and builds instant trust." },
+                { title: "Autonomy", desc: "Client manages updates without developer dependency." },
+                { title: "Speed", desc: "Zero-latency feeling for high-resolution portfolios." }
+            ],
+            image: processBrandAfterLayout,
+            imageCaption: "By strictly separating the portfolio into 'Commercial' and 'Personal' streams, we didn't just organise images — we aligned the digital product with the business model.\n\nStrategic Nuance: The 'Value Multiplier' effect of negative space is industry-dependent. While essential for luxury positioning, density remains a valid strategy for volume-based retail (e.g., marketplaces)."
+        },
         wanderingContent: {
+            challengeImage: brandChallengeInDepth,
             impact: {
                 description: "From Static Repository to Scalable Sales Product. The primary objective was to operationalise the client's digital presence, replacing a passive archive with a commercial engine.",
                 outcomes: [
@@ -60,8 +70,8 @@ export const PROJECTS = [
                     { title: "Revenue Focus", desc: "Replaced the 'dumping ground' approach with commercial logic to actively convert traffic into revenue." }
                 ]
             },
-            challenge: "Information Architecture (IA) Failure. The core business risk was Audience Mismatch.\n\nAn Agency looking for high-speed Action photography viewed the site as \"too static.\"\n\nA Brand looking for Fashion editorials viewed the site as \"too rugged.\"\n\nBy housing these contradictions in a single stream, the portfolio was neutralising its own impact. The technical challenge was to engineer a system that supports high-fidelity imagery (Retina/4K) without compromising the \"instant\" load feel required for mobile retention.",
-            role: "Strategic Segmentation. My role was to enforce the \"Commercial Split.\"\n\nThe Audit: I analysed the client's body of work and defined the four-pillar taxonomy: Portraits, Action, Fashion, Project.\n\nThe Logic: \"Project\" was isolated to house personal/experimental work, ensuring it didn't pollute the commercial conversion funnels of the other three categories.\n\nThe Ops: I designed the backend schema to mirror this structure, ensuring the client cannot accidentally break the design system when uploading new assets.",
+            challenge: "Information Architecture (IA) Failure. The core business risk was Audience Mismatch.\n\nA Brand looking for Fashion editorials viewed the site as \"too rugged.\"\n\nBy housing these contradictions in a single stream, the portfolio was neutralising its own impact. The technical challenge was to engineer a system that supports high-fidelity imagery (Retina/4K) without compromising the \"instant\" load feel required for mobile retention.",
+            role: "Strategic Segmentation & CMS Architecture.\n\nTimeline: 4 Weeks Sprint (3 Weeks Discovery/Design + 1 Week Integration).\n\nThe Consultation: I challenged the client's initial request for high-density grids. Through iterative ideation, I demonstrated that for high-value art, negative space is a 'Value Multiplier,' not empty space. 'More' does not equal 'Better.'\n\nThe Handover: I didn't just deliver a design; I mapped the architecture directly into Contentful CMS. I defined rigid dynamic zones, ensuring the business owner could autonomously scale the portfolio without compromising the visual integrity.",
             roleImage: brandCms,
             process: {
                 type: 'rich',
@@ -72,28 +82,52 @@ export const PROJECTS = [
                     },
                     {
                         type: 'comparison',
-                        bg: 'transparent',
+                        bg: '#1A1A1A',
                         items: [
                             {
                                 title: 'Before: The Obstacle',
                                 desc: 'The previous architecture was a passive "dumping ground" with disparate categories mixed, creating a confused brand signal.',
-                                img: brandFlowChartBefore
+                                img: brandFlowChartBeforeInDepth
                             },
                             {
                                 title: 'After: The Strategy',
                                 desc: 'The Navigation Strategy: We removed the traditional "Home" landing page in favour of immediate directory access. The navigation is persistent and minimal.',
-                                img: brandFlowChartAfter
+                                img: brandFlowChartAfterInDepth
+                            }
+                        ]
+                    },
+                    {
+                        type: 'comparison',
+                        bg: '#1A1A1A',
+                        items: [
+                            {
+                                title: 'Before: High Density Request',
+                                desc: "The client initially pushed for high-density grids, believing that showing more work would lead to more bookings. They equated 'More' with 'Better'.",
+                                img: processBrandBeforeLayout
+                            },
+                            {
+                                title: 'After: The "Value Multiplier"',
+                                desc: "Through iterative ideation, I demonstrated that for high-value art, negative space is a 'Value Multiplier.' We moved to a layout where white space actively frames the work.",
+                                img: processBrandAfterLayout
                             }
                         ]
                     }
                 ]
             },
-            refinement: "Trust Signals: We brought business details (ABN, Contact) to the forefront of the footer hierarchy, subtly reinforcing that this is a commercial entity, not a hobbyist blog."
+            refinement: {
+                outcomesTitle: "Key Takeaway",
+                outcomes: [
+                    { title: "Simplification", desc: "Using the simplest words prevents user guessing and reduces cognitive friction." },
+                    { title: "Trust", desc: "Clarity builds trust, which is the foundational layer of the client relationship." },
+                    { title: "Autonomy", desc: "Mapped the design directly to CMS fields for effortless routine updates." }
+                ],
+                description: "It took me 3 weeks of research, interviews, and 'less is more' consultation to define the grid that would best showcase the art. Once the structure was ready, I spent another week highlighting necessary update zones and translating them into Contentful CMS, ensuring the business owner could manage the platform autonomously."
+            }
         },
         images: [
             projectBrandScalingHero,
             brandChallengeV2,
-            brandFlowChartAfter,
+            brandFlowChartAfterImpact,
             brandTrustSignals
         ]
     },
@@ -114,6 +148,15 @@ export const PROJECTS = [
                 { title: "The Validation", desc: "Identified 3 critical \"Drop-off Points\" where users abandon the process due to anxiety." }
             ]
         },
+        keyTakeaway: {
+            title: "Key Takeaway",
+            description: "The shift from 'Finding Jobs' to 'Managing Anxiety' proved that utility drives retention better than novelty. Addressing the emotional state of the user created a stickier product.",
+            outcomes: [
+                { title: "Mental Model", desc: "Aligned the tool with the user's actual status." },
+                { title: "Retention", desc: "Users stay for the utility, not just the job listings." },
+                { title: "Trust", desc: "Transparency and feedback loops build long-term confidence." }
+            ]
+        },
         wanderingContent: {
             challenge: "The \"Spreadsheet of Doom\" Phenomenon. Qualitative research exposed a universal pain point: the \"Manual Tax.\"\n\nCognitive Overload: Users reported high anxiety when asked, \"Where did you apply last week?\" because the data was scattered.\n\nThe Feedback Void: The lack of status updates from companies creates an \"Open Loop\" in the user's mind. Existing tools don't close this loop; they just list it. The challenge was to design a system that captures this data automatically or with zero friction, acknowledging that unemployed users have low motivation for data entry.",
             role: "From Ambiguity to Architecture. My role was to bring structure to a chaotic problem space.\n\nDiscovery: I didn't start with UI. I started with Mental Models. I conducted diary studies to map the emotional highs and lows of a 3-month job search.\n\nSynthesis: I translated raw qualitative data into actionable \"How Might We\" statements that formed the backlog for the design phase.",
@@ -129,7 +172,7 @@ export const PROJECTS = [
             },
             impact: {
                 outcomesTitle: "Key Discoveries",
-                description: "Defining the Unmet Need. The hypothesis was that candidates needed a better way to find roles, but data disproved this.\n\nThe real problem was \"Application Amnesia\"—users apply to so many roles across disparate platforms that they lose track of follow-ups.",
+                description: "Defining the Unmet Need. The hypothesis was that candidates needed a better way to find roles, but data disproved this.\n\nThe real problem was \"Application Amnesia\" — users apply to so many roles across disparate platforms that they lose track of follow-ups.",
                 outcomes: [
                     { title: "The Pivot", desc: "Research shifted the product vision from a generic 'Job Board' to a \"Personal CRM for Careers\"." },
                     { title: "The Crash Point", desc: "Motivation crashes 2 weeks after applying if no response is received. The system must intervene here." },
@@ -143,27 +186,64 @@ export const PROJECTS = [
     {
         id: 1,
         title: "Optimising B2B Workflow & Retention",
-        desc: "Optimizing complex data tables for mobile viewports without losing fidelity.",
+        desc: "Optimising complex data tables for mobile viewports without losing fidelity.",
         tags: ["Mobile First", "Data Viz", "Figma"],
         challenge: "Environmental Mismatch. The legacy mobile interface was not optimised for the physical constraints of the checkout line. Critical payment assets (Digital Card, Barcode) were buried below the fold, forcing users to \"thumb-scroll\" while under pressure at the register. This created measurable friction and delay at the point of revenue capture.",
         role: "Mobile Strategy & Heuristic Audit. Lead UX Designer responsible for auditing the \"In-Store\" user journey and restructuring the mobile Information Architecture (IA) to support \"On-the-Go\" utility.",
-        process: "Architecture Inversion.\n\nThe Pivot: Migrated from a list-based hierarchy to a \"Header-First\" utility model.\n\nThe Execution: Pulled the Digital Card out of the content stream and pinned it to the top viewport.\n\nThe Result: Transformed the user flow from a \"Hunt\" (Login > Scroll > Find > Tap) to a \"Reflex\" (Login > Tap).",
+        process: {
+            type: 'rich',
+            sections: [
+                {
+                    type: 'text',
+                    content: "Architecture Inversion.\n\nThe Pivot: Migrated from a list-based hierarchy to a \"Header-First\" utility model.\n\nThe Execution: Pulled the Digital Card out of the content stream and pinned it to the top viewport.\n\nThe Result: Transformed the user flow from a \"Hunt\" (Login > Scroll > Find > Tap) to a \"Reflex\" (Login > Tap).",
+                    image: projectB2BProcessNew
+                },
+                {
+                    type: 'gallery',
+                    items: [b2bGreetingVar3, b2bGreetingVar4, b2bGreetingVar8]
+                }
+            ]
+        },
         impact: {
-            description: "Eliminating POS Latency. Transformed the dashboard into a \"Zero-Scroll\" Utility Interface. By prioritizing high-frequency data and elevating the digital payment card, we reduced time-to-pay by ~8 seconds per transaction.",
+            description: "Retention through Friction Reduction. Minor conveniences make a huge impact on how people feel in a stressful environment. The ability of a business to address these anxieties creates retention and puts the business in a growth position.",
             outcomes: [
-                { title: "Transaction Velocity", desc: "Reduced queue friction for trade customers." },
-                { title: "Staff Efficiency", desc: "Faster processing at the Point of Sale (POS), reducing checkout congestion during peak trade hours." }
+                { title: "Retention Strategy", desc: "Loyal customers spread the word as well as bringing money in." },
+                { title: "Growth Position", desc: "Removing 'Manual Tax' allows business owners to focus on trade, not admin." },
+                { title: "Operational Efficiency", desc: "Faster processing at the Point of Sale reducs checkout congestion." }
+            ]
+        },
+        keyTakeaway: {
+            title: "Key Takeaway",
+            description: "Presenting this project to the Customer Experience (CX) team served as a cross-functional validation of the methodology. Use frictionless design to solve business problems.",
+            outcomes: [
+                { title: "Validation", desc: "Recognised by the CX team for strategic alignment." },
+                { title: "Benchmark", desc: "Serves as a model for user-led design in retail." },
+                { title: "Performance", desc: "Proves micro-optimisations drive retention." }
             ]
         },
         wanderingContent: {
-            process: "Execution Logic: The \"Digital Wallet\" Mental Model.\n\n1. Designing for Reflex: The goal was to eliminate cognitive load. In a high-pressure environment (the queue), users shouldn't have to think. I redesigned the header to function like a physical wallet—when you open it, the card is right there.\n\n2. The Two-Step Action: I streamlined the interaction cost down to the absolute minimum: Log In → Scan.\n\n3. Data Visibility: By placing the Account ID and Credit Limit immediately in the viewport, we provided \"Confidence Signals.\" The user knows instantly before they reach the counter if they have enough credit, preventing embarrassed declines and further speeding up the workflow.",
-            role: "Auditing the Physical Environment. My role extended beyond the screen. I analysed the Situational Context of the transaction.\nThe Audit: I identified that the \"Information Hierarchy\" was inverted—low-value data (recent orders) was pushing high-value data (payment card) off the screen.\nThe Strategy: I championed a \"Zero-Scroll\" Philosophy. I established a design rule that no transactional asset (Barcode, Credit Limit, Account ID) should ever require a swipe gesture to access.",
-            challenge: "Diagnosing the \"Checkout Gap\". B2B customers rely on 30-day credit accounts to separate business purchasing from personal expenses. This is a utility-driven behavior.\n\nHowever, the existing mobile architecture failed the \"One-Handed Heuristic.\" Traders on a job site or in a store often have only one hand free. The requirement to scroll and navigate through a dense list to find their Account ID or Barcode created a \"Friction Trap.\" The anxiety of holding up the queue caused users to fumble, damaging the perceived efficiency of the B2B service. The challenge was to respect the user's time by making the payment credential instantly accessible.",
-            impact: {
-                description: "Contextual Optimisation: From \"Browsing\" to \"Transacting\". The previous mobile layout treated the user as a \"Browser\" (someone sitting and reading), whereas the actual user was a \"Trader\" (someone standing in a queue, holding supplies, needing to pay instantly).",
+            challenge: "The 'Weekend Project' & The Anxiety of the Checkout.\n\nAs a business owner myself, coming to the store with family was a stressful experience. With separate shopping lists in both hands, I felt anxious—what if I forget something important? What if they ran out of ink?\n\nSo every time I approach the cashier, I split the items: 'House needs' vs 'Business needs'. Then the cashier asks: 'How would you like to pay?'\n\n- 'This goes first (business)... give me a second...'\n\nI run through my phone to find the site, find the business card... meanwhile kids are adding snacks... 'Sorry, I need to find the card... put it back darling... yes they are cute but we don't need erasers now.'\n\nIt’s a high-stress environment where digital friction becomes personal embarrassment.",
+            role: "Proactive Problem Solving.\n\nI discovered the app only by working there. I realised I’m not the only one unwilling to download an app for every store. I sat down and thought: what if I take over this specific account page logic and bring the card and all important info 'Above the Fold'?",
+            process: {
+                type: 'rich',
+                sections: [
+                    {
+                        type: 'text',
+                        content: 'The Solution: Priority Architecture.\n\nEverything crucial had to be immediately accessible. I reorganised the hierarchy so the account profile and digital card sat side-by-side above the fold, with the thirty-day credit limit and tracking details flowing naturally underneath. This ensured no digging and no searching while people waited behind in the queue.'
+                    },
+                    {
+                        type: 'gallery',
+                        items: [b2bGreetingVar3, b2bGreetingVar4, b2bGreetingVar8]
+                    }
+                ]
+            },
+            refinement: {
+                description: "Presenting this project to the Customer Experience (CX) team served as a cross-functional validation of the methodology. The design was recognised not just for its execution, but for its strategic alignment with the broader CX vision.\n\nWhile implementation within the digital roadmap requires long-term scheduling, the project now serves as a benchmark for how user-led design can address systemic frictions. It demonstrates that micro-optimisations are not merely \"nice-to-haves\" but are critical drivers of commercial performance and user retention.",
+                outcomesTitle: "Key Takeaway",
                 outcomes: [
-                    { title: "The Digital Wallet", desc: "By inverting the hierarchy and treating the mobile view as a Digital Wallet rather than a website, I removed the cognitive load of \"searching\" for payment details." },
-                    { title: "Operational Throughput", desc: "This seemingly small UI shift had a compound effect on operational throughput at the checkout counter." }
+                    { title: "Cross-Functional Validation", desc: "Recognised by the CX team for strategic alignment with the broader vision." },
+                    { title: "Strategic Benchmark", desc: "Serves as a model for how user-led design addresses systemic frictions." },
+                    { title: "Commercial Driver", desc: "Proves micro-optimisations are critical drivers of performance and retention." }
                 ]
             }
         },
@@ -194,6 +274,15 @@ export const PROJECTS = [
                 { title: "The Shift", desc: "We replaced a high-touch \"Phone Tag\" model with a \"Tentative Contract\" System, allowing users to book and agree to terms digitally without staff intervention." },
                 { title: "Risk Reduction", desc: "The digital agreement model cut payment disputes by 90%." },
                 { title: "Growth Signal", desc: "The frictionless flow drove a 36% revenue increase and reduced bounce rates by 28%." }
+            ]
+        },
+        keyTakeaway: {
+            title: "Key Takeaway",
+            description: "Automating the 'Trust Contract' removed the manual bottleneck, allowing the business to scale without increasing headcount.",
+            outcomes: [
+                { title: "Scalability", desc: "Revenue decoupled from owner's time." },
+                { title: "Efficiency", desc: "Eliminated 90% of admin hours." },
+                { title: "Clarity", desc: "Digital terms eliminated payment disputes." }
             ]
         },
         wanderingContent: {
