@@ -127,6 +127,8 @@ const ProjectDetail = ({ mode, playSound }) => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [slug]);
 
+    const [isStackExpanded, setIsStackExpanded] = useState(false);
+
     // --- LIGHTBOX KEYBOARD CONTROL ---
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -248,8 +250,8 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 <p className={`font-lato text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.challenge}</p>
                             </div>
                             {challengeImage && (
-                                <div className={`w-full h-full min-h-[300px] overflow-hidden shadow-sm order-1 md:order-2 ${theme.bg} p-[30px] cursor-zoom-in`} onClick={() => setSelectedImage(challengeImage)}>
-                                    <img src={challengeImage} alt="Challenge Detail" draggable="false" className={`w-full h-full object-cover hover:scale-105 transition-transform duration-700 ${!isWandering ? 'mix-blend-multiply' : ''}`} />
+                                <div className={`w-full h-full min-h-[300px] overflow-hidden order-1 md:order-2 bg-transparent cursor-zoom-in`} onClick={() => setSelectedImage(challengeImage)}>
+                                    <img src={challengeImage} alt="Challenge Detail" draggable="false" className={`w-full h-full object-cover hover:scale-105 transition-transform duration-700`} />
                                 </div>
                             )}
                         </div>
@@ -404,7 +406,63 @@ const ProjectDetail = ({ mode, playSound }) => {
 
                         <div className="w-full h-[0.5px] bg-[#D0CECB] my-8"></div>
 
-                        {displayContent.keyTakeaway.image ? (
+                        {displayContent.keyTakeaway.stackedImages ? (
+                            <div className="mt-12 w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                                {/* Stacked Images Container */}
+                                <div
+                                    className={`relative w-full aspect-[4/3] group perspective-1000 order-1 ${isStackExpanded ? 'stack-expanded' : ''}`}
+                                    onMouseLeave={() => setIsStackExpanded(false)}
+                                >
+                                    {displayContent.keyTakeaway.stackedImages.map((img, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="absolute inset-0 w-full h-full transition-all duration-700 ease-out cursor-pointer"
+                                            style={{
+                                                zIndex: displayContent.keyTakeaway.stackedImages.length - idx,
+                                            }}
+                                            onClick={(e) => {
+                                                // Check for touch device/no-hover
+                                                const isTouch = window.matchMedia('(hover: none)').matches;
+                                                if (isTouch && !isStackExpanded) {
+                                                    e.stopPropagation();
+                                                    setIsStackExpanded(true);
+                                                } else {
+                                                    setSelectedImage(img.src);
+                                                }
+                                            }}
+                                        >
+                                            {/* We use a local style block to handle the hover state for this specific index */}
+                                            <style>{`
+                                                .group:hover .stack-img-${idx}, .stack-expanded .stack-img-${idx} {
+                                                    transform: rotate(${img.rotate}deg) translateX(${idx * 10}px);
+                                                }
+                                             `}</style>
+                                            <img
+                                                src={img.src}
+                                                alt={img.alt}
+                                                className={`w-full h-full object-contain drop-shadow-xl bg-transparent transition-transform duration-700 ease-out stack-img-${idx}`}
+                                                style={{ transformOrigin: 'bottom right' }}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="order-2 flex flex-col gap-8 text-left">
+                                    {displayContent.keyTakeaway.description && (
+                                        <div className={`font-lato text-lg leading-relaxed ${theme.text}`}>
+                                            {displayContent.keyTakeaway.description}
+                                        </div>
+                                    )}
+                                    {displayContent.keyTakeaway.imageCaption && (
+                                        <div className={`font-lato text-base italic ${theme.subText} flex flex-col gap-4`}>
+                                            {displayContent.keyTakeaway.imageCaption.split('\n\n').map((paragraph, index) => (
+                                                <p key={index}>{paragraph}</p>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        ) : displayContent.keyTakeaway.image ? (
                             <div className="mt-12 w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                                 <div
                                     className="w-full overflow-hidden cursor-zoom-in order-1"
@@ -437,76 +495,103 @@ const ProjectDetail = ({ mode, playSound }) => {
                                     {displayContent.keyTakeaway.description}
                                 </div>
                             )
-                        )}
+                        )
+                        }
                     </div>
                 )}
 
                 {/* Section 4: Refinement (Constrained) */}
                 {/* Section 4: Refinement */}
-                {displayContent.refinement && isWandering && (
-                    <div className="w-full">
-                        {typeof displayContent.refinement === 'object' ? (
-                            <div className="w-full max-w-7xl mx-auto px-6 text-center py-12">
-                                <div className={`w-full h-px ${isWandering ? 'bg-[#FDFBF7]/20' : 'bg-[#1A1A1A]/20'} mb-8`}></div>
+                {
+                    displayContent.refinement && isWandering && (
+                        <div className="w-full">
+                            {typeof displayContent.refinement === 'object' ? (
+                                <div className="w-full max-w-7xl mx-auto px-6 text-center py-12">
+                                    <div className={`w-full h-px ${isWandering ? 'bg-[#FDFBF7]/20' : 'bg-[#1A1A1A]/20'} mb-8`}></div>
 
-                                <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-[#C25E00] mb-8">
-                                    {displayContent.refinement.outcomesTitle || "Key Takeaway"}
-                                </h4>
+                                    <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-[#C25E00] mb-8">
+                                        {displayContent.refinement.outcomesTitle || "Key Takeaway"}
+                                    </h4>
 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-24 w-full max-w-7xl mx-auto">
-                                    {displayContent.refinement.outcomes && displayContent.refinement.outcomes.map((outcome, i) => (
-                                        <div key={i} className="text-left flex flex-col gap-2">
-                                            <h5 className={`font-playfair text-xl italic font-bold ${theme.text}`}>{outcome.title}</h5>
-                                            <p className={`font-lato text-base ${theme.subText}`}>{outcome.desc}</p>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <div className={`w-full h-px ${isWandering ? 'bg-[#FDFBF7]/20' : 'bg-[#1A1A1A]/20'} my-8`}></div>
-
-                                {displayContent.refinement.description && (
-                                    <div className={`grid ${project.images && project.images[3] ? 'grid-cols-1 md:grid-cols-2 gap-12' : 'grid-cols-1'} items-center`}>
-                                        <div className="font-lato text-lg leading-relaxed text-left order-2 md:order-1">
-                                            {displayContent.refinement.description.split('\n\n').map((part, index) => (
-                                                <p key={index} className={`${index === 1 ? 'text-[#A2A19F]' : theme.text} ${index > 0 ? 'mt-8' : ''}`}>
-                                                    {part}
-                                                </p>
-                                            ))}
-                                        </div>
-                                        {project.images && project.images[3] && (
-                                            <div
-                                                className={`w-full h-auto overflow-hidden shadow-sm order-1 md:order-2 ${theme.imagePlaceholderBg} cursor-zoom-in`}
-                                                onClick={() => setSelectedImage(project.images[3])}
-                                            >
-                                                <img
-                                                    src={project.images[3]}
-                                                    alt="Refinement Detail"
-                                                    draggable="false"
-                                                    className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700"
-                                                />
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-24 w-full max-w-7xl mx-auto">
+                                        {displayContent.refinement.outcomes && displayContent.refinement.outcomes.map((outcome, i) => (
+                                            <div key={i} className="text-left flex flex-col gap-2">
+                                                <h5 className={`font-playfair text-xl italic font-bold ${theme.text}`}>{outcome.title}</h5>
+                                                <p className={`font-lato text-base ${theme.subText}`}>{outcome.desc}</p>
                                             </div>
-                                        )}
+                                        ))}
                                     </div>
-                                )}
-                            </div>
-                        ) : (
-                            <div className={`w-full max-w-6xl mx-auto px-6 grid ${project.images && project.images[3] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
-                                <div className="order-2 md:order-1">
-                                    <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>
-                                        {displayContent.refinement.split(': ')[0] && <span className="block font-lato text-xs font-bold uppercase tracking-[0.15em] text-[#C25E00] mb-8">{displayContent.refinement.split(': ')[0]}</span>}
-                                        {displayContent.refinement.includes(': ') ? displayContent.refinement.split(': ').slice(1).join(': ') : displayContent.refinement}
-                                    </p>
+
+                                    <div className={`w-full h-px ${isWandering ? 'bg-[#FDFBF7]/20' : 'bg-[#1A1A1A]/20'} my-8`}></div>
+
+                                    {displayContent.refinement.description && (
+                                        <div className={`grid ${project.images && project.images[3] ? 'grid-cols-1 md:grid-cols-2 gap-12' : 'grid-cols-1'} items-center`}>
+                                            <div className="font-lato text-lg leading-relaxed text-left order-2 md:order-1">
+                                                {displayContent.refinement.description.split('\n\n').map((part, index) => (
+                                                    <p key={index} className={`${index === 1 ? 'text-[#A2A19F]' : theme.text} ${index > 0 ? 'mt-8' : ''}`}>
+                                                        {part}
+                                                    </p>
+                                                ))}
+                                            </div>
+                                            {project.images && project.images[3] && (
+                                                <div
+                                                    className="w-full h-auto order-1 md:order-2 bg-transparent cursor-zoom-in relative group"
+                                                    onClick={() => setSelectedImage(project.images[3])}
+                                                >
+                                                    <style>{`
+                                                        .scribble-path {
+                                                            stroke-dasharray: 1000;
+                                                            stroke-dashoffset: 1000;
+                                                            transition: stroke-dashoffset 0.8s ease-out;
+                                                        }
+                                                        .group:hover .scribble-path {
+                                                            stroke-dashoffset: 0;
+                                                        }
+                                                    `}</style>
+                                                    <img
+                                                        src={project.images[3]}
+                                                        alt="Refinement Detail"
+                                                        draggable="false"
+                                                        className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700"
+                                                    />
+                                                    {/* Burnt orange oval highlight for ABN numbers */}
+                                                    <div className="absolute bottom-2 -left-12 w-56 h-12 pointer-events-none z-10 opacity-90">
+                                                        <svg viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full rotate-[-2deg]">
+                                                            <path
+                                                                d="M10 30 C 10 10 190 10 190 30 C 190 50 10 50 10 30 M 15 32 C 15 15 185 15 185 30"
+                                                                stroke="#C25E00"
+                                                                strokeWidth="3"
+                                                                strokeLinecap="round"
+                                                                fill="none"
+                                                                className="scribble-path"
+                                                            />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
-                                {project.images && project.images[3] && (
-                                    <div className={`w-full h-auto overflow-hidden shadow-sm order-1 md:order-2 ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[3])}>
-                                        <img src={project.images[3]} alt="Refinement Detail" draggable="false" className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700" />
+                            ) : (
+                                <div className={`w-full max-w-6xl mx-auto px-6 grid ${project.images && project.images[3] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
+                                    <div className="order-2 md:order-1">
+                                        <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>
+                                            {displayContent.refinement.split(': ')[0] && <span className="block font-lato text-xs font-bold uppercase tracking-[0.15em] text-[#C25E00] mb-8">{displayContent.refinement.split(': ')[0]}</span>}
+                                            {displayContent.refinement.includes(': ') ? displayContent.refinement.split(': ').slice(1).join(': ') : displayContent.refinement}
+                                        </p>
                                     </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
-                )}
+                                    {project.images && project.images[3] && (
+                                        <div className={`w-full h-auto overflow-hidden shadow-sm order-1 md:order-2 ${theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[3])}>
+                                            <img src={project.images[3]} alt="Refinement Detail" draggable="false" className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700" />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    )
+                }
             </div>
+                )}
 
             {/* Bottom Navigation (Explore Others) */}
             <div className={`w-full py-12 px-6 mt-12 ${theme.projectSectionBg}`}>
@@ -525,21 +610,23 @@ const ProjectDetail = ({ mode, playSound }) => {
                         ))}
                     </div>
                 </div>
-            </div>
+            </div >
 
 
 
             {/* Lightbox Overlay */}
-            {selectedImage && (
-                <Lightbox
-                    src={selectedImage}
-                    onClose={() => setSelectedImage(null)}
-                    isWandering={isWandering}
-                    theme={theme}
-                    key={selectedImage}
-                />
-            )}
-        </div>
+            {
+                selectedImage && (
+                    <Lightbox
+                        src={selectedImage}
+                        onClose={() => setSelectedImage(null)}
+                        isWandering={isWandering}
+                        theme={theme}
+                        key={selectedImage}
+                    />
+                )
+            }
+        </div >
     );
 };
 

@@ -10,6 +10,9 @@ import brandFlowChartAfterImpact from '../assets/process-brand-flow-chart-after-
 import brandFlowChartAfterInDepth from '../assets/process-brand-flow-chart-after-in-depth.webp';
 import processBrandBeforeLayout from '../assets/process-brand-before-layout.png';
 import processBrandAfterLayout from '../assets/process-brand-after-layout.png';
+import processBrandKeyTakeaway1 from '../assets/process-brand-keytakeaway-1.webp';
+import processBrandKeyTakeaway2 from '../assets/process-brand-keytakeaway-2.webp';
+import processBrandKeyTakeaway3 from '../assets/process-brand-keytakeaway-3.webp';
 import projectB2BNew from '../assets/b2b-hero-v2.webp';
 import brandChallengeV2 from '../assets/brand-challenge-v2.webp';
 import brandChallengeImpact from '../assets/challenge-brand-impact.webp';
@@ -51,13 +54,19 @@ export const PROJECTS = [
         },
         keyTakeaway: {
             title: "Key Takeaway",
-            description: "My key takeaway from this project is the importance of simplification. The need to use the simplest words to define — so the user don't have to guess or think twice. This builds trust — the crucial part for the business-client relationship.",
+            description: "I also discovered the importance of explicit trust signals, such as displaying an ABN number. These details validiate the business's legitimacy and remove doubt.\n\nMy key takeaway from this project is the importance of simplification. The need to use the simplest words to define - so the user don't have to guess or think twice. This builds trust - the crucial part for the business-client relationship.",
             outcomes: [
-                { title: "Clarity", desc: "Using the simplest words prevents user guessing, reduces cognitive friction and builds instant trust." },
-                { title: "Autonomy", desc: "Client manages updates without developer dependency." },
-                { title: "Speed", desc: "Zero-latency feeling for high-resolution portfolios." }
+                { title: "Simplification", desc: "The need to use the simplest words to define." },
+                { title: "Clarity", desc: "Ensuring the user doesn't have to guess or think twice." },
+                { title: "Trust", desc: "The crucial part for the business-client relationship." }
             ],
-            image: processBrandAfterLayout,
+            image: processBrandKeyTakeaway1,
+            stackedImages: [
+                { src: processBrandKeyTakeaway1, alt: "Primary View", rotate: 0 },
+                { src: processBrandAfterLayout, alt: "Layer 1", rotate: 20 },
+                { src: processBrandKeyTakeaway2, alt: "Layer 2", rotate: 40 },
+                { src: processBrandKeyTakeaway3, alt: "Layer 3", rotate: 60 }
+            ],
             imageCaption: "By strictly separating the portfolio into 'Commercial' and 'Personal' streams, we didn't just organise images — we aligned the digital product with the business model.\n\nStrategic Nuance: The 'Value Multiplier' effect of negative space is industry-dependent. While essential for luxury positioning, density remains a valid strategy for volume-based retail (e.g., marketplaces)."
         },
         wanderingContent: {
@@ -117,11 +126,11 @@ export const PROJECTS = [
             refinement: {
                 outcomesTitle: "Key Takeaway",
                 outcomes: [
-                    { title: "Simplification", desc: "Using the simplest words prevents user guessing and reduces cognitive friction." },
-                    { title: "Trust", desc: "Clarity builds trust, which is the foundational layer of the client relationship." },
-                    { title: "Autonomy", desc: "Mapped the design directly to CMS fields for effortless routine updates." }
+                    { title: "Simplification", desc: "The need to use the simplest words to define." },
+                    { title: "Clarity", desc: "Ensuring the user doesn't have to guess or think twice." },
+                    { title: "Trust", desc: "The crucial part for the business-client relationship." }
                 ],
-                description: "It took me 3 weeks of research, interviews, and 'less is more' consultation to define the grid that would best showcase the art. Once the structure was ready, I spent another week highlighting necessary update zones and translating them into Contentful CMS, ensuring the business owner could manage the platform autonomously."
+                description: "I also discovered the importance of explicit trust signals, such as displaying an ABN number. These details validiate the business's legitimacy and remove doubt.\n\nMy key takeaway from this project is the importance of simplification. The need to use the simplest words to define - so the user don't have to guess or think twice. This builds trust - the crucial part for the business-client relationship."
             }
         },
         images: [
