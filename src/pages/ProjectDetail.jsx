@@ -250,7 +250,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 <p className={`font-lato text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.challenge}</p>
                             </div>
                             {challengeImage && (
-                                <div className={`w-full h-full min-h-[300px] overflow-hidden order-1 md:order-2 bg-transparent cursor-zoom-in`} onClick={() => setSelectedImage(challengeImage)}>
+                                <div className={`w-full h-full min-h-[300px] order-1 md:order-2 bg-transparent cursor-zoom-in`} onClick={() => setSelectedImage(challengeImage)}>
                                     <img src={challengeImage} alt="Challenge Detail" draggable="false" className={`w-full h-full object-cover hover:scale-105 transition-transform duration-700`} />
                                 </div>
                             )}
@@ -356,7 +356,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                         {section.items.map((img, i) => (
                                             <div
                                                 key={i}
-                                                className={`w-full md:w-64 aspect-auto overflow-hidden shadow-sm ${isWandering ? 'bg-[#1A1A1A]' : 'bg-white'} cursor-zoom-in group`}
+                                                className={`w-full md:w-64 aspect-auto overflow-hidden shadow-sm ${isWandering ? 'bg-[#1A1A1A]' : 'bg-white'} cursor-zoom-in group relative`}
                                                 onClick={() => setSelectedImage(img)}
                                             >
                                                 <img
@@ -423,9 +423,9 @@ const ProjectDetail = ({ mode, playSound }) => {
                                             onClick={(e) => {
                                                 // Check for touch device/no-hover
                                                 const isTouch = window.matchMedia('(hover: none)').matches;
-                                                if (isTouch && !isStackExpanded) {
+                                                if (isTouch) {
                                                     e.stopPropagation();
-                                                    setIsStackExpanded(true);
+                                                    setIsStackExpanded(!isStackExpanded); // Toggle animation on tap, no zoom
                                                 } else {
                                                     setSelectedImage(img.src);
                                                 }
@@ -591,7 +591,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                     )
                 }
             </div>
-                )}
+
 
             {/* Bottom Navigation (Explore Others) */}
             <div className={`w-full py-12 px-6 mt-12 ${theme.projectSectionBg}`}>
