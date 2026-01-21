@@ -206,10 +206,6 @@ export const PROJECTS = [
                     type: 'text',
                     content: "Architecture Inversion.\n\nThe Pivot: Migrated from a list-based hierarchy to a \"Header-First\" utility model.\n\nThe Execution: Pulled the Digital Card out of the content stream and pinned it to the top viewport.\n\nThe Result: Transformed the user flow from a \"Hunt\" (Login > Scroll > Find > Tap) to a \"Reflex\" (Login > Tap).",
                     image: projectB2BProcessNew
-                },
-                {
-                    type: 'gallery',
-                    items: [b2bGreetingVar3, b2bGreetingVar4, b2bGreetingVar8]
                 }
             ]
         },
@@ -239,10 +235,6 @@ export const PROJECTS = [
                     {
                         type: 'text',
                         content: 'The Solution: Priority Architecture.\n\nEverything crucial had to be immediately accessible. I reorganised the hierarchy so the account profile and digital card sat side-by-side above the fold, with the thirty-day credit limit and tracking details flowing naturally underneath. This ensured no digging and no searching while people waited behind in the queue.'
-                    },
-                    {
-                        type: 'gallery',
-                        items: [b2bGreetingVar3, b2bGreetingVar4, b2bGreetingVar8]
                     }
                 ]
             },
