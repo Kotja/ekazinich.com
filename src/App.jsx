@@ -94,6 +94,33 @@ const App = () => {
         {/* Mode Switcher Group */}
         <div className={`pointer-events-auto flex md:flex-col items-center gap-2 md:mt-24 order-2 md:order-1 flex-shrink-0 relative transition-all duration-300 ${isOnboardingVisible ? 'z-[105]' : 'z-auto'}`}>
           <div className="flex md:flex-col items-center gap-2 md:mb-8 relative group/mode">
+            {/* Mobile/Tablet Oval around toggle buttons - only when onboarding is visible */}
+            {isOnboardingVisible && (
+              <span className="md:hidden absolute -inset-x-8 -inset-y-6 pointer-events-none z-10">
+                <svg viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                  <style>{`
+                    .mobile-toggle-oval {
+                      stroke-dasharray: 1000;
+                      stroke-dashoffset: 1000;
+                      animation: drawMobileToggleOval 1.2s ease-out 0.5s forwards;
+                    }
+                    @keyframes drawMobileToggleOval {
+                      to {
+                        stroke-dashoffset: 0;
+                      }
+                    }
+                  `}</style>
+                  <path
+                    d="M10 50 C 10 20 190 20 190 50 C 190 80 10 80 10 50 M 15 52 C 15 25 185 25 185 50"
+                    stroke="#C25E00"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    fill="none"
+                    className="mobile-toggle-oval"
+                  />
+                </svg>
+              </span>
+            )}
 
             {/* Focus Mode Button -> Impact Mode */}
             <div className="relative group/btn">
@@ -122,14 +149,43 @@ const App = () => {
                 onClick={() => { setMode('wandering'); playSound('mode'); }}
                 aria-label="In-Depth Mode"
               />
-              {/* Desktop Tooltip */}
-              <span className={`hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-[9px] tracking-widest uppercase transition-all duration-300 pointer-events-none 
+              {/* Desktop Tooltip - positioned absolutely to prevent layout shifts */}
+              <span className={`hidden md:block absolute right-full top-1/2 -translate-y-1/2 whitespace-nowrap text-[9px] tracking-widest uppercase transition-all duration-300 pointer-events-none 
                 ${isOnboardingVisible
                   ? 'opacity-100 bg-[#FDFBF7] text-[#E6944C] px-5 py-3 rounded-full font-bold shadow-lg leading-none'
                   : 'opacity-0 group-hover/btn:opacity-100 text-[#E6944C]'
-                }`}>
+                }`}
+                style={{ marginRight: '1rem' }}>
                 In-Depth Mode
               </span>
+              {/* Animated oval highlight - only when onboarding is visible on desktop */}
+              {/* Enlarged and centered oval: encompasses both tooltip and button */}
+              {isOnboardingVisible && (
+                <span className="hidden md:block absolute top-1/2 -translate-y-1/2 pointer-events-none z-10" style={{ right: '-36px', width: '250px', height: '120px' }}>
+                  <svg viewBox="0 0 500 240" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                    <style>{`
+                      .desktop-menu-oval {
+                        stroke-dasharray: 1800;
+                        stroke-dashoffset: 1800;
+                        animation: drawDesktopMenuOval 1.2s ease-out 0.5s forwards;
+                      }
+                      @keyframes drawDesktopMenuOval {
+                        to {
+                          stroke-dashoffset: 0;
+                        }
+                      }
+                    `}</style>
+                    <path
+                      d="M25 120 C 25 45 475 45 475 120 C 475 195 25 195 25 120 M 30 122 C 30 50 470 50 470 120"
+                      stroke="#C25E00"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      fill="none"
+                      className="desktop-menu-oval"
+                    />
+                  </svg>
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -161,12 +217,12 @@ const App = () => {
               >
                 {/* Desktop Label Logic */}
                 <span className="cursor-pointer hidden md:block transition-all duration-500 origin-right">
-                  {mode === 'wandering' && menuHover !== item ? initial : item}
+                  {item}
                 </span>
 
                 {/* Mobile Label Logic */}
                 <span className="md:hidden block text-[10px] xs:text-xs">
-                  {mode === 'wandering' ? initial : item}
+                  {item}
                 </span>
 
                 {/* Active/Hover Dot - Repositioned to be clearly visible outside the tight padding */}
