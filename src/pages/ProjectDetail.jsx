@@ -593,8 +593,8 @@ const ProjectDetail = ({ mode, playSound }) => {
                             </div>
                         ) : null}
                         <div>
-                            <h3 className="font-playfair text-3xl mb-4 text-[#C25E00]">The Process</h3>
-                            <p className={`font-lato text-lg leading-relaxed max-w-[600px] ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.process}</p>
+                            <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] text-center md:text-left">The Process</h3>
+                            <p className={`font-lato text-lg leading-relaxed max-w-[600px] mx-auto md:mx-0 text-left ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.process}</p>
                         </div>
                     </div>
                 )}
@@ -677,7 +677,7 @@ const ProjectDetail = ({ mode, playSound }) => {
 
                                 <div className="order-2 flex flex-col gap-8 text-left">
                                     {displayContent.keyTakeaway.description && (
-                                        <div className={`font-lato text-lg leading-relaxed max-w-[600px] ${theme.text}`}>
+                                        <div className={`font-lato text-lg leading-relaxed max-w-[600px] text-left ${theme.text}`}>
                                             {displayContent.keyTakeaway.description}
                                         </div>
                                     )}
