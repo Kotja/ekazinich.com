@@ -350,7 +350,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                             )}
                             <div className={`${displayContent.roleImage ? 'order-1 md:order-2 text-left' : 'max-w-4xl mx-auto'}`}>
                                 <h3 className={`font-playfair text-3xl mb-4 ${theme.text}`}>My Role</h3>
-                                <p className={`font-lato text-lg leading-relaxed max-w-[600px] ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.role}</p>
+                                <p className={`font-lato text-lg leading-relaxed max-w-[600px] mx-auto ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.role}</p>
                             </div>
                         </div>
                     ) : (
@@ -677,8 +677,8 @@ const ProjectDetail = ({ mode, playSound }) => {
 
                                 <div className="order-2 flex flex-col gap-8 text-left">
                                     {displayContent.keyTakeaway.description && (
-                                        <div className={`font-lato text-lg leading-relaxed ${theme.text}`}>
-                                            <span className="max-w-[600px] block">{displayContent.keyTakeaway.description}</span>
+                                        <div className={`font-lato text-lg leading-relaxed max-w-[600px] ${theme.text}`}>
+                                            {displayContent.keyTakeaway.description}
                                         </div>
                                     )}
                                     {displayContent.keyTakeaway.imageCaption && (
@@ -704,8 +704,8 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 </div>
                                 <div className="order-2 flex flex-col gap-8 text-left">
                                     {displayContent.keyTakeaway.description && (
-                                        <div className={`font-lato text-lg leading-relaxed ${theme.text}`}>
-                                            <span className="max-w-[600px] block">{displayContent.keyTakeaway.description}</span>
+                                        <div className={`font-lato text-lg leading-relaxed max-w-[600px] ${theme.text}`}>
+                                            {displayContent.keyTakeaway.description}
                                         </div>
                                     )}
                                     {displayContent.keyTakeaway.imageCaption && (
@@ -754,7 +754,7 @@ const ProjectDetail = ({ mode, playSound }) => {
 
                                     {displayContent.refinement.description && (
                                         <div className={`grid ${project.images && project.images[3] ? 'grid-cols-1 md:grid-cols-2 gap-12' : 'grid-cols-1'} items-center`}>
-                                            <div className="font-lato text-lg leading-relaxed text-left order-2 md:order-1">
+                                            <div className={`font-lato text-lg leading-relaxed text-left order-2 md:order-1 ${!(project.images && project.images[3]) ? 'max-w-[600px] mx-auto text-center' : ''}`}>
                                                 {displayContent.refinement.description.split('\n\n').map((part, index) => (
                                                     <p key={index} className={`${index === 1 ? 'text-[#A2A19F]' : theme.text} ${index > 0 ? 'mt-8' : ''}`}>
                                                         {part}
