@@ -109,32 +109,6 @@ const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentInd
                 <X size={32} />
             </button>
 
-            {/* Navigation Arrows */}
-            {hasGallery && (
-                <>
-                    <button
-                        className={`fixed left-6 top-1/2 -translate-y-1/2 z-[60] ${theme.text} hover:opacity-70 transition-opacity p-3 rounded-full ${isWandering ? 'bg-[#2A2A2A]/50' : 'bg-white/50'}`}
-                        onClick={goToPrev}
-                        aria-label="Previous image"
-                    >
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <polyline points="15 18 9 12 15 6" />
-                        </svg>
-                    </button>
-                    <button
-                        className={`fixed right-6 top-1/2 -translate-y-1/2 z-[60] ${theme.text} hover:opacity-70 transition-opacity p-3 rounded-full ${isWandering ? 'bg-[#2A2A2A]/50' : 'bg-white/50'}`}
-                        onClick={goToNext}
-                        aria-label="Next image"
-                    >
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <polyline points="9 18 15 12 9 6" />
-                        </svg>
-                    </button>
-                    <div className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] ${theme.text} text-sm`}>
-                        {index + 1} / {gallery.length}
-                    </div>
-                </>
-            )}
 
             <div
                 className={`relative transition-all duration-75 flex items-center justify-center ${zoom > 1 ? 'min-h-full py-10' : 'w-[80vw] h-[80vh]'}`}
@@ -146,6 +120,32 @@ const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentInd
                     setZoom(prev => Math.min(Math.max(1, prev + delta), 3));
                 }}
             >
+                {/* Navigation Arrows - Inside image container */}
+                {hasGallery && (
+                    <>
+                        <button
+                            className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-[70] ${theme.text} hover:opacity-70 transition-opacity p-2 md:p-3 rounded-full ${isWandering ? 'bg-[#2A2A2A]/80' : 'bg-white/80'} backdrop-blur-sm`}
+                            onClick={goToPrev}
+                            aria-label="Previous image"
+                        >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <polyline points="15 18 9 12 15 6" />
+                            </svg>
+                        </button>
+                        <button
+                            className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-[70] ${theme.text} hover:opacity-70 transition-opacity p-2 md:p-3 rounded-full ${isWandering ? 'bg-[#2A2A2A]/80' : 'bg-white/80'} backdrop-blur-sm`}
+                            onClick={goToNext}
+                            aria-label="Next image"
+                        >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
+                        </button>
+                        <div className={`absolute bottom-2 md:bottom-4 left-1/2 -translate-x-1/2 z-[70] ${theme.text} text-sm px-3 py-1 rounded-full ${isWandering ? 'bg-[#2A2A2A]/80' : 'bg-white/80'} backdrop-blur-sm`}>
+                            {index + 1} / {gallery.length}
+                        </div>
+                    </>
+                )}
                 <img
                     src={currentSrc}
                     alt="Full Screen View"
@@ -549,7 +549,18 @@ const ProjectDetail = ({ mode, playSound }) => {
                                             }}
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                setSelectedImage({ src: img, gallery: displayContent.keyTakeaway.processImages, index: idx });
+                                                const isTouch = window.matchMedia('(hover: none)').matches;
+                                                if (isTouch) {
+                                                    // Mobile: First tap animates, second tap opens lightbox
+                                                    if (!isStackExpanded) {
+                                                        setIsStackExpanded(true);
+                                                    } else {
+                                                        setSelectedImage({ src: img, gallery: displayContent.keyTakeaway.processImages, index: idx });
+                                                    }
+                                                } else {
+                                                    // Desktop: Always open lightbox
+                                                    setSelectedImage({ src: img, gallery: displayContent.keyTakeaway.processImages, index: idx });
+                                                }
                                             }}
                                         >
                                             <style>{`
@@ -626,7 +637,18 @@ const ProjectDetail = ({ mode, playSound }) => {
                                             }}
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                setSelectedImage({ src: img.src, gallery: displayContent.keyTakeaway.stackedImages.map(i => i.src), index: idx });
+                                                const isTouch = window.matchMedia('(hover: none)').matches;
+                                                if (isTouch) {
+                                                    // Mobile: First tap animates, second tap opens lightbox
+                                                    if (!isStackExpanded) {
+                                                        setIsStackExpanded(true);
+                                                    } else {
+                                                        setSelectedImage({ src: img.src, gallery: displayContent.keyTakeaway.stackedImages.map(i => i.src), index: idx });
+                                                    }
+                                                } else {
+                                                    // Desktop: Always open lightbox
+                                                    setSelectedImage({ src: img.src, gallery: displayContent.keyTakeaway.stackedImages.map(i => i.src), index: idx });
+                                                }
                                             }}
                                         >
                                             {/* We use a local style block to handle the hover state for this specific index */}
