@@ -549,12 +549,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                             }}
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                const isTouch = window.matchMedia('(hover: none)').matches;
-                                                if (isTouch) {
-                                                    setIsStackExpanded(!isStackExpanded);
-                                                } else {
-                                                    setSelectedImage({ src: img, gallery: displayContent.keyTakeaway.processImages, index: idx });
-                                                }
+                                                setSelectedImage({ src: img, gallery: displayContent.keyTakeaway.processImages, index: idx });
                                             }}
                                         >
                                             <style>{`
@@ -631,13 +626,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                             }}
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                // Check for touch device/no-hover
-                                                const isTouch = window.matchMedia('(hover: none)').matches;
-                                                if (isTouch) {
-                                                    setIsStackExpanded(!isStackExpanded); // Toggle animation on tap, no zoom
-                                                } else {
-                                                    setSelectedImage({ src: img.src, gallery: displayContent.keyTakeaway.stackedImages.map(i => i.src), index: idx }); // Open this specific image in modal
-                                                }
+                                                setSelectedImage({ src: img.src, gallery: displayContent.keyTakeaway.stackedImages.map(i => i.src), index: idx });
                                             }}
                                         >
                                             {/* We use a local style block to handle the hover state for this specific index */}
