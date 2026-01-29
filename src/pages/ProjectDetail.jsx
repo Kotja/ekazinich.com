@@ -384,7 +384,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 <h3 className="font-playfair text-3xl mb-12 text-[#C25E00] text-center">The Process</h3>
                                 {/* Text before graph */}
                                 {displayContent.process.beforeGraph && (
-                                    <div className="max-w-4xl mx-auto mb-12 text-center">
+                                    <div className="max-w-[600px] mx-auto mb-12 text-left">
                                         <p className={`font-lato text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
                                             {displayContent.process.beforeGraph}
                                         </p>
@@ -405,12 +405,12 @@ const ProjectDetail = ({ mode, playSound }) => {
                                                         </p>
                                                     </div>
                                                 )}
-                                                {/* Remaining items: two-column grid */}
+                                                {/* Remaining items: single column stack */}
                                                 {displayContent.process.afterGraph.length > 1 && (
-                                                    <div className="grid md:grid-cols-2 gap-8">
+                                                    <div className="flex flex-col gap-8 mt-8">
                                                         {displayContent.process.afterGraph.slice(1).map((text, idx) => (
-                                                            <div key={idx}>
-                                                                <p className={`font-lato text-lg leading-relaxed max-w-[600px] ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
+                                                            <div key={idx} className="text-left">
+                                                                <p className={`font-lato text-lg leading-relaxed max-w-[600px] mx-auto ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
                                                                     {text}
                                                                 </p>
                                                             </div>
