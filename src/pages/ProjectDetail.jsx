@@ -677,7 +677,7 @@ const ProjectDetail = ({ mode, playSound }) => {
 
                                 <div className="order-2 flex flex-col gap-8 text-left">
                                     {displayContent.keyTakeaway.description && (
-                                        <div className={`font-lato text-lg leading-relaxed max-w-[600px] text-left ${theme.text}`}>
+                                        <div className={`font-lato text-lg leading-relaxed max-w-[600px] text-left mx-auto ${theme.text}`}>
                                             {displayContent.keyTakeaway.description}
                                         </div>
                                     )}
@@ -720,7 +720,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                         ) : (
                             displayContent.keyTakeaway.description && (
                                 <div className={`font-lato text-lg leading-relaxed ${theme.text} mb-8`}>
-                                    <span className="max-w-[600px] block mx-auto">{displayContent.keyTakeaway.description}</span>
+                                    <div className="max-w-[600px] mx-auto text-left">{displayContent.keyTakeaway.description}</div>
                                 </div>
                             )
                         )
