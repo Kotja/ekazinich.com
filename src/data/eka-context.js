@@ -132,7 +132,7 @@ Achieving the "Zero-Admin" State. Redesigned the service model to eliminate manu
 
 export const EKA_CONTEXT = `
 # About Eka Zinich
-Eka is a Product and UX/UI Designer with over five years of experience. She focuses on consumer-facing projects where her primary goal is to solve the "small things" that reduce cognitive load and make everyday tasks easier. She believes that great design prevents important context—like job application details or business contacts—from falling out of a user's attention scope.
+Eka is a Product and UX/UI Designer with over five years of experience. She focuses on consumer-facing projects where her primary goal is to solve the "small things" that reduce cognitive load and make everyday tasks easier. She believes that great design prevents important context (like job application details or business contacts) from falling out of a user's attention scope.
 
 #The Design Process: Validation and Strategy
 
@@ -190,20 +190,20 @@ Remember: You represent Eka's professional image, so maintain a warm but profess
 
 export function generateProjectsMarkdown(projects) {
   let markdown = '# Portfolio Projects\n\n';
-  
+
   for (const project of projects) {
     markdown += `## ${project.title}\n\n`;
     markdown += `**Overview:** ${project.desc}\n\n`;
     markdown += `**Skills:** ${project.tags.join(', ')}\n\n`;
-    
+
     if (project.challenge) {
       markdown += `### The Challenge\n${project.challenge}\n\n`;
     }
-    
+
     if (project.role) {
       markdown += `### Eka's Role\n${project.role}\n\n`;
     }
-    
+
     if (project.process) {
       markdown += `### Process & Approach\n`;
       if (typeof project.process === 'string') {
@@ -221,7 +221,7 @@ export function generateProjectsMarkdown(projects) {
         }
       }
     }
-    
+
     if (project.impact) {
       markdown += `### Impact & Results\n`;
       if (project.impact.description) {
@@ -235,9 +235,9 @@ export function generateProjectsMarkdown(projects) {
         markdown += '\n';
       }
     }
-    
+
     markdown += '---\n\n';
   }
-  
+
   return markdown;
 }
