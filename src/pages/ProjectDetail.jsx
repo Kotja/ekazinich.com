@@ -399,7 +399,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                             <>
                                                 {/* First item: full-width centered block */}
                                                 {displayContent.process.afterGraph[0] && (
-                                                    <div className="text-center mb-8">
+                                                    <div className="text-left mb-8">
                                                         <p className={`font-lato text-lg leading-relaxed max-w-[600px] mx-auto ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
                                                             {displayContent.process.afterGraph[0]}
                                                         </p>
