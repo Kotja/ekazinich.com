@@ -89,7 +89,7 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
             onMouseLeave={handleMouseLeave}
         >
             {/* Back Frame */}
-            <div className={`col-start-1 row-start-1 w-36 h-36 md:w-48 md:h-48 relative border-2 ${theme.borderSolid} ${config.back} flex ${config.textPos} transition-colors duration-500 group-hover:border-[#C25E00] z-0 ${config.frameMobileMargin || ''} ${config.frameDesktopMargin || ''}`}>
+            <div className={`col-start-1 row-start-1 w-48 h-48 relative border-2 ${theme.borderSolid} ${config.back} flex ${config.textPos} transition-colors duration-500 group-hover:border-[#C25E00] z-0 ${config.frameMobileMargin || ''} ${config.frameDesktopMargin || ''}`}>
                 <span className={`font-lato text-xs md:text-sm ${theme.text} leading-tight max-w-[95%] break-words text-balance`}>
                     {displayTitle}
                 </span>
@@ -97,7 +97,7 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
 
             {/* Front Shape */}
             <div
-                className={`col-start-1 row-start-1 w-36 h-36 md:w-48 md:h-48 relative ${config.front} overflow-hidden shadow-lg transition-transform duration-500 group-hover:scale-95 z-10 bg-white ${config.mobileMargin} ${config.desktopMargin}`}
+                className={`col-start-1 row-start-1 w-48 h-48 relative ${config.front} overflow-hidden shadow-lg transition-transform duration-500 group-hover:scale-95 z-10 bg-white ${config.mobileMargin} ${config.desktopMargin}`}
                 style={{ background: isWandering ? config.gradient : 'white' }}
             >
                 {/* Video - Visible on Mobile (Static First Frame) & Desktop (Hover Play) */}
