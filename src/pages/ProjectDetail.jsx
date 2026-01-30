@@ -162,6 +162,86 @@ const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentInd
     );
 };
 
+// Interactive Challenge Image Component - Shows annotations on hover/tap
+const InteractiveChallengeImage = ({ src, isWandering, theme, onImageClick, projectId }) => {
+    const [isActive, setIsActive] = useState(false); // For mobile tap toggle
+
+    // Only show interactive version for Brand project (ID: 3)
+    if (projectId !== 3) {
+        return (
+            <div className="w-full h-full min-h-[300px] bg-transparent cursor-zoom-in" onClick={onImageClick}>
+                <img src={src} alt="Challenge Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+            </div>
+        );
+    }
+
+    // Annotation ovals configuration
+    const annotations = [
+        {
+            text: "TROUBLING\nRESPONSIVNESS",
+            position: { top: '10%', right: '5%' },
+            size: { width: '140px', height: '90px' }
+        },
+        {
+            text: "COGNITIVE\nDISSONANCE\nCONFLICTING\nGENRES",
+            position: { top: '35%', left: '8%' },
+            size: { width: '160px', height: '140px' }
+        },
+        {
+            text: "HIGH INTERACTION\nCOST\nTOUCH TARGETS\nARE <44PX",
+            position: { top: '35%', right: '8%' },
+            size: { width: '160px', height: '140px' }
+        },
+        {
+            text: "UNSTRUCTURED\nTAXONOMY",
+            position: { bottom: '15%', left: '40%' },
+            size: { width: '150px', height: '100px' }
+        }
+    ];
+
+    const handleClick = () => {
+        // On mobile/tablet: toggle annotations
+        // On desktop: also allow click to open lightbox when active
+        setIsActive(!isActive);
+    };
+
+    return (
+        <div
+            className="relative w-full h-full min-h-[300px] bg-transparent group cursor-pointer"
+            onClick={handleClick}
+        >
+            {/* Main Image */}
+            <img
+                src={src}
+                alt="Challenge Detail"
+                draggable="false"
+                className="w-full h-full object-cover transition-transform duration-700"
+            />
+
+            {/* Annotation Ovals - Visible on hover (desktop) or tap (mobile/tablet) */}
+            {annotations.map((annotation, idx) => (
+                <div
+                    key={idx}
+                    className={`absolute flex items-center justify-center text-center border-2 border-[#C25E00] rounded-full p-2 transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0 md:group-hover:opacity-100'
+                        }`}
+                    style={{
+                        ...annotation.position,
+                        ...annotation.size,
+                        pointerEvents: 'none' // Prevent blocking clicks
+                    }}
+                >
+                    <span
+                        className={`font-lato text-[10px] md:text-xs font-bold uppercase tracking-wider leading-tight ${theme.text}`}
+                        style={{ whiteSpace: 'pre-line' }}
+                    >
+                        {annotation.text}
+                    </span>
+                </div>
+            ))}
+        </div>
+    );
+};
+
 const ProjectDetail = ({ mode, playSound }) => {
     const { slug } = useParams();
     const navigate = useNavigate();
@@ -324,9 +404,13 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 <p className={`font-lato text-lg leading-relaxed max-w-[600px] ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.challenge}</p>
                             </div>
                             {challengeImage && (
-                                <div className={`w-full h-full min-h-[300px] order-1 md:order-2 bg-transparent cursor-zoom-in`} onClick={() => setSelectedImage(challengeImage)}>
-                                    <img src={challengeImage} alt="Challenge Detail" draggable="false" className={`w-full h-full object-cover hover:scale-105 transition-transform duration-700`} />
-                                </div>
+                                <InteractiveChallengeImage
+                                    src={challengeImage}
+                                    isWandering={isWandering}
+                                    theme={theme}
+                                    onImageClick={() => setSelectedImage(challengeImage)}
+                                    projectId={project.id}
+                                />
                             )}
                         </div>
                     );
