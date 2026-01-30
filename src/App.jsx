@@ -191,7 +191,7 @@ const App = () => {
         </div>
 
         {/* Menu Items */}
-        <div className={`pointer-events-auto flex flex-row md:flex-col md:gap-12 text-sm font-bold tracking-widest order-1 md:order-2 md:w-full flex-grow md:justify-start pr-6 md:pr-0 transition-opacity duration-300 ${isWandering ? 'justify-start gap-8' : 'justify-between'} ${isOnboardingVisible ? 'opacity-20 blur-[1px]' : 'opacity-100'}`}>
+        <div className={`pointer-events-auto flex flex-row md:flex-col md:gap-12 text-sm font-bold tracking-widest order-1 md:order-2 md:w-full flex-grow md:justify-start pr-6 md:pr-0 transition-opacity duration-300 justify-between ${isWandering ? 'md:gap-8' : ''} ${isOnboardingVisible ? 'opacity-20 blur-[1px]' : 'opacity-100'}`}>
           {['Projects', 'About', 'Ask AI', 'Get in Touch'].map((item) => {
             const initial = item.charAt(0);
             const targetId = item.toLowerCase().replace(/ /g, '-');
