@@ -162,102 +162,16 @@ const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentInd
     );
 };
 
-// Challenge Image Component - Shows static annotations for Brand project
+// Challenge Image Component - Simple image display with zoom functionality
 const InteractiveChallengeImage = ({ src, isWandering, theme, onImageClick, projectId }) => {
-    // Only show annotations for Brand project (ID: 3)
-    if (projectId !== 3) {
-        return (
-            <div className="w-full h-full min-h-[300px] bg-transparent cursor-zoom-in" onClick={onImageClick}>
-                <img src={src} alt="Challenge Detail" draggable="false" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-            </div>
-        );
-    }
-
-    // Annotation configuration - positions precisely matched to reference image
-    const annotations = [
-        {
-            text: "Troubling\nresponsiveness",
-            ovalPosition: { top: '6%', right: '15%' },
-            ovalSize: { width: '150px', height: '45px' },
-            textPosition: { top: '2%', right: '-8%' },
-            textAlign: 'right',
-            rotation: '-2deg'
-        },
-        {
-            text: "Cognitive dissonance\nconflicting\ngenres",
-            ovalPosition: { top: '58%', left: '12%' },
-            ovalSize: { width: '85px', height: '85px' },
-            textPosition: { top: '48%', left: '-35%' },
-            textAlign: 'right',
-            rotation: '3deg'
-        },
-        {
-            text: "High interaction\ncost\ntouch targets\nare <44px",
-            ovalPosition: { top: '62%', right: '15%' },
-            ovalSize: { width: '100px', height: '100px' },
-            textPosition: { top: '50%', right: '-38%' },
-            textAlign: 'left',
-            rotation: '-3deg'
-        },
-        {
-            text: "Unstructured\ntaxonomy",
-            ovalPosition: { top: '78%', left: '50%', transform: 'translateX(-50%)' },
-            ovalSize: { width: '140px', height: '55px' },
-            textPosition: { top: '84%', left: '50%', transform: 'translateX(-50%)' },
-            textAlign: 'center',
-            rotation: '2deg'
-        }
-    ];
-
     return (
-        <div
-            className="relative w-full h-full min-h-[300px] bg-transparent cursor-zoom-in"
-            onClick={onImageClick}
-        >
-            {/* Main Image */}
+        <div className="w-full h-full min-h-[300px] bg-transparent cursor-zoom-in" onClick={onImageClick}>
             <img
                 src={src}
                 alt="Challenge Detail"
                 draggable="false"
-                className="w-full h-full object-cover transition-transform duration-700"
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
             />
-
-            {/* Annotation Ovals and Text - Always visible */}
-            {annotations.map((annotation, idx) => (
-                <React.Fragment key={idx}>
-                    {/* Oval Circle - Hand-drawn style */}
-                    <div
-                        className="absolute border-2 border-[#C25E00] rounded-full opacity-100"
-                        style={{
-                            ...annotation.ovalPosition,
-                            ...annotation.ovalSize,
-                            pointerEvents: 'none',
-                            transform: `rotate(${annotation.rotation})`
-                        }}
-                    />
-
-                    {/* Text Label - Positioned NEXT to oval, burnt orange for contrast */}
-                    <div
-                        className="absolute opacity-100"
-                        style={{
-                            ...annotation.textPosition,
-                            pointerEvents: 'none',
-                            textAlign: annotation.textAlign
-                        }}
-                    >
-                        <span
-                            className="font-playfair text-xs md:text-sm italic text-[#C25E00]"
-                            style={{
-                                whiteSpace: 'pre-line',
-                                display: 'inline-block',
-                                lineHeight: '1.3'
-                            }}
-                        >
-                            {annotation.text}
-                        </span>
-                    </div>
-                </React.Fragment>
-            ))}
         </div>
     );
 };
