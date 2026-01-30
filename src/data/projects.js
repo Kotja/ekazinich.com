@@ -18,7 +18,10 @@ import brandChallengeV2 from '../assets/brand-challenge-v2.webp';
 import brandChallengeImpact from '../assets/challenge-brand-impact.webp';
 import brandChallengeInDepth from '../assets/challenge-brand-in-depth.webp';
 import brandChallengeAni from '../assets/brand-challenge-ani.webp';
+import brandChallengeAniOnWhite from '../assets/brand-challenge-ani-onwhite.webp';
+import brandChallengeAniOnBlack from '../assets/brand-challenge-ani-onblack.webp';
 import brandChallengeFirstFrame from '../assets/brand-challenge-firstframe.webp';
+import brandChallengeAniFirstFrame from '../assets/brand-challenge-ani-firstframe.webp';
 import projectB2BProcessNew from '../assets/b2b-flow-audit.svg';
 import OWChallengeHeatmap from '../assets/OW-challenge-heatmap.webp';
 import projectBrandScalingHero from '../assets/brand-scaling-hero.webp';
@@ -49,7 +52,7 @@ export const PROJECTS = [
         desc: "A user-centric overhaul of a photographer's portfolio to recapture lost business through improved UX and mobile responsiveness.",
         tags: ["UX/UI Design", "Mobile First", "CMS Integration"],
         challenge: "Categorical Ambiguity. The previous digital presence failed to distinguish between the photographer's disparate disciplines. High-energy \"Action\" shots of music performances were diluted by \"Fashion\" editorials, creating a confused brand signal that hindered specialist bookings.",
-        challengeImage: brandChallengeFirstFrame,
+        challengeImage: brandChallengeAniFirstFrame,
         role: "End-to-End Product Architecture. Responsible for the strategic taxonomy audit, UI system design, and CMS integration.",
         process: "Systemisation & \"Invisible\" UI.\n\nIA Strategy: Flattened the hierarchy. Users land directly on the category selector, eliminating the \"Mystery Meat\" navigation of the previous site.\n\nVisuals: Adopted a brutalist, utility-first aesthetic. White space is used as an active element to frame the work.\n\nTech: Implemented a high-performance lazy-loading stack to ensure the \"Action\" portfolio loads as fast as the \"Portraits,\" despite the heavy data payload.",
         impact: {
@@ -78,7 +81,7 @@ export const PROJECTS = [
             imageCaption: "By strictly separating the portfolio into 'Commercial' and 'Personal' streams, we didn't just organise images - we aligned the digital product with the business model.\n\nStrategic Nuance: The 'Value Multiplier' effect of negative space is industry-dependent. While essential for luxury positioning, density remains a valid strategy for volume-based retail (e.g., marketplaces)."
         },
         wanderingContent: {
-            challengeImage: brandChallengeFirstFrame,
+            challengeImage: brandChallengeAniFirstFrame,
             impact: {
                 description: "From Static Repository to Scalable Sales Product. The primary objective was to operationalise the client's digital presence, replacing a passive archive with a commercial engine.",
                 outcomes: [

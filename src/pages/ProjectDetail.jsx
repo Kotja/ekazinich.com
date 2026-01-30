@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, X } from 'lucide-react';
 import { PROJECTS } from '../data/projects';
+import brandChallengeAniOnWhite from '../assets/brand-challenge-ani-onwhite.webp';
+import brandChallengeAniOnBlack from '../assets/brand-challenge-ani-onblack.webp';
 import CandidateJourneyGraph from '../components/CandidateJourneyGraph';
 
 const BoomerangVideo = ({ src }) => {
@@ -162,15 +164,55 @@ const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentInd
     );
 };
 
-// Challenge Image Component - Simple image display with zoom functionality
+// Challenge Image Component - Image display with hover animation swap and zoom functionality
 const InteractiveChallengeImage = ({ src, isWandering, theme, onImageClick, projectId }) => {
+    const [isHovered, setIsHovered] = React.useState(false);
+    const [isMobileClicked, setIsMobileClicked] = React.useState(false);
+
+    // Determine which animation to show based on mode (project ID 3 is Brand project)
+    const hoverImage = projectId === 3
+        ? (isWandering ? brandChallengeAniOnBlack : brandChallengeAniOnWhite)
+        : null;
+
+    const handleClick = (e) => {
+        // Detect if device is touch-enabled (mobile/tablet)
+        const isTouchDevice = window.matchMedia('(hover: none)').matches;
+
+        if (isTouchDevice && projectId === 3) {
+            // Mobile/Tablet behavior
+            if (!isMobileClicked) {
+                // First click: Show animation, don't open lightbox
+                e.stopPropagation();
+                setIsMobileClicked(true);
+            } else {
+                // Second click: Open lightbox with animation image
+                onImageClick(hoverImage);
+            }
+        } else {
+            // Desktop behavior: Open lightbox directly with animation image (for Brand project)
+            if (projectId === 3 && hoverImage) {
+                onImageClick(hoverImage);
+            } else {
+                onImageClick(src);
+            }
+        }
+    };
+
+    // Determine which image to display
+    const displayImage = (isHovered || isMobileClicked) && hoverImage ? hoverImage : src;
+
     return (
-        <div className="w-full h-full min-h-[300px] bg-transparent cursor-zoom-in" onClick={onImageClick}>
+        <div
+            className="w-full h-full min-h-[300px] bg-transparent cursor-zoom-in flex items-center justify-center"
+            onClick={handleClick}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
             <img
-                src={src}
+                src={displayImage}
                 alt="Challenge Detail"
                 draggable="false"
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                className="w-full h-full object-contain transition-all duration-500"
             />
         </div>
     );
@@ -338,12 +380,12 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 <p className={`font-lato text-lg leading-relaxed max-w-[600px] ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.challenge}</p>
                             </div>
                             {challengeImage && (
-                                <div className="md:w-1/3 md:flex-shrink-0">
+                                <div className="md:w-1/2 md:flex-shrink-0">
                                     <InteractiveChallengeImage
                                         src={challengeImage}
                                         isWandering={isWandering}
                                         theme={theme}
-                                        onImageClick={() => setSelectedImage(challengeImage)}
+                                        onImageClick={(img) => setSelectedImage(img || challengeImage)}
                                         projectId={project.id}
                                     />
                                 </div>
@@ -494,7 +536,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                             {!displayContent.process.renderComponent && (
                                                 <h3 className="font-playfair text-3xl mb-4 text-[#C25E00]">The Process</h3>
                                             )}
-                                            <p className={`font-lato text-lg leading-relaxed max-w-[600px] ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{section.content}</p>
+                                            <p className={`font-lato text-lg leading-relaxed max-w-[600px] ${theme.subText} ${project.id === 3 && isWandering ? 'text-center mx-auto' : ''}`} style={{ whiteSpace: 'pre-line' }}>{section.content}</p>
                                         </div>
                                     </div>
                                 );
