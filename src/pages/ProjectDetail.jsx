@@ -178,32 +178,36 @@ const InteractiveChallengeImage = ({ src, isWandering, theme, onImageClick, proj
     // Annotation configuration - ovals with text positioned NEXT to them
     const annotations = [
         {
-            text: "TROUBLING\nRESPONSIVNESS",
-            ovalPosition: { top: '8%', right: '18%' },
-            ovalSize: { width: '80px', height: '50px' },
-            textPosition: { top: '3%', right: '0%' },
-            textAlign: 'right'
+            text: "Troubling\nresponsiveness",
+            ovalPosition: { top: '3%', right: '8%' },
+            ovalSize: { width: '120px', height: '60px' },
+            textPosition: { top: '0%', right: '2%' },
+            textAlign: 'right',
+            rotation: '-2deg'
         },
         {
-            text: "COGNITIVE\nDISSONANCE\nCONFLICTING\nGENRES",
-            ovalPosition: { top: '38%', left: '15%' },
-            ovalSize: { width: '100px', height: '80px' },
-            textPosition: { top: '38%', left: '0%' },
-            textAlign: 'left'
+            text: "Cognitive dissonance\nconflicting\ngenres",
+            ovalPosition: { top: '32%', left: '3%' },
+            ovalSize: { width: '110px', height: '110px' },
+            textPosition: { top: '28%', left: '-18%' },
+            textAlign: 'right',
+            rotation: '3deg'
         },
         {
-            text: "HIGH INTERACTION\nCOST\nTOUCH TARGETS\nARE <44PX",
-            ovalPosition: { top: '40%', right: '12%' },
-            ovalSize: { width: '90px', height: '90px' },
-            textPosition: { top: '33%', right: '23%' },
-            textAlign: 'right'
+            text: "High interaction\ncost\ntouch targets\nare <44px",
+            ovalPosition: { top: '32%', right: '3%' },
+            ovalSize: { width: '130px', height: '130px' },
+            textPosition: { top: '25%', right: '-22%' },
+            textAlign: 'left',
+            rotation: '-3deg'
         },
         {
-            text: "UNSTRUCTURED\nTAXONOMY",
-            ovalPosition: { bottom: '18%', left: '45%' },
-            ovalSize: { width: '100px', height: '70px' },
-            textPosition: { bottom: '8%', left: '48%' },
-            textAlign: 'left'
+            text: "Unstructured\ntaxonomy",
+            ovalPosition: { bottom: '8%', left: '35%' },
+            ovalSize: { width: '120px', height: '70px' },
+            textPosition: { bottom: '0%', left: '38%' },
+            textAlign: 'center',
+            rotation: '2deg'
         }
     ];
 
@@ -229,17 +233,18 @@ const InteractiveChallengeImage = ({ src, isWandering, theme, onImageClick, proj
             {/* Annotation Ovals and Text - Visible on hover (desktop) or tap (mobile/tablet) */}
             {annotations.map((annotation, idx) => (
                 <React.Fragment key={idx}>
-                    {/* Oval Circle */}
+                    {/* Oval Circle - Hand-drawn style */}
                     <div
                         className={`absolute border-2 border-[#C25E00] rounded-full transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0 md:group-hover:opacity-100'}`}
                         style={{
                             ...annotation.ovalPosition,
                             ...annotation.ovalSize,
-                            pointerEvents: 'none'
+                            pointerEvents: 'none',
+                            transform: `rotate(${annotation.rotation})`
                         }}
                     />
 
-                    {/* Text Label - Positioned NEXT to oval */}
+                    {/* Text Label - Positioned NEXT to oval, burnt orange for contrast */}
                     <div
                         className={`absolute transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0 md:group-hover:opacity-100'}`}
                         style={{
@@ -249,7 +254,7 @@ const InteractiveChallengeImage = ({ src, isWandering, theme, onImageClick, proj
                         }}
                     >
                         <span
-                            className={`font-playfair text-xs md:text-sm italic ${theme.text}`}
+                            className="font-playfair text-xs md:text-sm italic text-[#C25E00]"
                             style={{
                                 whiteSpace: 'pre-line',
                                 display: 'inline-block',
