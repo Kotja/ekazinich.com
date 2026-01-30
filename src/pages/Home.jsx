@@ -90,7 +90,7 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
         >
             {/* Back Frame */}
             <div className={`col-start-1 row-start-1 w-48 h-48 relative border-2 ${theme.borderSolid} ${config.back} flex ${config.textPos} transition-colors duration-500 group-hover:border-[#C25E00] z-0 ${config.frameMobileMargin || ''} ${config.frameDesktopMargin || ''}`}>
-                <span className={`font-lato text-xs md:text-sm ${theme.text} leading-tight max-w-[95%] break-words text-balance`}>
+                <span className={`font-lato text-sm ${theme.text} leading-tight max-w-[95%] break-words text-balance`}>
                     {displayTitle}
                 </span>
             </div>
