@@ -175,37 +175,37 @@ const InteractiveChallengeImage = ({ src, isWandering, theme, onImageClick, proj
         );
     }
 
-    // Annotation configuration - ovals with text positioned NEXT to them
+    // Annotation configuration - positions based on reference image
     const annotations = [
         {
             text: "Troubling\nresponsiveness",
-            ovalPosition: { top: '3%', right: '8%' },
-            ovalSize: { width: '120px', height: '60px' },
-            textPosition: { top: '0%', right: '2%' },
+            ovalPosition: { top: '4%', right: '6%' },
+            ovalSize: { width: '140px', height: '50px' },
+            textPosition: { top: '-2%', right: '-12%' },
             textAlign: 'right',
             rotation: '-2deg'
         },
         {
             text: "Cognitive dissonance\nconflicting\ngenres",
-            ovalPosition: { top: '32%', left: '3%' },
-            ovalSize: { width: '110px', height: '110px' },
-            textPosition: { top: '28%', left: '-18%' },
+            ovalPosition: { top: '42%', left: '8%' },
+            ovalSize: { width: '90px', height: '90px' },
+            textPosition: { top: '35%', left: '-28%' },
             textAlign: 'right',
             rotation: '3deg'
         },
         {
             text: "High interaction\ncost\ntouch targets\nare <44px",
-            ovalPosition: { top: '32%', right: '3%' },
-            ovalSize: { width: '130px', height: '130px' },
-            textPosition: { top: '25%', right: '-22%' },
+            ovalPosition: { top: '45%', right: '8%' },
+            ovalSize: { width: '110px', height: '110px' },
+            textPosition: { top: '38%', right: '-32%' },
             textAlign: 'left',
             rotation: '-3deg'
         },
         {
             text: "Unstructured\ntaxonomy",
-            ovalPosition: { bottom: '8%', left: '35%' },
-            ovalSize: { width: '120px', height: '70px' },
-            textPosition: { bottom: '0%', left: '38%' },
+            ovalPosition: { bottom: '15%', left: '50%', transform: 'translateX(-50%)' },
+            ovalSize: { width: '130px', height: '60px' },
+            textPosition: { bottom: '10%', left: '50%', transform: 'translateX(-50%)' },
             textAlign: 'center',
             rotation: '2deg'
         }
