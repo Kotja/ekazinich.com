@@ -162,11 +162,9 @@ const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentInd
     );
 };
 
-// Interactive Challenge Image Component - Shows annotations on hover/tap
+// Challenge Image Component - Shows static annotations for Brand project
 const InteractiveChallengeImage = ({ src, isWandering, theme, onImageClick, projectId }) => {
-    const [isActive, setIsActive] = useState(false); // For mobile tap toggle
-
-    // Only show interactive version for Brand project (ID: 3)
+    // Only show annotations for Brand project (ID: 3)
     if (projectId !== 3) {
         return (
             <div className="w-full h-full min-h-[300px] bg-transparent cursor-zoom-in" onClick={onImageClick}>
@@ -211,16 +209,10 @@ const InteractiveChallengeImage = ({ src, isWandering, theme, onImageClick, proj
         }
     ];
 
-    const handleClick = () => {
-        // On mobile/tablet: toggle annotations
-        // On desktop: also allow click to open lightbox when active
-        setIsActive(!isActive);
-    };
-
     return (
         <div
-            className="relative w-full h-full min-h-[300px] bg-transparent group cursor-pointer"
-            onClick={handleClick}
+            className="relative w-full h-full min-h-[300px] bg-transparent cursor-zoom-in"
+            onClick={onImageClick}
         >
             {/* Main Image */}
             <img
@@ -230,12 +222,12 @@ const InteractiveChallengeImage = ({ src, isWandering, theme, onImageClick, proj
                 className="w-full h-full object-cover transition-transform duration-700"
             />
 
-            {/* Annotation Ovals and Text - Visible on hover (desktop) or tap (mobile/tablet) */}
+            {/* Annotation Ovals and Text - Always visible */}
             {annotations.map((annotation, idx) => (
                 <React.Fragment key={idx}>
                     {/* Oval Circle - Hand-drawn style */}
                     <div
-                        className={`absolute border-2 border-[#C25E00] rounded-full transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0 md:group-hover:opacity-100'}`}
+                        className="absolute border-2 border-[#C25E00] rounded-full opacity-100"
                         style={{
                             ...annotation.ovalPosition,
                             ...annotation.ovalSize,
@@ -246,7 +238,7 @@ const InteractiveChallengeImage = ({ src, isWandering, theme, onImageClick, proj
 
                     {/* Text Label - Positioned NEXT to oval, burnt orange for contrast */}
                     <div
-                        className={`absolute transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0 md:group-hover:opacity-100'}`}
+                        className="absolute opacity-100"
                         style={{
                             ...annotation.textPosition,
                             pointerEvents: 'none',
