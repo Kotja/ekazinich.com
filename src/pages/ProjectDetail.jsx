@@ -175,27 +175,35 @@ const InteractiveChallengeImage = ({ src, isWandering, theme, onImageClick, proj
         );
     }
 
-    // Annotation ovals configuration
+    // Annotation configuration - ovals with text positioned NEXT to them
     const annotations = [
         {
             text: "TROUBLING\nRESPONSIVNESS",
-            position: { top: '10%', right: '5%' },
-            size: { width: '140px', height: '90px' }
+            ovalPosition: { top: '8%', right: '18%' },
+            ovalSize: { width: '80px', height: '50px' },
+            textPosition: { top: '3%', right: '0%' },
+            textAlign: 'right'
         },
         {
             text: "COGNITIVE\nDISSONANCE\nCONFLICTING\nGENRES",
-            position: { top: '35%', left: '8%' },
-            size: { width: '160px', height: '140px' }
+            ovalPosition: { top: '38%', left: '15%' },
+            ovalSize: { width: '100px', height: '80px' },
+            textPosition: { top: '38%', left: '0%' },
+            textAlign: 'left'
         },
         {
             text: "HIGH INTERACTION\nCOST\nTOUCH TARGETS\nARE <44PX",
-            position: { top: '35%', right: '8%' },
-            size: { width: '160px', height: '140px' }
+            ovalPosition: { top: '40%', right: '12%' },
+            ovalSize: { width: '90px', height: '90px' },
+            textPosition: { top: '33%', right: '23%' },
+            textAlign: 'right'
         },
         {
             text: "UNSTRUCTURED\nTAXONOMY",
-            position: { bottom: '15%', left: '40%' },
-            size: { width: '150px', height: '100px' }
+            ovalPosition: { bottom: '18%', left: '45%' },
+            ovalSize: { width: '100px', height: '70px' },
+            textPosition: { bottom: '8%', left: '48%' },
+            textAlign: 'left'
         }
     ];
 
@@ -218,25 +226,40 @@ const InteractiveChallengeImage = ({ src, isWandering, theme, onImageClick, proj
                 className="w-full h-full object-cover transition-transform duration-700"
             />
 
-            {/* Annotation Ovals - Visible on hover (desktop) or tap (mobile/tablet) */}
+            {/* Annotation Ovals and Text - Visible on hover (desktop) or tap (mobile/tablet) */}
             {annotations.map((annotation, idx) => (
-                <div
-                    key={idx}
-                    className={`absolute flex items-center justify-center text-center border-2 border-[#C25E00] rounded-full p-2 transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0 md:group-hover:opacity-100'
-                        }`}
-                    style={{
-                        ...annotation.position,
-                        ...annotation.size,
-                        pointerEvents: 'none' // Prevent blocking clicks
-                    }}
-                >
-                    <span
-                        className={`font-lato text-[10px] md:text-xs font-bold uppercase tracking-wider leading-tight ${theme.text}`}
-                        style={{ whiteSpace: 'pre-line' }}
+                <React.Fragment key={idx}>
+                    {/* Oval Circle */}
+                    <div
+                        className={`absolute border-2 border-[#C25E00] rounded-full transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0 md:group-hover:opacity-100'}`}
+                        style={{
+                            ...annotation.ovalPosition,
+                            ...annotation.ovalSize,
+                            pointerEvents: 'none'
+                        }}
+                    />
+
+                    {/* Text Label - Positioned NEXT to oval */}
+                    <div
+                        className={`absolute transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0 md:group-hover:opacity-100'}`}
+                        style={{
+                            ...annotation.textPosition,
+                            pointerEvents: 'none',
+                            textAlign: annotation.textAlign
+                        }}
                     >
-                        {annotation.text}
-                    </span>
-                </div>
+                        <span
+                            className={`font-playfair text-xs md:text-sm italic ${theme.text}`}
+                            style={{
+                                whiteSpace: 'pre-line',
+                                display: 'inline-block',
+                                lineHeight: '1.3'
+                            }}
+                        >
+                            {annotation.text}
+                        </span>
+                    </div>
+                </React.Fragment>
             ))}
         </div>
     );
