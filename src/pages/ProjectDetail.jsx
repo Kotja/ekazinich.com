@@ -332,19 +332,21 @@ const ProjectDetail = ({ mode, playSound }) => {
                 {(() => {
                     const challengeImage = displayContent.challengeImage || (project.images && project.images[1]);
                     return (
-                        <div className={`w-full max-w-6xl mx-auto px-6 grid ${challengeImage ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-stretch`}>
-                            <div className="order-2 md:order-1 flex flex-col justify-center">
+                        <div className={`w-full max-w-6xl mx-auto px-6 ${challengeImage ? 'md:flex md:gap-12 md:items-center' : 'grid grid-cols-1'}`}>
+                            <div className="order-2 md:order-1 flex flex-col justify-center md:flex-1">
                                 <h3 className="font-playfair text-3xl mb-4 text-[#C25E00]">The Challenge</h3>
                                 <p className={`font-lato text-lg leading-relaxed max-w-[600px] ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.challenge}</p>
                             </div>
                             {challengeImage && (
-                                <InteractiveChallengeImage
-                                    src={challengeImage}
-                                    isWandering={isWandering}
-                                    theme={theme}
-                                    onImageClick={() => setSelectedImage(challengeImage)}
-                                    projectId={project.id}
-                                />
+                                <div className="md:w-1/3 md:flex-shrink-0">
+                                    <InteractiveChallengeImage
+                                        src={challengeImage}
+                                        isWandering={isWandering}
+                                        theme={theme}
+                                        onImageClick={() => setSelectedImage(challengeImage)}
+                                        projectId={project.id}
+                                    />
+                                </div>
                             )}
                         </div>
                     );
