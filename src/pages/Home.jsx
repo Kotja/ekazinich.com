@@ -28,19 +28,19 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
             gradient: 'linear-gradient(to bottom, #FFA500, #C27000)', // Light to Dark Orange
             className: 'lg:translate-y-10',
             mobileMargin: 'ml-0 mt-0',
-            frameMobileMargin: 'ml-14 mt-[5rem]', // Brought up significantly
+            frameMobileMargin: 'ml-14 mt-32', // Increased to prevent overlap
             desktopMargin: 'lg:ml-5 lg:-mt-4',
-            frameDesktopMargin: 'lg:ml-14 lg:mt-[4.5rem] lg:translate-x-4', // Brought up significantly
-            textPos: 'items-end justify-end text-right pb-6 pr-12', // Moved left by increasing padding
+            frameDesktopMargin: 'lg:ml-14 lg:mt-[4.5rem] lg:translate-x-4',
+            textPos: 'items-end justify-end text-right pb-6 pr-12',
             titleContainer: 'absolute -bottom-20 -right-10 w-64 text-right z-20',
             titleStyle: 'font-lato text-2xl leading-tight'
         }, // TR
         {
             front: 'rounded-none', back: 'rounded-none',
-            gradient: 'linear-gradient(to bottom, #C27000, #FFA500)', // Dark to Left Orange
+            gradient: 'linear-gradient(to bottom, #C27000, #FFA500)', // Dark to Light Orange
             className: '',
             mobileMargin: 'ml-10 mt-0',
-            frameMobileMargin: 'mt-32',
+            frameMobileMargin: 'mt-16',
             desktopMargin: 'lg:ml-10 lg:mt-0',
             frameDesktopMargin: 'lg:mt-16',
             textPos: 'items-end justify-start text-left pl-4 pb-4'
