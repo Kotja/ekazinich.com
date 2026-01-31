@@ -31,29 +31,36 @@ const App = () => {
   // --- AUDIO ENGINE ---
   const playSound = (type) => {
     try {
-      // Create audio context
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
 
       if (type === 'mode') {
-        // Mode switch: Two-tone beep
-        oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-        oscillator.frequency.setValueAtTime(1000, audioContext.currentTime + 0.05);
-        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.1);
-      } else {
-        // General click: Short, crisp click
-        oscillator.frequency.setValueAtTime(1000, audioContext.currentTime);
-        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.05);
+        // Keyboard click sound using white noise
+        const bufferSize = audioContext.sampleRate * 0.05; // 50ms
+        const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+        const data = buffer.getChannelData(0);
+
+        // Generate white noise with envelope
+        for (let i = 0; i < bufferSize; i++) {
+          const envelope = Math.exp(-i / (audioContext.sampleRate * 0.01)); // Fast decay
+          data[i] = (Math.random() * 2 - 1) * envelope;
+        }
+
+        const source = audioContext.createBufferSource();
+        source.buffer = buffer;
+
+        const gainNode = audioContext.createGain();
+        gainNode.gain.setValueAtTime(0.15, audioContext.currentTime); // Lower volume
+
+        // High-pass filter for crisp sound
+        const filter = audioContext.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.setValueAtTime(800, audioContext.currentTime);
+
+        source.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        source.start(audioContext.currentTime);
       }
     } catch (e) {
       console.error("Audio error", e);
