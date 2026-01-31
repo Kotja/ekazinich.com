@@ -28,7 +28,7 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
             gradient: 'linear-gradient(to bottom, #FFA500, #C27000)', // Light to Dark Orange
             className: 'lg:translate-y-10',
             mobileMargin: 'ml-0 mt-0',
-            frameMobileMargin: 'ml-14 mt-[5rem]', // Original spacing
+            frameMobileMargin: 'ml-14 mt-[6rem]',
             desktopMargin: 'lg:ml-5 lg:-mt-4',
             frameDesktopMargin: 'lg:ml-14 lg:mt-[4.5rem] lg:translate-x-4',
             textPos: 'items-end justify-end text-right pb-6 pr-12',
