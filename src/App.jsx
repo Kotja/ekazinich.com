@@ -14,9 +14,6 @@ const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // --- AUDIO ASSETS ---
-  const GENERAL_SOUND_URL = "https://freesound.org/data/previews/269/269633_3493515-lq.mp3"; // Soft click
-  const MODE_SOUND_URL = "https://freesound.org/data/previews/397/397353_7517727-lq.mp3"; // UI toggle
 
   // --- HELPER: THEME ENGINE ---
   const isWandering = mode === 'wandering';
@@ -34,12 +31,29 @@ const App = () => {
   // --- AUDIO ENGINE ---
   const playSound = (type) => {
     try {
-      const url = type === 'mode' ? MODE_SOUND_URL : GENERAL_SOUND_URL;
-      const audio = new Audio(url);
-      audio.volume = 0.5;
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(error => console.log("Audio play prevented:", error));
+      // Create audio context
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      if (type === 'mode') {
+        // Mode switch: Two-tone beep
+        oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+        oscillator.frequency.setValueAtTime(1000, audioContext.currentTime + 0.05);
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.1);
+      } else {
+        // General click: Short, crisp click
+        oscillator.frequency.setValueAtTime(1000, audioContext.currentTime);
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.05);
       }
     } catch (e) {
       console.error("Audio error", e);
