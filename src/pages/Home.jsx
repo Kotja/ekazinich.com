@@ -50,7 +50,7 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
             gradient: 'linear-gradient(to bottom, #FFD700, #CC9900)', // Light to Dark Yellow
             className: 'lg:translate-y-36',
             mobileMargin: 'ml-0 mt-0',
-            frameMobileMargin: 'ml-10 mt-14',
+            frameMobileMargin: 'ml-10 mt-16',
             desktopMargin: 'lg:ml-0 lg:mt-0',
             frameDesktopMargin: 'lg:ml-10 lg:mt-16',
             textPos: 'items-end justify-end text-right pr-4 pb-4'
