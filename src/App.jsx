@@ -15,8 +15,8 @@ const App = () => {
   const navigate = useNavigate();
 
   // --- AUDIO ASSETS ---
-  const GENERAL_SOUND_URL = "https://www.soundjay.com/mechanical/sounds/typewriter-key-1.mp3";
-  const MODE_SOUND_URL = "https://www.soundjay.com/buttons/sounds/button-30.mp3";
+  const GENERAL_SOUND_URL = "https://freesound.org/data/previews/269/269633_3493515-lq.mp3"; // Soft click
+  const MODE_SOUND_URL = "https://freesound.org/data/previews/397/397353_7517727-lq.mp3"; // UI toggle
 
   // --- HELPER: THEME ENGINE ---
   const isWandering = mode === 'wandering';
