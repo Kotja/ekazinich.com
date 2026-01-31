@@ -350,7 +350,7 @@ const ProjectDetail = ({ mode, playSound }) => {
 
                             <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-[#C25E00] mb-8">{displayContent.impact.outcomesTitle || "Key Outcome"}</h4>
 
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto place-items-center">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:place-items-center">
                                 {displayContent.impact.outcomes && displayContent.impact.outcomes.map((outcome, i) => (
                                     <div key={i} className="text-left flex flex-col gap-2">
                                         <h5 className={`font-playfair text-xl italic font-bold ${theme.text}`}>{outcome.title}</h5>
@@ -670,7 +670,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                             {displayContent.keyTakeaway.title || "Key Takeaway"}
                         </h4>
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto place-items-center">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:place-items-center">
                             {displayContent.keyTakeaway.outcomes.map((outcome, i) => (
                                 <div key={i} className="text-left flex flex-col gap-2">
                                     <h5 className={`font-playfair text-xl italic font-bold ${theme.text}`}>{outcome.title}</h5>
@@ -801,7 +801,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                         {displayContent.refinement.outcomesTitle || "Key Takeaway"}
                                     </h4>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto place-items-center">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:place-items-center">
                                         {displayContent.refinement.outcomes && displayContent.refinement.outcomes.map((outcome, i) => (
                                             <div key={i} className="text-left flex flex-col gap-2">
                                                 <h5 className={`font-playfair text-xl italic font-bold ${theme.text}`}>{outcome.title}</h5>
