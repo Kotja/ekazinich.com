@@ -62,8 +62,6 @@ const App = () => {
 
   // --- NAVIGATION LOGIC ---
   const scrollToSection = (id) => {
-    playSound('general');
-
     if (location.pathname !== '/') {
       navigate('/', { state: { scrollTo: id } });
     } else {

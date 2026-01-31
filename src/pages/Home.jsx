@@ -68,7 +68,6 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
 
 
     const handleMouseEnter = () => {
-        playSound('general');
         if (proj.video && videoRef.current) {
             videoRef.current.play().catch(e => console.log("Video play error:", e));
         }
@@ -181,7 +180,6 @@ const Home = ({ mode, playSound, scrollToSection }) => {
     const currentWords = (mode === 'wandering' && hoverHero) ? heroWords.wandering : heroWords.hr;
 
     const openProject = (project) => {
-        playSound('general');
         // Slugify title for URL: Remove special chars/punctuation, then space to dash
         const slug = project.title.toLowerCase().replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-');
         navigate(`/projects/${slug}`);
@@ -189,7 +187,6 @@ const Home = ({ mode, playSound, scrollToSection }) => {
     };
 
     const copyEmail = () => {
-        playSound('general');
         const textArea = document.createElement("textarea");
         textArea.value = "ekazinich@gmail.com";
         textArea.style.position = "fixed";
@@ -212,7 +209,6 @@ const Home = ({ mode, playSound, scrollToSection }) => {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        playSound('general');
         const newErrors = {};
         if (!formState.name) newErrors.name = true;
         if (!formState.email) newErrors.email = true;
@@ -258,7 +254,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                 <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 md:px-24 relative z-20">
                     <div
                         className="cursor-default"
-                        onMouseEnter={() => { setHoverHero(true); if (mode === 'wandering') playSound('general'); }}
+                        onMouseEnter={() => { setHoverHero(true); }}
                         onMouseLeave={() => setHoverHero(false)}
                     >
                         {currentWords.map((word, i) => (
@@ -449,7 +445,6 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                             style={{ color: COLOURS.cream }}
                             onMouseEnter={(e) => e.currentTarget.style.color = COLOURS.highlight}
                             onMouseLeave={(e) => e.currentTarget.style.color = COLOURS.cream}
-                            onClick={() => playSound('general')}
                         >
                             <Linkedin size={24} />
                             <span>LinkedIn Profile</span>

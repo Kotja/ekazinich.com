@@ -277,12 +277,10 @@ const ProjectDetail = ({ mode, playSound }) => {
     }, [selectedImage]);
 
     const backToProjectList = () => {
-        playSound('general');
         navigate('/', { state: { scrollTo: 'project-section' } });
     };
 
     const openProject = (proj) => {
-        playSound('general');
         const newSlug = proj.title.toLowerCase().replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-');
         navigate(`/projects/${newSlug}`);
     };

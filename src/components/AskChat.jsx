@@ -29,18 +29,18 @@ const getMessageContent = (message) => {
 // Helper to extract suggested prompts from tool calls
 const getSuggestedPrompts = (messages) => {
   if (!messages || messages.length === 0) return [];
-  
+
   // Find the last assistant message
   const lastAssistantMessage = [...messages].reverse().find(m => m.role === 'assistant');
   if (!lastAssistantMessage || !lastAssistantMessage.parts) return [];
-  
+
   // Find tool call part for suggest_questions
   const toolPart = lastAssistantMessage.parts.find(
     part => part.type === 'tool-suggest_questions' && part.output
   );
-  
+
   if (!toolPart || !toolPart.output?.questions) return [];
-  
+
   return toolPart.output.questions;
 };
 
@@ -105,14 +105,13 @@ const AskChat = ({ mode, playSound }) => {
 
   // Restart chat - clear messages and localStorage
   const handleRestartChat = () => {
-    playSound?.('general');
     setMessages([]);
     localStorage.removeItem(STORAGE_KEY);
   };
 
   // Track when to scroll (set by submit handlers, not by message updates)
   const [shouldScrollToQuestion, setShouldScrollToQuestion] = useState(false);
-  
+
   // Scroll user's question to top when triggered
   useEffect(() => {
     if (shouldScrollToQuestion && lastUserMessageRef.current) {
@@ -134,7 +133,6 @@ const AskChat = ({ mode, playSound }) => {
   }, [error]);
 
   const handleStarterClick = async (question) => {
-    playSound?.('general');
     setShouldScrollToQuestion(true);
     await sendMessage({ text: question });
   };
@@ -142,7 +140,6 @@ const AskChat = ({ mode, playSound }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
-    playSound?.('general');
     setShouldScrollToQuestion(true);
     const message = input;
     setInput('');
@@ -165,7 +162,7 @@ const AskChat = ({ mode, playSound }) => {
           <h2 className="font-playfair text-5xl md:text-7xl">Ask Me Anything</h2>
         </div>
         <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>
-          Curious about my experience, design process, or projects? 
+          Curious about my experience, design process, or projects?
           Chat with my AI assistant to learn more about my work and approach.
           {' '}Prefer to talk with a human?{' '}
           <button
@@ -233,35 +230,35 @@ const AskChat = ({ mode, playSound }) => {
               {(() => {
                 // Find the index of the last user message to apply min-height from there
                 const lastUserIdx = messages.findLastIndex(m => m.role === 'user');
-                
+
                 return messages.map((message, idx) => {
                   const isLastUserMessage = idx === lastUserIdx;
-                  
+
                   // Skip messages after the last user message - they're rendered in the min-height container
                   if (idx > lastUserIdx) {
                     return null;
                   }
-                  
+
                   // Skip rendering assistant messages with no displayable content (e.g., during reasoning phase)
                   const content = message.role === 'assistant' ? getMessageContent(message) : null;
                   if (message.role === 'assistant' && !content) {
                     return null;
                   }
-                  
+
                   // Wrap last user message + everything after in min-height container
                   if (isLastUserMessage) {
                     // Get messages from last user message onwards
                     const remainingMessages = messages.slice(idx);
-                    
+
                     // Check if we need loading indicator
                     const lastMessage = messages[messages.length - 1];
                     const showLoading = isLoading && (
-                      lastMessage?.role === 'user' || 
+                      lastMessage?.role === 'user' ||
                       (lastMessage?.role === 'assistant' && !getMessageContent(lastMessage))
                     );
-                    
+
                     return (
-                      <div 
+                      <div
                         key={message.id || idx}
                         ref={lastUserMessageRef}
                         className="min-h-[400px]"
@@ -273,7 +270,7 @@ const AskChat = ({ mode, playSound }) => {
                               <p className="font-lato text-sm">{getMessageContent(message)}</p>
                             </div>
                           </div>
-                          
+
                           {/* Assistant responses after last user message */}
                           {remainingMessages.slice(1).map((m, i) => {
                             const content = getMessageContent(m);
@@ -293,7 +290,7 @@ const AskChat = ({ mode, playSound }) => {
                               </div>
                             );
                           })}
-                          
+
                           {/* Loading indicator */}
                           {showLoading && (
                             <div className="flex justify-start">
@@ -310,7 +307,7 @@ const AskChat = ({ mode, playSound }) => {
                       </div>
                     );
                   }
-                  
+
                   // Regular messages before the last user message
                   return (
                     <div
@@ -404,7 +401,7 @@ const AskChat = ({ mode, playSound }) => {
 
       {/* Disclaimer */}
       <p className={`mt-6 font-lato text-xs ${theme.subText} text-center max-w-md`}>
-        This AI assistant provides information based on my portfolio. 
+        This AI assistant provides information based on my portfolio.
         For detailed inquiries, feel free to reach out directly.
       </p>
     </section>
