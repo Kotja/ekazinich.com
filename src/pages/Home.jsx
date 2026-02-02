@@ -311,9 +311,23 @@ const Home = ({ mode, playSound, scrollToSection }) => {
             <section id="about-section" className="min-h-[80vh] w-full flex flex-col md:flex-row items-center px-6 md:px-24 py-24 relative overflow-hidden max-w-screen-2xl mx-auto">
                 <div className="w-full md:w-1/2 pr-0 md:pr-12 md:pl-20 z-10 mb-12 md:mb-0">
                     <h2 className="font-playfair text-5xl md:text-7xl mb-8">About</h2>
-                    <p className={`font-lato text-lg leading-relaxed mb-6 max-w-md ${theme.subText}`}>
-                        Hi, I’m Eka. I’m a holistic Product Designer who looks at the entire ecosystem rather than just one slice of the experience. I enjoy the deep-dive research required to understand a new domain, and I use that insight to drive creative, non-linear solutions. I’m less concerned with sticking to one specific discipline and more focused on using whatever tool is best to solve the problem at hand.
-                    </p>
+                    {mode === 'wandering' ? (
+                        <>
+                            <p className={`font-lato text-lg leading-relaxed mb-4 max-w-md ${theme.subText}`}>
+                                Hi, I'm Eka. I'm a Product Designer who believes the best solutions come from living the problem yourself, or at least getting close enough to feel the friction.
+                            </p>
+                            <p className={`font-lato text-lg leading-relaxed mb-4 max-w-md ${theme.subText}`}>
+                                I'm fascinated by the invisible work: the research that uncovers what users can't articulate, the priority battles that separate "must-haves" from "nice-to-haves," and the small design decisions that prevent cognitive overload. I don't just want to make things look good; I want to understand why someone would abandon a flow at 2am, or why they'd trust one interface over another.
+                            </p>
+                            <p className={`font-lato text-lg leading-relaxed mb-6 max-w-md ${theme.subText}`}>
+                                My process starts with validation: Does this problem actually exist? Is solving it worth the cost? From there, I involve technical teams early, treat constraints as creative challenges, and measure outcomes obsessively. When something fails, I don't see a dead end. I see data that points toward a better iteration.
+                            </p>
+                        </>
+                    ) : (
+                        <p className={`font-lato text-lg leading-relaxed mb-6 max-w-md ${theme.subText}`}>
+                            Hi, I'm Eka. I'm a Product Designer who asks "why are we building this?" before opening Figma. I validate problems through research, prioritize ruthlessly for MVPs, and measure success through real user behavior: heatmaps, session recordings, and task completion rates. My goal is simple: design that works for both the user and the business.
+                        </p>
+                    )}
                     <p className={`font-lato text-sm ${theme.subText} border-l-2 border-[#C25E00] pl-4 italic`}>
                         "Design is intelligence made visible."
                     </p>
