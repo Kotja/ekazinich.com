@@ -361,7 +361,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
             </section>
 
             {/* Ask Chat Section */}
-            <AskChat mode={mode} playSound={playSound} />
+            <AskChat mode={mode} />
 
             {/* Contact Section */}
             <section id="contact-section" className="min-h-[60vh] w-full flex flex-col justify-center items-center px-6 md:px-24 pt-32 pb-40 md:pb-24" style={{ backgroundColor: COLOURS.charcoal, color: COLOURS.cream }}>

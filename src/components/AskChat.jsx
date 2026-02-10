@@ -1,121 +1,45 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useChat } from '@ai-sdk/react';
-import { DefaultChatTransport } from 'ai';
 import { Send, MessageCircle, Sparkles, RotateCcw } from 'lucide-react';
 import { Streamdown } from 'streamdown';
+import { useAskChat, getMessageContent, getSuggestedPrompts, STARTER_QUESTIONS, getChatTheme } from './ChatContext';
 
-const STARTER_QUESTIONS = [
-  "What's your design process like?",
-  "What tools and tech are you comfortable with?",
-  "Tell me about your most impactful project",
-];
+const AskChat = ({ mode }) => {
+  const {
+    messages, input, setInput, isLoading, hasStarted,
+    handleRestartChat, handleSend, setIsMainChatVisible,
+  } = useAskChat();
 
-const API_URL = 'https://api.ekazinich.com/api/chat';
-const STORAGE_KEY = 'eka-chat-messages';
-
-// Helper to extract text content from UIMessage parts (AI SDK v6 format)
-const getMessageContent = (message) => {
-  // AI SDK v6 uses parts array
-  if (message.parts && Array.isArray(message.parts)) {
-    return message.parts
-      .filter(part => part.type === 'text')
-      .map(part => part.text)
-      .join('');
-  }
-  // Fallback to content if it exists (older format)
-  return message.content || '';
-};
-
-// Helper to extract suggested prompts from tool calls
-const getSuggestedPrompts = (messages) => {
-  if (!messages || messages.length === 0) return [];
-
-  // Find the last assistant message
-  const lastAssistantMessage = [...messages].reverse().find(m => m.role === 'assistant');
-  if (!lastAssistantMessage || !lastAssistantMessage.parts) return [];
-
-  // Find tool call part for suggest_questions
-  const toolPart = lastAssistantMessage.parts.find(
-    part => part.type === 'tool-suggest_questions' && part.output
-  );
-
-  if (!toolPart || !toolPart.output?.questions) return [];
-
-  return toolPart.output.questions;
-};
-
-
-const AskChat = ({ mode, playSound }) => {
-  const [input, setInput] = useState('');
-  const isHydratedRef = useRef(false);
   const messagesContainerRef = useRef(null);
   const inputRef = useRef(null);
   const lastUserMessageRef = useRef(null);
+  const sectionRef = useRef(null);
 
-  // Theme configuration matching the site's design system
-  const isWandering = mode === 'wandering';
-  const theme = {
-    bg: isWandering ? 'bg-[#1A1A1A]' : 'bg-[#FDFBF7]',
-    text: isWandering ? 'text-[#FDFBF7]' : 'text-[#1A1A1A]',
-    subText: isWandering ? 'text-[#FDFBF7]/60' : 'text-[#1A1A1A]/60',
-    borderSoft: isWandering ? 'border-[#FDFBF7]/20' : 'border-[#1A1A1A]/20',
-    borderSolid: isWandering ? 'border-[#FDFBF7]' : 'border-[#1A1A1A]',
-    cardBg: isWandering ? 'bg-[#2A2A2A]' : 'bg-white',
-    inputBg: isWandering ? 'bg-[#333]' : 'bg-[#F5F3ED]',
-    userBubble: isWandering ? 'bg-[#C25E00] text-white' : 'bg-[#1A1A1A] text-[#FDFBF7]',
-    assistantBubble: isWandering ? 'bg-[#333] text-[#FDFBF7]' : 'bg-[#F5F3ED] text-[#1A1A1A]',
-  };
-
-  const transport = new DefaultChatTransport({ api: API_URL });
-  const { messages, sendMessage, setMessages, status, error } = useChat({
-    transport,
-  });
-
-  const isLoading = status === 'streaming' || status === 'submitted';
-  const hasStarted = messages.length > 0;
-
-  console.log('messages', messages, error, status);
-
-  // Load messages from localStorage on mount (client-side only)
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setMessages(parsed);
-        }
-      }
-    } catch {
-      // Ignore storage errors
-    }
-    isHydratedRef.current = true;
-  }, [setMessages]);
-
-  // Save messages to localStorage on each update (only when not streaming and after hydration)
-  useEffect(() => {
-    if (isHydratedRef.current && messages.length > 0 && status !== 'streaming') {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
-      } catch {
-        // Ignore storage errors
-      }
-    }
-  }, [messages, status]);
-
-  // Restart chat - clear messages and localStorage
-  const handleRestartChat = () => {
-    setMessages([]);
-    localStorage.removeItem(STORAGE_KEY);
-  };
-
-  // Track when to scroll (set by submit handlers, not by message updates)
   const [shouldScrollToQuestion, setShouldScrollToQuestion] = useState(false);
+
+  const theme = getChatTheme(mode);
+
+  // --- IntersectionObserver: report main chat visibility to context ---
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsMainChatVisible(entry.isIntersecting),
+      { threshold: 0 }
+    );
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+      // When AskChat unmounts (e.g. navigating away from home), mark as not visible
+      // so the MiniChat becomes available on other routes
+      setIsMainChatVisible(false);
+    };
+  }, [setIsMainChatVisible]);
 
   // Scroll user's question to top when triggered
   useEffect(() => {
     if (shouldScrollToQuestion && lastUserMessageRef.current) {
-      // Small delay to ensure DOM is updated
       setTimeout(() => {
         if (lastUserMessageRef.current) {
           lastUserMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -125,33 +49,21 @@ const AskChat = ({ mode, playSound }) => {
     }
   }, [shouldScrollToQuestion]);
 
-  // Log errors
-  useEffect(() => {
-    if (error) {
-      console.error('Chat error:', error);
-    }
-  }, [error]);
-
   const handleStarterClick = async (question) => {
     setShouldScrollToQuestion(true);
-    await sendMessage({ text: question });
+    await handleSend(question);
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
     setShouldScrollToQuestion(true);
-    const message = input;
-    setInput('');
-    await sendMessage({ text: message });
-  };
-
-  const handleInputChange = (e) => {
-    setInput(e.target.value);
+    await handleSend(input);
   };
 
   return (
     <section
+      ref={sectionRef}
       id="chat-section"
       className={`min-h-[80vh] w-full flex flex-col items-center px-6 md:px-24 py-24 relative overflow-hidden max-w-screen-2xl mx-auto`}
     >
@@ -198,7 +110,7 @@ const AskChat = ({ mode, playSound }) => {
         )}
 
         {/* Messages Area */}
-        <div ref={messagesContainerRef} className="h-[400px] overflow-y-auto p-6">
+        <div ref={messagesContainerRef} className="h-[400px] overflow-y-auto p-6 rounded-[3px]">
           {messages.length === 0 && !hasStarted ? (
             <div className={`flex flex-col items-center justify-center h-full ${theme.subText}`}>
               <MessageCircle size={48} strokeWidth={1} className="mb-4 opacity-30" />
@@ -247,10 +159,8 @@ const AskChat = ({ mode, playSound }) => {
 
                   // Wrap last user message + everything after in min-height container
                   if (isLastUserMessage) {
-                    // Get messages from last user message onwards
                     const remainingMessages = messages.slice(idx);
 
-                    // Check if we need loading indicator
                     const lastMessage = messages[messages.length - 1];
                     const showLoading = isLoading && (
                       lastMessage?.role === 'user' ||
@@ -373,7 +283,7 @@ const AskChat = ({ mode, playSound }) => {
               ref={inputRef}
               type="text"
               value={input}
-              onChange={handleInputChange}
+              onChange={(e) => setInput(e.target.value)}
               placeholder="Ask about my experience, skills, or projects..."
               disabled={isLoading}
               className={`

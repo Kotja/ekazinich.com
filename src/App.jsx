@@ -3,6 +3,9 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Home from './pages/Home';
 import ProjectDetail from './pages/ProjectDetail';
 import OnboardingModal from './components/OnboardingModal';
+import MiniChat from './components/MiniChat';
+import { ChatProvider } from './components/ChatContext';
+import { ShowComponent } from 'show-component';
 
 const App = () => {
   // --- STATE MANAGEMENT ---
@@ -93,6 +96,7 @@ const App = () => {
   }, [location]);
 
   return (
+    <ChatProvider>
     <div className={`min-h-[100dvh] transition-colors duration-700 ${theme.bg} ${theme.text} font-lato overflow-x-hidden selection:bg-[#FFD1A3] selection:text-[#C25E00] pb-28 md:pb-0`}>
 
       {/* GLOBAL STYLES */}
@@ -211,13 +215,11 @@ const App = () => {
 
         {/* Menu Items */}
         <div className={`pointer-events-auto flex flex-row md:flex-col md:gap-12 text-sm font-bold tracking-widest order-1 md:order-2 md:w-full flex-grow md:justify-start pr-6 md:pr-0 transition-opacity duration-300 justify-between ${isWandering ? 'md:gap-8' : ''} ${isOnboardingVisible ? 'opacity-20 blur-[1px]' : 'opacity-100'}`}>
-          {['Projects', 'About', 'Ask AI', 'Get in Touch'].map((item) => {
-            const initial = item.charAt(0);
+          {['Projects', 'About', 'Get in Touch'].map((item) => {
             const targetId = item.toLowerCase().replace(/ /g, '-');
             const sectionMap = {
               'projects': 'project-section',
               'about': 'about-section',
-              'ask-ai': 'chat-section',
               'get-in-touch': 'contact-section',
             };
             const targetScrollId = sectionMap[targetId] || 'project-section';
@@ -260,9 +262,14 @@ const App = () => {
         <Route path="/projects/:slug" element={<ProjectDetail mode={mode} playSound={playSound} />} />
       </Routes>
 
+      <MiniChat mode={mode} />
+
       <OnboardingModal onVisibilityChange={setIsOnboardingVisible} />
 
+      {import.meta.env.DEV && <ShowComponent sourceRoot={__PROJECT_ROOT__} />}
+
     </div>
+    </ChatProvider>
   );
 };
 
