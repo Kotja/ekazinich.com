@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Sparkles, RotateCcw } from 'lucide-react';
 import { Streamdown } from 'streamdown';
-import { useAskChat, getMessageContent, getSuggestedPrompts, STARTER_QUESTIONS, getChatTheme } from './ChatContext';
+import { useAskChat, getMessageContent, getSuggestedPrompts, STARTER_QUESTIONS } from './ChatContext';
+import { getTheme } from '../theme';
 
 const MiniChat = ({ mode }) => {
   const {
@@ -13,7 +14,7 @@ const MiniChat = ({ mode }) => {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  const theme = getChatTheme(mode);
+  const theme = getTheme(mode);
 
   // Auto-scroll messages to bottom
   useEffect(() => {
@@ -66,7 +67,7 @@ const MiniChat = ({ mode }) => {
         {/* Header */}
         <div className={`flex items-center justify-between px-4 py-3 border-b ${theme.borderSoft} shrink-0`}>
           <div className="flex items-center gap-2">
-            <Sparkles className="text-[#C25E00]" size={16} />
+            <Sparkles className="text-accent" size={16} />
             <span className="font-playfair text-sm font-semibold">Ask Eka</span>
           </div>
           <div className="flex items-center gap-1">
@@ -76,7 +77,7 @@ const MiniChat = ({ mode }) => {
                 disabled={isLoading}
                 className={`
                   p-1.5 rounded-full transition-colors
-                  hover:bg-[#C25E00]/10
+                  hover:bg-accent/10
                   disabled:opacity-50 disabled:cursor-not-allowed
                   ${theme.subText}
                 `}
@@ -87,7 +88,7 @@ const MiniChat = ({ mode }) => {
             )}
             <button
               onClick={() => setIsOpen(false)}
-              className={`p-1.5 rounded-full transition-colors hover:bg-[#C25E00]/10 ${theme.subText}`}
+              className={`p-1.5 rounded-full transition-colors hover:bg-accent/10 ${theme.subText}`}
             >
               <X size={16} />
             </button>
@@ -112,7 +113,7 @@ const MiniChat = ({ mode }) => {
                     className={`
                       px-2.5 py-1 rounded-full text-[11px] font-lato
                       border transition-all duration-300
-                      hover:border-[#C25E00] hover:text-[#C25E00]
+                      hover:border-accent hover:text-accent
                       disabled:opacity-50 disabled:cursor-not-allowed
                       ${theme.borderSoft} ${theme.text}
                     `}
@@ -188,7 +189,7 @@ const MiniChat = ({ mode }) => {
                   className={`
                     px-2.5 py-1 rounded-full text-[11px] font-lato
                     border transition-all duration-300
-                    hover:border-[#C25E00] hover:text-[#C25E00]
+                    hover:border-accent hover:text-accent
                     disabled:opacity-50 disabled:cursor-not-allowed
                     ${theme.borderSoft} ${theme.text}
                   `}
@@ -222,7 +223,7 @@ const MiniChat = ({ mode }) => {
               className={`
                 p-1.5 rounded-full transition-all duration-300
                 disabled:opacity-30 disabled:cursor-not-allowed
-                hover:bg-[#C25E00] hover:text-white
+                hover:bg-accent hover:text-white
                 ${theme.text}
               `}
               aria-label="Send message"
@@ -240,8 +241,8 @@ const MiniChat = ({ mode }) => {
           w-14 h-14 rounded-full
           flex items-center justify-center
           transition-all duration-300
-          bg-[#C25E00] text-white
-          hover:scale-110
+          bg-accent-light text-white cursor-pointer
+          hover:bg-accent hover:scale-110
           active:scale-95
         `}
         style={{ boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -4px rgba(0, 0, 0, 0.1)' }}

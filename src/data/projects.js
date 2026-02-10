@@ -102,7 +102,7 @@ export const PROJECTS = [
                     },
                     {
                         type: 'comparison',
-                        bg: '#1A1A1A',
+                        bg: 'var(--color-charcoal)',
                         items: [
                             {
                                 title: 'Before: The Obstacle',
@@ -118,7 +118,7 @@ export const PROJECTS = [
                     },
                     {
                         type: 'comparison',
-                        bg: '#1A1A1A',
+                        bg: 'var(--color-charcoal)',
                         items: [
                             {
                                 title: 'Before: High Density Request',

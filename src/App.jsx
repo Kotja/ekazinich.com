@@ -6,6 +6,7 @@ import OnboardingModal from './components/OnboardingModal';
 import MiniChat from './components/MiniChat';
 import { ChatProvider } from './components/ChatContext';
 import { ShowComponent } from 'show-component';
+import { getTheme } from './theme';
 
 const App = () => {
   // --- STATE MANAGEMENT ---
@@ -20,16 +21,7 @@ const App = () => {
 
   // --- HELPER: THEME ENGINE ---
   const isWandering = mode === 'wandering';
-  const theme = {
-    bg: isWandering ? 'bg-[#1A1A1A]' : 'bg-[#FDFBF7]',
-    text: isWandering ? 'text-[#FDFBF7]' : 'text-[#1A1A1A]',
-    navBg: isWandering ? 'bg-[#1A1A1A]/90' : 'bg-[#FDFBF7]/90',
-    borderSoft: isWandering ? 'border-[#FDFBF7]/20' : 'border-[#1A1A1A]/20',
-  };
-
-  const COLOURS = {
-    cream: '#FDFBF7',
-  };
+  const theme = getTheme(mode);
 
   // --- AUDIO ENGINE ---
   const playSound = (type) => {
@@ -97,11 +89,11 @@ const App = () => {
 
   return (
     <ChatProvider>
-    <div className={`min-h-[100dvh] transition-colors duration-700 ${theme.bg} ${theme.text} font-lato overflow-x-hidden selection:bg-[#FFD1A3] selection:text-[#C25E00] pb-28 md:pb-0`}>
+    <div className={`min-h-[100dvh] transition-colors duration-700 ${theme.bg} ${theme.text} font-lato overflow-x-hidden selection:bg-accent-peach selection:text-accent pb-28 md:pb-0`}>
 
       {/* GLOBAL STYLES */}
       <style>{`
-        ::-webkit-scrollbar-track { background: ${isWandering ? '#1A1A1A' : '#FDFBF7'}; }
+        ::-webkit-scrollbar-track { background: ${isWandering ? 'var(--color-charcoal)' : 'var(--color-cream)'}; }
       `}</style>
 
       {/* --- RESPONSIVE NAVIGATION --- */}
@@ -135,7 +127,7 @@ const App = () => {
                   `}</style>
                   <path
                     d="M10 50 C 10 20 190 20 190 50 C 190 80 10 80 10 50 M 15 52 C 15 25 185 25 185 50"
-                    stroke="#C25E00"
+                    stroke="var(--color-accent)"
                     strokeWidth="3"
                     strokeLinecap="round"
                     fill="none"
@@ -155,13 +147,13 @@ const App = () => {
                 aria-label="Impact Mode"
               />
               {/* Desktop Tooltip */}
-              <span className="hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-[9px] tracking-widest uppercase opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none text-[#E6944C]">
+              <span className="hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-[9px] tracking-widest uppercase opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none text-accent-light">
                 Impact Mode
               </span>
             </div>
 
             {/* Connector Line - Flexible in Mobile */}
-            <div className={`h-[1px] w-2 flex-grow md:flex-grow-0 md:w-[1px] md:h-8 transition-colors duration-300 ${mode === 'wandering' ? 'bg-[#C25E00]' : (isWandering ? 'bg-white/20' : 'bg-black/20')}`}></div>
+            <div className={`h-[1px] w-2 flex-grow md:flex-grow-0 md:w-[1px] md:h-8 transition-colors duration-300 ${mode === 'wandering' ? 'bg-accent' : (isWandering ? 'bg-white/20' : 'bg-black/20')}`}></div>
 
             {/* Explore Mode Button -> In-Depth Mode */}
             <div className="relative group/btn">
@@ -175,8 +167,8 @@ const App = () => {
               {/* Desktop Tooltip - positioned absolutely to prevent layout shifts */}
               <span className={`hidden md:block absolute right-full top-1/2 -translate-y-1/2 whitespace-nowrap text-[9px] tracking-widest uppercase transition-all duration-300 pointer-events-none 
                 ${isOnboardingVisible
-                  ? 'opacity-100 bg-[#FDFBF7] text-[#E6944C] px-5 py-3 rounded-full font-bold shadow-lg leading-none'
-                  : 'opacity-0 group-hover/btn:opacity-100 text-[#E6944C]'
+                  ? 'opacity-100 bg-cream text-accent-light px-5 py-3 rounded-full font-bold shadow-lg leading-none'
+                  : 'opacity-0 group-hover/btn:opacity-100 text-accent-light'
                 }`}
                 style={{ marginRight: '1rem' }}>
                 In-Depth Mode
@@ -200,7 +192,7 @@ const App = () => {
                     `}</style>
                     <path
                       d="M25 120 C 25 45 475 45 475 120 C 475 195 25 195 25 120 M 30 122 C 30 50 470 50 470 120"
-                      stroke="#C25E00"
+                      stroke="var(--color-accent)"
                       strokeWidth="2.5"
                       strokeLinecap="round"
                       fill="none"
@@ -231,7 +223,7 @@ const App = () => {
                 onClick={() => scrollToSection(targetScrollId)}
                 onMouseEnter={() => { if (mode === 'wandering') setMenuHover(item); }}
                 onMouseLeave={() => setMenuHover(null)}
-                className={`relative group flex items-center justify-center md:w-auto md:pt-[4px] md:pr-[10px] md:pb-[4px] md:pl-[10px] md:rounded-[16px] whitespace-nowrap ${isWandering ? 'md:self-end md:mr-12 md:justify-end md:bg-[#1A1A1A]' : 'md:self-end md:justify-end md:mr-8 md:bg-[#FDFBF7]'}`}
+                className={`relative group flex items-center justify-center md:w-auto md:pt-[4px] md:pr-[10px] md:pb-[4px] md:pl-[10px] md:rounded-[16px] whitespace-nowrap ${isWandering ? 'md:self-end md:mr-12 md:justify-end md:bg-charcoal' : 'md:self-end md:justify-end md:mr-8 md:bg-cream'}`}
                 style={{
                   color: 'inherit'
                 }}
@@ -266,7 +258,7 @@ const App = () => {
 
       <OnboardingModal onVisibilityChange={setIsOnboardingVisible} />
 
-      {import.meta.env.DEV && <ShowComponent sourceRoot={__PROJECT_ROOT__} />}
+      <ShowComponent sourceRoot={__PROJECT_ROOT__} />
 
     </div>
     </ChatProvider>

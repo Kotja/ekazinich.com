@@ -42,22 +42,6 @@ export const STARTER_QUESTIONS = [
   "Tell me about your most impactful project",
 ];
 
-// Shared theme generator for chat components
-export const getChatTheme = (mode) => {
-  const isWandering = mode === 'wandering';
-  return {
-    bg: isWandering ? 'bg-[#1A1A1A]' : 'bg-[#FDFBF7]',
-    text: isWandering ? 'text-[#FDFBF7]' : 'text-[#1A1A1A]',
-    subText: isWandering ? 'text-[#FDFBF7]/60' : 'text-[#1A1A1A]/60',
-    borderSoft: isWandering ? 'border-[#FDFBF7]/20' : 'border-[#1A1A1A]/20',
-    borderSolid: isWandering ? 'border-[#FDFBF7]' : 'border-[#1A1A1A]',
-    cardBg: isWandering ? 'bg-[#2A2A2A]' : 'bg-white',
-    inputBg: isWandering ? 'bg-[#333]' : 'bg-[#F5F3ED]',
-    userBubble: isWandering ? 'bg-[#C25E00] text-white' : 'bg-[#1A1A1A] text-[#FDFBF7]',
-    assistantBubble: isWandering ? 'bg-[#333] text-[#FDFBF7]' : 'bg-[#F5F3ED] text-[#1A1A1A]',
-  };
-};
-
 export const ChatProvider = ({ children }) => {
   const [input, setInput] = useState('');
   const isHydratedRef = useRef(false);

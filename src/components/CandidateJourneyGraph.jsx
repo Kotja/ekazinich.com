@@ -6,12 +6,12 @@ const CandidateJourneyGraph = ({ theme }) => {
 
     // Candidate data matching the original image
     const candidates = [
-        { id: 1, color: '#B8733C', label: 'Candidate 1', path: 'M 50 20 L 150 25 L 250 95 L 350 70 L 450 95' },
-        { id: 2, color: '#D4A843', label: 'Candidate 2', path: 'M 50 10 L 150 30 L 250 35 L 350 5 L 450 5' },
-        { id: 3, color: '#4A4A4A', label: 'Candidate 3', path: 'M 50 25 L 150 15 L 250 80 L 350 85 L 450 55' },
-        { id: 4, color: '#6B6B6B', label: 'Candidate 4', path: 'M 50 18 L 150 8 L 250 75 L 350 40 L 450 35' },
-        { id: 5, color: '#E58B7F', label: 'Candidate 5', path: 'M 50 5 L 150 5 L 250 20 L 350 70 L 450 80' },
-        { id: 6, color: '#F5B3A6', label: 'Candidate 6', path: 'M 50 5 L 150 5 L 250 22 L 350 90 L 450 75' }
+        { id: 1, color: 'var(--color-candidate-1)', label: 'Candidate 1', path: 'M 50 20 L 150 25 L 250 95 L 350 70 L 450 95' },
+        { id: 2, color: 'var(--color-candidate-2)', label: 'Candidate 2', path: 'M 50 10 L 150 30 L 250 35 L 350 5 L 450 5' },
+        { id: 3, color: 'var(--color-candidate-3)', label: 'Candidate 3', path: 'M 50 25 L 150 15 L 250 80 L 350 85 L 450 55' },
+        { id: 4, color: 'var(--color-candidate-4)', label: 'Candidate 4', path: 'M 50 18 L 150 8 L 250 75 L 350 40 L 450 35' },
+        { id: 5, color: 'var(--color-candidate-5)', label: 'Candidate 5', path: 'M 50 5 L 150 5 L 250 20 L 350 70 L 450 80' },
+        { id: 6, color: 'var(--color-candidate-6)', label: 'Candidate 6', path: 'M 50 5 L 150 5 L 250 22 L 350 90 L 450 75' }
     ];
 
     // Annotations with positions and timing - adjusted to prevent overlap
@@ -20,7 +20,7 @@ const CandidateJourneyGraph = ({ theme }) => {
         { text: 'Waiting for a response', x: 140, y: 48, rotation: 0, delay: 0.8, vertical: true, showAlways: true },
         { text: 'Ghosted', x: 205, y: 72, rotation: 0, delay: 1.2, vertical: true, showAlways: true },
         { text: 'Interview', x: 280, y: 25, rotation: 0, delay: 1.0, vertical: true, showAlways: true },
-        { text: 'Opportunity for intervention', x: 250, y: 108, rotation: 0, delay: 1.6, color: '#C25E00', size: 'base', vertical: false, showAlways: false },
+        { text: 'Opportunity for intervention', x: 250, y: 108, rotation: 0, delay: 1.6, color: 'var(--color-accent)', size: 'base', vertical: false, showAlways: false },
         { text: 'Rejection', x: 430, y: 88, rotation: 0, delay: 2.0, vertical: true, showAlways: true }
     ];
 
@@ -51,8 +51,12 @@ const CandidateJourneyGraph = ({ theme }) => {
         };
     }, []);
 
-    const isDark = theme?.bg === 'bg-[#1A1A1A]';
+    const isDark = theme?.bg === 'bg-charcoal';
     const [isHovered, setIsHovered] = useState(false);
+
+    // Semi-transparent helpers for SVG attributes
+    const creamAlpha = (pct) => `color-mix(in srgb, var(--color-cream) ${pct}%, transparent)`;
+    const charcoalAlpha = (pct) => `color-mix(in srgb, var(--color-charcoal) ${pct}%, transparent)`;
 
     return (
         <div
@@ -75,7 +79,7 @@ const CandidateJourneyGraph = ({ theme }) => {
                         y1={100 - y}
                         x2="460"
                         y2={100 - y}
-                        stroke={isDark ? 'rgba(253, 251, 247, 0.1)' : 'rgba(26, 26, 26, 0.1)'}
+                        stroke={isDark ? creamAlpha(10) : charcoalAlpha(10)}
                         strokeWidth="0.5"
                     />
                 ))}
@@ -87,7 +91,7 @@ const CandidateJourneyGraph = ({ theme }) => {
                         x="30"
                         y={105 - val}
                         fontSize="11"
-                        fill={isDark ? 'rgba(253, 251, 247, 0.7)' : 'rgba(26, 26, 26, 0.7)'}
+                        fill={isDark ? creamAlpha(70) : charcoalAlpha(70)}
                         textAnchor="end"
                         fontFamily="Playfair Display, serif"
                     >
@@ -100,7 +104,7 @@ const CandidateJourneyGraph = ({ theme }) => {
                     x="15"
                     y="50"
                     fontSize="11"
-                    fill={isDark ? 'rgba(253, 251, 247, 0.7)' : 'rgba(26, 26, 26, 0.7)'}
+                    fill={isDark ? creamAlpha(70) : charcoalAlpha(70)}
                     textAnchor="middle"
                     fontFamily="Playfair Display, serif"
                     transform="rotate(-90, 15, 50)"
@@ -115,7 +119,7 @@ const CandidateJourneyGraph = ({ theme }) => {
                         x={50 + (week - 1) * 100}
                         y="115"
                         fontSize="11"
-                        fill={isDark ? 'rgba(253, 251, 247, 0.7)' : 'rgba(26, 26, 26, 0.7)'}
+                        fill={isDark ? creamAlpha(70) : charcoalAlpha(70)}
                         textAnchor="middle"
                         fontFamily="Playfair Display, serif"
                     >
@@ -128,7 +132,7 @@ const CandidateJourneyGraph = ({ theme }) => {
                     x="60"
                     y="125"
                     fontSize="11"
-                    fill={isDark ? 'rgba(253, 251, 247, 0.7)' : 'rgba(26, 26, 26, 0.7)'}
+                    fill={isDark ? creamAlpha(70) : charcoalAlpha(70)}
                     textAnchor="start"
                     fontFamily="Playfair Display, serif"
                 >
@@ -174,7 +178,7 @@ const CandidateJourneyGraph = ({ theme }) => {
                                 x="8"
                                 y="3"
                                 fontSize="8"
-                                fill={isDark ? 'rgba(253, 251, 247, 0.8)' : 'rgba(26, 26, 26, 0.8)'}
+                                fill={isDark ? creamAlpha(80) : charcoalAlpha(80)}
                                 fontFamily="Lato, sans-serif"
                                 style={{
                                     opacity: isVisible ? 1 : 0,
@@ -207,7 +211,7 @@ const CandidateJourneyGraph = ({ theme }) => {
                                 x="0"
                                 y="0"
                                 fontSize={annotation.size === 'base' ? '10' : '10'}
-                                fill={annotation.color || (isDark ? '#FDFBF7' : '#1A1A1A')}
+                                fill={annotation.color || (isDark ? 'var(--color-cream)' : 'var(--color-charcoal)')}
                                 fontFamily={annotation.vertical ? "'Lato', sans-serif" : "'Playfair Display', serif"}
                                 fontStyle={annotation.vertical ? "normal" : "italic"}
                                 textAnchor="middle"
@@ -229,7 +233,7 @@ const CandidateJourneyGraph = ({ theme }) => {
                             <path
                                 d="M -40 0 C -40 -25 40 -25 40 0 C 40 25 -40 25 -40 0 M -38 2 C -38 -22 38 -22 38 0"
                                 fill="none"
-                                stroke="#C25E00"
+                                stroke="var(--color-accent)"
                                 strokeWidth="1.25"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"

@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, MessageCircle, Sparkles, RotateCcw } from 'lucide-react';
 import { Streamdown } from 'streamdown';
-import { useAskChat, getMessageContent, getSuggestedPrompts, STARTER_QUESTIONS, getChatTheme } from './ChatContext';
+import { useAskChat, getMessageContent, getSuggestedPrompts, STARTER_QUESTIONS } from './ChatContext';
+import { getTheme } from '../theme';
 
 const AskChat = ({ mode }) => {
   const {
@@ -16,7 +17,7 @@ const AskChat = ({ mode }) => {
 
   const [shouldScrollToQuestion, setShouldScrollToQuestion] = useState(false);
 
-  const theme = getChatTheme(mode);
+  const theme = getTheme(mode);
 
   // --- IntersectionObserver: report main chat visibility to context ---
   useEffect(() => {
@@ -70,7 +71,7 @@ const AskChat = ({ mode }) => {
       {/* Intro Section */}
       <div className="text-center mb-12 max-w-2xl">
         <div className="flex items-center justify-center gap-3 mb-6">
-          <Sparkles className="text-[#C25E00]" size={28} />
+          <Sparkles className="text-accent" size={28} />
           <h2 className="font-playfair text-5xl md:text-7xl">Ask Me Anything</h2>
         </div>
         <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>
@@ -79,7 +80,7 @@ const AskChat = ({ mode }) => {
           {' '}Prefer to talk with a human?{' '}
           <button
             onClick={() => document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' })}
-            className="text-[#C25E00] hover:underline cursor-pointer"
+            className="text-accent hover:underline cursor-pointer"
           >
             Message me.
           </button>
@@ -97,7 +98,7 @@ const AskChat = ({ mode }) => {
               className={`
                 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-lato
                 transition-all duration-300
-                hover:bg-[#C25E00] hover:text-white
+                hover:bg-accent hover:text-white
                 disabled:opacity-50 disabled:cursor-not-allowed
                 ${theme.subText}
               `}
@@ -127,7 +128,7 @@ const AskChat = ({ mode }) => {
                     className={`
                       px-3 py-1.5 rounded-full text-xs font-lato
                       border transition-all duration-300
-                      hover:border-[#C25E00] hover:text-[#C25E00] hover:scale-105
+                      hover:border-accent hover:text-accent hover:scale-105
                       disabled:opacity-50 disabled:cursor-not-allowed
                       ${theme.borderSoft} ${theme.text}
                     `}
@@ -264,7 +265,7 @@ const AskChat = ({ mode }) => {
                   className={`
                     px-3 py-1.5 rounded-full text-xs font-lato
                     border transition-all duration-300
-                    hover:border-[#C25E00] hover:text-[#C25E00] hover:scale-105
+                    hover:border-accent hover:text-accent hover:scale-105
                     disabled:opacity-50 disabled:cursor-not-allowed
                     ${theme.borderSoft} ${theme.text}
                   `}
@@ -298,7 +299,7 @@ const AskChat = ({ mode }) => {
               className={`
                 p-2 rounded-full transition-all duration-300
                 disabled:opacity-30 disabled:cursor-not-allowed
-                hover:bg-[#C25E00] hover:text-white
+                hover:bg-accent hover:text-white
                 ${theme.text}
               `}
               aria-label="Send message"

@@ -5,6 +5,7 @@ import { PROJECTS } from '../data/projects';
 import brandChallengeAniOnWhite from '../assets/brand-challenge-ani-onwhite.webp';
 import brandChallengeAniOnBlack from '../assets/brand-challenge-ani-onblack.webp';
 import CandidateJourneyGraph from '../components/CandidateJourneyGraph';
+import { getTheme } from '../theme';
 
 const BoomerangVideo = ({ src }) => {
     const videoRef = React.useRef(null);
@@ -101,7 +102,7 @@ const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentInd
 
     return (
         <div
-            className={`fixed inset-0 z-50 flex items-center justify-center animate-fade-in ${isWandering ? 'bg-[#1A1A1A]/95' : 'bg-[#FDFBF7]/95'} ${zoom > 1 ? 'overflow-auto cursor-zoom-out' : 'p-4 cursor-default'}`}
+            className={`fixed inset-0 z-50 flex items-center justify-center animate-fade-in ${isWandering ? 'bg-charcoal/95' : 'bg-cream/95'} ${zoom > 1 ? 'overflow-auto cursor-zoom-out' : 'p-4 cursor-default'}`}
             onClick={onClose}
         >
             <button
@@ -126,7 +127,7 @@ const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentInd
                 {hasGallery && (
                     <>
                         <button
-                            className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-[70] ${theme.text} hover:opacity-70 transition-opacity p-2 md:p-3 rounded-full ${isWandering ? 'bg-[#2A2A2A]/80' : 'bg-white/80'} backdrop-blur-sm`}
+                            className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-[70] ${theme.text} hover:opacity-70 transition-opacity p-2 md:p-3 rounded-full ${isWandering ? 'bg-surface-dark-raised/80' : 'bg-white/80'} backdrop-blur-sm`}
                             onClick={goToPrev}
                             aria-label="Previous image"
                         >
@@ -135,7 +136,7 @@ const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentInd
                             </svg>
                         </button>
                         <button
-                            className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-[70] ${theme.text} hover:opacity-70 transition-opacity p-2 md:p-3 rounded-full ${isWandering ? 'bg-[#2A2A2A]/80' : 'bg-white/80'} backdrop-blur-sm`}
+                            className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-[70] ${theme.text} hover:opacity-70 transition-opacity p-2 md:p-3 rounded-full ${isWandering ? 'bg-surface-dark-raised/80' : 'bg-white/80'} backdrop-blur-sm`}
                             onClick={goToNext}
                             aria-label="Next image"
                         >
@@ -143,7 +144,7 @@ const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentInd
                                 <polyline points="9 18 15 12 9 6" />
                             </svg>
                         </button>
-                        <div className={`absolute bottom-2 md:bottom-4 left-1/2 -translate-x-1/2 z-[70] ${theme.text} text-sm px-3 py-1 rounded-full ${isWandering ? 'bg-[#2A2A2A]/80' : 'bg-white/80'} backdrop-blur-sm`}>
+                        <div className={`absolute bottom-2 md:bottom-4 left-1/2 -translate-x-1/2 z-[70] ${theme.text} text-sm px-3 py-1 rounded-full ${isWandering ? 'bg-surface-dark-raised/80' : 'bg-white/80'} backdrop-blur-sm`}>
                             {index + 1} / {gallery.length}
                         </div>
                     </>
@@ -157,7 +158,7 @@ const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentInd
                         // Gradual stepped zoom on click: 1 -> 1.25 -> 1.5 ... -> 3 -> 1
                         setZoom(prev => (prev >= 3) ? 1 : prev + 0.25);
                     }}
-                    className={`shadow-2xl p-[30px] transition-all duration-300 w-full h-full object-contain ${zoom > 1 ? 'cursor-zoom-out' : 'cursor-zoom-in'} ${currentSrc.includes('brand-flow-chart') ? (currentSrc.includes('in-depth') ? 'bg-[#1A1A1A]' : 'bg-[#FDFBF7]') : ''}`}
+                    className={`shadow-2xl p-[30px] transition-all duration-300 w-full h-full object-contain ${zoom > 1 ? 'cursor-zoom-out' : 'cursor-zoom-in'} ${currentSrc.includes('brand-flow-chart') ? (currentSrc.includes('in-depth') ? 'bg-charcoal' : 'bg-cream') : ''}`}
                 />
             </div>
         </div>
@@ -241,16 +242,7 @@ const ProjectDetail = ({ mode, playSound }) => {
         ? { ...project, ...project.wanderingContent }
         : project;
 
-    const theme = {
-        bg: isWandering ? 'bg-[#1A1A1A]' : 'bg-[#FDFBF7]',
-        text: isWandering ? 'text-[#FDFBF7]' : 'text-[#1A1A1A]',
-        subText: isWandering ? 'text-[#FDFBF7]/60' : 'text-[#1A1A1A]/60',
-        borderSoft: isWandering ? 'border-[#FDFBF7]/20' : 'border-[#1A1A1A]/20',
-        projectSectionBg: isWandering ? 'bg-[#121212]' : 'bg-[#F5F3ED]',
-        imagePlaceholderBg: isWandering ? 'bg-[#333]' : 'bg-gray-100',
-        tagBg: isWandering ? 'bg-[#333] text-[#FDFBF7] border-[#444]' : 'bg-[#F5F3ED] text-gray-500 border-gray-200',
-        cardBg: isWandering ? 'bg-[#2A2A2A]' : 'bg-white',
-    };
+    const theme = getTheme(mode);
 
     // --- SCROLL TO TOP ON PROJECT CHANGE ---
     useEffect(() => {
@@ -293,13 +285,13 @@ const ProjectDetail = ({ mode, playSound }) => {
             <div className={`w-full px-6 py-6 flex justify-between items-center border-b ${theme.borderSoft}`}>
                 <button
                     onClick={backToProjectList}
-                    className={`flex items-center gap-2 text-sm uppercase tracking-widest hover:text-[#C25E00] transition-colors ${theme.text}`}
+                    className={`flex items-center gap-2 text-sm uppercase tracking-widest hover:text-accent transition-colors ${theme.text}`}
                 >
                     <ArrowLeft size={16} /> Back
                 </button>
                 <button
                     onClick={() => navigate('/', { state: { scrollTo: 'contact-section' } })}
-                    className={`text-sm uppercase tracking-widest hover:text-[#C25E00] transition-colors ${theme.text}`}
+                    className={`text-sm uppercase tracking-widest hover:text-accent transition-colors ${theme.text}`}
                 >
                     Hire Me
                 </button>
@@ -346,9 +338,9 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 {displayContent.impact.description}
                             </p>
 
-                            <div className={`w-full h-px ${isWandering ? 'bg-[#FDFBF7]/20' : 'bg-[#1A1A1A]/20'} mb-8`}></div>
+                            <div className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mb-8`}></div>
 
-                            <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-[#C25E00] mb-8">{displayContent.impact.outcomesTitle || "Key Outcome"}</h4>
+                            <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">{displayContent.impact.outcomesTitle || "Key Outcome"}</h4>
 
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:place-items-center">
                                 {displayContent.impact.outcomes && displayContent.impact.outcomes.map((outcome, i) => (
@@ -359,7 +351,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 ))}
                             </div>
 
-                            <div className={`w-full h-px ${isWandering ? 'bg-[#FDFBF7]/20' : 'bg-[#1A1A1A]/20'} mt-12`}></div>
+                            <div className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mt-12`}></div>
                         </div>
                     ) : (
                         <p className={`font-playfair text-2xl md:text-5xl leading-tight italic ${theme.text}`} style={{ textWrap: 'balance', whiteSpace: 'pre-line' }}>
@@ -374,7 +366,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                     return (
                         <div className={`w-full max-w-6xl mx-auto px-6 ${challengeImage ? 'md:flex md:gap-12 md:items-center' : 'grid grid-cols-1'}`}>
                             <div className="order-2 md:order-1 flex flex-col justify-center md:flex-1">
-                                <h3 className="font-playfair text-3xl mb-4 text-[#C25E00]">The Challenge</h3>
+                                <h3 className="font-playfair text-3xl mb-4 text-accent">The Challenge</h3>
                                 <p className={`font-lato text-lg leading-relaxed max-w-[600px] ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.challenge}</p>
                             </div>
                             {challengeImage && (
@@ -393,7 +385,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                 })()}
 
                 {/* Section 2: Role (Full Width Background, Constrained Content) */}
-                <div className={`w-full border-y border-[#FFD1A3] ${theme.projectSectionBg}`}>
+                <div className={`w-full border-y border-accent-peach ${theme.projectSectionBg}`}>
                     {isWandering ? (
                         <div className={`max-w-6xl mx-auto px-6 py-12 ${displayContent.roleImage ? 'grid grid-cols-1 md:grid-cols-2 gap-12 items-center' : 'text-center'}`}>
                             {displayContent.roleImage && (
@@ -441,7 +433,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                         {displayContent.process.renderComponent === 'CandidateJourneyGraph' && (
                             <div className="w-full max-w-6xl mx-auto px-6 mb-12">
                                 {/* The Process title at the very top */}
-                                <h3 className="font-playfair text-3xl mb-12 text-[#C25E00] text-center">The Process</h3>
+                                <h3 className="font-playfair text-3xl mb-12 text-accent text-center">The Process</h3>
                                 {/* Text before graph */}
                                 {displayContent.process.beforeGraph && (
                                     <div className="max-w-[600px] mx-auto mb-12 text-left">
@@ -498,7 +490,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                     <div key={idx} className={`max-w-6xl mx-auto px-6 ${showImage ? 'grid md:grid-cols-2 gap-12 items-center' : 'text-center'} mb-12`}>
                                         {/* Video, Iframe or Image for Process */}
                                         {showImage && (
-                                            <div className={`${section.video || section.iframe ? 'w-full aspect-video' : 'aspect-square'} ${section.video && project.id === 1 ? 'overflow-visible pt-16' : 'overflow-hidden'} ${(project.id === 2 || project.id === 3 || project.id === 1) ? '' : 'shadow-sm'} ${(project.id === 3 || project.id === 1) ? (isWandering ? 'bg-[#1A1A1A]' : 'bg-[#FDFBF7]') : theme.imagePlaceholderBg} ${section.video || section.iframe ? '' : 'cursor-zoom-in'}`} onClick={section.video || section.iframe ? undefined : () => setSelectedImage(section.image || project.images[2])}>
+                                            <div className={`${section.video || section.iframe ? 'w-full aspect-video' : 'aspect-square'} ${section.video && project.id === 1 ? 'overflow-visible pt-16' : 'overflow-hidden'} ${(project.id === 2 || project.id === 3 || project.id === 1) ? '' : 'shadow-sm'} ${(project.id === 3 || project.id === 1) ? (isWandering ? 'bg-charcoal' : 'bg-cream') : theme.imagePlaceholderBg} ${section.video || section.iframe ? '' : 'cursor-zoom-in'}`} onClick={section.video || section.iframe ? undefined : () => setSelectedImage(section.image || project.images[2])}>
                                                 {section.video ? (
                                                     <video
                                                         className={`w-full h-full object-contain cursor-pointer ${project.id === 1 ? 'scale-[2]' : ''}`}
@@ -532,7 +524,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                         )}
                                         <div className={showImage ? '' : 'max-w-4xl mx-auto'}>
                                             {!displayContent.process.renderComponent && (
-                                                <h3 className="font-playfair text-3xl mb-4 text-[#C25E00]">The Process</h3>
+                                                <h3 className="font-playfair text-3xl mb-4 text-accent">The Process</h3>
                                             )}
                                             <p className={`font-lato text-lg leading-relaxed max-w-[600px] ${theme.subText} ${project.id === 3 && isWandering ? 'text-center mx-auto' : ''}`} style={{ whiteSpace: 'pre-line' }}>{section.content}</p>
                                         </div>
@@ -546,7 +538,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                             {section.items.map((item, i) => (
                                                 <div key={i} className="flex flex-col gap-6">
                                                     <div
-                                                        className={`aspect-[4/3] w-full overflow-hidden shadow-sm ${isWandering ? 'bg-[#1A1A1A]' : 'bg-white'} cursor-zoom-in group`}
+                                                        className={`aspect-[4/3] w-full overflow-hidden shadow-sm ${isWandering ? 'bg-charcoal' : 'bg-white'} cursor-zoom-in group`}
                                                         onClick={() => item.img && setSelectedImage(item.img)}
                                                     >
                                                         {item.img && (
@@ -575,7 +567,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                         {section.items.map((img, i) => (
                                             <div
                                                 key={i}
-                                                className={`w-full md:w-64 aspect-auto overflow-hidden shadow-sm ${isWandering ? 'bg-[#1A1A1A]' : 'bg-white'} cursor-zoom-in group relative`}
+                                                className={`w-full md:w-64 aspect-auto overflow-hidden shadow-sm ${isWandering ? 'bg-charcoal' : 'bg-white'} cursor-zoom-in group relative`}
                                                 onClick={() => setSelectedImage(img)}
                                             >
                                                 <img
@@ -648,12 +640,12 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 </div>
                             </div>
                         ) : project.images && project.images[2] && project.id !== 4 ? (
-                            <div className={`aspect-square overflow-hidden ${(project.id === 2 || project.id === 3) ? '' : 'shadow-sm'} ${project.id === 3 ? 'bg-[#FDFBF7]' : theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[2])}>
+                            <div className={`aspect-square overflow-hidden ${(project.id === 2 || project.id === 3) ? '' : 'shadow-sm'} ${project.id === 3 ? 'bg-cream' : theme.imagePlaceholderBg} cursor-zoom-in`} onClick={() => setSelectedImage(project.images[2])}>
                                 <img src={project.images[2]} alt="Process Detail" draggable="false" className={`w-full h-full ${project.id === 3 ? 'object-contain' : 'object-cover'} hover:scale-105 transition-transform duration-700`} />
                             </div>
                         ) : null}
                         <div>
-                            <h3 className="font-playfair text-3xl mb-4 text-[#C25E00] text-center md:text-left">The Process</h3>
+                            <h3 className="font-playfair text-3xl mb-4 text-accent text-center md:text-left">The Process</h3>
                             <p className={`font-lato text-lg leading-relaxed max-w-[600px] mx-auto md:mx-0 text-left ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.process}</p>
                         </div>
                     </div>
@@ -664,9 +656,9 @@ const ProjectDetail = ({ mode, playSound }) => {
                 {/* Key Takeaway Section (Impact Mode) */}
                 {!isWandering && displayContent.keyTakeaway && (
                     <div className="w-full max-w-7xl mx-auto px-6 text-center py-12">
-                        <div className="w-full h-[0.5px] bg-[#D0CECB] mb-8"></div>
+                        <div className="w-full h-[0.5px] bg-divider mb-8"></div>
 
-                        <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-[#C25E00] mb-8">
+                        <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">
                             {displayContent.keyTakeaway.title || "Key Takeaway"}
                         </h4>
 
@@ -679,7 +671,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                             ))}
                         </div>
 
-                        <div className="w-full h-[0.5px] bg-[#D0CECB] my-16"></div>
+                        <div className="w-full h-[0.5px] bg-divider my-16"></div>
 
                         {displayContent.keyTakeaway.stackedImages ? (
                             <div className="mt-12 w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
@@ -795,9 +787,9 @@ const ProjectDetail = ({ mode, playSound }) => {
                         <div className="w-full">
                             {typeof displayContent.refinement === 'object' ? (
                                 <div className="w-full max-w-7xl mx-auto px-6 text-center py-12">
-                                    <div className={`w-full h-px ${isWandering ? 'bg-[#FDFBF7]/20' : 'bg-[#1A1A1A]/20'} mb-8`}></div>
+                                    <div className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mb-8`}></div>
 
-                                    <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-[#C25E00] mb-8">
+                                    <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">
                                         {displayContent.refinement.outcomesTitle || "Key Takeaway"}
                                     </h4>
 
@@ -810,13 +802,13 @@ const ProjectDetail = ({ mode, playSound }) => {
                                         ))}
                                     </div>
 
-                                    <div className={`w-full h-px ${isWandering ? 'bg-[#FDFBF7]/20' : 'bg-[#1A1A1A]/20'} my-16`}></div>
+                                    <div className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} my-16`}></div>
 
                                     {displayContent.refinement.description && (
                                         <div className={`grid ${project.images && project.images[3] ? 'grid-cols-1 md:grid-cols-2 gap-12' : 'grid-cols-1'} items-center`}>
                                             <div className={`font-lato text-lg leading-relaxed text-left order-2 md:order-1 ${!(project.images && project.images[3]) ? 'max-w-[600px] mx-auto text-center' : ''}`}>
                                                 {displayContent.refinement.description.split('\n\n').map((part, index) => (
-                                                    <p key={index} className={`${index === 1 ? 'text-[#A2A19F]' : theme.text} ${index > 0 ? 'mt-8' : ''}`}>
+                                                    <p key={index} className={`${index === 1 ? 'text-muted-text' : theme.text} ${index > 0 ? 'mt-8' : ''}`}>
                                                         {part}
                                                     </p>
                                                 ))}
@@ -848,7 +840,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                                             <svg viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full rotate-[-2deg]">
                                                                 <path
                                                                     d="M10 30 C 10 10 190 10 190 30 C 190 50 10 50 10 30 M 15 32 C 15 15 185 15 185 30"
-                                                                    stroke="#C25E00"
+                                                                    stroke="var(--color-accent)"
                                                                     strokeWidth="3"
                                                                     strokeLinecap="round"
                                                                     fill="none"
@@ -866,7 +858,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 <div className={`w-full max-w-6xl mx-auto px-6 grid ${project.images && project.images[3] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
                                     <div className="order-2 md:order-1">
                                         <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>
-                                            {displayContent.refinement.split(': ')[0] && <span className="block font-lato text-xs font-bold uppercase tracking-[0.15em] text-[#C25E00] mb-8">{displayContent.refinement.split(': ')[0]}</span>}
+                                            {displayContent.refinement.split(': ')[0] && <span className="block font-lato text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">{displayContent.refinement.split(': ')[0]}</span>}
                                             {displayContent.refinement.includes(': ') ? displayContent.refinement.split(': ').slice(1).join(': ') : displayContent.refinement}
                                         </p>
                                     </div>
@@ -892,7 +884,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                             <button
                                 key={proj.id}
                                 onClick={() => openProject(proj)}
-                                className={`text-left p-4 border transition-all duration-300 border-transparent hover:border-[#FFD1A3] hover:shadow-md ${isWandering ? 'bg-[#2A2A2A]' : 'bg-white'}`}
+                                className={`text-left p-4 border transition-all duration-300 border-transparent hover:border-accent-peach hover:shadow-md ${isWandering ? 'bg-surface-dark-raised' : 'bg-white'}`}
                             >
                                 <div className="text-xs text-gray-400 mb-2">0{PROJECTS.indexOf(proj) + 1}</div>
                                 <div className={`font-playfair text-lg italic leading-tight ${theme.text}`}>{proj.title}</div>

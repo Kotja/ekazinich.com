@@ -6,6 +6,7 @@ import profileImage from '../assets/profile.webp';
 import { PROJECTS } from '../data/projects';
 import emailjs from '@emailjs/browser';
 import AskChat from '../components/AskChat';
+import { getTheme, COLOURS } from '../theme';
 
 // --- SUB-COMPONENT: PROJECT ITEM ---
 const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) => {
@@ -15,7 +16,7 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
     const geometricConfig = [
         {
             front: 'rounded-full', back: 'rounded-none',
-            gradient: 'linear-gradient(to bottom, #CC9900, #FFD700)', // Dark to Light Yellow
+            gradient: 'linear-gradient(to bottom, var(--color-gradient-gold-dark), var(--color-gradient-gold-light))',
             className: 'lg:-mt-32',
             mobileMargin: 'ml-[3rem] mt-[3rem]',
             frameMobileMargin: '-ml-4 -mt-4',
@@ -25,7 +26,7 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
         }, // TL
         {
             front: 'rounded-none', back: 'rounded-full',
-            gradient: 'linear-gradient(to bottom, #FFA500, #C27000)', // Light to Dark Orange
+            gradient: 'linear-gradient(to bottom, var(--color-gradient-orange-light), var(--color-gradient-orange-dark))',
             className: 'lg:translate-y-10',
             mobileMargin: 'ml-0 mt-0',
             frameMobileMargin: 'ml-14 mt-[94px]',
@@ -37,7 +38,7 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
         }, // TR
         {
             front: 'rounded-none', back: 'rounded-none',
-            gradient: 'linear-gradient(to bottom, #C27000, #FFA500)', // Dark to Light Orange
+            gradient: 'linear-gradient(to bottom, var(--color-gradient-orange-dark), var(--color-gradient-orange-light))',
             className: '',
             mobileMargin: 'ml-10 mt-0',
             frameMobileMargin: 'mt-16',
@@ -47,7 +48,7 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
         }, // BL
         {
             front: 'rounded-full', back: 'rounded-none',
-            gradient: 'linear-gradient(to bottom, #FFD700, #CC9900)', // Light to Dark Yellow
+            gradient: 'linear-gradient(to bottom, var(--color-gradient-gold-light), var(--color-gradient-gold-dark))',
             className: 'lg:translate-y-36',
             mobileMargin: 'ml-0 mt-0',
             frameMobileMargin: 'ml-10 mt-16',
@@ -88,7 +89,7 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
             onMouseLeave={handleMouseLeave}
         >
             {/* Back Frame */}
-            <div className={`col-start-1 row-start-1 w-48 h-48 relative border-2 ${theme.borderSolid} ${config.back} flex ${config.textPos} transition-colors duration-500 group-hover:border-[#C25E00] z-0 ${config.frameMobileMargin || ''} ${config.frameDesktopMargin || ''}`}>
+            <div className={`col-start-1 row-start-1 w-48 h-48 relative border-2 ${theme.borderSolid} ${config.back} flex ${config.textPos} transition-colors duration-500 group-hover:border-accent z-0 ${config.frameMobileMargin || ''} ${config.frameDesktopMargin || ''}`}>
                 <span className={`font-lato text-sm ${theme.text} leading-tight max-w-[95%] break-words text-balance`}>
                     {displayTitle}
                 </span>
@@ -147,31 +148,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
 
     // --- THEME ENGINE ---
     const isWandering = mode === 'wandering';
-    const theme = {
-        // Wandering = Charcoal BG (#1A1A1A), HR = Cream BG (#FDFBF7)
-        bg: isWandering ? 'bg-[#1A1A1A]' : 'bg-[#FDFBF7]',
-        // Wandering = Cream Text, HR = Charcoal Text
-        text: isWandering ? 'text-[#FDFBF7]' : 'text-[#1A1A1A]',
-        subText: isWandering ? 'text-[#FDFBF7]/60' : 'text-[#1A1A1A]/60',
-        borderSolid: isWandering ? 'border-[#FDFBF7]' : 'border-[#1A1A1A]',
-        borderSoft: isWandering ? 'border-[#FDFBF7]/20' : 'border-[#1A1A1A]/20',
-        // Mobile Nav Bar
-        navBg: isWandering ? 'bg-[#1A1A1A]/90' : 'bg-[#FDFBF7]/90',
-        projectSectionBg: isWandering ? 'bg-[#121212]' : 'bg-[#F5F3ED]',
-        cardBg: isWandering ? 'bg-[#2A2A2A]' : 'bg-white',
-        imagePlaceholderBg: isWandering ? 'bg-[#333]' : 'bg-gray-100',
-        tagBg: isWandering ? 'bg-[#333] text-[#FDFBF7] border-[#444]' : 'bg-[#F5F3ED] text-gray-500 border-gray-200',
-    };
-
-    const COLOURS = {
-        highlight: '#C25E00', // Burnt Orange - Error/Active
-        suggestion: '#FFD1A3', // Peach - Hover/Suggestion
-        cream: '#FDFBF7',
-        charcoal: '#1A1A1A',
-        confirmation: '#10B981', // Emerald Green - Success
-        mustard: '#E5B700',
-        deepOrange: '#EA8C10',
-    };
+    const theme = getTheme(mode);
 
     const heroWords = {
         hr: ['Clarity.', 'Precision.', 'Impact.'],
@@ -244,6 +221,8 @@ const Home = ({ mode, playSound, scrollToSection }) => {
         }
     };
 
+    const borderDefault = 'color-mix(in srgb, var(--color-cream) 30%, transparent)';
+
     return (
         <>
             {/* ================= HOME VIEW ================= */}
@@ -300,7 +279,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                 {/* Scroll Down Arrow */}
                 <button
                     onClick={() => scrollToSection('about-section')}
-                    className="relative md:absolute mt-32 md:mt-0 bottom-auto md:bottom-8 left-auto md:left-1/2 translate-x-0 md:-translate-x-1/2 self-center animate-bounce text-[#C25E00] cursor-pointer hover:scale-110 transition-transform z-30"
+                    className="relative md:absolute mt-32 md:mt-0 bottom-auto md:bottom-8 left-auto md:left-1/2 translate-x-0 md:-translate-x-1/2 self-center animate-bounce text-accent cursor-pointer hover:scale-110 transition-transform z-30"
                     aria-label="Scroll to About"
                 >
                     <ArrowDown size={32} strokeWidth={1} />
@@ -328,7 +307,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                             Hi, I'm Eka. I'm a Product Designer who asks "why are we building this?" before opening Figma. I validate problems through research, prioritize ruthlessly for MVPs, and measure success through real user behavior: heatmaps, session recordings, and task completion rates. My goal is simple: design that works for both the user and the business.
                         </p>
                     )}
-                    <p className={`font-lato text-sm ${theme.subText} border-l-2 border-[#C25E00] pl-4 italic`}>
+                    <p className={`font-lato text-sm ${theme.subText} border-l-2 border-accent pl-4 italic`}>
                         "Design is intelligence made visible."
                     </p>
                 </div>
@@ -349,12 +328,12 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                                 ${theme.borderSolid} ${theme.bg} ${theme.text} cursor-pointer hover:scale-105 transition-transform duration-300 group`}
                             onClick={() => setShowCV(true)}
                         >
-                            <span className="font-playfair italic text-xl group-hover:text-[#C25E00] transition-colors">CV</span>
+                            <span className="font-playfair italic text-xl group-hover:text-accent transition-colors">CV</span>
                         </div>
                     </div>
                     {mode === 'wandering' && (
                         <>
-                            <div className="absolute top-0 right-0 w-[2px] h-32 bg-[#C25E00] animate-pulse" />
+                            <div className="absolute top-0 right-0 w-[2px] h-32 bg-accent animate-pulse" />
                         </>
                     )}
                 </div>
@@ -364,7 +343,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
             <AskChat mode={mode} />
 
             {/* Contact Section */}
-            <section id="contact-section" className="min-h-[60vh] w-full flex flex-col justify-center items-center px-6 md:px-24 pt-32 pb-40 md:pb-24" style={{ backgroundColor: COLOURS.charcoal, color: COLOURS.cream }}>
+            <section id="contact-section" className="min-h-[60vh] w-full flex flex-col justify-center items-center px-6 md:px-24 pt-32 pb-40 md:pb-24 bg-charcoal text-cream">
                 <h2 className="font-playfair text-5xl md:text-7xl mb-12 text-center">Let's Connect</h2>
                 <div className="flex flex-col md:flex-row gap-12 w-full max-w-4xl">
                     <div className="flex-1">
@@ -375,15 +354,14 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                                     placeholder="Name"
                                     value={formState.name}
                                     onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                                    className={`w-full bg-transparent border-b py-3 focus:outline-none transition-colors
+                                    className={`w-full bg-transparent border-b py-3 focus:outline-none transition-colors text-cream
                       ${errors.name ? 'placeholder-opacity-50' : 'focus:border-opacity-100'}
                     `}
                                     style={{
-                                        borderColor: errors.name ? COLOURS.highlight : `${COLOURS.cream}4D`,
-                                        color: COLOURS.cream
+                                        borderColor: errors.name ? COLOURS.accent : borderDefault,
                                     }}
                                 />
-                                {errors.name && <AlertCircle className="absolute right-0 top-3" size={16} style={{ color: COLOURS.highlight }} />}
+                                {errors.name && <AlertCircle className="absolute right-0 top-3 text-accent" size={16} />}
                             </div>
                             <div className="relative">
                                 <input
@@ -391,15 +369,14 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                                     placeholder="Email"
                                     value={formState.email}
                                     onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                                    className={`w-full bg-transparent border-b py-3 focus:outline-none transition-colors
+                                    className={`w-full bg-transparent border-b py-3 focus:outline-none transition-colors text-cream
                       ${errors.email ? 'placeholder-opacity-50' : 'focus:border-opacity-100'}
                     `}
                                     style={{
-                                        borderColor: errors.email ? COLOURS.highlight : `${COLOURS.cream}4D`,
-                                        color: COLOURS.cream
+                                        borderColor: errors.email ? COLOURS.accent : borderDefault,
                                     }}
                                 />
-                                {errors.email && <AlertCircle className="absolute right-0 top-3" size={16} style={{ color: COLOURS.highlight }} />}
+                                {errors.email && <AlertCircle className="absolute right-0 top-3 text-accent" size={16} />}
                             </div>
                             <div className="relative">
                                 <textarea
@@ -407,20 +384,19 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                                     rows="2"
                                     value={formState.message}
                                     onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                                    className={`w-full bg-transparent border-b py-3 focus:outline-none transition-colors resize-none
+                                    className={`w-full bg-transparent border-b py-3 focus:outline-none transition-colors resize-none text-cream
                       ${errors.message ? 'placeholder-opacity-50' : 'focus:border-opacity-100'}
                     `}
                                     style={{
-                                        borderColor: errors.message ? COLOURS.highlight : `${COLOURS.cream}4D`,
-                                        color: COLOURS.cream
+                                        borderColor: errors.message ? COLOURS.accent : borderDefault,
                                     }}
                                 ></textarea>
-                                {errors.message && <AlertCircle className="absolute right-0 top-3" size={16} style={{ color: COLOURS.highlight }} />}
+                                {errors.message && <AlertCircle className="absolute right-0 top-3 text-accent" size={16} />}
                             </div>
                             <button
                                 className="self-start mt-4 flex items-center gap-2 text-sm uppercase tracking-widest transition-colors hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed"
                                 style={{ color: COLOURS.cream }}
-                                onMouseEnter={(e) => !isSending && (e.currentTarget.style.color = COLOURS.highlight)}
+                                onMouseEnter={(e) => !isSending && (e.currentTarget.style.color = COLOURS.accent)}
                                 onMouseLeave={(e) => !isSending && (e.currentTarget.style.color = COLOURS.cream)}
                                 disabled={isSending}
                             >
@@ -434,7 +410,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                                 href="mailto:ekazinich@gmail.com"
                                 className="flex items-center gap-4 text-xl font-playfair italic hover:translate-x-2 transition-transform duration-300"
                                 style={{ color: COLOURS.cream }}
-                                onMouseEnter={(e) => e.currentTarget.style.color = COLOURS.highlight}
+                                onMouseEnter={(e) => e.currentTarget.style.color = COLOURS.accent}
                                 onMouseLeave={(e) => e.currentTarget.style.color = COLOURS.cream}
                             >
                                 <Mail size={24} />
@@ -443,8 +419,8 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                             <button
                                 onClick={copyEmail}
                                 className={`p-2 transition-colors duration-300`}
-                                style={{ color: emailCopied ? COLOURS.confirmation : COLOURS.cream }}
-                                onMouseEnter={(e) => !emailCopied && (e.currentTarget.style.color = COLOURS.highlight)}
+                                style={{ color: emailCopied ? COLOURS.success : COLOURS.cream }}
+                                onMouseEnter={(e) => !emailCopied && (e.currentTarget.style.color = COLOURS.accent)}
                                 onMouseLeave={(e) => !emailCopied && (e.currentTarget.style.color = COLOURS.cream)}
                                 aria-label="Copy email address"
                             >
@@ -457,7 +433,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                             rel="noopener noreferrer"
                             className="flex items-center gap-4 text-xl font-playfair italic hover:translate-x-2 transition-transform duration-300"
                             style={{ color: COLOURS.cream }}
-                            onMouseEnter={(e) => e.currentTarget.style.color = COLOURS.highlight}
+                            onMouseEnter={(e) => e.currentTarget.style.color = COLOURS.accent}
                             onMouseLeave={(e) => e.currentTarget.style.color = COLOURS.cream}
                         >
                             <Linkedin size={24} />
@@ -478,20 +454,20 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                     <div className="relative w-full max-w-5xl h-[90vh] bg-white rounded-lg shadow-2xl flex flex-col overflow-hidden animate-fade-in-up">
 
                         {/* Toolbar */}
-                        <div className="flex items-center justify-between px-6 py-4 bg-[#1A1A1A] text-[#FDFBF7] border-b border-gray-700">
+                        <div className="flex items-center justify-between px-6 py-4 bg-charcoal text-cream border-b border-gray-700">
                             <h3 className="font-playfair italic text-xl">Curriculum Vitae</h3>
                             <div className="flex items-center gap-4">
                                 <a
                                     href={cvFile}
                                     download="Katerina_(Eka)_Zinich_Product_designer_CV.pdf"
-                                    className="flex items-center gap-2 text-sm uppercase tracking-widest hover:text-[#C25E00] transition-colors"
+                                    className="flex items-center gap-2 text-sm uppercase tracking-widest hover:text-accent transition-colors"
                                 >
                                     <Download size={18} />
                                     <span className="hidden md:inline">Download</span>
                                 </a>
                                 <button
                                     onClick={() => setShowCV(false)}
-                                    className="hover:text-[#C25E00] transition-colors"
+                                    className="hover:text-accent transition-colors"
                                 >
                                     <X size={24} />
                                 </button>

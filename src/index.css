@@ -1,28 +1,58 @@
 @import "tailwindcss";
 
+@theme {
+  /* ── Brand ── */
+  --color-accent: #C25E00;
+  --color-accent-light: #E6944C;
+  --color-accent-peach: #FFD1A3;
+
+  /* ── Base palette ── */
+  --color-cream: #FDFBF7;
+  --color-cream-muted: #F5F3ED;
+  --color-charcoal: #1A1A1A;
+
+  /* ── Dark surfaces ── */
+  --color-surface-dark: #121212;
+  --color-surface-dark-raised: #2A2A2A;
+  --color-surface-dark-elevated: #333333;
+  --color-surface-dark-border: #444444;
+
+  /* ── Neutrals ── */
+  --color-divider: #D0CECB;
+  --color-muted-text: #A2A19F;
+  --color-muted: #6B6B6B;
+  --color-scrollbar: #dddddd;
+  --color-scrollbar-hover: #999999;
+
+  /* ── Semantic ── */
+  --color-success: #10B981;
+  --color-mustard: #E5B700;
+  --color-deep-orange: #EA8C10;
+
+  /* ── Candidate journey graph ── */
+  --color-candidate-1: #B8733C;
+  --color-candidate-2: #D4A843;
+  --color-candidate-3: #4A4A4A;
+  --color-candidate-4: #6B6B6B;
+  --color-candidate-5: #E58B7F;
+  --color-candidate-6: #F5B3A6;
+
+  /* ── Project card gradients ── */
+  --color-gradient-gold-dark: #CC9900;
+  --color-gradient-gold-light: #FFD700;
+  --color-gradient-orange-light: #FFA500;
+  --color-gradient-orange-dark: #C27000;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #535bf2;
 }
 
 body {
@@ -45,48 +75,6 @@ h6 {
   text-wrap: balance;
 }
 
-/* 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-} */
-
-/* button:hover {
-  border-color: #646cff;
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-} */
-
-/* @media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-
-  button {
-    background-color: #f9f9f9;
-  }
-} */
-
 .font-playfair {
   font-family: 'Playfair Display', serif;
 }
@@ -101,48 +89,48 @@ button:focus-visible {
 
 /* Track color is handled dynamically in App.jsx */
 ::-webkit-scrollbar-thumb {
-  background: #ddd;
+  background: var(--color-scrollbar);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #999;
+  background: var(--color-scrollbar-hover);
 }
 
 .text-highlight {
-  color: #C25E00;
+  color: var(--color-accent);
 }
 
 .border-highlight {
-  border-color: #C25E00;
+  border-color: var(--color-accent);
 }
 
 .bg-highlight {
-  background-color: #C25E00;
+  background-color: var(--color-accent);
 }
 
 .hover-bg-suggestion:hover {
-  background-color: #FFD1A3;
+  background-color: var(--color-accent-peach);
 }
 
-/* Streamdown Chat Styling */
+/* ── Streamdown Chat Styling ── */
 
 /* CSS variables for Streamdown's Tailwind classes (light mode - default) */
 .streamdown-content {
-  --background: #F5F3ED;
-  --foreground: #1A1A1A;
+  --background: var(--color-cream-muted);
+  --foreground: var(--color-charcoal);
   --muted: #E5E3DD;
-  --muted-foreground: #6B6B6B;
+  --muted-foreground: var(--color-muted);
   --border: #D4D2CC;
-  
+
   font-family: 'Lato', sans-serif;
   line-height: 1.7;
 }
 
 /* Dark mode variables (when inside dark assistant bubble) */
-.bg-\[\#333\] .streamdown-content {
-  --background: #444;
-  --foreground: #FDFBF7;
+.bg-surface-dark-elevated .streamdown-content {
+  --background: var(--color-surface-dark-border);
+  --foreground: var(--color-cream);
   --muted: #555;
   --muted-foreground: #AAA;
   --border: #666;
@@ -269,14 +257,14 @@ button:focus-visible {
 
 /* Links - use the site's accent color */
 .streamdown-content a {
-  color: #C25E00;
+  color: var(--color-accent);
   text-decoration: underline;
   text-underline-offset: 2px;
   transition: color 0.2s ease;
 }
 
 .streamdown-content a:hover {
-  color: #E6944C;
+  color: var(--color-accent-light);
 }
 
 /* Bold/Strong */
@@ -291,7 +279,7 @@ button:focus-visible {
 
 /* Blockquotes */
 .streamdown-content blockquote {
-  border-left: 3px solid #C25E00;
+  border-left: 3px solid var(--color-accent);
   padding-left: 1rem;
   margin: 0.75rem 0;
   font-style: italic;
@@ -327,16 +315,15 @@ button:focus-visible {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-
 /* Dark mode adjustments (when inside dark assistant bubble) */
-.bg-\[\#333\] .streamdown-content code {
+.bg-surface-dark-elevated .streamdown-content code {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.bg-\[\#333\] .streamdown-content pre {
+.bg-surface-dark-elevated .streamdown-content pre {
   background-color: rgba(255, 255, 255, 0.08);
 }
 
-.bg-\[\#333\] .streamdown-content th {
+.bg-surface-dark-elevated .streamdown-content th {
   background-color: rgba(255, 255, 255, 0.08);
 }
