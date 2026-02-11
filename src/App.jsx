@@ -5,7 +5,6 @@ import ProjectDetail from './pages/ProjectDetail';
 import OnboardingModal from './components/OnboardingModal';
 import MiniChat from './components/MiniChat';
 import { ChatProvider } from './components/ChatContext';
-import { ShowComponent } from 'show-component';
 import { getTheme } from './theme';
 
 const App = () => {
@@ -257,8 +256,6 @@ const App = () => {
       <MiniChat mode={mode} />
 
       <OnboardingModal onVisibilityChange={setIsOnboardingVisible} />
-
-      <ShowComponent sourceRoot={__PROJECT_ROOT__} />
 
     </div>
     </ChatProvider>
