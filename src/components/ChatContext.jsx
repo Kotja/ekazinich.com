@@ -46,6 +46,7 @@ export const ChatProvider = ({ children }) => {
   const [input, setInput] = useState('');
   const isHydratedRef = useRef(false);
   const [isMainChatVisible, setIsMainChatVisible] = useState(false);
+  const [isMiniChatOpen, setIsMiniChatOpen] = useState(false);
 
   const transport = useMemo(() => new DefaultChatTransport({ api: API_URL }), []);
   const { messages, sendMessage, setMessages, status, error } = useChat({ transport });
@@ -108,6 +109,8 @@ export const ChatProvider = ({ children }) => {
     handleSend,
     isMainChatVisible,
     setIsMainChatVisible,
+    isMiniChatOpen,
+    setIsMiniChatOpen,
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

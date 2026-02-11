@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Sparkles } from 'lucide-react';
 import Home from './pages/Home';
 import ProjectDetail from './pages/ProjectDetail';
 import OnboardingModal from './components/OnboardingModal';
 import MiniChat from './components/MiniChat';
-import { ChatProvider } from './components/ChatContext';
+import { ChatProvider, useAskChat } from './components/ChatContext';
 import { getTheme } from './theme';
 
-const App = () => {
+const AppContent = () => {
   // --- STATE MANAGEMENT ---
   const [mode, setMode] = useState('hr');
   const [isOnboardingVisible, setIsOnboardingVisible] = useState(false); // Track visibility of Onboarding Modal
@@ -17,6 +18,7 @@ const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const { isMiniChatOpen, setIsMiniChatOpen } = useAskChat();
 
   // --- HELPER: THEME ENGINE ---
   const isWandering = mode === 'wandering';
@@ -87,7 +89,6 @@ const App = () => {
   }, [location]);
 
   return (
-    <ChatProvider>
     <div className={`min-h-[100dvh] transition-colors duration-700 ${theme.bg} ${theme.text} font-lato overflow-x-hidden selection:bg-accent-peach selection:text-accent pb-28 md:pb-0`}>
 
       {/* GLOBAL STYLES */}
@@ -242,6 +243,17 @@ const App = () => {
               </button>
             );
           })}
+
+          {/* Ask AI - Mobile only */}
+          <button
+            onClick={() => setIsMiniChatOpen(!isMiniChatOpen)}
+            className={`md:hidden relative group flex items-center justify-center gap-1 whitespace-nowrap`}
+            style={{ color: 'inherit' }}
+          >
+            <Sparkles size={12} className="text-accent" />
+            <span className="block text-[10px] xs:text-xs">Ask AI</span>
+            <span className={`w-1.5 h-1.5 rounded-full absolute -bottom-2 transition-opacity ${isMiniChatOpen ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} ${isWandering ? 'bg-white' : 'bg-black'}`} />
+          </button>
         </div>
 
         {/* Spacer for Desktop Layout */}
@@ -258,6 +270,13 @@ const App = () => {
       <OnboardingModal onVisibilityChange={setIsOnboardingVisible} />
 
     </div>
+  );
+};
+
+const App = () => {
+  return (
+    <ChatProvider>
+      <AppContent />
     </ChatProvider>
   );
 };

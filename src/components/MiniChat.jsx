@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Sparkles, RotateCcw } from 'lucide-react';
 import { Streamdown } from 'streamdown';
 import { useAskChat, getMessageContent, getSuggestedPrompts, STARTER_QUESTIONS } from './ChatContext';
@@ -8,9 +8,8 @@ const MiniChat = ({ mode }) => {
   const {
     messages, input, setInput, isLoading,
     handleRestartChat, handleSend, isMainChatVisible,
+    isMiniChatOpen: isOpen, setIsMiniChatOpen: setIsOpen,
   } = useAskChat();
-
-  const [isOpen, setIsOpen] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -42,17 +41,11 @@ const MiniChat = ({ mode }) => {
   );
 
   return (
-    <div
-      className={`
-        fixed bottom-3 right-20 md:bottom-10 md:right-9 z-50
-        transition-opacity duration-500
-        ${isMainChatVisible ? 'opacity-0 pointer-events-none' : 'opacity-100'}
-      `}
-    >
-      {/* Chat Panel */}
+    <>
+      {/* Chat Panel - independently positioned */}
       <div
         className={`
-          absolute bottom-[calc(100%+12px)] -right-16 md:right-0
+          fixed z-50 bottom-24 md:bottom-28 right-4 md:right-9
           w-[calc(100vw-2rem)] md:w-[360px]
           h-[60vh] max-h-[480px]
           rounded-2xl overflow-hidden
@@ -60,7 +53,7 @@ const MiniChat = ({ mode }) => {
           border
           ${theme.cardBg} ${theme.text} ${theme.borderSoft}
           transition-all duration-300 origin-bottom-right
-          ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'}
+          ${isOpen && !isMainChatVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'}
         `}
         style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)' }}
       >
@@ -234,32 +227,40 @@ const MiniChat = ({ mode }) => {
         </form>
       </div>
 
-      {/* Floating Action Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
+      {/* Floating Action Button - hidden on mobile, visible on desktop */}
+      <div
         className={`
-          w-14 h-14 rounded-full
-          flex items-center justify-center
-          transition-all duration-300
-          bg-accent-light text-white cursor-pointer
-          hover:bg-accent hover:scale-110
-          active:scale-95
+          hidden md:block fixed bottom-10 right-9 z-50
+          transition-opacity duration-500
+          ${isMainChatVisible ? 'opacity-0 pointer-events-none' : 'opacity-100'}
         `}
-        style={{ boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -4px rgba(0, 0, 0, 0.1)' }}
-        aria-label={isOpen ? 'Close chat' : 'Open chat'}
       >
-        <div className="relative w-6 h-6">
-          <MessageCircle
-            size={24}
-            className={`absolute inset-0 transition-all duration-300 ${isOpen ? 'opacity-0 rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'}`}
-          />
-          <X
-            size={24}
-            className={`absolute inset-0 transition-all duration-300 ${isOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-0'}`}
-          />
-        </div>
-      </button>
-    </div>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className={`
+            w-14 h-14 rounded-full
+            flex items-center justify-center
+            transition-all duration-300
+            bg-accent-light text-white cursor-pointer
+            hover:bg-accent hover:scale-110
+            active:scale-95
+          `}
+          style={{ boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -4px rgba(0, 0, 0, 0.1)' }}
+          aria-label={isOpen ? 'Close chat' : 'Open chat'}
+        >
+          <div className="relative w-6 h-6">
+            <MessageCircle
+              size={24}
+              className={`absolute inset-0 transition-all duration-300 ${isOpen ? 'opacity-0 rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'}`}
+            />
+            <X
+              size={24}
+              className={`absolute inset-0 transition-all duration-300 ${isOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-0'}`}
+            />
+          </div>
+        </button>
+      </div>
+    </>
   );
 };
 
