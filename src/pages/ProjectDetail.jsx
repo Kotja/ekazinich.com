@@ -303,6 +303,9 @@ const ProjectDetail = ({ mode, playSound }) => {
                 {/* Header - Constrained */}
                 <div className="w-full max-w-6xl mx-auto px-6 text-center max-w-3xl mb-8">
                     <h1 className={`font-playfair text-4xl md:text-7xl mb-4 leading-tight ${theme.text}`}>{project.title}</h1>
+                    {project.subtitle && (
+                        <p className={`font-playfair text-lg md:text-2xl italic mb-6 ${theme.subText} opacity-70`}>{project.subtitle}</p>
+                    )}
                     <div className="flex justify-center gap-3 flex-wrap mb-6">
                         {project.tags.map(tag => (
                             <span key={tag} className={`inline-block px-3 py-1 text-xs font-bold uppercase tracking-widest ${theme.tagBg}`}>
@@ -342,7 +345,7 @@ const ProjectDetail = ({ mode, playSound }) => {
 
                             <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">{displayContent.impact.outcomesTitle || "Key Outcome"}</h4>
 
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:place-items-center">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:items-start">
                                 {displayContent.impact.outcomes && displayContent.impact.outcomes.map((outcome, i) => (
                                     <div key={i} className="text-left flex flex-col gap-2">
                                         <h5 className={`font-playfair text-xl italic font-bold ${theme.text}`}>{outcome.title}</h5>
@@ -662,7 +665,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                             {displayContent.keyTakeaway.title || "Key Takeaway"}
                         </h4>
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:place-items-center">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:items-start">
                             {displayContent.keyTakeaway.outcomes.map((outcome, i) => (
                                 <div key={i} className="text-left flex flex-col gap-2">
                                     <h5 className={`font-playfair text-xl italic font-bold ${theme.text}`}>{outcome.title}</h5>
@@ -793,7 +796,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                         {displayContent.refinement.outcomesTitle || "Key Takeaway"}
                                     </h4>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:place-items-center">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:items-start">
                                         {displayContent.refinement.outcomes && displayContent.refinement.outcomes.map((outcome, i) => (
                                             <div key={i} className="text-left flex flex-col gap-2">
                                                 <h5 className={`font-playfair text-xl italic font-bold ${theme.text}`}>{outcome.title}</h5>

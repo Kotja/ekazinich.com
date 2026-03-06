@@ -155,28 +155,29 @@ export const PROJECTS = [
     },
     {
         id: 4,
-        title: "The 'Spreadsheet of Doom' & Personal CRM",
-        desc: "Pivoting to a 'Personal CRM' to solve candidate anxiety. A research-led strategy that uncovered the 'Spreadsheet of Doom'.",
+        title: "Behavioural Product Strategy in Job Search",
+        subtitle: "The 'Spreadsheet of Doom' & Personal CRM",
+        desc: "Validated the need for a Personal CRM built for candidates. When you're applying to multiple roles at once, managing the information becomes a job in itself. Research confirmed that losing track mid-process was the real barrier to a successful job search.",
         tags: ["Product Discovery", "UX Research", "Product Strategy"],
-        challenge: "The Problem: Data Fragmentation. The modern job search is multi-channel and inherently mobile. Candidates using desktop-only tools (Excel) lose data while 'on the go.' The solution necessitated a Mobile-First architecture to eliminate this friction and capture progress in real-time.",
-        role: "Lead UX Researcher & Product Strategist. Responsible for the End-to-End Research Ops: Screener design, 1:1 qualitative interviews, affinity mapping, and Defining the MVP feature set.",
-        process: "Evidence-Based Product Definition.\n\nMethodology: Conducted 6 qualitative face-to-face interviews and dug into different industries by conducting a quantitative questionnaire around different countries.\n\nSynthesis: Used Affinity Mapping to cluster pain points into themes: \"Ghosting,\" \"Repetitive Entry,\" and \"Status Anxiety.\"\n\nOutcome: Defined the \"Job Wallet\" concept as a central repository for all application data.",
+        challenge: "When you're actively applying for jobs, you're managing a lot of information across multiple platforms and conversations. Job descriptions, salary details, recruiter names, what was discussed in the first call — it all blurs together when volume is high. The same recruiter might contact you about a different role and you have no record of the previous conversation. Without a system, crucial context disappears at the worst possible moment.",
+        role: "Product Strategist & Lead Researcher. Responsible for the full Discovery phase: screener design, 1:1 qualitative interviews, affinity mapping, and defining the MVP feature set.",
+        process: "Research-Led Definition.\n\nI ran 6 face-to-face interviews and a broader questionnaire across industries and countries to understand how people actually manage a job search.\n\nThe same problem kept surfacing: when applying to multiple roles at once, candidates lost critical context. They couldn't remember the salary they'd been quoted, what the role actually involved, or whether they'd already spoken to that recruiter before.\n\nThe research changed the original brief. Candidates didn't need more job listings. They needed one place to capture everything that mattered about each application.",
         impact: {
             outcomesTitle: "Key Discoveries",
-            description: "De-risking the 'Job Hunt' Vertical. Conducted foundational research to validate the market need for a candidate-centric Application Tracking System (ATS).",
+            description: "De-risking the Job Hunt. Research validated the need for a candidate-centric Personal CRM. The real problem wasn't finding jobs — it was 'Application Amnesia': applying across multiple platforms and losing track of the details that matter in every conversation.",
             outcomes: [
-                { title: "The Insight", desc: "Managing emotional data, not finding jobs." },
-                { title: "The Strategy", desc: "Shifted from aggregation to management." },
-                { title: "The Validation", desc: "Found 3 critical anxiety drop-off points." }
+                { title: "The Pivot", desc: "From job board to Personal CRM. One place for every application." },
+                { title: "The Insight", desc: "Context collapse, not job scarcity, was the real barrier." },
+                { title: "The Fix", desc: "Capture the role, the HR contact, the offer details — all in one place." }
             ]
         },
         keyTakeaway: {
             title: "Key Takeaway",
-            description: "Going into this research, I expected candidates would want a powerful job search engine. What I discovered was something far more human - they needed help managing the emotional weight of rejection and uncertainty.\n\nThe moment a candidate loses track of where they applied or when to follow up, anxiety spikes. By shifting the focus from 'Finding Jobs' to 'Managing Anxiety', we built a tool that users actually wanted to keep open. The insight wasn't just about features - it was about understanding the mental state of someone in career transition and designing to support them through it.",
+            description: "The most useful tools solve concrete problems people are already trying to fix themselves. Candidates were building 'Spreadsheets of Doom' because nothing else captured the right information in one place. That's a market signal.\n\nThe research also uncovered a timing problem: around two weeks with no response, motivation drops and people quietly stop following up. The product needed to manage context and prompt action — not just log applications.",
             outcomes: [
-                { title: "Mental Model", desc: "Aligned the tool with the user's actual status." },
-                { title: "Retention", desc: "Users stay for utility, not job listings." },
-                { title: "Trust", desc: "Feedback loops build long-term confidence." }
+                { title: "Right Problem", desc: "Built around managing information, not finding more listings." },
+                { title: "One Source of Truth", desc: "Role, contact, offer details — all in one place." },
+                { title: "Keeps People Going", desc: "A follow-up prompt at the right moment closes the loop." }
             ],
             processImages: [
                 spreadsheetProcess1,
@@ -187,36 +188,36 @@ export const PROJECTS = [
             ]
         },
         wanderingContent: {
-            challenge: "The \"Spreadsheet of Doom\" Phenomenon. Qualitative research exposed a universal pain point: the \"Manual Tax.\"\n\nCognitive Overload: Users reported high anxiety when asked, \"Where did you apply last week?\" because the data was scattered.\n\nThe Feedback Void: The lack of status updates from companies creates an \"Open Loop\" in the user's mind. Existing tools don't close this loop; they just list it. The challenge was to design a system that captures this data automatically or with zero friction, acknowledging that unemployed users have low motivation for data entry.",
-            role: "From Ambiguity to Architecture. My role was to bring structure to a chaotic problem space.\n\nDiscovery: I didn't start with UI. I started with Mental Models. I conducted diary studies to map the emotional highs and lows of a 3-month job search.\n\nSynthesis: I translated raw qualitative data into actionable \"How Might We\" statements that formed the backlog for the design phase.",
+            challenge: "The 'Spreadsheet of Doom.'\n\nThat's what candidates called the document they used to track their applications. A sprawling spreadsheet that started as a practical solution and became a source of dread.\n\nThe underlying problem was concrete: when you're applying to multiple roles at the same time, information management becomes overwhelming. Each application has its own context — the job description, the salary range, the perks, the recruiter's name. If the same HR contact reaches out about a different role two weeks later, you have no record of what was discussed, what was offered, or which role they're calling about.\n\nWhen that context collapses, conversations break down. Candidates show up underprepared. Opportunities are lost not because of the candidate's ability, but because the information wasn't there when it was needed.\n\nThe task: design a system that captures this information automatically and surfaces it at the moment it matters.",
+            role: "Product Strategist & Lead Researcher. I led the discovery phase, turning a messy problem into a defined product brief.\n\nI brought my own experience as a job seeker into the research as a starting point, not as a conclusion. Having applied to multiple roles simultaneously, I knew firsthand how quickly context collapses — and how much rides on remembering the right detail at the right moment.\n\nOver three months, I ran diary studies and face-to-face interviews to map how candidates actually manage their applications. That research became the foundation for the product direction.",
             process: {
                 type: 'rich',
                 renderComponent: 'CandidateJourneyGraph',
-                beforeGraph: 'Designing for Low Motivation. Early concepts assumed users would want detailed analytics. The research proved this wrong. Users wanted "Minimal Viable Effort."',
+                beforeGraph: 'Early concepts assumed people wanted rich dashboards and analytics to manage their search. The diary study and interviews dismantled this. What candidates needed wasn\'t more data to review. It was a reliable place to store context — so they could walk into any conversation knowing exactly where they stood.',
                 afterGraph: [
-                    'Key Research Artifact: The Emotional Journey Map. We mapped the user\'s mood against the application timeline and uncovered a critical pattern: motivation crashes approximately 2-3 weeks after applying when no response is received. This "crash point" represents the moment when candidates are most vulnerable to abandoning their job search entirely.',
-                    'The insight shifted our design thinking from feature richness to emotional support. Rather than building a passive tracker with dashboards and charts, we needed to create an active coach that intervenes precisely when users need it most.',
-                    'The Design Decision: The interface must not just track applications; it must nudge users during these "Crash Points" with low-effort actions (e.g., "One-tap follow-up email generator"). This insight moved the product from a passive tracker to an active coach.'
+                    'The Emotional Journey Map. Mapping mood against the timeline revealed a consistent pattern: motivation drops sharply around 14 to 21 days in, when nothing has come back from an employer. That is the moment most people quietly stop following up — not because they gave up on the role, but because they\'ve lost track of where it stood.',
+                    'This finding added a second layer to the product. Beyond storing information, the tool needed to prompt action at exactly the right moment. A single follow-up prompt, sent when a response was overdue, dramatically reduced drop-off.',
+                    'The core design principle: the product holds the context so the candidate doesn\'t have to. Every role tracked. Every conversation logged. Every follow-up timed. The cognitive work shifts from the user to the tool.'
                 ],
                 sections: []
             },
             impact: {
                 outcomesTitle: "Key Discoveries",
-                description: "Defining the Unmet Need. The hypothesis was that candidates needed a better way to find roles, but data disproved this.\n\nThe real problem was \"Application Amnesia\" - users apply to so many roles across disparate platforms that they lose track of follow-ups.",
+                description: "The original assumption was that candidates needed more job listings. Better search, broader reach. The research said otherwise.\n\nCandidates were applying to multiple roles at once — across different platforms, with different recruiters, at different stages. Each application had its own context: the role's requirements, the salary offered, what was discussed in the first conversation. When volume is high and tracking is manual, that context disappears. By the time a recruiter calls back, the candidate has no record of the role, the offer, or what was said.\n\nThat breakdown — losing critical information mid-process — was the core problem. The product needed to solve for that first.",
                 outcomes: [
-                    { title: "The Pivot", desc: "From Job Board to Personal CRM for Careers." },
-                    { title: "The Crash Point", desc: "Motivation crashes at 2 weeks. Intervene here." },
-                    { title: "Active Coaching", desc: "Nudging closes the feedback loop." }
+                    { title: "The Pivot", desc: "From job board to Personal CRM. Managing information, not listings." },
+                    { title: "The Insight", desc: "Context collapse, not job scarcity, was the real barrier." },
+                    { title: "The Supporting Find", desc: "Motivation drops at 14 to 21 days in. The product addresses both." }
                 ]
             },
             refinement: {
                 outcomesTitle: "Key Takeaway",
                 outcomes: [
-                    { title: "Mental Model Shift", desc: "Aligned with emotional state, not mechanics." },
-                    { title: "Retention through Utility", desc: "Emotional support beats listings alone." },
-                    { title: "Active Coaching Model", desc: "Proactive nudges build engagement and trust." }
+                    { title: "Right Problem", desc: "Built around the process, not the listings." },
+                    { title: "Less is More", desc: "Fewer features, better timed." },
+                    { title: "Shows Up When It Counts", desc: "A nudge at the right moment keeps people going." }
                 ],
-                description: "This research fundamentally shifted my understanding of product design from feature-driven to empathy-driven.\n\nGoing into this project, I expected candidates would want sophisticated search algorithms and comprehensive job databases. What the research revealed was far more human - they needed help managing the psychological burden of career transition.\n\nThe 'Spreadsheet of Doom' wasn't just a tool for tracking applications. It was a coping mechanism for anxiety. Every row represented hope. Every empty cell represented uncertainty. When I mapped the emotional journey and discovered the 2-week 'crash point,' it became clear that the product couldn't just be a passive tracker.\n\nThis insight transformed the entire product vision from 'helping people find jobs' to 'helping people emotionally survive the job hunt.' It taught me that the most powerful design solutions often address the unspoken emotional needs that users can't always articulate, but deeply feel."
+                description: "The best products solve problems people are already trying to fix themselves. That's what this one did.\n\nCandidates weren't lacking motivation. They were lacking a system. When you're applying to ten or fifteen roles simultaneously, across multiple platforms, the information load is enormous. Job descriptions blur together. Recruiter names get confused. Salary conversations are forgotten. And when that same recruiter calls back three weeks later about a different role — you have nothing to reference.\n\nThe 'Spreadsheet of Doom' was candidates doing the job themselves, manually, under pressure. That's a market signal, not a failure of organisation.\n\nThe research added a timing insight on top: around two weeks in, when no response has arrived, people quietly stop following up. Not because they lost interest, but because the mental overhead of staying on top of it had become too high. The product needed to address both: store the context, and surface it at the right moment.\n\nThis project proved that a product's success isn't about how many features it has, but how well it fits into the user's reality. The lesson: in emotionally demanding products, retention is a byproduct of empathy and taking the mental weight off the user."
             }
         },
         images: [candidateOnTheGo, candidateChallenge, candidateOnTheGo],
