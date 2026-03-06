@@ -226,65 +226,65 @@ export const PROJECTS = [
     {
         id: 1,
         title: "Optimising B2B Workflow & Retention",
-        desc: "Identified a critical environmental mismatch at the Point of Sale - moving payment assets from a scroll-dependent zone to a fixed-action zone cut interaction cost by 50% and secured re-prioritisation of the FY26 Mobile Roadmap.",
+        desc: "A self-initiated audit of the Officeworks mobile account architecture, conducted from the perspective of a business customer. Identified a revenue-critical friction point at the Point of Sale and built the business case that moved it from an unowned backlog item to the official Target State for the FY26 mobile roadmap.",
         tags: ["Mobile First", "UX Research", "Figma"],
-        challenge: "Retention Risk at the Point of Sale. A Contextual Inquiry at the checkout identified a critical environmental mismatch: payment utilities (Digital Card, Barcode) were buried in a scroll-dependent zone, forcing business users to hunt through nested content during high-pressure POS moments. Relocating these assets from a scroll-dependent zone to a fixed-action zone reduced target acquisition time by 50%, directly addressing the friction at the point of revenue capture.",
-        role: "Lead UX Designer. Responsible for the flow audit and IA restructure - drawing on first-hand experience as a regular user of the platform to identify friction the internal data was missing.",
+        challenge: "Retention Risk at the Point of Sale. Payment utilities on the Officeworks mobile account were buried below the fold, inside a scroll-dependent list. At the checkout counter, operating one-handed with a queue behind you, reaching the Digital Card or Barcode required four deliberate steps. The interaction cost was too high for the environment the product was being used in.",
+        role: "Digital Engagement Designer, Proactive Strategic Lead. This was not an assigned task. I identified the friction firsthand as a regular Officeworks business customer and self-initiated the audit alongside my standard campaign responsibilities.",
         process: {
             type: 'rich',
             sections: [
                 {
                     type: 'text',
-                    content: "The fix was structural. The mobile IA was reorganised from a list-based content hierarchy to a persistent utility header model - extracting payment assets from scrollable content and pinning them to a fixed position at the top of the viewport.\n\nThis shifted the interaction pattern from Hunt behaviour (Login > Scroll > Locate > Tap) to Reflex behaviour (Login > Tap). That compression - four steps to two - cut interaction cost by 50% at the exact moment the user is under the most pressure.\n\nThe result: the interface stopped fighting the environment it was being used in.",
+                    content: "The fix was structural: an Information Architecture Inversion. The mobile IA was reorganised from a list-based content hierarchy to a Persistent Utility Header model, extracting payment assets from scrollable content and pinning them to a fixed position at the top of the viewport.\n\nThis shifted the interaction pattern from Hunt behaviour (Login, Navigate, Scroll, Locate, Tap) to Reflex behaviour (Login, Tap). That compression, from four steps to two, cut interaction cost by 50% at the exact moment the user is under the most pressure.\n\nThe result: the interface stopped fighting the environment it was being used in.",
                     video: b2bAnimationProcessNoBg
                 }
             ]
         },
         impact: {
-            description: "Successfully secured stakeholder buy-in to elevate POS utility from a backlog item to a Strategic Priority — validated by CX leadership as the Target State for mobile Point of Sale interactions and formally integrated into the FY26 roadmap.",
+            description: "Influenced the official Target State for the FY26 Officeworks mobile roadmap. A self-initiated audit, socialised with CX leadership and validated as the benchmark architecture for mobile Point of Sale interactions.",
             outcomes: [
-                { title: "Strategic Catalyst", desc: "Shifted internal conversation on mobile utility architecture." },
+                { title: "Strategic Influence", desc: "Moved the architecture from backlog to FY26 roadmap priority." },
                 { title: "Stakeholder Validation", desc: "Adopted as Target State by CX leadership." },
-                { title: "Quantified Impact", desc: "Demonstrated 50% interaction cost reduction." }
+                { title: "50% Cost Reduction", desc: "Interaction steps at Point of Sale cut from four to two." }
             ]
         },
         keyTakeaway: {
             title: "Key Takeaway",
-            description: "Being a regular user of the platform meant I could see something the internal data couldn't: the checkout experience was broken in ways that didn't show up in a dashboard.\n\nThe fix wasn't complicated. Moving payment assets out of a scroll-dependent zone and into a fixed-action zone reduced the interaction from four steps to two. Half the effort, at the moment it mattered most. Presenting that to CX leadership reframed it from a UI preference to a retention argument - and got it into the FY26 roadmap.",
+            description: "The most commercially valuable work is not always what is assigned. Identifying a revenue risk at the Point of Sale required nothing more than using the product as its customers do. The discipline was in what came next: turning a personal observation into a structured audit, a structured audit into a business case, and a business case into a roadmap commitment.\n\nThat progression, from individual insight to corporate benchmark, is what defines seniority. Not the title.",
             outcomes: [
-                { title: "Roadmap Advisory", desc: "Influenced platform Target State architecture." },
-                { title: "Strategic Validation", desc: "CX leadership adopted as benchmark model." },
-                { title: "Lived Experience Design", desc: "Auto-ethnography revealed overlooked friction." }
+                { title: "Bottom-Up Influence", desc: "Self-initiated audit adopted as FY26 Target State." },
+                { title: "Strategic Validation", desc: "CX leadership adopted the architecture as the benchmark model." },
+                { title: "Contextual Research", desc: "Lived experience as a customer surfaced what internal data missed." }
             ]
         },
         wanderingContent: {
-            challenge: "Environmental Mismatch at the Point of Sale.\n\nThe problem wasn't visible in the data. Quantitative reporting showed no unusual drop-off at checkout - but using the platform as a regular customer told a different story.\n\nCheckout isn't a calm environment. You're separating household and business purchases, holding items, operating one-handed, with a queue behind you. The existing mobile interface was designed as if none of that was happening. The Digital Card and Barcode - the two utilities needed at the counter - were buried four levels deep in a scrollable list. Getting to them required four deliberate steps at the moment you had no attention to spare.\n\nThe problem wasn't the features. It was where they were placed.",
-            role: "Lead UX Designer, responsible for the flow audit and IA restructure.\n\nI positioned this as a research finding, not a design request. By using the platform as a customer, I could document the friction precisely - not as a preference, but as a structural problem with a measurable cost.\n\nI audited the legacy flow, quantified the interaction depth, and prepared the case for CX leadership. The goal was to make the architectural issue legible to stakeholders who weren't experiencing it firsthand.",
+            challenge: "Environmental Mismatch at the Point of Sale.\n\nThe problem was not visible in campaign data or standard reporting. It surfaced through Contextual Inquiry: using the Officeworks B2B account as a business customer in an actual checkout environment.\n\nCheckout is not a calm experience. You are separating business and personal purchases, holding items, operating one-handed, with a queue forming behind you. In that context, the Digital Card and Barcode needed to be immediately accessible. They were not.\n\nBoth utilities were located below the fold inside a scrollable account list. Reaching them required four sequential steps at the exact moment attention was already at its limit. For a B2B platform where checkout frequency is high, this was not a usability complaint. It was a retention risk.\n\nThe problem was not the features. It was where they were placed.",
+            role: "Digital Engagement Designer, operating beyond the standard campaign brief.\n\nI positioned this as a research finding, not a design request. Using the platform regularly as a business customer gave me access to context that internal data could not surface. The problem was not a statistic. It was a structural flaw that only becomes visible when you are actually at the counter.\n\nI audited the existing interaction flow, quantified the step cost, and prepared the case for CX leadership. The goal was to make the architectural problem legible in business terms.",
             process: {
                 type: 'rich',
                 sections: [
                     {
                         type: 'text',
-                        content: 'The Flow Audit.\n\nI mapped the full interaction sequence to quantify the problem. As per the flow audit, the Digital Card was nested four levels deep inside a scrollable list. The pattern was Login > Navigate > Scroll > Locate > Tap - five steps where one should do.\n\nThe Target State replaced that with a Persistent Utility Header - payment assets pinned to a fixed position, always visible, always one tap away. Secondary functions like order history and credit tracking stay accessible, but they stop competing with the tools you need at the counter.\n\nThe decision was about hierarchy, not aesthetics. At the checkout counter, attention is already maxed out. Every extra step makes it worse. Reducing to two steps wasn\'t an improvement on the old design - it was the baseline the experience should have started from.'
+                        content: 'The Flow Audit and IA Inversion.\n\nI mapped the full interaction sequence to establish the cost baseline. The Digital Card was nested four levels deep inside a scrollable account list. The pattern was: Login, Navigate, Scroll, Locate, Tap. Five steps where one should do.\n\nThe Target State replaced that pattern with a Persistent Utility Header: payment assets pinned to a fixed position at the top of the viewport, always visible, always one tap away. Secondary functions including order history and credit tracking remain accessible, but they no longer compete with the tools required at the counter.\n\nThe decision was about hierarchy, not aesthetics. At the checkout counter, attention is already at its limit. Every additional step compounds the pressure. Reducing to two steps was not an improvement on the old design. It was the baseline the experience should have started from.'
                     }
                 ]
             },
             impact: {
-                description: "The fix was deliberate: extract the Digital Card and Barcode from a scrollable list and pin them to a fixed position at the top of the viewport. One tap instead of four. The utilities are now where the environment demands them to be.",
+                description: "The audit established a concrete business case for IA Inversion. Moving the Digital Card and Barcode to a Persistent Utility Header reduced the interaction from five steps to two: a 50% reduction in interaction cost at the point of revenue capture.\n\nIt was not presented as a UX improvement. It was presented as a structural fix with direct implications for checkout completion and B2B retention.",
                 outcomesTitle: "What Changed Architecturally",
                 outcomes: [
                     { title: "IA Inversion", desc: "Shifted from list-based hierarchy to a Persistent Utility Header model." },
                     { title: "Fixed-Action Zone", desc: "Removed scroll dependency for time-critical POS interactions." },
-                    { title: "Hunt → Reflex", desc: "4-step acquisition reduced to 2 steps at the point of revenue capture." }
+                    { title: "Hunt to Reflex", desc: "Four-step acquisition reduced to two at the point of revenue capture." }
                 ]
             },
             refinement: {
-                description: "From Backlog to Strategic Priority.\n\nI presented the audit to CX leadership not as a request for a redesign, but as evidence of a structural problem the organisation's existing data had missed. The argument was simple: there are things a dashboard can't tell you that a regular user already knows. This was one of them.\n\nCX leadership validated the proposed architecture as the Target State for mobile POS interactions. What had been sitting in the backlog with no defined champion was committed to the FY26 roadmap as a Strategic Priority. That shift didn't come from a design review - it came from the audit making the problem legible in business terms.\n\nThe broader lesson: being close to the user context isn't a conflict of interest. It's a research advantage. Quantitative data tells you what's happening. Lived experience tells you why it matters.",
+                description: "Moving the Needle from a Contract Role.\n\nI presented the audit to CX leadership not as a request for a redesign, but as evidence of a structural problem the organisation's data had not surfaced. The argument was straightforward: there are things a dashboard cannot tell you that a regular user already knows. This was one of them.\n\nCX leadership validated the proposed architecture as the Target State for mobile POS interactions. What had been sitting in the backlog without a defined champion was committed to the FY26 roadmap as a strategic priority. That shift did not come from a design review. It came from the audit making the problem legible in business terms.\n\nThe broader lesson: being a contract-based Digital Engagement Designer does not limit your strategic reach. It limits your title. Understanding when your work has implications beyond your scope, and acting on it with evidence and clarity, is what defines a senior contributor regardless of the role you are contracted into.",
                 outcomesTitle: "Key Takeaway",
                 outcomes: [
-                    { title: "Contextual Inquiry", desc: "Domain expertise revealed a blind spot in quantitative data." },
-                    { title: "Roadmap Reprioritisation", desc: "POS utility elevated from backlog to Strategic Priority for FY26." },
-                    { title: "50% Interaction Cost Reduction", desc: "Fixed-action zone cut target acquisition time at point of sale." }
+                    { title: "Bottom-Up Strategy", desc: "Self-initiated audit elevated to corporate benchmark without a formal brief." },
+                    { title: "Roadmap Reprioritisation", desc: "POS utility moved from backlog to Strategic Priority for FY26." },
+                    { title: "50% Interaction Cost Reduction", desc: "Fixed-action zone cut target acquisition time at the point of sale." }
                 ]
             }
         },
