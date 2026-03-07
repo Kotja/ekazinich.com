@@ -158,7 +158,7 @@ Eka treats technical constraints as a creative challenge. If a crucial feature i
 
 #Learning from Experience: The "Business-Design" Balance
 
-Eka understands that a feature that helps the user can sometimes hinder the business if not implemented correctly. She learned this through a project where she insisted on an AR feature for an e-commerce art site. While the feature solved a user need (visualising art on a wall), the third-party implementation created a massive maintenance bottleneck. This taught her to always consider the long-term operational impact of a design choice, not just the immediate user benefit.
+Eka understands that a feature that helps the user can sometimes hinder the business if not implemented correctly. She evaluates every feature not just for its immediate user benefit, but for its long-term operational impact. Third-party integrations, in particular, require careful assessment of maintenance cost, dependency risk, and scalability before they are recommended.
 
 #Measuring Success and Growth
 
