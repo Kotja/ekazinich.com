@@ -1,6 +1,21 @@
 @import "tailwindcss";
 
 @theme {
+  /* ── Font Families (3) ── */
+  --font-sans: 'Lato', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+
+  /* ── Font Sizes (7) ── */
+  --text-2xs: 0.625rem;
+  --text-display: clamp(3.5rem, 8vw, 5.5rem);
+  --text-display--line-height: 0.95;
+
+  /* ── Tracking ── */
+  --tracking-wide: 0.1em;
+
+  /* ── Animation ── */
+  --animate-fade-word-in: fadeWordIn 300ms ease-out forwards;
+
   /* ── Brand ── */
   --color-accent: #C25E00;
   --color-accent-light: #E6944C;
@@ -44,10 +59,23 @@
   --color-gradient-orange-dark: #C27000;
 }
 
+@keyframes fadeWordIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans);
   line-height: 1.5;
-  font-weight: 400;
+  font-weight: var(--weight-normal);
+
+  /* ── Font Weight Tokens (3) ── */
+  --weight-normal: 400;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* ── Leading Token ── */
+  --leading-tight: 1.25;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -76,11 +104,11 @@ h6 {
 }
 
 .font-playfair {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-serif);
 }
 
 .font-lato {
-  font-family: 'Lato', sans-serif;
+  font-family: var(--font-sans);
 }
 
 ::-webkit-scrollbar {
@@ -123,7 +151,7 @@ h6 {
   --muted-foreground: var(--color-muted);
   --border: #D4D2CC;
 
-  font-family: 'Lato', sans-serif;
+  font-family: var(--font-sans);
   line-height: 1.7;
 }
 
@@ -170,8 +198,8 @@ h6 {
 .streamdown-content h2,
 .streamdown-content h3,
 .streamdown-content h4 {
-  font-family: 'Playfair Display', serif;
-  font-weight: 600;
+  font-family: var(--font-serif);
+  font-weight: var(--weight-normal);
   margin-top: 1rem;
   margin-bottom: 0.5rem;
 }
@@ -183,10 +211,10 @@ h6 {
   margin-top: 0;
 }
 
-.streamdown-content h1 { font-size: 1.5rem; }
-.streamdown-content h2 { font-size: 1.25rem; }
-.streamdown-content h3 { font-size: 1.1rem; }
-.streamdown-content h4 { font-size: 1rem; }
+.streamdown-content h1 { font-size: var(--text-xl); }
+.streamdown-content h2 { font-size: var(--text-lg); }
+.streamdown-content h3 { font-size: var(--text-base); }
+.streamdown-content h4 { font-size: var(--text-sm); }
 
 /* Paragraphs */
 .streamdown-content p {
@@ -269,7 +297,7 @@ h6 {
 
 /* Bold/Strong */
 .streamdown-content strong {
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 /* Italic/Emphasis */
@@ -311,7 +339,7 @@ h6 {
 }
 
 .streamdown-content th {
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   background-color: rgba(0, 0, 0, 0.05);
 }
 

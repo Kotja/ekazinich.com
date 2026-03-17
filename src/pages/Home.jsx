@@ -9,7 +9,7 @@ import AskChat from '../components/AskChat';
 import { getTheme, COLOURS } from '../theme';
 
 // --- SUB-COMPONENT: PROJECT ITEM ---
-const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) => {
+const ProjectItem = ({ proj, idx, openProject, theme }) => {
     const videoRef = useRef(null);
     let displayTitle = proj.title;
 
@@ -34,7 +34,7 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
             frameDesktopMargin: 'lg:ml-14 lg:mt-[4.5rem] lg:translate-x-4',
             textPos: 'items-end justify-end text-right pb-6 pr-12',
             titleContainer: 'absolute -bottom-20 -right-10 w-64 text-right z-20',
-            titleStyle: 'font-lato text-2xl leading-tight'
+            titleStyle: 'font-sans text-2xl leading-tight'
         }, // TR
         {
             front: 'rounded-none', back: 'rounded-none',
@@ -90,7 +90,7 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
         >
             {/* Back Frame */}
             <div className={`col-start-1 row-start-1 w-48 h-48 relative border-2 ${theme.borderSolid} ${config.back} flex ${config.textPos} transition-colors duration-500 group-hover:border-accent z-0 ${config.frameMobileMargin || ''} ${config.frameDesktopMargin || ''}`}>
-                <span className={`font-lato text-sm ${theme.text} leading-tight max-w-[95%] break-words text-balance`}>
+                <span className={`font-sans text-sm ${theme.text} leading-tight max-w-[95%] break-words text-balance`}>
                     {displayTitle}
                 </span>
             </div>
@@ -98,7 +98,7 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
             {/* Front Shape */}
             <div
                 className={`col-start-1 row-start-1 w-48 h-48 relative ${config.front} overflow-hidden shadow-lg transition-transform duration-500 group-hover:scale-95 z-10 bg-white ${config.mobileMargin} ${config.desktopMargin}`}
-                style={{ background: isWandering ? config.gradient : 'white' }}
+                style={{ background: 'white' }}
             >
                 {/* Video - Visible on Mobile (Static First Frame) & Desktop (Hover Play) */}
                 {proj.video ? (
@@ -109,11 +109,7 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
                         loop
                         playsInline
                         preload="metadata"
-                        className={`w-full h-full object-cover transition-all duration-500 
-                            ${isWandering
-                                ? 'opacity-100 md:opacity-0 md:group-hover:opacity-100'
-                                : 'grayscale md:grayscale group-hover:grayscale-0'
-                            }`}
+                        className="w-full h-full object-cover transition-all duration-500 grayscale md:grayscale group-hover:grayscale-0"
                     />
                 ) : (
                     <img
@@ -122,11 +118,7 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
                         loading={idx > 1 ? "lazy" : "eager"}
                         width="800"
                         height="600"
-                        className={`w-full h-full object-cover transition-all duration-500 
-                            ${isWandering
-                                ? 'opacity-100 md:opacity-0 md:group-hover:opacity-100'
-                                : 'grayscale md:grayscale group-hover:grayscale-0'
-                            }`}
+                        className="w-full h-full object-cover transition-all duration-500 grayscale md:grayscale group-hover:grayscale-0"
                     />
                 )}
             </div>
@@ -137,9 +129,8 @@ const ProjectItem = ({ proj, idx, openProject, playSound, theme, isWandering }) 
     );
 };
 
-const Home = ({ mode, playSound, scrollToSection }) => {
+const Home = ({ mode, scrollToSection }) => {
     const navigate = useNavigate();
-    const [hoverHero, setHoverHero] = useState(false);
     const [emailCopied, setEmailCopied] = useState(false);
     const [formState, setFormState] = useState({ name: '', email: '', message: '' });
     const [errors, setErrors] = useState({});
@@ -154,7 +145,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
         hr: ['Clarity.', 'Precision.', 'Impact.'],
         wandering: ['Canvas.', 'Perspective.', 'Insights.']
     };
-    const currentWords = (mode === 'wandering' && hoverHero) ? heroWords.wandering : heroWords.hr;
+    const currentWords = isWandering ? heroWords.wandering : heroWords.hr;
 
     const openProject = (project) => {
         // Slugify title for URL: Remove special chars/punctuation, then space to dash
@@ -231,26 +222,19 @@ const Home = ({ mode, playSound, scrollToSection }) => {
 
                 {/* Left Column: Text */}
                 <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 md:px-24 relative z-20">
-                    <div
-                        className="cursor-default"
-                        onMouseEnter={() => { setHoverHero(true); }}
-                        onMouseLeave={() => setHoverHero(false)}
-                    >
+                    <div>
                         {currentWords.map((word, i) => (
                             <h1
-                                key={i}
-                                className={`font-playfair md:text-[8vw] xl:text-[6vw] 2xl:text-[5.5rem] text-[15vw] leading-[1.1] md:leading-[0.9] duration-700 ease-in-out
-                  ${mode === 'wandering' ? 'italic opacity-90' : ''}
-                  ${hoverHero && mode === 'wandering' ? 'translate-x-2 md:translate-x-12 opacity-80' : ''}
-                `}
-                                style={{ transitionDelay: `${i * 100}ms` }}
+                                key={word}
+                                className="font-serif text-display opacity-0 animate-fade-word-in"
+                                style={{ animationDelay: `${i * 80}ms` }}
                             >
                                 {word}
                             </h1>
                         ))}
                     </div>
 
-                    <p className={`mt-8 md:mt-12 font-lato text-xs md:text-[13px] tracking-widest uppercase animate-fade-in-up ${theme.subText}`}>
+                    <p className={`mt-8 md:mt-12 font-sans text-xs md:text-sm tracking-widest uppercase animate-fade-in-up ${theme.subText}`}>
                         Strategic design that works for the user and the bottom line.
                     </p>
                 </div>
@@ -264,9 +248,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                             proj={proj}
                             idx={idx}
                             openProject={openProject}
-                            playSound={playSound}
                             theme={theme}
-                            isWandering={isWandering}
                         />
                     ))}
 
@@ -289,25 +271,25 @@ const Home = ({ mode, playSound, scrollToSection }) => {
             {/* About Section */}
             <section id="about-section" className="min-h-[80vh] w-full flex flex-col md:flex-row items-center px-6 md:px-24 py-24 relative overflow-hidden max-w-screen-2xl mx-auto">
                 <div className="w-full md:w-1/2 pr-0 md:pr-12 md:pl-20 z-10 mb-12 md:mb-0">
-                    <h2 className="font-playfair text-5xl md:text-7xl mb-8">About</h2>
+                    <h2 className="font-serif text-5xl md:text-7xl mb-8">About</h2>
                     {mode === 'wandering' ? (
                         <>
-                            <p className={`font-lato text-lg leading-relaxed mb-4 max-w-md ${theme.subText}`}>
+                            <p className={`font-sans text-lg leading-relaxed mb-4 max-w-md ${theme.subText}`}>
                                 Hi, I'm Eka. I'm a Product Designer who believes the best solutions come from living the problem yourself, or at least getting close enough to feel the friction.
                             </p>
-                            <p className={`font-lato text-lg leading-relaxed mb-4 max-w-md ${theme.subText}`}>
+                            <p className={`font-sans text-lg leading-relaxed mb-4 max-w-md ${theme.subText}`}>
                                 I'm fascinated by the invisible work: the research that uncovers what users can't articulate, the priority battles that separate "must-haves" from "nice-to-haves," and the small design decisions that prevent cognitive overload. I don't just want to make things look good; I want to understand why someone would abandon a flow at 2am, or why they'd trust one interface over another.
                             </p>
-                            <p className={`font-lato text-lg leading-relaxed mb-6 max-w-md ${theme.subText}`}>
+                            <p className={`font-sans text-lg leading-relaxed mb-6 max-w-md ${theme.subText}`}>
                                 My process starts with validation: Does this problem actually exist? Is solving it worth the cost? From there, I involve technical teams early, treat constraints as creative challenges, and measure outcomes obsessively. When something fails, I don't see a dead end. I see data that points toward a better iteration.
                             </p>
                         </>
                     ) : (
-                        <p className={`font-lato text-lg leading-relaxed mb-6 max-w-md ${theme.subText}`}>
+                        <p className={`font-sans text-lg leading-relaxed mb-6 max-w-md ${theme.subText}`}>
                             Hi, I'm Eka. I'm a Product Designer who asks "why are we building this?" before opening Figma. I validate problems through research, prioritize ruthlessly for MVPs, and measure success through real user behavior: heatmaps, session recordings, and task completion rates. My goal is simple: design that works for both the user and the business.
                         </p>
                     )}
-                    <p className={`font-lato text-sm ${theme.subText} border-l-2 border-accent pl-4 italic`}>
+                    <p className={`font-sans text-sm ${theme.subText} border-l-2 border-accent pl-4 italic`}>
                         "Design is intelligence made visible."
                     </p>
                 </div>
@@ -328,7 +310,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                                 ${theme.borderSolid} ${theme.bg} ${theme.text} cursor-pointer hover:scale-105 transition-transform duration-300 group`}
                             onClick={() => setShowCV(true)}
                         >
-                            <span className="font-playfair italic text-xl group-hover:text-accent transition-colors">CV</span>
+                            <span className="font-serif text-xl group-hover:text-accent transition-colors">CV</span>
                         </div>
                     </div>
                     {mode === 'wandering' && (
@@ -344,7 +326,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
 
             {/* Contact Section */}
             <section id="contact-section" className="min-h-[60vh] w-full flex flex-col justify-center items-center px-6 md:px-24 pt-32 pb-40 md:pb-24 bg-charcoal text-cream">
-                <h2 className="font-playfair text-5xl md:text-7xl mb-12 text-center">Let's Connect</h2>
+                <h2 className="font-serif text-5xl md:text-7xl mb-12 text-center">Let's Connect</h2>
                 <div className="flex flex-col md:flex-row gap-12 w-full max-w-4xl">
                     <div className="flex-1">
                         <form className="flex flex-col gap-6" onSubmit={handleFormSubmit}>
@@ -408,7 +390,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                         <div className="flex items-center gap-4">
                             <a
                                 href="mailto:ekazinich@gmail.com"
-                                className="flex items-center gap-4 text-xl font-playfair italic hover:translate-x-2 transition-transform duration-300"
+                                className="flex items-center gap-4 text-xl font-serif hover:translate-x-2 transition-transform duration-300"
                                 style={{ color: COLOURS.cream }}
                                 onMouseEnter={(e) => e.currentTarget.style.color = COLOURS.accent}
                                 onMouseLeave={(e) => e.currentTarget.style.color = COLOURS.cream}
@@ -431,7 +413,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                             href="https://www.linkedin.com/in/katerina-eka-zinich"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-4 text-xl font-playfair italic hover:translate-x-2 transition-transform duration-300"
+                            className="flex items-center gap-4 text-xl font-serif hover:translate-x-2 transition-transform duration-300"
                             style={{ color: COLOURS.cream }}
                             onMouseEnter={(e) => e.currentTarget.style.color = COLOURS.accent}
                             onMouseLeave={(e) => e.currentTarget.style.color = COLOURS.cream}
@@ -443,7 +425,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
                 </div>
 
                 {/* Copyright */}
-                <div className="w-full text-center mt-20 opacity-40 font-lato text-xs tracking-widest uppercase">
+                <div className="w-full text-center mt-20 opacity-40 font-sans text-xs tracking-widest uppercase">
                     © 2026 Eka Zinich. All rights reserved.
                 </div>
             </section>
@@ -455,7 +437,7 @@ const Home = ({ mode, playSound, scrollToSection }) => {
 
                         {/* Toolbar */}
                         <div className="flex items-center justify-between px-6 py-4 bg-charcoal text-cream border-b border-gray-700">
-                            <h3 className="font-playfair italic text-xl">Curriculum Vitae</h3>
+                            <h3 className="font-serif text-xl">Curriculum Vitae</h3>
                             <div className="flex items-center gap-4">
                                 <a
                                     href={cvFile}

@@ -89,7 +89,7 @@ const AppContent = () => {
   }, [location]);
 
   return (
-    <div className={`min-h-[100dvh] transition-colors duration-700 ${theme.bg} ${theme.text} font-lato overflow-x-hidden selection:bg-accent-peach selection:text-accent pb-28 md:pb-0`}>
+    <div className={`min-h-[100dvh] transition-colors duration-700 ${theme.bg} ${theme.text} font-sans overflow-x-hidden selection:bg-accent-peach selection:text-accent pb-28 md:pb-0`}>
 
       {/* GLOBAL STYLES */}
       <style>{`
@@ -147,7 +147,7 @@ const AppContent = () => {
                 aria-label="Impact Mode"
               />
               {/* Desktop Tooltip */}
-              <span className="hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-[9px] tracking-widest uppercase opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none text-accent-light">
+              <span className="hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-2xs tracking-widest uppercase opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none text-accent-light">
                 Impact Mode
               </span>
             </div>
@@ -165,7 +165,7 @@ const AppContent = () => {
                 aria-label="In-Depth Mode"
               />
               {/* Desktop Tooltip - positioned absolutely to prevent layout shifts */}
-              <span className={`hidden md:block absolute right-full top-1/2 -translate-y-1/2 whitespace-nowrap text-[9px] tracking-widest uppercase transition-all duration-300 pointer-events-none 
+              <span className={`hidden md:block absolute right-full top-1/2 -translate-y-1/2 whitespace-nowrap text-2xs tracking-widest uppercase transition-all duration-300 pointer-events-none 
                 ${isOnboardingVisible
                   ? 'opacity-100 bg-cream text-accent-light px-5 py-3 rounded-full font-bold shadow-lg leading-none'
                   : 'opacity-0 group-hover/btn:opacity-100 text-accent-light'
@@ -234,7 +234,7 @@ const AppContent = () => {
                 </span>
 
                 {/* Mobile Label Logic */}
-                <span className="md:hidden block text-[10px] xs:text-xs">
+                <span className="md:hidden block text-2xs xs:text-xs">
                   {item}
                 </span>
 
@@ -251,7 +251,7 @@ const AppContent = () => {
             style={{ color: 'inherit' }}
           >
             <Sparkles size={12} className="text-accent" />
-            <span className="block text-[10px] xs:text-xs">Ask AI</span>
+            <span className="block text-2xs xs:text-xs">Ask AI</span>
             <span className={`w-1.5 h-1.5 rounded-full absolute -bottom-2 transition-opacity ${isMiniChatOpen ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} ${isWandering ? 'bg-white' : 'bg-black'}`} />
           </button>
         </div>
@@ -261,8 +261,8 @@ const AppContent = () => {
       </nav>
 
       <Routes>
-        <Route path="/" element={<Home mode={mode} playSound={playSound} scrollToSection={scrollToSection} />} />
-        <Route path="/projects/:slug" element={<ProjectDetail mode={mode} playSound={playSound} />} />
+        <Route path="/" element={<Home mode={mode} scrollToSection={scrollToSection} />} />
+        <Route path="/projects/:slug" element={<ProjectDetail mode={mode} />} />
       </Routes>
 
       <MiniChat mode={mode} />

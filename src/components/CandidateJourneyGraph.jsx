@@ -93,7 +93,7 @@ const CandidateJourneyGraph = ({ theme }) => {
                         fontSize="11"
                         fill={isDark ? creamAlpha(70) : charcoalAlpha(70)}
                         textAnchor="end"
-                        fontFamily="Playfair Display, serif"
+                        fontFamily="var(--font-serif)"
                     >
                         {val}
                     </text>
@@ -106,7 +106,7 @@ const CandidateJourneyGraph = ({ theme }) => {
                     fontSize="11"
                     fill={isDark ? creamAlpha(70) : charcoalAlpha(70)}
                     textAnchor="middle"
-                    fontFamily="Playfair Display, serif"
+                    fontFamily="var(--font-serif)"
                     transform="rotate(-90, 15, 50)"
                 >
                     Confidence %
@@ -121,7 +121,7 @@ const CandidateJourneyGraph = ({ theme }) => {
                         fontSize="11"
                         fill={isDark ? creamAlpha(70) : charcoalAlpha(70)}
                         textAnchor="middle"
-                        fontFamily="Playfair Display, serif"
+                        fontFamily="var(--font-serif)"
                     >
                         {week}
                     </text>
@@ -134,7 +134,7 @@ const CandidateJourneyGraph = ({ theme }) => {
                     fontSize="11"
                     fill={isDark ? creamAlpha(70) : charcoalAlpha(70)}
                     textAnchor="start"
-                    fontFamily="Playfair Display, serif"
+                    fontFamily="var(--font-serif)"
                 >
                     Time weeks
                 </text>
@@ -179,7 +179,7 @@ const CandidateJourneyGraph = ({ theme }) => {
                                 y="3"
                                 fontSize="8"
                                 fill={isDark ? creamAlpha(80) : charcoalAlpha(80)}
-                                fontFamily="Lato, sans-serif"
+                                fontFamily="var(--font-sans)"
                                 style={{
                                     opacity: isVisible ? 1 : 0,
                                     transition: `opacity 0.5s ease-out ${0.5 + index * 0.1}s`
@@ -212,10 +212,10 @@ const CandidateJourneyGraph = ({ theme }) => {
                                 y="0"
                                 fontSize={annotation.size === 'base' ? '10' : '10'}
                                 fill={annotation.color || (isDark ? 'var(--color-cream)' : 'var(--color-charcoal)')}
-                                fontFamily={annotation.vertical ? "'Lato', sans-serif" : "'Playfair Display', serif"}
-                                fontStyle={annotation.vertical ? "normal" : "italic"}
+                                fontFamily={annotation.vertical ? "var(--font-sans)" : "var(--font-serif)"}
+                                fontStyle="normal"
                                 textAnchor="middle"
-                                fontWeight={annotation.color ? '600' : '400'}
+                                fontWeight="400"
                                 writingMode={annotation.vertical ? "vertical-rl" : "horizontal-tb"}
                                 transform={annotation.vertical ? "rotate(180)" : ""}
                             >

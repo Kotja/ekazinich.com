@@ -61,7 +61,7 @@ const MiniChat = ({ mode }) => {
         <div className={`flex items-center justify-between px-4 py-3 border-b ${theme.borderSoft} shrink-0`}>
           <div className="flex items-center gap-2">
             <Sparkles className="text-accent" size={16} />
-            <span className="font-playfair text-sm font-semibold">Ask Eka</span>
+            <span className="font-serif text-sm">Ask Eka</span>
           </div>
           <div className="flex items-center gap-1">
             {messages.length > 0 && (
@@ -94,7 +94,7 @@ const MiniChat = ({ mode }) => {
             /* Empty State */
             <div className={`flex flex-col items-center justify-center h-full ${theme.subText}`}>
               <MessageCircle size={32} strokeWidth={1} className="mb-3 opacity-30" />
-              <p className="font-lato text-xs text-center mb-4">
+              <p className="font-sans text-xs text-center mb-4">
                 Ask about experience, skills, or projects
               </p>
               <div className="flex flex-wrap justify-center gap-1.5">
@@ -104,7 +104,7 @@ const MiniChat = ({ mode }) => {
                     onClick={() => handleSend(q)}
                     disabled={isLoading}
                     className={`
-                      px-2.5 py-1 rounded-full text-[11px] font-lato
+                      px-2.5 py-1 rounded-full text-2xs font-sans
                       border transition-all duration-300
                       hover:border-accent hover:text-accent
                       disabled:opacity-50 disabled:cursor-not-allowed
@@ -136,9 +136,9 @@ const MiniChat = ({ mode }) => {
                       `}
                     >
                       {message.role === 'user' ? (
-                        <p className="font-lato text-xs">{content}</p>
+                        <p className="font-sans text-xs">{content}</p>
                       ) : (
-                        <div className="font-lato text-xs streamdown-content">
+                        <div className="font-sans text-xs streamdown-content">
                           <Streamdown
                             mode={isLoading && idx === messages.length - 1 ? 'streaming' : 'static'}
                             caret="circle"
@@ -180,7 +180,7 @@ const MiniChat = ({ mode }) => {
                   onClick={() => handleSend(s)}
                   disabled={isLoading}
                   className={`
-                    px-2.5 py-1 rounded-full text-[11px] font-lato
+                    px-2.5 py-1 rounded-full text-2xs font-sans
                     border transition-all duration-300
                     hover:border-accent hover:text-accent
                     disabled:opacity-50 disabled:cursor-not-allowed
@@ -206,7 +206,7 @@ const MiniChat = ({ mode }) => {
               disabled={isLoading}
               className={`
                 flex-1 bg-transparent border-none outline-none
-                font-lato text-xs placeholder:opacity-50
+                font-sans text-xs placeholder:opacity-50
                 ${theme.text}
               `}
             />
