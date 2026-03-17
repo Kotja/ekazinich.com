@@ -219,7 +219,7 @@ const InteractiveChallengeImage = ({ src, isWandering, theme, onImageClick, proj
     );
 };
 
-const ProjectDetail = ({ mode, playSound }) => {
+const ProjectDetail = ({ mode }) => {
     const { slug } = useParams();
     const navigate = useNavigate();
     const [selectedImage, setSelectedImage] = useState(null);
@@ -302,9 +302,9 @@ const ProjectDetail = ({ mode, playSound }) => {
 
                 {/* Header - Constrained */}
                 <div className="w-full max-w-6xl mx-auto px-6 text-center max-w-3xl mb-8">
-                    <h1 className={`font-playfair text-4xl md:text-7xl mb-4 leading-tight ${theme.text}`}>{project.title}</h1>
+                    <h1 className={`font-serif text-4xl md:text-7xl mb-4 leading-tight ${theme.text}`}>{project.title}</h1>
                     {project.subtitle && (
-                        <p className={`font-playfair text-lg md:text-2xl italic mb-6 ${theme.subText} opacity-70`}>{project.subtitle}</p>
+                        <p className={`font-serif text-lg md:text-2xl mb-6 ${theme.subText} opacity-70`}>{project.subtitle}</p>
                     )}
                     <div className="flex justify-center gap-3 flex-wrap mb-6">
                         {project.tags.map(tag => (
@@ -333,23 +333,23 @@ const ProjectDetail = ({ mode, playSound }) => {
 
                 {/* Impact - Constrained */}
                 <div className="w-full max-w-5xl mx-auto px-6 text-center py-12">
-                    <h3 className="font-lato text-sm font-bold uppercase tracking-[0.2em] text-gray-400 mb-8">The Solution Impact</h3>
+                    <h3 className="font-sans text-sm font-bold uppercase tracking-[0.2em] text-gray-400 mb-8">The Solution Impact</h3>
 
                     {typeof displayContent.impact === 'object' ? (
                         <div className="flex flex-col items-center">
-                            <p className={`font-playfair text-2xl md:text-5xl leading-tight italic ${theme.text} mb-12`} style={{ textWrap: 'balance', whiteSpace: 'pre-line' }}>
+                            <p className={`font-serif text-2xl md:text-5xl leading-tight ${theme.text} mb-12`} style={{ textWrap: 'balance', whiteSpace: 'pre-line' }}>
                                 {displayContent.impact.description}
                             </p>
 
                             <div className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mb-8`}></div>
 
-                            <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">{displayContent.impact.outcomesTitle || "Key Outcome"}</h4>
+                            <h4 className="font-sans text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">{displayContent.impact.outcomesTitle || "Key Outcome"}</h4>
 
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:items-start">
                                 {displayContent.impact.outcomes && displayContent.impact.outcomes.map((outcome, i) => (
                                     <div key={i} className="text-left flex flex-col gap-2">
-                                        <h5 className={`font-playfair text-xl italic font-bold ${theme.text}`}>{outcome.title}</h5>
-                                        <p className={`font-lato text-base ${theme.subText}`}>{outcome.desc}</p>
+                                        <h5 className={`font-serif text-xl ${theme.text}`}>{outcome.title}</h5>
+                                        <p className={`font-sans text-base ${theme.subText}`}>{outcome.desc}</p>
                                     </div>
                                 ))}
                             </div>
@@ -357,7 +357,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                             <div className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mt-12`}></div>
                         </div>
                     ) : (
-                        <p className={`font-playfair text-2xl md:text-5xl leading-tight italic ${theme.text}`} style={{ textWrap: 'balance', whiteSpace: 'pre-line' }}>
+                        <p className={`font-serif text-2xl md:text-5xl leading-tight ${theme.text}`} style={{ textWrap: 'balance', whiteSpace: 'pre-line' }}>
                             {displayContent.impact}
                         </p>
                     )}
@@ -369,8 +369,8 @@ const ProjectDetail = ({ mode, playSound }) => {
                     return (
                         <div className={`w-full max-w-6xl mx-auto px-6 ${challengeImage ? 'md:flex md:gap-12 md:items-center' : 'grid grid-cols-1'}`}>
                             <div className="order-2 md:order-1 flex flex-col justify-center md:flex-1">
-                                <h3 className="font-playfair text-3xl mb-4 text-accent">The Challenge</h3>
-                                <p className={`font-lato text-lg leading-relaxed max-w-[600px] ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.challenge}</p>
+                                <h3 className="font-serif text-3xl mb-4 text-accent">The Challenge</h3>
+                                <p className={`font-sans text-lg leading-relaxed max-w-[600px] ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.challenge}</p>
                             </div>
                             {challengeImage && (
                                 <div className="md:w-1/2 md:flex-shrink-0">
@@ -404,14 +404,14 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 </div>
                             )}
                             <div className={`${displayContent.roleImage ? 'order-1 md:order-2 text-left' : 'max-w-4xl mx-auto'}`}>
-                                <h3 className={`font-playfair text-3xl mb-4 ${theme.text}`}>My Role</h3>
-                                <p className={`font-lato text-lg leading-relaxed max-w-[600px] mx-auto ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.role}</p>
+                                <h3 className={`font-serif text-3xl mb-4 ${theme.text}`}>My Role</h3>
+                                <p className={`font-sans text-lg leading-relaxed max-w-[600px] mx-auto ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.role}</p>
                             </div>
                         </div>
                     ) : (
                         <div className="max-w-6xl mx-auto px-6 py-12 text-center">
-                            <h3 className={`font-playfair text-3xl mb-4 ${theme.text}`}>My Role</h3>
-                            <p className={`font-lato text-lg max-w-[600px] mx-auto leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.role}</p>
+                            <h3 className={`font-serif text-3xl mb-4 ${theme.text}`}>My Role</h3>
+                            <p className={`font-sans text-lg max-w-[600px] mx-auto leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.role}</p>
 
                             {displayContent.roleImage && (
                                 <div
@@ -436,11 +436,11 @@ const ProjectDetail = ({ mode, playSound }) => {
                         {displayContent.process.renderComponent === 'CandidateJourneyGraph' && (
                             <div className="w-full max-w-6xl mx-auto px-6 mb-12">
                                 {/* The Process title at the very top */}
-                                <h3 className="font-playfair text-3xl mb-12 text-accent text-center">The Process</h3>
+                                <h3 className="font-serif text-3xl mb-12 text-accent text-center">The Process</h3>
                                 {/* Text before graph */}
                                 {displayContent.process.beforeGraph && (
                                     <div className="max-w-[600px] mx-auto mb-12 text-left">
-                                        <p className={`font-lato text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
+                                        <p className={`font-sans text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
                                             {displayContent.process.beforeGraph}
                                         </p>
                                     </div>
@@ -455,7 +455,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                                 {/* First item: full-width centered block */}
                                                 {displayContent.process.afterGraph[0] && (
                                                     <div className="text-left mb-8">
-                                                        <p className={`font-lato text-lg leading-relaxed max-w-[600px] mx-auto ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
+                                                        <p className={`font-sans text-lg leading-relaxed max-w-[600px] mx-auto ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
                                                             {displayContent.process.afterGraph[0]}
                                                         </p>
                                                     </div>
@@ -465,7 +465,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                                     <div className="flex flex-col gap-8 mt-8">
                                                         {displayContent.process.afterGraph.slice(1).map((text, idx) => (
                                                             <div key={idx} className="text-left">
-                                                                <p className={`font-lato text-lg leading-relaxed max-w-[600px] mx-auto ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
+                                                                <p className={`font-sans text-lg leading-relaxed max-w-[600px] mx-auto ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
                                                                     {text}
                                                                 </p>
                                                             </div>
@@ -475,7 +475,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                             </>
                                         ) : (
                                             <div className="text-center">
-                                                <p className={`font-lato text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
+                                                <p className={`font-sans text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
                                                     {displayContent.process.afterGraph}
                                                 </p>
                                             </div>
@@ -527,9 +527,9 @@ const ProjectDetail = ({ mode, playSound }) => {
                                         )}
                                         <div className={showImage ? '' : 'max-w-4xl mx-auto'}>
                                             {!displayContent.process.renderComponent && (
-                                                <h3 className="font-playfair text-3xl mb-4 text-accent">The Process</h3>
+                                                <h3 className="font-serif text-3xl mb-4 text-accent">The Process</h3>
                                             )}
-                                            <p className={`font-lato text-lg leading-relaxed max-w-[600px] ${theme.subText} ${project.id === 3 && isWandering ? 'text-center mx-auto' : ''}`} style={{ whiteSpace: 'pre-line' }}>{section.content}</p>
+                                            <p className={`font-sans text-lg leading-relaxed max-w-[600px] ${theme.subText} ${project.id === 3 && isWandering ? 'text-center mx-auto' : ''}`} style={{ whiteSpace: 'pre-line' }}>{section.content}</p>
                                         </div>
                                     </div>
                                 );
@@ -553,8 +553,8 @@ const ProjectDetail = ({ mode, playSound }) => {
                                                         )}
                                                     </div>
                                                     <div>
-                                                        <h4 className={`font-playfair text-xl font-bold mb-4 ${theme.text}`}>{item.title}</h4>
-                                                        <p className={`font-lato text-base leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
+                                                        <h4 className={`font-serif text-xl mb-4 ${theme.text}`}>{item.title}</h4>
+                                                        <p className={`font-sans text-base leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
                                                             {item.desc}
                                                         </p>
                                                     </div>
@@ -648,8 +648,8 @@ const ProjectDetail = ({ mode, playSound }) => {
                             </div>
                         ) : null}
                         <div>
-                            <h3 className="font-playfair text-3xl mb-4 text-accent text-center md:text-left">The Process</h3>
-                            <p className={`font-lato text-lg leading-relaxed max-w-[600px] mx-auto md:mx-0 text-left ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.process}</p>
+                            <h3 className="font-serif text-3xl mb-4 text-accent text-center md:text-left">The Process</h3>
+                            <p className={`font-sans text-lg leading-relaxed max-w-[600px] mx-auto md:mx-0 text-left ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.process}</p>
                         </div>
                     </div>
                 )}
@@ -661,15 +661,15 @@ const ProjectDetail = ({ mode, playSound }) => {
                     <div className="w-full max-w-7xl mx-auto px-6 text-center py-12">
                         <div className="w-full h-[0.5px] bg-divider mb-8"></div>
 
-                        <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">
+                        <h4 className="font-sans text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">
                             {displayContent.keyTakeaway.title || "Key Takeaway"}
                         </h4>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:items-start">
                             {displayContent.keyTakeaway.outcomes.map((outcome, i) => (
                                 <div key={i} className="text-left flex flex-col gap-2">
-                                    <h5 className={`font-playfair text-xl italic font-bold ${theme.text}`}>{outcome.title}</h5>
-                                    <p className={`font-lato text-base ${theme.subText}`}>{outcome.desc}</p>
+                                    <h5 className={`font-serif text-xl ${theme.text}`}>{outcome.title}</h5>
+                                    <p className={`font-sans text-base ${theme.subText}`}>{outcome.desc}</p>
                                 </div>
                             ))}
                         </div>
@@ -732,12 +732,12 @@ const ProjectDetail = ({ mode, playSound }) => {
 
                                 <div className="order-2 flex flex-col gap-8 text-left">
                                     {displayContent.keyTakeaway.description && (
-                                        <div className={`font-lato text-lg leading-relaxed max-w-[600px] text-left mx-auto ${theme.text}`}>
+                                        <div className={`font-sans text-lg leading-relaxed max-w-[600px] text-left mx-auto ${theme.text}`}>
                                             {displayContent.keyTakeaway.description}
                                         </div>
                                     )}
                                     {displayContent.keyTakeaway.imageCaption && (
-                                        <div className={`font-lato text-base italic ${theme.subText} flex flex-col gap-4`}>
+                                        <div className={`font-sans text-base italic ${theme.subText} flex flex-col gap-4`}>
                                             {displayContent.keyTakeaway.imageCaption.split('\n\n').map((paragraph, index) => (
                                                 <p key={index}>{paragraph}</p>
                                             ))}
@@ -759,12 +759,12 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 </div>
                                 <div className="order-2 flex flex-col gap-8 text-left">
                                     {displayContent.keyTakeaway.description && (
-                                        <div className={`font-lato text-lg leading-relaxed max-w-[600px] ${theme.text}`}>
+                                        <div className={`font-sans text-lg leading-relaxed max-w-[600px] ${theme.text}`}>
                                             {displayContent.keyTakeaway.description}
                                         </div>
                                     )}
                                     {displayContent.keyTakeaway.imageCaption && (
-                                        <div className={`font-lato text-base italic ${theme.subText} flex flex-col gap-4`}>
+                                        <div className={`font-sans text-base italic ${theme.subText} flex flex-col gap-4`}>
                                             {displayContent.keyTakeaway.imageCaption.split('\n\n').map((paragraph, index) => (
                                                 <p key={index}>{paragraph}</p>
                                             ))}
@@ -774,7 +774,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                             </div>
                         ) : (
                             displayContent.keyTakeaway.description && (
-                                <div className={`font-lato text-lg leading-relaxed ${theme.text} mb-8`}>
+                                <div className={`font-sans text-lg leading-relaxed ${theme.text} mb-8`}>
                                     <div className="max-w-[600px] mx-auto text-left">{displayContent.keyTakeaway.description}</div>
                                 </div>
                             )
@@ -792,15 +792,15 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 <div className="w-full max-w-7xl mx-auto px-6 text-center py-12">
                                     <div className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mb-8`}></div>
 
-                                    <h4 className="font-lato text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">
+                                    <h4 className="font-sans text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">
                                         {displayContent.refinement.outcomesTitle || "Key Takeaway"}
                                     </h4>
 
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:items-start">
                                         {displayContent.refinement.outcomes && displayContent.refinement.outcomes.map((outcome, i) => (
                                             <div key={i} className="text-left flex flex-col gap-2">
-                                                <h5 className={`font-playfair text-xl italic font-bold ${theme.text}`}>{outcome.title}</h5>
-                                                <p className={`font-lato text-base ${theme.subText}`}>{outcome.desc}</p>
+                                                <h5 className={`font-serif text-xl ${theme.text}`}>{outcome.title}</h5>
+                                                <p className={`font-sans text-base ${theme.subText}`}>{outcome.desc}</p>
                                             </div>
                                         ))}
                                     </div>
@@ -809,7 +809,7 @@ const ProjectDetail = ({ mode, playSound }) => {
 
                                     {displayContent.refinement.description && (
                                         <div className={`grid ${project.images && project.images[3] ? 'grid-cols-1 md:grid-cols-2 gap-12' : 'grid-cols-1'} items-center`}>
-                                            <div className={`font-lato text-lg leading-relaxed text-left order-2 md:order-1 ${!(project.images && project.images[3]) ? 'max-w-[600px] mx-auto text-center' : ''}`}>
+                                            <div className={`font-sans text-lg leading-relaxed text-left order-2 md:order-1 ${!(project.images && project.images[3]) ? 'max-w-[600px] mx-auto text-center' : ''}`}>
                                                 {displayContent.refinement.description.split('\n\n').map((part, index) => (
                                                     <p key={index} className={`${index === 1 ? 'text-muted-text' : theme.text} ${index > 0 ? 'mt-8' : ''}`}>
                                                         {part}
@@ -860,8 +860,8 @@ const ProjectDetail = ({ mode, playSound }) => {
                             ) : (
                                 <div className={`w-full max-w-6xl mx-auto px-6 grid ${project.images && project.images[3] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}>
                                     <div className="order-2 md:order-1">
-                                        <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>
-                                            {displayContent.refinement.split(': ')[0] && <span className="block font-lato text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">{displayContent.refinement.split(': ')[0]}</span>}
+                                        <p className={`font-sans text-lg leading-relaxed ${theme.subText}`}>
+                                            {displayContent.refinement.split(': ')[0] && <span className="block font-sans text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">{displayContent.refinement.split(': ')[0]}</span>}
                                             {displayContent.refinement.includes(': ') ? displayContent.refinement.split(': ').slice(1).join(': ') : displayContent.refinement}
                                         </p>
                                     </div>
@@ -890,7 +890,7 @@ const ProjectDetail = ({ mode, playSound }) => {
                                 className={`text-left p-4 border transition-all duration-300 border-transparent hover:border-accent-peach hover:shadow-md ${isWandering ? 'bg-surface-dark-raised' : 'bg-white'}`}
                             >
                                 <div className="text-xs text-gray-400 mb-2">0{PROJECTS.indexOf(proj) + 1}</div>
-                                <div className={`font-playfair text-lg italic leading-tight ${theme.text}`}>{proj.title}</div>
+                                <div className={`font-serif text-lg leading-tight ${theme.text}`}>{proj.title}</div>
                             </button>
                         ))}
                     </div>

@@ -56,11 +56,11 @@ const OnboardingModal = ({ onVisibilityChange }) => {
                     <X size={20} />
                 </button>
 
-                <h3 className="font-playfair text-2xl italic text-charcoal mb-4">
+                <h3 className="font-serif text-2xl text-charcoal mb-4">
                     Designed in Layers
                 </h3>
 
-                <p className="font-lato text-charcoal/80 leading-relaxed mb-6">
+                <p className="font-sans text-charcoal/80 leading-relaxed mb-6">
                     Start with the results in <span className="font-bold">Impact Mode</span>. When you are ready for the full story, switch to <span className="font-bold text-accent">In-Depth Mode</span> to uncover the strategy and design rationale.
                 </p>
 
@@ -72,7 +72,7 @@ const OnboardingModal = ({ onVisibilityChange }) => {
 
                 <button
                     onClick={handleClose}
-                    className="mt-2 px-6 py-2 bg-charcoal text-cream font-lato text-xs tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-full"
+                    className="mt-2 px-6 py-2 bg-charcoal text-cream font-sans text-xs tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-full"
                 >
                     Start Exploring
                 </button>

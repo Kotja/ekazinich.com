@@ -72,9 +72,9 @@ const AskChat = ({ mode }) => {
       <div className="text-center mb-12 max-w-2xl">
         <div className="flex items-center justify-center gap-3 mb-6">
           <Sparkles className="text-accent" size={28} />
-          <h2 className="font-playfair text-5xl md:text-7xl">Ask Me Anything</h2>
+          <h2 className="font-serif text-5xl md:text-7xl">Ask Me Anything</h2>
         </div>
-        <p className={`font-lato text-lg leading-relaxed ${theme.subText}`}>
+        <p className={`font-sans text-lg leading-relaxed ${theme.subText}`}>
           Curious about my experience, design process, or projects?
           Chat with my AI assistant to learn more about my work and approach.
           {' '}Prefer to talk with a human?{' '}
@@ -96,7 +96,7 @@ const AskChat = ({ mode }) => {
               onClick={handleRestartChat}
               disabled={isLoading}
               className={`
-                flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-lato
+                flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-sans
                 transition-all duration-300
                 hover:bg-accent hover:text-white
                 disabled:opacity-50 disabled:cursor-not-allowed
@@ -115,7 +115,7 @@ const AskChat = ({ mode }) => {
           {messages.length === 0 && !hasStarted ? (
             <div className={`flex flex-col items-center justify-center h-full ${theme.subText}`}>
               <MessageCircle size={48} strokeWidth={1} className="mb-4 opacity-30" />
-              <p className="font-lato text-center mb-6">
+              <p className="font-sans text-center mb-6">
                 Start a conversation by clicking a question below<br />
                 or type your own
               </p>
@@ -126,7 +126,7 @@ const AskChat = ({ mode }) => {
                     onClick={() => handleStarterClick(question)}
                     disabled={isLoading}
                     className={`
-                      px-3 py-1.5 rounded-full text-xs font-lato
+                      px-3 py-1.5 rounded-full text-xs font-sans
                       border transition-all duration-300
                       hover:border-accent hover:text-accent hover:scale-105
                       disabled:opacity-50 disabled:cursor-not-allowed
@@ -178,7 +178,7 @@ const AskChat = ({ mode }) => {
                           {/* Last user message */}
                           <div className="flex justify-end">
                             <div className={`max-w-[80%] rounded-2xl rounded-br-md px-4 py-3 ${theme.userBubble}`}>
-                              <p className="font-lato text-sm">{getMessageContent(message)}</p>
+                              <p className="font-sans text-sm">{getMessageContent(message)}</p>
                             </div>
                           </div>
 
@@ -189,7 +189,7 @@ const AskChat = ({ mode }) => {
                             return (
                               <div key={m.id || (idx + 1 + i)} className="flex justify-start">
                                 <div className={`max-w-[80%] rounded-2xl rounded-bl-md px-4 py-3 ${theme.assistantBubble}`}>
-                                  <div className="font-lato text-sm streamdown-content">
+                                  <div className="font-sans text-sm streamdown-content">
                                     <Streamdown
                                       mode={isLoading && (idx + 1 + i) === messages.length - 1 ? 'streaming' : 'static'}
                                       caret="circle"
@@ -233,9 +233,9 @@ const AskChat = ({ mode }) => {
                         `}
                       >
                         {message.role === 'user' ? (
-                          <p className="font-lato text-sm">{getMessageContent(message)}</p>
+                          <p className="font-sans text-sm">{getMessageContent(message)}</p>
                         ) : (
-                          <div className="font-lato text-sm streamdown-content">
+                          <div className="font-sans text-sm streamdown-content">
                             <Streamdown
                               mode={isLoading && idx === messages.length - 1 ? 'streaming' : 'static'}
                               caret="circle"
@@ -263,7 +263,7 @@ const AskChat = ({ mode }) => {
                   onClick={() => handleStarterClick(suggestion)}
                   disabled={isLoading}
                   className={`
-                    px-3 py-1.5 rounded-full text-xs font-lato
+                    px-3 py-1.5 rounded-full text-xs font-sans
                     border transition-all duration-300
                     hover:border-accent hover:text-accent hover:scale-105
                     disabled:opacity-50 disabled:cursor-not-allowed
@@ -289,7 +289,7 @@ const AskChat = ({ mode }) => {
               disabled={isLoading}
               className={`
                 flex-1 bg-transparent border-none outline-none
-                font-lato text-sm placeholder:opacity-50
+                font-sans text-sm placeholder:opacity-50
                 ${theme.text}
               `}
             />
@@ -311,7 +311,7 @@ const AskChat = ({ mode }) => {
       </div>
 
       {/* Disclaimer */}
-      <p className={`mt-6 font-lato text-xs ${theme.subText} text-center max-w-md`}>
+      <p className={`mt-6 font-sans text-xs ${theme.subText} text-center max-w-md`}>
         This AI assistant provides information based on my portfolio.
         For detailed inquiries, feel free to reach out directly.
       </p>
