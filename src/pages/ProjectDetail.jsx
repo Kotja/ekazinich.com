@@ -493,7 +493,7 @@ const ProjectDetail = ({ mode }) => {
                                     <div key={idx} className={`max-w-6xl mx-auto px-6 ${showImage ? 'grid md:grid-cols-2 gap-12 items-center' : 'text-center'} mb-12`}>
                                         {/* Video, Iframe or Image for Process */}
                                         {showImage && (
-                                            <div className={`${section.video || section.iframe ? 'w-full aspect-video' : 'aspect-square'} ${section.video && project.id === 1 ? 'overflow-visible pt-16' : 'overflow-hidden'} ${(project.id === 2 || project.id === 3 || project.id === 1) ? '' : 'shadow-sm'} ${(project.id === 3 || project.id === 1) ? (isWandering ? 'bg-charcoal' : 'bg-cream') : theme.imagePlaceholderBg} ${section.video || section.iframe ? '' : 'cursor-zoom-in'}`} onClick={section.video || section.iframe ? undefined : () => setSelectedImage(section.image || project.images[2])}>
+                                            <div className={`${section.video ? 'w-full aspect-video' : 'aspect-square'} ${section.video && project.id === 1 ? 'overflow-visible pt-16' : 'overflow-hidden'} ${(project.id === 2 || project.id === 3 || project.id === 1) ? '' : 'shadow-sm'} ${(project.id === 3 || project.id === 1) ? (isWandering ? 'bg-charcoal' : 'bg-cream') : theme.imagePlaceholderBg} ${section.video ? '' : 'cursor-zoom-in'}`} onClick={section.video ? undefined : () => setSelectedImage(section.image || project.images[2])}>
                                                 {section.video ? (
                                                     <video
                                                         className={`w-full h-full object-contain cursor-pointer ${project.id === 1 ? 'scale-[2]' : ''}`}
@@ -510,16 +510,6 @@ const ProjectDetail = ({ mode }) => {
                                                         <source src={section.video} type="video/quicktime" />
                                                         <source src={section.video} type="video/mp4" />
                                                     </video>
-                                                ) : section.iframe ? (
-                                                    <div
-                                                        className="w-full h-full"
-                                                        dangerouslySetInnerHTML={{
-                                                            __html: section.iframe.replace(
-                                                                /width="\d+"\s+height="\d+"/,
-                                                                'width="100%" height="100%"'
-                                                            )
-                                                        }}
-                                                    />
                                                 ) : (
                                                     <img src={section.image || project.images[2]} alt="Process Detail" draggable="false" className={`w-full h-full ${(project.id === 3 || project.id === 1) ? 'object-contain' : 'object-cover'} hover:scale-105 transition-transform duration-700`} />
                                                 )}

@@ -70,7 +70,7 @@ const ProjectItem = ({ proj, idx, openProject, theme }) => {
 
     const handleMouseEnter = () => {
         if (proj.video && videoRef.current) {
-            videoRef.current.play().catch(e => console.log("Video play error:", e));
+            videoRef.current.play().catch(() => {});
         }
     };
 
@@ -135,6 +135,7 @@ const Home = ({ mode, scrollToSection }) => {
     const [formState, setFormState] = useState({ name: '', email: '', message: '' });
     const [errors, setErrors] = useState({});
     const [isSending, setIsSending] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
     const [showCV, setShowCV] = useState(false);
 
     // --- THEME ENGINE ---
@@ -154,25 +155,30 @@ const Home = ({ mode, scrollToSection }) => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const copyEmail = () => {
-        const textArea = document.createElement("textarea");
-        textArea.value = "ekazinich@gmail.com";
-        textArea.style.position = "fixed";
-        textArea.style.left = "-9999px";
-        textArea.style.top = "0";
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
+    const copyEmail = async () => {
         try {
-            const successful = document.execCommand('copy');
-            if (successful) {
+            await navigator.clipboard.writeText("ekazinich@gmail.com");
+            setEmailCopied(true);
+            setTimeout(() => setEmailCopied(false), 1000);
+        } catch {
+            // Fallback for browsers without Clipboard API
+            const textArea = document.createElement("textarea");
+            textArea.value = "ekazinich@gmail.com";
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            textArea.style.top = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
                 setEmailCopied(true);
                 setTimeout(() => setEmailCopied(false), 1000);
+            } catch (fallbackErr) {
+                console.error('Unable to copy email:', fallbackErr);
             }
-        } catch (err) {
-            console.error('Unable to copy', err);
+            document.body.removeChild(textArea);
         }
-        document.body.removeChild(textArea);
     };
 
     const handleFormSubmit = (e) => {
@@ -199,14 +205,14 @@ const Home = ({ mode, scrollToSection }) => {
             };
 
             emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
-                .then((response) => {
-                    console.log('SUCCESS!', response.status, response.text);
-                    alert("Message sent successfully!");
+                .then(() => {
+                    setSubmitStatus('success');
                     setFormState({ name: '', email: '', message: '' });
                     setIsSending(false);
+                    setTimeout(() => setSubmitStatus(null), 4000);
                 }, (err) => {
-                    console.log('FAILED...', err);
-                    alert("Failed to send message. Please try again later or email directly.");
+                    console.error('EmailJS failed:', err);
+                    setSubmitStatus('error');
                     setIsSending(false);
                 });
         }
@@ -384,6 +390,12 @@ const Home = ({ mode, scrollToSection }) => {
                             >
                                 {isSending ? 'Sending...' : 'Send Message'} {!isSending && <ArrowRight size={16} />}
                             </button>
+                            {submitStatus === 'success' && (
+                                <p className="text-sm mt-2" style={{ color: COLOURS.success }}>Message sent successfully!</p>
+                            )}
+                            {submitStatus === 'error' && (
+                                <p className="text-sm mt-2 text-red-400">Failed to send. Please try again or email directly.</p>
+                            )}
                         </form>
                     </div>
                     <div className="flex-1 flex flex-col justify-center gap-8 md:pl-12 border-l-0 md:border-l border-white/10">
