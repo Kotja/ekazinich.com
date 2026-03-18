@@ -337,7 +337,7 @@ const ProjectDetail = ({ mode }) => {
 
                     {typeof displayContent.impact === 'object' ? (
                         <div className="flex flex-col items-center">
-                            <p className={`font-serif text-2xl md:text-5xl leading-tight ${theme.text} mb-12`} style={{ textWrap: 'balance', whiteSpace: 'pre-line' }}>
+                            <p className={`font-serif text-2xl md:text-5xl leading-tight text-balance whitespace-pre-line ${theme.text} mb-12`}>
                                 {displayContent.impact.description}
                             </p>
 
@@ -357,7 +357,7 @@ const ProjectDetail = ({ mode }) => {
                             <div className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mt-12`}></div>
                         </div>
                     ) : (
-                        <p className={`font-serif text-2xl md:text-5xl leading-tight ${theme.text}`} style={{ textWrap: 'balance', whiteSpace: 'pre-line' }}>
+                        <p className={`font-serif text-2xl md:text-5xl leading-tight text-balance whitespace-pre-line ${theme.text}`}>
                             {displayContent.impact}
                         </p>
                     )}
@@ -370,7 +370,7 @@ const ProjectDetail = ({ mode }) => {
                         <div className={`w-full max-w-6xl mx-auto px-6 ${challengeImage ? 'md:flex md:gap-12 md:items-center' : 'grid grid-cols-1'}`}>
                             <div className="order-2 md:order-1 flex flex-col justify-center md:flex-1">
                                 <h3 className="font-serif text-3xl mb-4 text-accent">The Challenge</h3>
-                                <p className={`font-sans text-lg leading-relaxed max-w-[600px] ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.challenge}</p>
+                                <p className={`font-sans text-lg leading-relaxed max-w-[600px] whitespace-pre-line ${theme.subText}`}>{displayContent.challenge}</p>
                             </div>
                             {challengeImage && (
                                 <div className="md:w-1/2 md:flex-shrink-0">
@@ -405,13 +405,13 @@ const ProjectDetail = ({ mode }) => {
                             )}
                             <div className={`${displayContent.roleImage ? 'order-1 md:order-2 text-left' : 'max-w-4xl mx-auto'}`}>
                                 <h3 className={`font-serif text-3xl mb-4 ${theme.text}`}>My Role</h3>
-                                <p className={`font-sans text-lg leading-relaxed max-w-[600px] mx-auto ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.role}</p>
+                                <p className={`font-sans text-lg leading-relaxed max-w-[600px] mx-auto whitespace-pre-line ${theme.subText}`}>{displayContent.role}</p>
                             </div>
                         </div>
                     ) : (
                         <div className="max-w-6xl mx-auto px-6 py-12 text-center">
                             <h3 className={`font-serif text-3xl mb-4 ${theme.text}`}>My Role</h3>
-                            <p className={`font-sans text-lg max-w-[600px] mx-auto leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.role}</p>
+                            <p className={`font-sans text-lg max-w-[600px] mx-auto leading-relaxed whitespace-pre-line ${theme.subText}`}>{displayContent.role}</p>
 
                             {displayContent.roleImage && (
                                 <div
@@ -440,7 +440,7 @@ const ProjectDetail = ({ mode }) => {
                                 {/* Text before graph */}
                                 {displayContent.process.beforeGraph && (
                                     <div className="max-w-[600px] mx-auto mb-12 text-left">
-                                        <p className={`font-sans text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
+                                        <p className={`font-sans text-lg leading-relaxed whitespace-pre-line ${theme.subText}`}>
                                             {displayContent.process.beforeGraph}
                                         </p>
                                     </div>
@@ -455,7 +455,7 @@ const ProjectDetail = ({ mode }) => {
                                                 {/* First item: full-width centered block */}
                                                 {displayContent.process.afterGraph[0] && (
                                                     <div className="text-left mb-8">
-                                                        <p className={`font-sans text-lg leading-relaxed max-w-[600px] mx-auto ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
+                                                        <p className={`font-sans text-lg leading-relaxed max-w-[600px] mx-auto whitespace-pre-line ${theme.subText}`}>
                                                             {displayContent.process.afterGraph[0]}
                                                         </p>
                                                     </div>
@@ -465,7 +465,7 @@ const ProjectDetail = ({ mode }) => {
                                                     <div className="flex flex-col gap-8 mt-8">
                                                         {displayContent.process.afterGraph.slice(1).map((text, idx) => (
                                                             <div key={idx} className="text-left">
-                                                                <p className={`font-sans text-lg leading-relaxed max-w-[600px] mx-auto ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
+                                                                <p className={`font-sans text-lg leading-relaxed max-w-[600px] mx-auto whitespace-pre-line ${theme.subText}`}>
                                                                     {text}
                                                                 </p>
                                                             </div>
@@ -475,7 +475,7 @@ const ProjectDetail = ({ mode }) => {
                                             </>
                                         ) : (
                                             <div className="text-center">
-                                                <p className={`font-sans text-lg leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
+                                                <p className={`font-sans text-lg leading-relaxed whitespace-pre-line ${theme.subText}`}>
                                                     {displayContent.process.afterGraph}
                                                 </p>
                                             </div>
@@ -519,7 +519,7 @@ const ProjectDetail = ({ mode }) => {
                                             {!displayContent.process.renderComponent && (
                                                 <h3 className="font-serif text-3xl mb-4 text-accent">The Process</h3>
                                             )}
-                                            <p className={`font-sans text-lg leading-relaxed max-w-[600px] ${theme.subText} ${project.id === 3 && isWandering ? 'text-center mx-auto' : ''}`} style={{ whiteSpace: 'pre-line' }}>{section.content}</p>
+                                            <p className={`font-sans text-lg leading-relaxed max-w-[600px] whitespace-pre-line ${theme.subText} ${project.id === 3 && isWandering ? 'text-center mx-auto' : ''}`}>{section.content}</p>
                                         </div>
                                     </div>
                                 );
@@ -544,7 +544,7 @@ const ProjectDetail = ({ mode }) => {
                                                     </div>
                                                     <div>
                                                         <h4 className={`font-serif text-xl mb-4 ${theme.text}`}>{item.title}</h4>
-                                                        <p className={`font-sans text-base leading-relaxed ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>
+                                                        <p className={`font-sans text-base leading-relaxed whitespace-pre-line ${theme.subText}`}>
                                                             {item.desc}
                                                         </p>
                                                     </div>
@@ -625,8 +625,7 @@ const ProjectDetail = ({ mode }) => {
                                                 src={img}
                                                 alt={`Process ${idx + 1}`}
                                                 draggable="false"
-                                                className={`w-full h-full object-contain drop-shadow-xl bg-transparent transition-transform duration-700 ease-out process-stack-img-${idx}`}
-                                                style={{ transformOrigin: 'bottom right' }}
+                                                className={`w-full h-full object-contain drop-shadow-xl bg-transparent transition-transform duration-700 ease-out origin-bottom-right process-stack-img-${idx}`}
                                             />
                                         </div>
                                     ))}
@@ -639,7 +638,7 @@ const ProjectDetail = ({ mode }) => {
                         ) : null}
                         <div>
                             <h3 className="font-serif text-3xl mb-4 text-accent text-center md:text-left">The Process</h3>
-                            <p className={`font-sans text-lg leading-relaxed max-w-[600px] mx-auto md:mx-0 text-left ${theme.subText}`} style={{ whiteSpace: 'pre-line' }}>{displayContent.process}</p>
+                            <p className={`font-sans text-lg leading-relaxed max-w-[600px] mx-auto md:mx-0 text-left whitespace-pre-line ${theme.subText}`}>{displayContent.process}</p>
                         </div>
                     </div>
                 )}
@@ -713,8 +712,7 @@ const ProjectDetail = ({ mode }) => {
                                             <img
                                                 src={img.src}
                                                 alt={img.alt}
-                                                className={`w-full h-full object-contain drop-shadow-xl bg-transparent transition-transform duration-700 ease-out stack-img-${idx}`}
-                                                style={{ transformOrigin: 'bottom right' }}
+                                                className={`w-full h-full object-contain drop-shadow-xl bg-transparent transition-transform duration-700 ease-out origin-bottom-right stack-img-${idx}`}
                                             />
                                         </div>
                                     ))}

@@ -6,7 +6,7 @@ import profileImage from '../assets/profile.webp';
 import { PROJECTS } from '../data/projects';
 import emailjs from '@emailjs/browser';
 import AskChat from '../components/AskChat';
-import { getTheme, COLOURS } from '../theme';
+import { getTheme } from '../theme';
 
 // --- SUB-COMPONENT: PROJECT ITEM ---
 const ProjectItem = ({ proj, idx, openProject, theme }) => {
@@ -98,7 +98,6 @@ const ProjectItem = ({ proj, idx, openProject, theme }) => {
             {/* Front Shape */}
             <div
                 className={`col-start-1 row-start-1 w-48 h-48 relative ${config.front} overflow-hidden shadow-lg transition-transform duration-500 group-hover:scale-95 z-10 bg-white ${config.mobileMargin} ${config.desktopMargin}`}
-                style={{ background: 'white' }}
             >
                 {/* Video - Visible on Mobile (Static First Frame) & Desktop (Hover Play) */}
                 {proj.video ? (
@@ -217,8 +216,6 @@ const Home = ({ mode, scrollToSection }) => {
                 });
         }
     };
-
-    const borderDefault = 'color-mix(in srgb, var(--color-cream) 30%, transparent)';
 
     return (
         <>
@@ -343,11 +340,8 @@ const Home = ({ mode, scrollToSection }) => {
                                     value={formState.name}
                                     onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                                     className={`w-full bg-transparent border-b py-3 focus:outline-none transition-colors text-cream
-                      ${errors.name ? 'placeholder-opacity-50' : 'focus:border-opacity-100'}
+                      ${errors.name ? 'border-accent' : 'border-cream/30 focus:border-cream/60'}
                     `}
-                                    style={{
-                                        borderColor: errors.name ? COLOURS.accent : borderDefault,
-                                    }}
                                 />
                                 {errors.name && <AlertCircle className="absolute right-0 top-3 text-accent" size={16} />}
                             </div>
@@ -358,11 +352,8 @@ const Home = ({ mode, scrollToSection }) => {
                                     value={formState.email}
                                     onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                                     className={`w-full bg-transparent border-b py-3 focus:outline-none transition-colors text-cream
-                      ${errors.email ? 'placeholder-opacity-50' : 'focus:border-opacity-100'}
+                      ${errors.email ? 'border-accent' : 'border-cream/30 focus:border-cream/60'}
                     `}
-                                    style={{
-                                        borderColor: errors.email ? COLOURS.accent : borderDefault,
-                                    }}
                                 />
                                 {errors.email && <AlertCircle className="absolute right-0 top-3 text-accent" size={16} />}
                             </div>
@@ -373,25 +364,19 @@ const Home = ({ mode, scrollToSection }) => {
                                     value={formState.message}
                                     onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                                     className={`w-full bg-transparent border-b py-3 focus:outline-none transition-colors resize-none text-cream
-                      ${errors.message ? 'placeholder-opacity-50' : 'focus:border-opacity-100'}
+                      ${errors.message ? 'border-accent' : 'border-cream/30 focus:border-cream/60'}
                     `}
-                                    style={{
-                                        borderColor: errors.message ? COLOURS.accent : borderDefault,
-                                    }}
                                 ></textarea>
                                 {errors.message && <AlertCircle className="absolute right-0 top-3 text-accent" size={16} />}
                             </div>
                             <button
-                                className="self-start mt-4 flex items-center gap-2 text-sm uppercase tracking-widest transition-colors hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed"
-                                style={{ color: COLOURS.cream }}
-                                onMouseEnter={(e) => !isSending && (e.currentTarget.style.color = COLOURS.accent)}
-                                onMouseLeave={(e) => !isSending && (e.currentTarget.style.color = COLOURS.cream)}
+                                className="self-start mt-4 flex items-center gap-2 text-sm uppercase tracking-widest text-cream transition-colors enabled:hover:text-accent disabled:opacity-50 disabled:cursor-not-allowed"
                                 disabled={isSending}
                             >
                                 {isSending ? 'Sending...' : 'Send Message'} {!isSending && <ArrowRight size={16} />}
                             </button>
                             {submitStatus === 'success' && (
-                                <p className="text-sm mt-2" style={{ color: COLOURS.success }}>Message sent successfully!</p>
+                                <p className="text-sm mt-2 text-success">Message sent successfully!</p>
                             )}
                             {submitStatus === 'error' && (
                                 <p className="text-sm mt-2 text-red-400">Failed to send. Please try again or email directly.</p>
@@ -402,20 +387,14 @@ const Home = ({ mode, scrollToSection }) => {
                         <div className="flex items-center gap-4">
                             <a
                                 href="mailto:ekazinich@gmail.com"
-                                className="flex items-center gap-4 text-xl font-serif hover:translate-x-2 transition-transform duration-300"
-                                style={{ color: COLOURS.cream }}
-                                onMouseEnter={(e) => e.currentTarget.style.color = COLOURS.accent}
-                                onMouseLeave={(e) => e.currentTarget.style.color = COLOURS.cream}
+                                className="flex items-center gap-4 text-xl font-serif text-cream hover:text-accent hover:translate-x-2 transition-all duration-300"
                             >
                                 <Mail size={24} />
                                 <span className="break-all">ekazinich@gmail.com</span>
                             </a>
                             <button
                                 onClick={copyEmail}
-                                className={`p-2 transition-colors duration-300`}
-                                style={{ color: emailCopied ? COLOURS.success : COLOURS.cream }}
-                                onMouseEnter={(e) => !emailCopied && (e.currentTarget.style.color = COLOURS.accent)}
-                                onMouseLeave={(e) => !emailCopied && (e.currentTarget.style.color = COLOURS.cream)}
+                                className={`p-2 transition-colors duration-300 ${emailCopied ? 'text-success' : 'text-cream hover:text-accent'}`}
                                 aria-label="Copy email address"
                             >
                                 {emailCopied ? <Check size={20} /> : <Copy size={20} />}
@@ -425,10 +404,7 @@ const Home = ({ mode, scrollToSection }) => {
                             href="https://www.linkedin.com/in/katerina-eka-zinich"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-4 text-xl font-serif hover:translate-x-2 transition-transform duration-300"
-                            style={{ color: COLOURS.cream }}
-                            onMouseEnter={(e) => e.currentTarget.style.color = COLOURS.accent}
-                            onMouseLeave={(e) => e.currentTarget.style.color = COLOURS.cream}
+                            className="flex items-center gap-4 text-xl font-serif text-cream hover:text-accent hover:translate-x-2 transition-all duration-300"
                         >
                             <Linkedin size={24} />
                             <span>LinkedIn Profile</span>

@@ -68,8 +68,7 @@ const CandidateJourneyGraph = ({ theme }) => {
         >
             <svg
                 viewBox="0 0 500 120"
-                className="w-full h-auto"
-                style={{ overflow: 'visible' }}
+                className="w-full h-auto overflow-visible"
             >
                 {/* Grid lines */}
                 {[0, 20, 40, 60, 80, 100].map((y) => (
