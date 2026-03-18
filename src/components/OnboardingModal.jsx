@@ -6,7 +6,6 @@ const OnboardingModal = ({ onVisibilityChange }) => {
     const [shouldRender, setShouldRender] = useState(false);
 
     useEffect(() => {
-        // const hasSeenOnboarding = sessionStorage.getItem('hasSeenOnboarding');
         const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
 
         if (!hasSeenOnboarding) {

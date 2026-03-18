@@ -11,7 +11,7 @@ import { getTheme } from '../theme';
 // --- SUB-COMPONENT: PROJECT ITEM ---
 const ProjectItem = ({ proj, idx, openProject, theme }) => {
     const videoRef = useRef(null);
-    let displayTitle = proj.title;
+    const displayTitle = proj.title;
 
     const geometricConfig = [
         {
@@ -122,8 +122,6 @@ const ProjectItem = ({ proj, idx, openProject, theme }) => {
                 )}
             </div>
 
-            {/* Title Outside - REMOVED as title is now in frame */}
-            {/* <div className={titleContainerClass}> ... </div> */}
         </div>
     );
 };
@@ -148,7 +146,6 @@ const Home = ({ mode, scrollToSection }) => {
     const currentWords = isWandering ? heroWords.wandering : heroWords.hr;
 
     const openProject = (project) => {
-        // Slugify title for URL: Remove special chars/punctuation, then space to dash
         const slug = project.title.toLowerCase().replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-');
         navigate(`/projects/${slug}`);
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -180,18 +177,35 @@ const Home = ({ mode, scrollToSection }) => {
         }
     };
 
+    const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
     const handleFormSubmit = (e) => {
         e.preventDefault();
         const newErrors = {};
-        if (!formState.name) newErrors.name = true;
-        if (!formState.email) newErrors.email = true;
-        if (!formState.message) newErrors.message = true;
+
+        if (!formState.name.trim()) {
+            newErrors.name = 'Name is required';
+        } else if (formState.name.length > 100) {
+            newErrors.name = 'Name must be 100 characters or fewer';
+        }
+
+        if (!formState.email.trim()) {
+            newErrors.email = 'Email is required';
+        } else if (!validateEmail(formState.email)) {
+            newErrors.email = 'Please enter a valid email address';
+        }
+
+        if (!formState.message.trim()) {
+            newErrors.message = 'Message is required';
+        } else if (formState.message.length > 1000) {
+            newErrors.message = 'Message must be 1000 characters or fewer';
+        }
+
         setErrors(newErrors);
 
         if (Object.keys(newErrors).length === 0) {
             setIsSending(true);
 
-            // REPLACE THESE WITH YOUR ACTUAL EMAILJS KEYS
             const SERVICE_ID = 'service_wq60eto';
             const TEMPLATE_ID = 'template_1df4kxc';
             const PUBLIC_KEY = '37ejt9ZKC30gtKM3h';
@@ -344,6 +358,7 @@ const Home = ({ mode, scrollToSection }) => {
                     `}
                                 />
                                 {errors.name && <AlertCircle className="absolute right-0 top-3 text-accent" size={16} />}
+                                {errors.name && <p className="text-accent text-xs mt-1">{errors.name}</p>}
                             </div>
                             <div className="relative">
                                 <input
@@ -356,6 +371,7 @@ const Home = ({ mode, scrollToSection }) => {
                     `}
                                 />
                                 {errors.email && <AlertCircle className="absolute right-0 top-3 text-accent" size={16} />}
+                                {errors.email && <p className="text-accent text-xs mt-1">{errors.email}</p>}
                             </div>
                             <div className="relative">
                                 <textarea
@@ -368,6 +384,15 @@ const Home = ({ mode, scrollToSection }) => {
                     `}
                                 ></textarea>
                                 {errors.message && <AlertCircle className="absolute right-0 top-3 text-accent" size={16} />}
+                                <div className="flex justify-between items-center mt-1">
+                                    {errors.message
+                                        ? <p className="text-accent text-xs">{errors.message}</p>
+                                        : <span />
+                                    }
+                                    <p className={`text-xs tabular-nums ${formState.message.length > 900 ? (formState.message.length > 1000 ? 'text-accent' : 'text-yellow-400') : 'text-cream/30'}`}>
+                                        {formState.message.length}/1000
+                                    </p>
+                                </div>
                             </div>
                             <button
                                 className="self-start mt-4 flex items-center gap-2 text-sm uppercase tracking-widest text-cream transition-colors enabled:hover:text-accent disabled:opacity-50 disabled:cursor-not-allowed"

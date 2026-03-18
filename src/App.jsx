@@ -81,8 +81,6 @@ const AppContent = () => {
         const element = document.getElementById(location.state.scrollTo);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          // Clear state to prevent scroll on refresh? 
-          // navigate(location.pathname, { replace: true, state: {} }); // This might trigger re-render or effect loop if not careful
         }
       }, 100);
     }
@@ -90,6 +88,12 @@ const AppContent = () => {
 
   return (
     <div className={`min-h-[100dvh] transition-colors duration-700 ${theme.bg} ${theme.text} font-sans overflow-x-hidden selection:bg-accent-peach selection:text-accent pb-28 md:pb-0`}>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-200 focus:top-4 focus:left-4 focus:px-4 focus:py-2 focus:bg-accent focus:text-cream focus:text-sm focus:rounded-full focus:font-sans focus:tracking-wide"
+      >
+        Skip to main content
+      </a>
 
       {/* GLOBAL STYLES */}
       <style>{`
@@ -140,11 +144,15 @@ const AppContent = () => {
             {/* Focus Mode Button -> Impact Mode */}
             <div className="relative group/btn">
               <div
-                className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 
-                    ${isWandering ? 'border-white' : 'border-black'} 
+                className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2
+                    ${isWandering ? 'border-white focus:ring-offset-charcoal' : 'border-black focus:ring-offset-cream'} 
                     ${mode === 'hr' ? (isWandering ? 'bg-white' : 'bg-black') : 'bg-transparent'}`}
                 onClick={() => { setMode('hr'); playSound('mode'); }}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setMode('hr'); playSound('mode'); } }}
+                role="button"
+                tabIndex={0}
                 aria-label="Impact Mode"
+                aria-pressed={mode === 'hr'}
               />
               {/* Desktop Tooltip */}
               <span className="hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-2xs tracking-widest uppercase opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none text-accent-light">
@@ -158,11 +166,15 @@ const AppContent = () => {
             {/* Explore Mode Button -> In-Depth Mode */}
             <div className="relative group/btn">
               <div
-                className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 
-                    ${isWandering ? 'border-white' : 'border-black'} 
+                className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2
+                    ${isWandering ? 'border-white focus:ring-offset-charcoal' : 'border-black focus:ring-offset-cream'} 
                     ${mode === 'wandering' ? (isWandering ? 'bg-white' : 'bg-black') : 'bg-transparent'}`}
                 onClick={() => { setMode('wandering'); playSound('mode'); }}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setMode('wandering'); playSound('mode'); } }}
+                role="button"
+                tabIndex={0}
                 aria-label="In-Depth Mode"
+                aria-pressed={mode === 'wandering'}
               />
               {/* Desktop Tooltip - positioned absolutely to prevent layout shifts */}
               <span className={`hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-2xs tracking-widest uppercase transition-all duration-300 pointer-events-none 
@@ -255,10 +267,12 @@ const AppContent = () => {
         <div className="hidden md:block h-10 order-3"></div>
       </nav>
 
-      <Routes>
-        <Route path="/" element={<Home mode={mode} scrollToSection={scrollToSection} />} />
-        <Route path="/projects/:slug" element={<ProjectDetail mode={mode} />} />
-      </Routes>
+      <main id="main-content">
+        <Routes>
+          <Route path="/" element={<Home mode={mode} scrollToSection={scrollToSection} />} />
+          <Route path="/projects/:slug" element={<ProjectDetail mode={mode} />} />
+        </Routes>
+      </main>
 
       <MiniChat mode={mode} />
 

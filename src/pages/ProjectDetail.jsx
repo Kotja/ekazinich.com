@@ -17,21 +17,19 @@ const BoomerangVideo = ({ src }) => {
 
         video.playbackRate = 1.0;
         cycleCount.current = 0;
-        video.play().catch(e => console.log("Video autoplay blocked", e));
+        video.play().catch(() => {});
 
         const handleEnded = () => {
-            // Reached end, reverse
             video.playbackRate = -1.0;
-            video.play().catch(e => console.log("Video reverse play error", e));
+            video.play().catch(() => {});
         };
 
         const handleTimeUpdate = () => {
             if (video.playbackRate < 0 && video.currentTime < 0.1) {
-                // Reached start (approx)
                 cycleCount.current += 1;
                 if (cycleCount.current < 2) {
                     video.playbackRate = 1.0;
-                    video.play().catch(e => console.log("Video cycle play error", e));
+                    video.play().catch(() => {});
                 } else {
                     video.pause();
                     video.currentTime = 0;
