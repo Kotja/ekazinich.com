@@ -1,8 +1,8 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import { defineConfig, globalIgnores } from 'eslint/config'
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
   globalIgnores(['dist']),
@@ -26,4 +26,18 @@ export default defineConfig([
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
     },
   },
-])
+  // Node.js context: config files and build scripts
+  {
+    files: ['*.config.js', 'prerender.js', 'server.js'],
+    languageOptions: {
+      globals: { ...globals.node },
+    },
+  },
+  // Server-side entry: not a browser module, react-refresh rules don't apply
+  {
+    files: ['src/entry-server.jsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
+]);
