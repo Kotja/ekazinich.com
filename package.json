@@ -12,8 +12,22 @@
     "generate": "npm run build:client && npm run build:server && node prerender.js",
     "build": "npm run generate",
     "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "analyze": "ANALYZE=true npm run build",
     "preview": "vite preview",
-    "start": "NODE_ENV=production SERVE_STATIC=true node server.js"
+    "test:smoke": "playwright test",
+    "start": "NODE_ENV=production SERVE_STATIC=true node server.js",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,html,json}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.12",
@@ -28,6 +42,7 @@
     "lucide-react": "^0.555.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.3",
+    "react-helmet-async": "^3.0.0",
     "react-router-dom": "^7.10.1",
     "sharp": "^0.34.5",
     "streamdown": "^2.0.1",
@@ -35,6 +50,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.58.2",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
@@ -44,7 +60,11 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "postcss": "^8.5.6",
+    "prettier": "^3.8.1",
+    "rollup-plugin-visualizer": "^7.0.1",
     "show-component": "^1.2.0",
     "tailwindcss": "^4.1.17",
     "vite": "^7.2.4"

@@ -4,6 +4,7 @@ import { DefaultChatTransport } from 'ai';
 
 const API_URL = 'https://api.ekazinich.com/api/chat';
 const STORAGE_KEY = 'eka-chat-messages';
+const STORAGE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 const ChatContext = createContext(null);
 
@@ -54,14 +55,19 @@ export const ChatProvider = ({ children }) => {
   const isLoading = status === 'streaming' || status === 'submitted';
   const hasStarted = messages.length > 0;
 
-  // Load messages from localStorage on mount
+  // Load messages from localStorage on mount — discard if older than TTL
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setMessages(parsed);
+        // Support both legacy array format and new { messages, timestamp } format
+        const messages = Array.isArray(parsed) ? null : parsed.messages;
+        const timestamp = Array.isArray(parsed) ? 0 : parsed.timestamp;
+        if (messages && Date.now() - timestamp < STORAGE_TTL_MS) {
+          setMessages(messages);
+        } else {
+          localStorage.removeItem(STORAGE_KEY);
         }
       }
     } catch {
@@ -70,11 +76,11 @@ export const ChatProvider = ({ children }) => {
     isHydratedRef.current = true;
   }, [setMessages]);
 
-  // Save messages to localStorage (skip during streaming and before hydration)
+  // Save messages to localStorage with timestamp (skip during streaming and before hydration)
   useEffect(() => {
     if (isHydratedRef.current && messages.length > 0 && status !== 'streaming') {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ messages, timestamp: Date.now() }));
       } catch {
         // Ignore storage errors
       }

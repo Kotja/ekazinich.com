@@ -81,8 +81,6 @@ const AppContent = () => {
         const element = document.getElementById(location.state.scrollTo);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          // Clear state to prevent scroll on refresh? 
-          // navigate(location.pathname, { replace: true, state: {} }); // This might trigger re-render or effect loop if not careful
         }
       }, 100);
     }
@@ -90,6 +88,12 @@ const AppContent = () => {
 
   return (
     <div className={`min-h-[100dvh] transition-colors duration-700 ${theme.bg} ${theme.text} font-sans overflow-x-hidden selection:bg-accent-peach selection:text-accent pb-28 md:pb-0`}>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-200 focus:top-4 focus:left-4 focus:px-4 focus:py-2 focus:bg-accent focus:text-cream focus:text-sm focus:rounded-full focus:font-sans focus:tracking-wide"
+      >
+        Skip to main content
+      </a>
 
       {/* GLOBAL STYLES */}
       <style>{`
@@ -140,11 +144,15 @@ const AppContent = () => {
             {/* Focus Mode Button -> Impact Mode */}
             <div className="relative group/btn">
               <div
-                className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 
-                    ${isWandering ? 'border-white' : 'border-black'} 
+                className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2
+                    ${isWandering ? 'border-white focus:ring-offset-charcoal' : 'border-black focus:ring-offset-cream'} 
                     ${mode === 'hr' ? (isWandering ? 'bg-white' : 'bg-black') : 'bg-transparent'}`}
                 onClick={() => { setMode('hr'); playSound('mode'); }}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setMode('hr'); playSound('mode'); } }}
+                role="button"
+                tabIndex={0}
                 aria-label="Impact Mode"
+                aria-pressed={mode === 'hr'}
               />
               {/* Desktop Tooltip */}
               <span className="hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-2xs tracking-widest uppercase opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 pointer-events-none text-accent-light">
@@ -158,25 +166,28 @@ const AppContent = () => {
             {/* Explore Mode Button -> In-Depth Mode */}
             <div className="relative group/btn">
               <div
-                className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 
-                    ${isWandering ? 'border-white' : 'border-black'} 
+                className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2
+                    ${isWandering ? 'border-white focus:ring-offset-charcoal' : 'border-black focus:ring-offset-cream'} 
                     ${mode === 'wandering' ? (isWandering ? 'bg-white' : 'bg-black') : 'bg-transparent'}`}
                 onClick={() => { setMode('wandering'); playSound('mode'); }}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setMode('wandering'); playSound('mode'); } }}
+                role="button"
+                tabIndex={0}
                 aria-label="In-Depth Mode"
+                aria-pressed={mode === 'wandering'}
               />
               {/* Desktop Tooltip - positioned absolutely to prevent layout shifts */}
-              <span className={`hidden md:block absolute right-full top-1/2 -translate-y-1/2 whitespace-nowrap text-2xs tracking-widest uppercase transition-all duration-300 pointer-events-none 
+              <span className={`hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-2xs tracking-widest uppercase transition-all duration-300 pointer-events-none 
                 ${isOnboardingVisible
                   ? 'opacity-100 bg-cream text-accent-light px-5 py-3 rounded-full font-bold shadow-lg leading-none'
                   : 'opacity-0 group-hover/btn:opacity-100 text-accent-light'
-                }`}
-                style={{ marginRight: '1rem' }}>
+                }`}>
                 In-Depth Mode
               </span>
               {/* Animated oval highlight - only when onboarding is visible on desktop */}
               {/* Enlarged and centered oval: encompasses both tooltip and button */}
               {isOnboardingVisible && (
-                <span className="hidden md:block absolute top-1/2 -translate-y-1/2 pointer-events-none z-10" style={{ right: '-36px', width: '250px', height: '120px' }}>
+                <span className="hidden md:block absolute top-1/2 -translate-y-1/2 pointer-events-none z-10 right-[-36px] w-[250px] h-[120px]">
                   <svg viewBox="0 0 500 240" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
                     <style>{`
                       .desktop-menu-oval {
@@ -223,10 +234,7 @@ const AppContent = () => {
                 onClick={() => scrollToSection(targetScrollId)}
                 onMouseEnter={() => { if (mode === 'wandering') setMenuHover(item); }}
                 onMouseLeave={() => setMenuHover(null)}
-                className={`relative group flex items-center justify-center md:w-auto md:pt-[4px] md:pr-[10px] md:pb-[4px] md:pl-[10px] md:rounded-[16px] whitespace-nowrap ${isWandering ? 'md:self-end md:mr-12 md:justify-end md:bg-charcoal' : 'md:self-end md:justify-end md:mr-8 md:bg-cream'}`}
-                style={{
-                  color: 'inherit'
-                }}
+                className={`relative group flex items-center justify-center md:w-auto md:pt-[4px] md:pr-[10px] md:pb-[4px] md:pl-[10px] md:rounded-[16px] whitespace-nowrap text-inherit ${isWandering ? 'md:self-end md:mr-12 md:justify-end md:bg-charcoal' : 'md:self-end md:justify-end md:mr-8 md:bg-cream'}`}
               >
                 {/* Desktop Label Logic */}
                 <span className="cursor-pointer hidden md:block transition-all duration-500 origin-right">
@@ -247,8 +255,7 @@ const AppContent = () => {
           {/* Ask AI - Mobile only */}
           <button
             onClick={() => setIsMiniChatOpen(!isMiniChatOpen)}
-            className={`md:hidden relative group flex items-center justify-center gap-1 whitespace-nowrap`}
-            style={{ color: 'inherit' }}
+            className={`md:hidden relative group flex items-center justify-center gap-1 whitespace-nowrap text-inherit`}
           >
             <Sparkles size={12} className="text-accent" />
             <span className="block text-2xs xs:text-xs">Ask AI</span>
@@ -260,10 +267,12 @@ const AppContent = () => {
         <div className="hidden md:block h-10 order-3"></div>
       </nav>
 
-      <Routes>
-        <Route path="/" element={<Home mode={mode} scrollToSection={scrollToSection} />} />
-        <Route path="/projects/:slug" element={<ProjectDetail mode={mode} />} />
-      </Routes>
+      <main id="main-content">
+        <Routes>
+          <Route path="/" element={<Home mode={mode} scrollToSection={scrollToSection} />} />
+          <Route path="/projects/:slug" element={<ProjectDetail mode={mode} />} />
+        </Routes>
+      </main>
 
       <MiniChat mode={mode} />
 

@@ -50,12 +50,11 @@ const MiniChat = ({ mode }) => {
           h-[60vh] max-h-[480px]
           rounded-2xl overflow-hidden
           flex flex-col
-          border
+          border shadow-2xl
           ${theme.cardBg} ${theme.text} ${theme.borderSoft}
           transition-all duration-300 origin-bottom-right
           ${isOpen && !isMainChatVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'}
         `}
-        style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)' }}
       >
         {/* Header */}
         <div className={`flex items-center justify-between px-4 py-3 border-b ${theme.borderSoft} shrink-0`}>
@@ -241,11 +240,10 @@ const MiniChat = ({ mode }) => {
             w-14 h-14 rounded-full
             flex items-center justify-center
             transition-all duration-300
-            bg-accent-light text-white cursor-pointer
+            bg-accent-light text-white cursor-pointer shadow-lg
             hover:bg-accent hover:scale-110
             active:scale-95
           `}
-          style={{ boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -4px rgba(0, 0, 0, 0.1)' }}
           aria-label={isOpen ? 'Close chat' : 'Open chat'}
         >
           <div className="relative w-6 h-6">
