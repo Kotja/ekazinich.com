@@ -1,13 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, MessageCircle, Sparkles, RotateCcw } from 'lucide-react';
 import { Streamdown } from 'streamdown';
-import { useAskChat, getMessageContent, getSuggestedPrompts, STARTER_QUESTIONS } from './ChatContext';
+import {
+  useAskChat,
+  getMessageContent,
+  getSuggestedPrompts,
+  STARTER_QUESTIONS,
+} from './ChatContext';
 import { getTheme } from '../theme';
 
 const AskChat = ({ mode }) => {
   const {
-    messages, input, setInput, isLoading, hasStarted,
-    handleRestartChat, handleSend, setIsMainChatVisible,
+    messages,
+    input,
+    setInput,
+    isLoading,
+    hasStarted,
+    handleRestartChat,
+    handleSend,
+    setIsMainChatVisible,
   } = useAskChat();
 
   const messagesContainerRef = useRef(null);
@@ -75,11 +86,12 @@ const AskChat = ({ mode }) => {
           <h2 className="font-serif text-5xl md:text-7xl">Ask Me Anything</h2>
         </div>
         <p className={`font-sans text-lg leading-relaxed ${theme.subText}`}>
-          Curious about my experience, design process, or projects?
-          Chat with my AI assistant to learn more about my work and approach.
-          {' '}Prefer to talk with a human?{' '}
+          Curious about my experience, design process, or projects? Chat with my AI assistant to
+          learn more about my work and approach. Prefer to talk with a human?{' '}
           <button
-            onClick={() => document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() =>
+              document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' })
+            }
             className="text-accent hover:underline cursor-pointer"
           >
             Message me.
@@ -88,232 +100,275 @@ const AskChat = ({ mode }) => {
       </div>
 
       {/* Chat Container */}
-      <div className={`w-full max-w-2xl rounded-2xl border ${theme.borderSoft} ${theme.cardBg} shadow-lg overflow-hidden`}>
-        {/* Chat Header with Restart Button */}
-        {messages.length > 0 && (
-          <div className={`flex justify-end px-4 py-2 border-b ${theme.borderSoft}`}>
-            <button
-              onClick={handleRestartChat}
-              disabled={isLoading}
-              className={`
+      {/* Outer wrapper: position context for the offset shadow frame */}
+      <div className="relative w-full max-w-2xl">
+        {/* Background offset frame — 1px black border, shifted 8px top-left */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            transform: 'translate(-16px, -16px)',
+            border: '1px solid #000',
+            borderRadius: '2px',
+            zIndex: 0,
+          }}
+        />
+
+        {/* Main chat container — sharp corners, 1px #D1D1D1 border */}
+        <div
+          className={`relative z-10 w-full ${theme.cardBg} overflow-hidden`}
+          style={{ borderRadius: '2px', border: '1px solid #D1D1D1' }}
+        >
+          {/* Chat Header with Restart Button */}
+          {messages.length > 0 && (
+            <div className={`flex justify-end px-4 py-2 border-b ${theme.borderSoft}`}>
+              <button
+                onClick={handleRestartChat}
+                disabled={isLoading}
+                className={`
                 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-sans
                 transition-all duration-300
                 hover:bg-accent hover:text-white
                 disabled:opacity-50 disabled:cursor-not-allowed
                 ${theme.subText}
               `}
-              title="Start new conversation"
-            >
-              <RotateCcw size={12} />
-              New chat
-            </button>
-          </div>
-        )}
+                title="Start new conversation"
+              >
+                <RotateCcw size={12} />
+                New chat
+              </button>
+            </div>
+          )}
 
-        {/* Messages Area */}
-        <div ref={messagesContainerRef} className="h-[400px] overflow-y-auto p-6 rounded-[3px]">
-          {messages.length === 0 && !hasStarted ? (
-            <div className={`flex flex-col items-center justify-center h-full ${theme.subText}`}>
-              <MessageCircle size={48} strokeWidth={1} className="mb-4 opacity-30" />
-              <p className="font-sans text-center mb-6">
-                Start a conversation by clicking a question below<br />
-                or type your own
-              </p>
-              <div className="flex flex-wrap justify-center gap-2 max-w-md">
-                {STARTER_QUESTIONS.map((question, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleStarterClick(question)}
-                    disabled={isLoading}
-                    className={`
+          {/* Messages Area */}
+          <div ref={messagesContainerRef} className="h-[400px] overflow-y-auto p-6 rounded-[3px]">
+            {messages.length === 0 && !hasStarted ? (
+              <div className={`flex flex-col items-center justify-center h-full ${theme.subText}`}>
+                <MessageCircle size={48} strokeWidth={1} className="mb-4 opacity-30" />
+                <p className="font-sans text-center mb-6">
+                  Start a conversation by clicking a question below
+                  <br />
+                  or type your own
+                </p>
+                <div className="flex flex-wrap justify-center gap-2 max-w-md">
+                  {STARTER_QUESTIONS.map((question, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleStarterClick(question)}
+                      disabled={isLoading}
+                      className={`
                       px-3 py-1.5 rounded-full text-xs font-sans
                       border transition-all duration-300
                       hover:border-accent hover:text-accent hover:scale-105
                       disabled:opacity-50 disabled:cursor-not-allowed
                       ${theme.borderSoft} ${theme.text}
                     `}
-                  >
-                    {question}
-                  </button>
-                ))}
+                    >
+                      {question}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {(() => {
-                // Find the index of the last user message to apply min-height from there
-                const lastUserIdx = messages.findLastIndex(m => m.role === 'user');
+            ) : (
+              <div className="space-y-4">
+                {(() => {
+                  // Find the index of the last user message to apply min-height from there
+                  const lastUserIdx = messages.findLastIndex((m) => m.role === 'user');
 
-                return messages.map((message, idx) => {
-                  const isLastUserMessage = idx === lastUserIdx;
+                  return messages.map((message, idx) => {
+                    const isLastUserMessage = idx === lastUserIdx;
 
-                  // Skip messages after the last user message - they're rendered in the min-height container
-                  if (idx > lastUserIdx) {
-                    return null;
-                  }
+                    // Skip messages after the last user message - they're rendered in the min-height container
+                    if (idx > lastUserIdx) {
+                      return null;
+                    }
 
-                  // Skip rendering assistant messages with no displayable content (e.g., during reasoning phase)
-                  const content = message.role === 'assistant' ? getMessageContent(message) : null;
-                  if (message.role === 'assistant' && !content) {
-                    return null;
-                  }
+                    // Skip rendering assistant messages with no displayable content (e.g., during reasoning phase)
+                    const content =
+                      message.role === 'assistant' ? getMessageContent(message) : null;
+                    if (message.role === 'assistant' && !content) {
+                      return null;
+                    }
 
-                  // Wrap last user message + everything after in min-height container
-                  if (isLastUserMessage) {
-                    const remainingMessages = messages.slice(idx);
+                    // Wrap last user message + everything after in min-height container
+                    if (isLastUserMessage) {
+                      const remainingMessages = messages.slice(idx);
 
-                    const lastMessage = messages[messages.length - 1];
-                    const showLoading = isLoading && (
-                      lastMessage?.role === 'user' ||
-                      (lastMessage?.role === 'assistant' && !getMessageContent(lastMessage))
-                    );
+                      const lastMessage = messages[messages.length - 1];
+                      const showLoading =
+                        isLoading &&
+                        (lastMessage?.role === 'user' ||
+                          (lastMessage?.role === 'assistant' && !getMessageContent(lastMessage)));
 
-                    return (
-                      <div
-                        key={message.id || idx}
-                        ref={lastUserMessageRef}
-                        className="min-h-[400px]"
-                      >
-                        <div className="space-y-4">
-                          {/* Last user message */}
-                          <div className="flex justify-end">
-                            <div className={`max-w-[80%] rounded-2xl rounded-br-md px-4 py-3 ${theme.userBubble}`}>
-                              <p className="font-sans text-sm">{getMessageContent(message)}</p>
+                      return (
+                        <div
+                          key={message.id || idx}
+                          ref={lastUserMessageRef}
+                          className="min-h-[400px]"
+                        >
+                          <div className="space-y-4">
+                            {/* Last user message */}
+                            <div className="flex justify-end">
+                              <div
+                                className={`max-w-[80%] rounded-2xl rounded-br-md px-4 py-3 ${theme.userBubble}`}
+                              >
+                                <p className="font-sans text-sm">{getMessageContent(message)}</p>
+                              </div>
                             </div>
-                          </div>
 
-                          {/* Assistant responses after last user message */}
-                          {remainingMessages.slice(1).map((m, i) => {
-                            const content = getMessageContent(m);
-                            if (!content) return null;
-                            return (
-                              <div key={m.id || (idx + 1 + i)} className="flex justify-start">
-                                <div className={`max-w-[80%] rounded-2xl rounded-bl-md px-4 py-3 ${theme.assistantBubble}`}>
-                                  <div className="font-sans text-sm streamdown-content">
-                                    <Streamdown
-                                      mode={isLoading && (idx + 1 + i) === messages.length - 1 ? 'streaming' : 'static'}
-                                      caret="circle"
-                                    >
-                                      {content}
-                                    </Streamdown>
+                            {/* Assistant responses after last user message */}
+                            {remainingMessages.slice(1).map((m, i) => {
+                              const content = getMessageContent(m);
+                              if (!content) return null;
+                              return (
+                                <div key={m.id || idx + 1 + i} className="flex justify-start">
+                                  <div
+                                    className={`max-w-[80%] rounded-2xl rounded-bl-md px-4 py-3 ${theme.assistantBubble}`}
+                                  >
+                                    <div className="font-sans text-sm streamdown-content">
+                                      <Streamdown
+                                        mode={
+                                          isLoading && idx + 1 + i === messages.length - 1
+                                            ? 'streaming'
+                                            : 'static'
+                                        }
+                                        caret="circle"
+                                      >
+                                        {content}
+                                      </Streamdown>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+
+                            {/* Loading indicator */}
+                            {showLoading && (
+                              <div className="flex justify-start">
+                                <div
+                                  className={`rounded-2xl rounded-bl-md px-3 py-2 ${theme.assistantBubble}`}
+                                >
+                                  <div className="flex gap-0.5">
+                                    <span
+                                      className="w-1.5 h-1.5 rounded-full bg-current opacity-60 animate-bounce"
+                                      style={{ animationDelay: '0ms' }}
+                                    />
+                                    <span
+                                      className="w-1.5 h-1.5 rounded-full bg-current opacity-60 animate-bounce"
+                                      style={{ animationDelay: '150ms' }}
+                                    />
+                                    <span
+                                      className="w-1.5 h-1.5 rounded-full bg-current opacity-60 animate-bounce"
+                                      style={{ animationDelay: '300ms' }}
+                                    />
                                   </div>
                                 </div>
                               </div>
-                            );
-                          })}
+                            )}
+                          </div>
+                        </div>
+                      );
+                    }
 
-                          {/* Loading indicator */}
-                          {showLoading && (
-                            <div className="flex justify-start">
-                              <div className={`rounded-2xl rounded-bl-md px-3 py-2 ${theme.assistantBubble}`}>
-                                <div className="flex gap-0.5">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-current opacity-60 animate-bounce" style={{ animationDelay: '0ms' }} />
-                                  <span className="w-1.5 h-1.5 rounded-full bg-current opacity-60 animate-bounce" style={{ animationDelay: '150ms' }} />
-                                  <span className="w-1.5 h-1.5 rounded-full bg-current opacity-60 animate-bounce" style={{ animationDelay: '300ms' }} />
-                                </div>
-                              </div>
+                    // Regular messages before the last user message
+                    return (
+                      <div
+                        key={message.id || idx}
+                        className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <div
+                          className={`
+                          max-w-[80%] rounded-2xl px-4 py-3
+                          ${message.role === 'user' ? theme.userBubble : theme.assistantBubble}
+                          ${message.role === 'user' ? 'rounded-br-md' : 'rounded-bl-md'}
+                        `}
+                        >
+                          {message.role === 'user' ? (
+                            <p className="font-sans text-sm">{getMessageContent(message)}</p>
+                          ) : (
+                            <div className="font-sans text-sm streamdown-content">
+                              <Streamdown
+                                mode={
+                                  isLoading && idx === messages.length - 1 ? 'streaming' : 'static'
+                                }
+                                caret="circle"
+                              >
+                                {content}
+                              </Streamdown>
                             </div>
                           )}
                         </div>
                       </div>
                     );
-                  }
+                  });
+                })()}
+              </div>
+            )}
+          </div>
 
-                  // Regular messages before the last user message
-                  return (
-                    <div
-                      key={message.id || idx}
-                      className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                    >
-                      <div
-                        className={`
-                          max-w-[80%] rounded-2xl px-4 py-3
-                          ${message.role === 'user' ? theme.userBubble : theme.assistantBubble}
-                          ${message.role === 'user' ? 'rounded-br-md' : 'rounded-bl-md'}
-                        `}
-                      >
-                        {message.role === 'user' ? (
-                          <p className="font-sans text-sm">{getMessageContent(message)}</p>
-                        ) : (
-                          <div className="font-sans text-sm streamdown-content">
-                            <Streamdown
-                              mode={isLoading && idx === messages.length - 1 ? 'streaming' : 'static'}
-                              caret="circle"
-                            >
-                              {content}
-                            </Streamdown>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                });
-              })()}
-            </div>
-          )}
-        </div>
-
-        {/* Suggested Follow-up Questions */}
-        {!isLoading && getSuggestedPrompts(messages).length > 0 && (
-          <div className={`border-t ${theme.borderSoft} px-4 py-3`}>
-            <div className="flex flex-wrap gap-2 justify-center">
-              {getSuggestedPrompts(messages).map((suggestion, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => handleStarterClick(suggestion)}
-                  disabled={isLoading}
-                  className={`
+          {/* Suggested Follow-up Questions */}
+          {!isLoading && getSuggestedPrompts(messages).length > 0 && (
+            <div className={`border-t ${theme.borderSoft} px-4 py-3`}>
+              <div className="flex flex-wrap gap-2 justify-center">
+                {getSuggestedPrompts(messages).map((suggestion, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleStarterClick(suggestion)}
+                    disabled={isLoading}
+                    className={`
                     px-3 py-1.5 rounded-full text-xs font-sans
                     border transition-all duration-300
                     hover:border-accent hover:text-accent hover:scale-105
                     disabled:opacity-50 disabled:cursor-not-allowed
                     ${theme.borderSoft} ${theme.text}
                   `}
-                >
-                  {suggestion}
-                </button>
-              ))}
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Input Area */}
-        <form onSubmit={onSubmit} className={`border-t ${theme.borderSoft} p-4`}>
-          <div className={`flex items-center gap-3 rounded-full ${theme.inputBg} px-4 py-2`}>
-            <input
-              ref={inputRef}
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about my experience, skills, or projects..."
-              disabled={isLoading}
-              className={`
+          {/* Input Area */}
+          <form onSubmit={onSubmit} className={`border-t ${theme.borderSoft} p-4`}>
+            <div className={`flex items-center gap-3 rounded-full ${theme.inputBg} px-4 py-2`}>
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask about my experience, skills, or projects..."
+                disabled={isLoading}
+                className={`
                 flex-1 bg-transparent border-none outline-none
                 font-sans text-sm placeholder:opacity-50
                 ${theme.text}
               `}
-            />
-            <button
-              type="submit"
-              disabled={isLoading || !input.trim()}
-              className={`
+              />
+              <button
+                type="submit"
+                disabled={isLoading || !input.trim()}
+                className={`
                 p-2 rounded-full transition-all duration-300
                 disabled:opacity-30 disabled:cursor-not-allowed
                 hover:bg-accent hover:text-white
                 ${theme.text}
               `}
-              aria-label="Send message"
-            >
-              <Send size={18} />
-            </button>
-          </div>
-        </form>
+                aria-label="Send message"
+              >
+                <Send size={18} />
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
 
       {/* Disclaimer */}
       <p className={`mt-6 font-sans text-xs ${theme.subText} text-center max-w-md`}>
-        This AI assistant provides information based on my portfolio.
-        For detailed inquiries, feel free to reach out directly.
+        This AI assistant provides information based on my portfolio. For detailed inquiries, feel
+        free to reach out directly.
       </p>
     </section>
   );

@@ -106,7 +106,7 @@ const ProjectItem = ({ proj, idx, openProject, theme }) => {
     >
       {/* Back Frame */}
       <div
-        className={`col-start-1 row-start-1 w-48 h-48 relative border-2 ${theme.borderSolid} ${config.back} flex ${config.textPos} transition-colors duration-500 group-hover:border-accent z-0 ${config.frameMobileMargin || ''} ${config.frameDesktopMargin || ''}`}
+        className={`col-start-1 row-start-1 w-48 h-48 relative border ${theme.borderSolid} ${config.back} flex ${config.textPos} transition-colors duration-500 group-hover:border-accent z-0 ${config.frameMobileMargin || ''} ${config.frameDesktopMargin || ''}`}
       >
         <span
           className={`font-sans text-sm ${theme.text} leading-tight max-w-[95%] break-words text-balance`}
@@ -354,8 +354,20 @@ const Home = ({ mode, scrollToSection }) => {
           </p>
         </div>
         <div className="w-full md:w-1/2 mt-12 md:mt-0 relative flex justify-center">
-          <div className={`w-64 h-80 border-2 relative ${theme.borderSolid}`}>
-            <div className="absolute top-4 left-4 w-full h-full bg-gray-200 z-0">
+          <div className={`w-64 h-80 border relative ${theme.borderSolid}`}>
+            {/* Back offset frame — 1px black, 16px top-right */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                transform: 'translate(16px, -16px)',
+                border: '1px solid #000',
+                zIndex: 0,
+                pointerEvents: 'none',
+              }}
+            />
+            <div className="absolute inset-0 bg-gray-200 z-10 overflow-hidden">
               <img
                 src={profileImage}
                 alt="Eka Profile"
