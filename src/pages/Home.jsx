@@ -29,7 +29,7 @@ const ProjectItem = ({ proj, idx, openProject, theme }) => {
       back: 'rounded-none',
       gradient:
         'linear-gradient(to bottom, var(--color-gradient-gold-dark), var(--color-gradient-gold-light))',
-      className: 'lg:-mt-32',
+      className: 'lg:-mt-16',
       mobileMargin: 'ml-[3rem] mt-[3rem]',
       frameMobileMargin: '-ml-4 -mt-4',
       desktopMargin: 'lg:ml-10 lg:mt-10',
@@ -46,7 +46,7 @@ const ProjectItem = ({ proj, idx, openProject, theme }) => {
       frameMobileMargin: 'ml-14 mt-[94px]',
       desktopMargin: 'lg:ml-5 lg:-mt-4',
       frameDesktopMargin: 'lg:ml-14 lg:mt-[4.5rem] lg:translate-x-4',
-      textPos: 'items-end justify-end text-right pb-6 pr-12',
+      textPos: 'items-end justify-end text-right pb-10 pr-12',
       titleContainer: 'absolute -bottom-20 -right-10 w-64 text-right z-20',
       titleStyle: 'font-sans text-2xl leading-tight',
     }, // TR
@@ -106,7 +106,7 @@ const ProjectItem = ({ proj, idx, openProject, theme }) => {
     >
       {/* Back Frame */}
       <div
-        className={`col-start-1 row-start-1 w-48 h-48 relative border ${theme.borderSolid} ${config.back} flex ${config.textPos} transition-colors duration-500 group-hover:border-accent z-0 ${config.frameMobileMargin || ''} ${config.frameDesktopMargin || ''}`}
+        className={`col-start-1 row-start-1 w-48 h-48 lg:w-[230px] lg:h-[230px] relative border ${theme.borderSolid} ${config.back} flex ${config.textPos} transition-colors duration-500 group-hover:border-accent z-0 ${config.frameMobileMargin || ''} ${config.frameDesktopMargin || ''}`}
       >
         <span
           className={`font-sans text-sm ${theme.text} leading-tight max-w-[95%] break-words text-balance`}
@@ -117,7 +117,7 @@ const ProjectItem = ({ proj, idx, openProject, theme }) => {
 
       {/* Front Shape */}
       <div
-        className={`col-start-1 row-start-1 w-48 h-48 relative ${config.front} overflow-hidden shadow-lg transition-transform duration-500 group-hover:scale-95 z-10 bg-white ${config.mobileMargin} ${config.desktopMargin}`}
+        className={`col-start-1 row-start-1 w-48 h-48 lg:w-[230px] lg:h-[230px] relative ${config.front} overflow-hidden shadow-lg transition-transform duration-500 group-hover:scale-95 z-10 bg-white ${config.mobileMargin} ${config.desktopMargin}`}
       >
         {/* Video - Visible on Mobile (Static First Frame) & Desktop (Hover Play) */}
         {proj.video ? (
@@ -286,7 +286,7 @@ const Home = ({ mode, scrollToSection }) => {
         </div>
 
         {/* Right Column: Geometric Project Navigation */}
-        <div className="w-full lg:w-1/2 grid grid-cols-1 lg:grid-cols-2 gap-20 md:gap-8 p-[10px] md:pr-48 relative z-20 mt-12 md:mt-24 lg:mt-0 content-center justify-items-center">
+        <div className="w-full lg:w-1/2 grid grid-cols-1 lg:grid-cols-2 gap-20 md:gap-8 p-[10px] md:pr-36 lg:-ml-8 relative z-20 mt-12 md:mt-24 lg:mt-0 content-center justify-items-center">
           {PROJECTS.slice(0, 4).map((proj, idx) => (
             <ProjectItem
               key={proj.id}
@@ -354,7 +354,7 @@ const Home = ({ mode, scrollToSection }) => {
           </p>
         </div>
         <div className="w-full md:w-1/2 mt-12 md:mt-0 relative flex justify-center">
-          <div className={`w-64 h-80 border relative ${theme.borderSolid}`}>
+          <div className={`w-64 h-80 border relative shadow-lg ${theme.borderSolid}`}>
             {/* Back offset frame — 1px black, 16px top-right */}
             <div
               aria-hidden="true"

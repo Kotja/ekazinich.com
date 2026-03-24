@@ -117,7 +117,7 @@ const AskChat = ({ mode }) => {
 
         {/* Main chat container — sharp corners, 1px #D1D1D1 border */}
         <div
-          className={`relative z-10 w-full ${theme.cardBg} overflow-hidden`}
+          className={`relative z-10 w-full shadow-lg ${theme.cardBg} overflow-hidden`}
           style={{ borderRadius: '2px', border: '1px solid #D1D1D1' }}
         >
           {/* Chat Header with Restart Button */}
