@@ -102,14 +102,14 @@ const AskChat = ({ mode }) => {
       {/* Chat Container */}
       {/* Outer wrapper: position context for the offset shadow frame */}
       <div className="relative w-full max-w-2xl">
-        {/* Background offset frame — 1px black border, shifted 8px top-left */}
+        {/* Background offset frame — theme-driven colour, matches project frames */}
         <div
           aria-hidden="true"
+          className={`border transition-colors duration-500 ${theme.borderSolid}`}
           style={{
             position: 'absolute',
             inset: 0,
             transform: 'translate(-16px, -16px)',
-            border: '1px solid #000',
             borderRadius: '2px',
             zIndex: 0,
           }}

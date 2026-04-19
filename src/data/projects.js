@@ -255,7 +255,8 @@ export const PROJECTS = [
                 { title: "Bottom-Up Influence", desc: "Self-initiated audit adopted as FY26 Target State." },
                 { title: "Strategic Validation", desc: "CX leadership adopted the architecture as the benchmark model." },
                 { title: "Contextual Research", desc: "Lived experience as a customer surfaced what internal data missed." }
-            ]
+            ],
+            image: OWChallengeHeatmap
         },
         wanderingContent: {
             challenge: "Environmental Mismatch at the Point of Sale.\n\nThe problem was not visible in campaign data or standard reporting. It surfaced through Contextual Inquiry: using the Officeworks B2B account as a business customer in an actual checkout environment.\n\nCheckout is not a calm experience. You are separating business and personal purchases, holding items, operating one-handed, with a queue forming behind you. In that context, the Digital Card and Barcode needed to be immediately accessible. They were not.\n\nBoth utilities were located below the fold inside a scrollable account list. Reaching them required four sequential steps at the exact moment attention was already at its limit. For a B2B platform where checkout frequency is high, this was not a usability complaint. It was a retention risk.\n\nThe problem was not the features. It was where they were placed.",
@@ -265,7 +266,8 @@ export const PROJECTS = [
                 sections: [
                     {
                         type: 'text',
-                        content: 'The Flow Audit and IA Inversion.\n\nI mapped the full interaction sequence to establish the cost baseline. The Digital Card was nested four levels deep inside a scrollable account list. The pattern was: Login, Navigate, Scroll, Locate, Tap. Five steps where one should do.\n\nThe Target State replaced that pattern with a Persistent Utility Header: payment assets pinned to a fixed position at the top of the viewport, always visible, always one tap away. Secondary functions including order history and credit tracking remain accessible, but they no longer compete with the tools required at the counter.\n\nThe decision was about hierarchy, not aesthetics. At the checkout counter, attention is already at its limit. Every additional step compounds the pressure. Reducing to two steps was not an improvement on the old design. It was the baseline the experience should have started from.'
+                        content: 'The Flow Audit and IA Inversion.\n\nI mapped the full interaction sequence to establish the cost baseline. The Digital Card was nested four levels deep inside a scrollable account list. The pattern was: Login, Navigate, Scroll, Locate, Tap. Five steps where one should do.\n\nThe Target State replaced that pattern with a Persistent Utility Header: payment assets pinned to a fixed position at the top of the viewport, always visible, always one tap away. Secondary functions including order history and credit tracking remain accessible, but they no longer compete with the tools required at the counter.\n\nThe decision was about hierarchy, not aesthetics. At the checkout counter, attention is already at its limit. Every additional step compounds the pressure. Reducing to two steps was not an improvement on the old design. It was the baseline the experience should have started from.',
+                        video: b2bAnimationProcessNoBg
                     }
                 ]
             },
@@ -319,7 +321,7 @@ export const PROJECTS = [
         },
         keyTakeaway: {
             title: "Key Takeaway",
-            description: "Watching the studio owner drown in spreadsheets and phone calls was like watching someone try to grow a business with one hand tied behind their back. Every booking required manual intervention, every payment risked a dispute, and the owner's time was consumed by admin instead of teaching.\n\nAutomating the 'Trust Contract' wasn't just about saving time - it was about giving the business room to breathe and grow. When you remove the friction between a customer's interest and their ability to commit, magic happens. Revenue scales without adding headcount, and the owner gets to focus on what they actually love doing.",
+            description: "40% reduction in admin workload within month one. 36% revenue up. 28% bounce rate down. Not from adding features — from removing the barriers that were stopping people from saying yes.\n\nThe studio owner was spending teaching hours on phone calls and spreadsheets because the process required it. Automating the Trust Contract — the moment a customer decides to commit — didn't just save time. It decoupled revenue from manual effort and gave the business room to grow.",
             outcomes: [
                 { title: "Scalability", desc: "Revenue decoupled from owner's time." },
                 { title: "Efficiency", desc: "Eliminated 90% of admin hours." },
@@ -349,13 +351,13 @@ export const PROJECTS = [
                 ]
             },
             refinement: {
-                outcomesTitle: "Key Takeaway",
+                outcomesTitle: "The Result",
                 outcomes: [
-                    { title: "Scalability Architecture", desc: "Revenue decoupled from owner's time." },
-                    { title: "Operational Efficiency", desc: "Digitised booking cuts 90% of admin hours." },
-                    { title: "Clarity and Trust", desc: "Digital terms eliminate payment disputes." }
+                    { title: "40% Admin Reduction", desc: "Achieved within month one of going live." },
+                    { title: "36% Revenue Growth", desc: "By removing barriers, not adding features." },
+                    { title: "90% Fewer Disputes", desc: "Digital terms replaced ambiguous verbal agreements." }
                 ],
-                description: "Watching the studio owner struggle with manual bookings taught me that the best product design often comes from observing operational pain first-hand.\n\nEvery phone call was a bottleneck. Every manual confirmation was a risk. The business was trapped in a cycle where growth meant more admin burden, which meant less time for the core service.\n\nThis project reinforced a fundamental principle: when you remove friction between customer interest and their ability to act, you don't just improve UX - you unlock business scalability. The 36% revenue increase wasn't because we added features. It was because we removed barriers that prevented people from saying 'yes.'"
+                description: "The outcome validated the diagnosis. Within the first month, admin workload dropped 40%, revenue climbed 36%, and payment disputes — previously a recurring drain on the owner's time — fell by 90%.\n\nThe principle that held across every design decision: when you remove the cost of saying yes, people say yes. The booking didn't get easier because we made a better form. It got easier because we removed the phone call, automated the agreement, and let the product handle the trust layer.\n\nThe reusable lesson: operational pain that feels personal to a business owner is almost always a systemic friction point. The role of service design is to make those invisible costs visible — then design them out."
             }
         },
         images: [

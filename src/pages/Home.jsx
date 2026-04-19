@@ -355,14 +355,14 @@ const Home = ({ mode, scrollToSection }) => {
         </div>
         <div className="w-full md:w-1/2 mt-12 md:mt-0 relative flex justify-center">
           <div className={`w-64 h-80 border relative shadow-lg ${theme.borderSolid}`}>
-            {/* Back offset frame — 1px black, 16px top-right */}
+            {/* Back offset frame — theme-driven colour, matches project frames */}
             <div
               aria-hidden="true"
+              className={`border transition-colors duration-500 ${theme.borderSolid}`}
               style={{
                 position: 'absolute',
                 inset: 0,
                 transform: 'translate(16px, -16px)',
-                border: '1px solid #000',
                 zIndex: 0,
                 pointerEvents: 'none',
               }}

@@ -596,7 +596,7 @@ const ProjectDetail = ({ mode }) => {
                     {/* Video, Iframe or Image for Process */}
                     {showImage && (
                       <div
-                        className={`${section.video ? 'w-full aspect-video' : 'aspect-square'} ${section.video && project.id === 1 ? 'overflow-visible pt-16' : 'overflow-hidden'} ${project.id === 2 || project.id === 3 || project.id === 1 ? '' : 'shadow-sm'} ${project.id === 3 || project.id === 1 ? (isWandering ? 'bg-charcoal' : 'bg-cream') : theme.imagePlaceholderBg} ${section.video ? '' : 'cursor-zoom-in'}`}
+                        className={`${section.video ? 'w-full aspect-video' : 'aspect-square'} ${section.video && project.id === 1 ? 'overflow-visible pt-16' : 'overflow-hidden'} ${project.id === 2 || project.id === 3 || project.id === 1 ? '' : 'shadow-sm'} ${project.id === 1 && section.video ? 'bg-cream' : project.id === 3 ? (isWandering ? 'bg-charcoal' : 'bg-cream') : theme.imagePlaceholderBg} ${section.video ? '' : 'cursor-zoom-in'}`}
                         onClick={
                           section.video
                             ? undefined
