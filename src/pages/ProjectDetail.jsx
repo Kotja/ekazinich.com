@@ -53,13 +53,15 @@ const BoomerangVideo = ({ src }) => {
 };
 
 // Phone-shaped frame for the Officeworks process video
+// All colours are hardcoded inline so the phone is always dark,
+// regardless of whether the page is in Impact (cream) or Wandering (charcoal) mode.
 const PhoneFrame = ({ src }) => {
   const videoRef = React.useRef(null);
 
   const handleClick = () => {
     const v = videoRef.current;
     if (!v) return;
-    if (v.paused) { v.play().catch(() => {}); } else { v.pause(); }
+    v.paused ? v.play().catch(() => {}) : v.pause();
   };
 
   React.useEffect(() => {
@@ -67,50 +69,60 @@ const PhoneFrame = ({ src }) => {
     if (v) { v.play().catch(() => {}); }
   }, [src]);
 
+  const SHELL    = '#1C1C1E';               // near-black body
+  const SCREEN   = '#000000';
+  const BUTTON   = '#2C2C2E';
+  const HOME_BAR = 'rgba(255,255,255,0.30)';
+
   return (
-    // Outer: natural phone aspect ratio, centres everything
-    <div className="relative mx-auto" style={{ width: '220px', aspectRatio: '9/19.5' }}>
-      {/* Phone body — dark border, strong corner radius */}
-      <div
-        className="absolute inset-0 rounded-[14%] border-[3px] border-charcoal shadow-2xl overflow-hidden bg-black"
-        style={{ zIndex: 1 }}
-      >
-        {/* Video fills the phone screen */}
+    <div style={{ position: 'relative', width: '280px', aspectRatio: '9/19.5', margin: '0 auto' }}>
+
+      {/* ── Outer shell ── */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: SHELL,
+        borderRadius: '38px',
+        boxShadow: '0 0 0 1px #3A3A3C, 0 32px 64px rgba(0,0,0,0.5)',
+      }} />
+
+      {/* ── Screen (inset inside bezel so corners never clip the video) ── */}
+      <div style={{
+        position: 'absolute',
+        top: '10px', left: '8px', right: '8px', bottom: '10px',
+        borderRadius: '30px',
+        background: SCREEN,
+        overflow: 'hidden',
+        zIndex: 1,
+      }}>
         <video
           ref={videoRef}
           src={src}
-          muted
-          loop
-          playsInline
+          muted loop playsInline
           onClick={handleClick}
-          className="w-full h-full object-cover cursor-pointer"
-          style={{ display: 'block' }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', cursor: 'pointer' }}
         />
       </div>
 
-      {/* Notch overlay — spans top centre of the phone */}
-      <div
-        className="absolute left-1/2 -translate-x-1/2 bg-charcoal"
-        style={{
-          top: '3px',   // sits just inside the border
-          width: '35%',
-          height: '4.5%',
-          borderBottomLeftRadius: '999px',
-          borderBottomRightRadius: '999px',
-          zIndex: 2,
-        }}
-      />
+      {/* ── Dynamic Island — floats above screen, never clips video ── */}
+      <div style={{
+        position: 'absolute', top: '18px',
+        left: '50%', transform: 'translateX(-50%)',
+        width: '80px', height: '26px',
+        background: SCREEN, borderRadius: '999px', zIndex: 3,
+      }} />
 
-      {/* Home-indicator bar at the bottom */}
-      <div
-        className="absolute left-1/2 -translate-x-1/2 bg-charcoal/60 rounded-full"
-        style={{
-          bottom: '2.5%',
-          width: '28%',
-          height: '2px',
-          zIndex: 2,
-        }}
-      />
+      {/* ── Home indicator bar ── */}
+      <div style={{
+        position: 'absolute', bottom: '18px',
+        left: '50%', transform: 'translateX(-50%)',
+        width: '100px', height: '5px',
+        background: HOME_BAR, borderRadius: '999px', zIndex: 3,
+      }} />
+
+      {/* ── Side buttons ── */}
+      <div style={{ position:'absolute', right:'-3px', top:'28%', width:'3px', height:'60px', background:BUTTON, borderRadius:'0 3px 3px 0', zIndex:4 }} />
+      <div style={{ position:'absolute', left:'-3px', top:'22%', width:'3px', height:'38px', background:BUTTON, borderRadius:'3px 0 0 3px', zIndex:4 }} />
+      <div style={{ position:'absolute', left:'-3px', top:'35%', width:'3px', height:'55px', background:BUTTON, borderRadius:'3px 0 0 3px', zIndex:4 }} />
     </div>
   );
 };
