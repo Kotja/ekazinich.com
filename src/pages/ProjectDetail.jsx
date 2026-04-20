@@ -52,6 +52,69 @@ const BoomerangVideo = ({ src }) => {
   );
 };
 
+// Phone-shaped frame for the Officeworks process video
+const PhoneFrame = ({ src }) => {
+  const videoRef = React.useRef(null);
+
+  const handleClick = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) { v.play().catch(() => {}); } else { v.pause(); }
+  };
+
+  React.useEffect(() => {
+    const v = videoRef.current;
+    if (v) { v.play().catch(() => {}); }
+  }, [src]);
+
+  return (
+    // Outer: natural phone aspect ratio, centres everything
+    <div className="relative mx-auto" style={{ width: '220px', aspectRatio: '9/19.5' }}>
+      {/* Phone body — dark border, strong corner radius */}
+      <div
+        className="absolute inset-0 rounded-[14%] border-[3px] border-charcoal shadow-2xl overflow-hidden bg-black"
+        style={{ zIndex: 1 }}
+      >
+        {/* Video fills the phone screen */}
+        <video
+          ref={videoRef}
+          src={src}
+          muted
+          loop
+          playsInline
+          onClick={handleClick}
+          className="w-full h-full object-cover cursor-pointer"
+          style={{ display: 'block' }}
+        />
+      </div>
+
+      {/* Notch overlay — spans top centre of the phone */}
+      <div
+        className="absolute left-1/2 -translate-x-1/2 bg-charcoal"
+        style={{
+          top: '3px',   // sits just inside the border
+          width: '35%',
+          height: '4.5%',
+          borderBottomLeftRadius: '999px',
+          borderBottomRightRadius: '999px',
+          zIndex: 2,
+        }}
+      />
+
+      {/* Home-indicator bar at the bottom */}
+      <div
+        className="absolute left-1/2 -translate-x-1/2 bg-charcoal/60 rounded-full"
+        style={{
+          bottom: '2.5%',
+          width: '28%',
+          height: '2px',
+          zIndex: 2,
+        }}
+      />
+    </div>
+  );
+};
+
 const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentIndex = 0 }) => {
   const [zoom, setZoom] = useState(1);
   const [index, setIndex] = useState(currentIndex);
@@ -595,39 +658,42 @@ const ProjectDetail = ({ mode }) => {
                   >
                     {/* Video, Iframe or Image for Process */}
                     {showImage && (
-                      <div
-                        className={`${section.video ? 'w-full aspect-video' : 'aspect-square'} ${section.video && project.id === 1 ? 'overflow-visible pt-16' : 'overflow-hidden'} ${project.id === 2 || project.id === 3 || project.id === 1 ? '' : 'shadow-sm'} ${project.id === 1 && section.video ? 'bg-cream' : project.id === 3 ? (isWandering ? 'bg-charcoal' : 'bg-cream') : theme.imagePlaceholderBg} ${section.video ? '' : 'cursor-zoom-in'}`}
-                        onClick={
-                          section.video
-                            ? undefined
-                            : () => setSelectedImage(section.image || project.images[2])
-                        }
-                      >
-                        {section.video ? (
-                          <video
-                            className={`w-full h-full object-contain cursor-pointer ${project.id === 1 ? 'scale-[2]' : ''}`}
-                            onClick={(e) => {
-                              const video = e.currentTarget;
-                              if (video.paused) {
-                                video.play();
-                              } else {
-                                video.pause();
-                              }
-                            }}
-                          >
-                            <source src={section.video} type="video/webm" />
-                            <source src={section.video} type="video/quicktime" />
-                            <source src={section.video} type="video/mp4" />
-                          </video>
-                        ) : (
-                          <img
-                            src={section.image || project.images[2]}
-                            alt="Process Detail"
-                            draggable="false"
-                            className={`w-full h-full ${project.id === 3 || project.id === 1 ? 'object-contain' : 'object-cover'} hover:scale-105 transition-transform duration-700`}
-                          />
-                        )}
-                      </div>
+                      // Officeworks (id=1) with a video: render inside phone frame
+                      section.video && project.id === 1 ? (
+                        <div className="flex items-center justify-center w-full py-8">
+                          <PhoneFrame src={section.video} />
+                        </div>
+                      ) : (
+                        <div
+                          className={`${section.video ? 'w-full aspect-video' : 'aspect-square'} overflow-hidden ${project.id === 2 || project.id === 3 ? '' : 'shadow-sm'} ${project.id === 3 ? (isWandering ? 'bg-charcoal' : 'bg-cream') : theme.imagePlaceholderBg} ${section.video ? '' : 'cursor-zoom-in'}`}
+                          onClick={
+                            section.video
+                              ? undefined
+                              : () => setSelectedImage(section.image || project.images[2])
+                          }
+                        >
+                          {section.video ? (
+                            <video
+                              className="w-full h-full object-contain cursor-pointer"
+                              onClick={(e) => {
+                                const video = e.currentTarget;
+                                if (video.paused) { video.play(); } else { video.pause(); }
+                              }}
+                            >
+                              <source src={section.video} type="video/webm" />
+                              <source src={section.video} type="video/quicktime" />
+                              <source src={section.video} type="video/mp4" />
+                            </video>
+                          ) : (
+                            <img
+                              src={section.image || project.images[2]}
+                              alt="Process Detail"
+                              draggable="false"
+                              className={`w-full h-full ${project.id === 3 ? 'object-contain' : 'object-cover'} hover:scale-105 transition-transform duration-700`}
+                            />
+                          )}
+                        </div>
+                      )
                     )}
                     <div className={showImage ? '' : 'max-w-4xl mx-auto'}>
                       {!displayContent.process.renderComponent && (
