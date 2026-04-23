@@ -9,20 +9,26 @@ import ProjectMeta from '../components/ProjectMeta';
 import { getTheme } from '../theme';
 
 // B2B friction simulator screenshots
-import b2bFrictionAfter from '../assets/b2b-friction-after.png';
-import b2bProcessChallenge from '../assets/B2B_process_challenge_heatmap.webp';
 
-// B2B 4-step friction flow images
-import b2bStep1 from '../assets/B2B_steps_1.png';
-import b2bStep2 from '../assets/B2B_steps_2.png';
-import b2bStep3 from '../assets/B2B_steps_3.png';
-import b2bStep4 from '../assets/B2B_steps_4.png';
+// B2B friction step screenshots (225×1024 tall screenshots, screen inside iPhone frame 234×511)
+// cover scale ≈ 1.04 → phone margins: sides 4.9%, top 2.45% (step_3 has 0% top)
+import b2bNewStep1 from '../assets/b2b_step_1.png';
+import b2bNewStep2 from '../assets/b2b_step_2.png';
+import b2bNewStep3 from '../assets/b2b_step_3.png';
+import b2bNewStep5 from '../assets/b2b_step_5.png';
 
+// Screen: 203×447px (body 229×473). Phone body=203px fills screen exactly at native res.
+// X = -phoneLeft flushes phone left edge to screen x=0.
+// Y = -phoneTop removes top white margin.
 const B2B_STEP_IMAGES = [
-  { src: b2bStep1, num: '01', label: 'Login' },
-  { src: b2bStep2, num: '02', label: 'Navigate' },
-  { src: b2bStep3, num: '03', label: 'Scroll' },
-  { src: b2bStep4, num: '04', label: 'Locate' },
+  // 225×1024, phone L=11 T=12
+  { src: b2bNewStep1, num: '01', label: 'Login', objPos: '-11px -12px' },
+  // 225×1024, phone L=12 T=11
+  { src: b2bNewStep2, num: '02', label: 'Navigate', objPos: '-12px -11px' },
+  // 219×1024, phone L=11 T=10
+  { src: b2bNewStep3, num: '03', label: 'Scroll', objPos: '-11px -10px' },
+  // step 4: scrolled down to reveal Quick Access / payment tools
+  { src: b2bNewStep3, num: '04', label: 'Locate', objPos: '-11px -400px' },
 ];
 
 // B2B UI component pieces
@@ -92,73 +98,168 @@ const FrictionSimulator = ({ theme }) => {
       `}</style>
 
       <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-center">
-        {/* ── Phone ── fixed 240×460 box so all images stay the same size ── */}
+        {/* ── iPhone 16 frame — body 260×537, screen 234×511 ── */}
+        {/* body 229×473 → screen 203×447 = exact phone body width → 100% fill at native res */}
         <div
           className={`relative shrink-0 ${shaking ? 'b2b-shake' : ''}`}
-          style={{ width: 240, filter: 'drop-shadow(0 20px 48px rgba(0,0,0,0.32))' }}
+          style={{ width: 229, filter: 'drop-shadow(0 24px 56px rgba(0,0,0,0.55))' }}
         >
-          {/* Fixed 240×482 container — matches heatmap's natural proportion.
-              object-fit: cover fills every image consistently; phone content stays centred. */}
           <div
             style={{
-              width: 240,
-              height: 482,
-              display: 'grid',
-              borderRadius: 36,
-              overflow: 'hidden',
+              width: 229,
+              height: 473,
+              background: '#1A1A1A',
+              borderRadius: 38,
+              position: 'relative',
+              boxShadow: '0 0 0 1px #3A3A3C, 0 0 0 2.5px #111',
             }}
           >
-            {/* Step 0: idle — heatmap */}
-            <img
-              src={b2bProcessChallenge}
-              alt="Heatmap"
-              draggable={false}
-              className="select-none transition-opacity duration-500"
+            {/* Screen — white bg so image margins blend invisibly */}
+            <div
               style={{
-                gridColumn: 1,
-                gridRow: 1,
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                objectPosition: 'center',
-                opacity: step === 0 ? 1 : 0,
+                position: 'absolute',
+                left: 13,
+                top: 13,
+                right: 13,
+                bottom: 13,
+                borderRadius: 28,
+                overflow: 'hidden',
+                background: '#fff',
               }}
-            />
+            >
+              {/* Step 0: UGGH — dark bg so it reads on the charcoal page */}
+              <div
+                className="select-none transition-opacity duration-500 flex items-center justify-center"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: '#1A1A1A',
+                  opacity: step === 0 ? 1 : 0,
+                }}
+              >
+                <div
+                  className="grid grid-cols-2 leading-none font-serif font-bold text-center text-cream"
+                  style={{ fontSize: 130, letterSpacing: '-0.04em', lineHeight: 0.88 }}
+                >
+                  <span>U</span>
+                  <span>G</span>
+                  <span>G</span>
+                  <span>H</span>
+                </div>
+              </div>
 
-            {/* Steps 1–4: actual app screens */}
-            {B2B_STEP_IMAGES.map(({ src, label }, i) => (
+              {/* Steps 1–4: object-fit:none → native pixels, objPos centres phone */}
+              {B2B_STEP_IMAGES.map(({ src, label, objPos }, i) => (
+                <img
+                  key={i}
+                  src={src}
+                  alt={label}
+                  draggable={false}
+                  className="select-none transition-opacity duration-500"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'none',
+                    objectPosition: objPos,
+                    opacity: step === i + 1 ? 1 : 0,
+                  }}
+                />
+              ))}
+
+              {/* Step 5: 225×1024, phone L=11 T=12 → flush left, remove top margin */}
               <img
-                key={i}
-                src={src}
-                alt={label}
+                src={b2bNewStep5}
+                alt="Target State"
                 draggable={false}
                 className="select-none transition-opacity duration-500"
                 style={{
-                  gridColumn: 1,
-                  gridRow: 1,
+                  position: 'absolute',
+                  inset: 0,
                   width: '100%',
                   height: '100%',
-                  objectFit: 'cover',
-                  objectPosition: 'center',
-                  opacity: step === i + 1 ? 1 : 0,
+                  objectFit: 'none',
+                  objectPosition: '-11px -12px',
+                  opacity: step === 5 ? 1 : 0,
                 }}
               />
-            ))}
+            </div>
 
-            {/* Step 5: solution — after state */}
-            <img
-              src={b2bFrictionAfter}
-              alt="Target State"
-              draggable={false}
-              className="select-none transition-opacity duration-500"
+            {/* Dynamic Island */}
+            <div
               style={{
-                gridColumn: 1,
-                gridRow: 1,
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                objectPosition: 'center',
-                opacity: step === 5 ? 1 : 0,
+                position: 'absolute',
+                top: 19,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: 72,
+                height: 22,
+                background: '#000',
+                borderRadius: 999,
+                zIndex: 10,
+              }}
+            />
+            {/* Home indicator */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: 7,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: 88,
+                height: 4,
+                background: 'rgba(255,255,255,0.28)',
+                borderRadius: 999,
+                zIndex: 10,
+              }}
+            />
+            {/* Action btn */}
+            <div
+              style={{
+                position: 'absolute',
+                left: -3,
+                top: '18%',
+                width: 3,
+                height: 24,
+                background: '#2C2C2E',
+                borderRadius: '3px 0 0 3px',
+              }}
+            />
+            {/* Vol up */}
+            <div
+              style={{
+                position: 'absolute',
+                left: -3,
+                top: '27%',
+                width: 3,
+                height: 40,
+                background: '#2C2C2E',
+                borderRadius: '3px 0 0 3px',
+              }}
+            />
+            {/* Vol down */}
+            <div
+              style={{
+                position: 'absolute',
+                left: -3,
+                top: '37%',
+                width: 3,
+                height: 40,
+                background: '#2C2C2E',
+                borderRadius: '3px 0 0 3px',
+              }}
+            />
+            {/* Power */}
+            <div
+              style={{
+                position: 'absolute',
+                right: -3,
+                top: '29%',
+                width: 3,
+                height: 58,
+                background: '#2C2C2E',
+                borderRadius: '0 3px 3px 0',
               }}
             />
           </div>
@@ -315,7 +416,7 @@ const B2BScatteredPieces = ({ children }) => {
                 className="h-auto object-contain"
                 style={{
                   width: Math.min(Math.round(w * 0.55), 140),
-                  filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.14))',
+                  filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.07))',
                 }}
               />
             )
@@ -348,7 +449,7 @@ const B2BScatteredPieces = ({ children }) => {
               alt=""
               draggable={false}
               className="w-full h-auto object-contain"
-              style={{ filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.16))' }}
+              style={{ filter: 'drop-shadow(0 3px 8px rgba(0,0,0,0.08))' }}
             />
           </div>
         ))}
@@ -380,7 +481,7 @@ const B2BScatteredPieces = ({ children }) => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2.5"
+              strokeWidth="2"
               className="text-accent shrink-0"
             >
               <circle cx="11" cy="11" r="8" />
@@ -994,40 +1095,149 @@ const ProjectDetail = ({ mode }) => {
                     {showImage &&
                       // Officeworks (id=1): plays on hover (desktop) or tap (touch); paused by default
                       (section.video && project.id === 1 ? (
-                        <div className="flex items-center justify-center w-full">
+                        /* iPhone 16 frame — body 280×578, screen 254×552.
+                           Video 1080×1920: scale=552/1862=0.2964 fills screen height.
+                           Screen content (x:91-979, y:28-1890) → left=-22px top=-8px */
+                        <div className="flex items-center justify-center w-full py-4">
                           <div
                             style={{
-                              maxWidth: '300px',
-                              width: '100%',
-                              filter: 'drop-shadow(0 24px 52px rgba(0,0,0,0.35))',
+                              width: 280,
+                              filter: 'drop-shadow(0 28px 60px rgba(0,0,0,0.45))',
                             }}
-                            onMouseEnter={(e) =>
-                              e.currentTarget
-                                .querySelector('video')
-                                ?.play()
-                                .catch(() => {})
-                            }
                           >
-                            <video
-                              src={section.video}
-                              muted
-                              playsInline
-                              onEnded={(e) => {
-                                e.currentTarget.currentTime = 0;
-                              }}
-                              onClick={(e) => {
-                                e.currentTarget.paused
-                                  ? e.currentTarget.play().catch(() => {})
-                                  : e.currentTarget.pause();
-                              }}
+                            <div
                               style={{
-                                width: '100%',
-                                height: 'auto',
-                                display: 'block',
-                                cursor: 'pointer',
-                                clipPath: 'inset(1.15% 7.04% 0.68% 6.48% round 52px)',
+                                width: 280,
+                                height: 578,
+                                background: '#1A1A1A',
+                                borderRadius: 44,
+                                position: 'relative',
+                                boxShadow: '0 0 0 1px #3A3A3C, 0 0 0 2px #111',
                               }}
-                            />
+                            >
+                              {/* Screen */}
+                              <div
+                                style={{
+                                  position: 'absolute',
+                                  left: 13,
+                                  top: 13,
+                                  right: 13,
+                                  bottom: 13,
+                                  borderRadius: 34,
+                                  overflow: 'hidden',
+                                  background: '#000',
+                                }}
+                                onMouseEnter={(e) =>
+                                  e.currentTarget
+                                    .querySelector('video')
+                                    ?.play()
+                                    .catch(() => {})
+                                }
+                              >
+                                <video
+                                  src={section.video}
+                                  muted
+                                  playsInline
+                                  onEnded={(e) => {
+                                    e.currentTarget.currentTime = 0;
+                                  }}
+                                  onClick={(e) => {
+                                    e.currentTarget.paused
+                                      ? e.currentTarget.play().catch(() => {})
+                                      : e.currentTarget.pause();
+                                  }}
+                                  style={{
+                                    position: 'absolute',
+                                    top: -18,
+                                    bottom: -18,
+                                    left: 0,
+                                    right: 0,
+                                    width: '100%',
+                                    height: 'calc(100% + 36px)',
+                                    objectFit: 'cover',
+                                    objectPosition: '50% 50%',
+                                    cursor: 'pointer',
+                                  }}
+                                />
+                              </div>
+
+                              {/* Dynamic Island */}
+                              <div
+                                style={{
+                                  position: 'absolute',
+                                  top: 21,
+                                  left: '50%',
+                                  transform: 'translateX(-50%)',
+                                  width: 82,
+                                  height: 26,
+                                  background: '#000',
+                                  borderRadius: 999,
+                                  zIndex: 10,
+                                }}
+                              />
+                              {/* Home indicator */}
+                              <div
+                                style={{
+                                  position: 'absolute',
+                                  bottom: 9,
+                                  left: '50%',
+                                  transform: 'translateX(-50%)',
+                                  width: 110,
+                                  height: 4,
+                                  background: 'rgba(255,255,255,0.28)',
+                                  borderRadius: 999,
+                                  zIndex: 10,
+                                }}
+                              />
+                              {/* Action btn */}
+                              <div
+                                style={{
+                                  position: 'absolute',
+                                  left: -3,
+                                  top: '18%',
+                                  width: 3,
+                                  height: 30,
+                                  background: '#2C2C2E',
+                                  borderRadius: '3px 0 0 3px',
+                                }}
+                              />
+                              {/* Vol up */}
+                              <div
+                                style={{
+                                  position: 'absolute',
+                                  left: -3,
+                                  top: '27%',
+                                  width: 3,
+                                  height: 50,
+                                  background: '#2C2C2E',
+                                  borderRadius: '3px 0 0 3px',
+                                }}
+                              />
+                              {/* Vol down */}
+                              <div
+                                style={{
+                                  position: 'absolute',
+                                  left: -3,
+                                  top: '37%',
+                                  width: 3,
+                                  height: 50,
+                                  background: '#2C2C2E',
+                                  borderRadius: '3px 0 0 3px',
+                                }}
+                              />
+                              {/* Power */}
+                              <div
+                                style={{
+                                  position: 'absolute',
+                                  right: -3,
+                                  top: '29%',
+                                  width: 3,
+                                  height: 70,
+                                  background: '#2C2C2E',
+                                  borderRadius: '0 3px 3px 0',
+                                }}
+                              />
+                            </div>
                           </div>
                         </div>
                       ) : (
@@ -1389,60 +1599,58 @@ const ProjectDetail = ({ mode }) => {
         {displayContent.refinement && isWandering && (
           <div className="w-full">
             {typeof displayContent.refinement === 'object' ? (
-              <div className="w-full max-w-7xl mx-auto px-6 text-center py-12">
-                <div
-                  className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mb-8`}
-                ></div>
+              <>
+                <div className="w-full max-w-7xl mx-auto px-6 text-center py-8">
+                  <div
+                    className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mb-8`}
+                  />
 
-                <h4 className="font-sans text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">
-                  {displayContent.refinement.outcomesTitle || 'Key Takeaway'}
-                </h4>
+                  <h4 className="font-sans text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">
+                    {displayContent.refinement.outcomesTitle || 'Key Takeaway'}
+                  </h4>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:items-start">
-                  {displayContent.refinement.outcomes &&
-                    displayContent.refinement.outcomes.map((outcome, i) => (
-                      <div key={i} className="text-left flex flex-col gap-2">
-                        <h5 className={`font-serif text-xl ${theme.text}`}>{outcome.title}</h5>
-                        <p className={`font-sans text-base ${theme.subText}`}>{outcome.desc}</p>
-                      </div>
-                    ))}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:items-start">
+                    {displayContent.refinement.outcomes &&
+                      displayContent.refinement.outcomes.map((outcome, i) => (
+                        <div key={i} className="text-left flex flex-col gap-2">
+                          <h5 className={`font-serif text-xl ${theme.text}`}>{outcome.title}</h5>
+                          <p className={`font-sans text-base ${theme.subText}`}>{outcome.desc}</p>
+                        </div>
+                      ))}
+                  </div>
+
+                  <div
+                    className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mt-12`}
+                  />
                 </div>
 
-                <div
-                  className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} my-16`}
-                ></div>
-
-                {/* B2B In-Depth: friction simulator directly under Key Takeaway outcomes */}
-                {project.id === 1 && (
-                  <div
-                    className={`w-full border-y border-accent-peach ${theme.projectSectionBg} -mx-6 px-6 mb-16`}
-                  >
-                    <FrictionSimulator theme={theme} />
-                  </div>
-                )}
-
-                {displayContent.refinement.description && (
-                  <div
-                    className={`grid ${project.images && project.images[3] ? 'grid-cols-1 md:grid-cols-2 gap-12' : 'grid-cols-1'} items-center`}
-                  >
+                <div className="w-full max-w-7xl mx-auto px-6 py-8 text-center">
+                  {displayContent.refinement.description && (
                     <div
-                      className={`font-sans text-lg leading-relaxed text-left order-2 md:order-1 ${!(project.images && project.images[3]) ? 'max-w-[600px] mx-auto text-center' : ''}`}
+                      className={`grid ${project.images && project.images[3] ? 'grid-cols-1 md:grid-cols-2 gap-12' : 'grid-cols-1'} items-center`}
                     >
-                      {displayContent.refinement.description.split('\n\n').map((part, index) => (
-                        <p
-                          key={index}
-                          className={`${index === 1 ? 'text-muted-text' : theme.text} ${index > 0 ? 'mt-8' : ''}`}
-                        >
-                          {part}
-                        </p>
-                      ))}
-                    </div>
-                    {project.images && project.images[3] && (
                       <div
-                        className="w-full h-auto order-1 md:order-2 bg-transparent cursor-zoom-in relative group"
-                        onClick={() => setSelectedImage(project.images[3])}
+                        className={`font-sans text-lg leading-relaxed text-left order-2 md:order-1 ${!(project.images && project.images[3]) ? 'max-w-[600px] mx-auto text-center' : ''}`}
                       >
-                        <style>{`
+                        {/* B2B: show only first 2 paragraphs above the simulator; rest go below */}
+                        {displayContent.refinement.description
+                          .split('\n\n')
+                          .slice(0, project.id === 1 ? 2 : undefined)
+                          .map((part, index) => (
+                            <p
+                              key={index}
+                              className={`${index === 1 ? 'text-muted-text' : theme.text} ${index > 0 ? 'mt-8' : ''}`}
+                            >
+                              {part}
+                            </p>
+                          ))}
+                      </div>
+                      {project.images && project.images[3] && (
+                        <div
+                          className="w-full h-auto order-1 md:order-2 bg-transparent cursor-zoom-in relative group"
+                          onClick={() => setSelectedImage(project.images[3])}
+                        >
+                          <style>{`
                                                         .scribble-path {
                                                             stroke-dasharray: 1000;
                                                             stroke-dashoffset: 1000;
@@ -1452,37 +1660,64 @@ const ProjectDetail = ({ mode }) => {
                                                             stroke-dashoffset: 0;
                                                         }
                                                     `}</style>
-                        <img
-                          src={project.images[3]}
-                          alt="Refinement Detail"
-                          draggable="false"
-                          className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700"
-                        />
-                        {/* Burnt orange oval highlight for ABN numbers - Only for Brand Scaling project */}
-                        {project.id === 3 && (
-                          <div className="absolute bottom-2 -left-12 w-56 h-12 pointer-events-none z-10 opacity-90">
-                            <svg
-                              viewBox="0 0 200 60"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="w-full h-full rotate-[-2deg]"
-                            >
-                              <path
-                                d="M10 30 C 10 10 190 10 190 30 C 190 50 10 50 10 30 M 15 32 C 15 15 185 15 185 30"
-                                stroke="var(--color-accent)"
-                                strokeWidth="3"
-                                strokeLinecap="round"
+                          <img
+                            src={project.images[3]}
+                            alt="Refinement Detail"
+                            draggable="false"
+                            className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700"
+                          />
+                          {/* Burnt orange oval highlight for ABN numbers - Only for Brand Scaling project */}
+                          {project.id === 3 && (
+                            <div className="absolute bottom-2 -left-12 w-56 h-12 pointer-events-none z-10 opacity-90">
+                              <svg
+                                viewBox="0 0 200 60"
                                 fill="none"
-                                className="scribble-path"
-                              />
-                            </svg>
-                          </div>
-                        )}
-                      </div>
-                    )}
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-full h-full rotate-[-2deg]"
+                              >
+                                <path
+                                  d="M10 30 C 10 10 190 10 190 30 C 190 50 10 50 10 30 M 15 32 C 15 15 185 15 185 30"
+                                  stroke="var(--color-accent)"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  fill="none"
+                                  className="scribble-path"
+                                />
+                              </svg>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* B2B: full-width simulator outside max-w-7xl */}
+                {project.id === 1 && (
+                  <div className={`w-full border-y border-accent-peach ${theme.projectSectionBg}`}>
+                    <FrictionSimulator theme={theme} />
                   </div>
                 )}
-              </div>
+
+                {/* B2B: remaining paragraphs below simulator — same alignment as above */}
+                {project.id === 1 && displayContent.refinement.description && (
+                  <div className="w-full max-w-7xl mx-auto px-6 py-8 text-center">
+                    <div className="font-sans text-lg leading-relaxed text-left max-w-[600px] mx-auto">
+                      {displayContent.refinement.description
+                        .split('\n\n')
+                        .slice(2)
+                        .map((part, index) => (
+                          <p
+                            key={index}
+                            className={`${index === 0 ? theme.text : 'text-muted-text'} ${index > 0 ? 'mt-8' : ''}`}
+                          >
+                            {part}
+                          </p>
+                        ))}
+                    </div>
+                  </div>
+                )}
+              </>
             ) : (
               <div
                 className={`w-full max-w-6xl mx-auto px-6 grid ${project.images && project.images[3] ? 'md:grid-cols-2' : 'grid-cols-1'} gap-12 items-center`}

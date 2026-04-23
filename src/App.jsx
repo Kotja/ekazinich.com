@@ -12,7 +12,7 @@ const AppContent = () => {
   // --- STATE MANAGEMENT ---
   const [mode, setMode] = useState('hr');
   const [isOnboardingVisible, setIsOnboardingVisible] = useState(false); // Track visibility of Onboarding Modal
-  const [menuHover, setMenuHover] = useState(null); // Track which menu item is being hovered
+  const [_menuHover, setMenuHover] = useState(null); // Track which menu item is being hovered
   const buttonRefs = useRef({}); // Refs for menu buttons
 
   const location = useLocation();
@@ -59,7 +59,7 @@ const AppContent = () => {
         source.start(audioContext.currentTime);
       }
     } catch (e) {
-      console.error("Audio error", e);
+      console.error('Audio error', e);
     }
   };
 
@@ -87,7 +87,9 @@ const AppContent = () => {
   }, [location]);
 
   return (
-    <div className={`min-h-[100dvh] transition-colors duration-700 ${theme.bg} ${theme.text} font-sans overflow-x-hidden selection:bg-accent-peach selection:text-accent pb-28 md:pb-0`}>
+    <div
+      className={`min-h-[100dvh] transition-colors duration-700 ${theme.bg} ${theme.text} font-sans overflow-x-hidden selection:bg-accent-peach selection:text-accent pb-28 md:pb-0`}
+    >
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-200 focus:top-4 focus:left-4 focus:px-4 focus:py-2 focus:bg-accent focus:text-cream focus:text-sm focus:rounded-full focus:font-sans focus:tracking-wide"
@@ -101,22 +103,30 @@ const AppContent = () => {
       `}</style>
 
       {/* --- RESPONSIVE NAVIGATION --- */}
-      <nav className={`
+      <nav
+        className={`
         fixed flex items-center justify-between pointer-events-none transition-all duration-300 ${isOnboardingVisible ? 'z-[105]' : 'z-50'}
         /* Mobile Styles (Bottom Bar) */
         bottom-0 left-0 w-full h-20 flex-row px-4 border-t backdrop-blur-lg ${theme.navBg} ${theme.borderSoft}
         /* Desktop Styles (Right Sidebar) */
         md:right-0 md:top-0 md:h-full md:w-32 md:flex-col md:py-10 md:bottom-auto md:left-auto md:px-0 md:border-t-0 md:bg-transparent md:backdrop-blur-none
         ${theme.text}
-      `}>
-
+      `}
+      >
         {/* Mode Switcher Group */}
-        <div className={`pointer-events-auto flex md:flex-col items-center gap-2 md:mt-24 order-2 md:order-1 flex-shrink-0 relative transition-all duration-300 ${isOnboardingVisible ? 'z-[105]' : 'z-auto'}`}>
+        <div
+          className={`pointer-events-auto flex md:flex-col items-center gap-2 md:mt-24 order-2 md:order-1 flex-shrink-0 relative transition-all duration-300 ${isOnboardingVisible ? 'z-[105]' : 'z-auto'}`}
+        >
           <div className="flex md:flex-col items-center gap-2 md:mb-8 relative group/mode">
             {/* Mobile/Tablet Oval around toggle buttons - only when onboarding is visible */}
             {isOnboardingVisible && (
               <span className="md:hidden absolute -inset-x-8 -inset-y-6 pointer-events-none z-10">
-                <svg viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                <svg
+                  viewBox="0 0 200 100"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-full h-full"
+                >
                   <style>{`
                     .mobile-toggle-oval {
                       stroke-dasharray: 1000;
@@ -132,7 +142,7 @@ const AppContent = () => {
                   <path
                     d="M10 50 C 10 20 190 20 190 50 C 190 80 10 80 10 50 M 15 52 C 15 25 185 25 185 50"
                     stroke="var(--color-accent)"
-                    strokeWidth="3"
+                    strokeWidth="2"
                     strokeLinecap="round"
                     fill="none"
                     className="mobile-toggle-oval"
@@ -147,8 +157,17 @@ const AppContent = () => {
                 className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2
                     ${isWandering ? 'border-white focus:ring-offset-charcoal' : 'border-black focus:ring-offset-cream'} 
                     ${mode === 'hr' ? (isWandering ? 'bg-white' : 'bg-black') : 'bg-transparent'}`}
-                onClick={() => { setMode('hr'); playSound('mode'); }}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setMode('hr'); playSound('mode'); } }}
+                onClick={() => {
+                  setMode('hr');
+                  playSound('mode');
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setMode('hr');
+                    playSound('mode');
+                  }
+                }}
                 role="button"
                 tabIndex={0}
                 aria-label="Impact Mode"
@@ -161,7 +180,9 @@ const AppContent = () => {
             </div>
 
             {/* Connector Line - Flexible in Mobile */}
-            <div className={`h-[1px] w-2 flex-grow md:flex-grow-0 md:w-[1px] md:h-8 transition-colors duration-300 ${mode === 'wandering' ? 'bg-accent' : (isWandering ? 'bg-white/20' : 'bg-black/20')}`}></div>
+            <div
+              className={`h-[1px] w-2 flex-grow md:flex-grow-0 md:w-[1px] md:h-8 transition-colors duration-300 ${mode === 'wandering' ? 'bg-accent' : isWandering ? 'bg-white/20' : 'bg-black/20'}`}
+            ></div>
 
             {/* Explore Mode Button -> In-Depth Mode */}
             <div className="relative group/btn">
@@ -169,26 +190,43 @@ const AppContent = () => {
                 className={`w-4 h-4 rounded-full border cursor-pointer transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2
                     ${isWandering ? 'border-white focus:ring-offset-charcoal' : 'border-black focus:ring-offset-cream'} 
                     ${mode === 'wandering' ? (isWandering ? 'bg-white' : 'bg-black') : 'bg-transparent'}`}
-                onClick={() => { setMode('wandering'); playSound('mode'); }}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setMode('wandering'); playSound('mode'); } }}
+                onClick={() => {
+                  setMode('wandering');
+                  playSound('mode');
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setMode('wandering');
+                    playSound('mode');
+                  }
+                }}
                 role="button"
                 tabIndex={0}
                 aria-label="In-Depth Mode"
                 aria-pressed={mode === 'wandering'}
               />
               {/* Desktop Tooltip - positioned absolutely to prevent layout shifts */}
-              <span className={`hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-2xs tracking-widest uppercase transition-all duration-300 pointer-events-none 
-                ${isOnboardingVisible
-                  ? 'opacity-100 bg-cream text-accent-light px-5 py-3 rounded-full font-bold shadow-lg leading-none'
-                  : 'opacity-0 group-hover/btn:opacity-100 text-accent-light'
-                }`}>
+              <span
+                className={`hidden md:block absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap text-2xs tracking-widest uppercase transition-all duration-300 pointer-events-none 
+                ${
+                  isOnboardingVisible
+                    ? 'opacity-100 bg-cream text-accent-light px-5 py-3 rounded-full font-bold shadow-lg leading-none'
+                    : 'opacity-0 group-hover/btn:opacity-100 text-accent-light'
+                }`}
+              >
                 In-Depth Mode
               </span>
               {/* Animated oval highlight - only when onboarding is visible on desktop */}
               {/* Enlarged and centered oval: encompasses both tooltip and button */}
               {isOnboardingVisible && (
                 <span className="hidden md:block absolute top-1/2 -translate-y-1/2 pointer-events-none z-10 right-[-36px] w-[250px] h-[120px]">
-                  <svg viewBox="0 0 500 240" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                  <svg
+                    viewBox="0 0 500 240"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-full h-full"
+                  >
                     <style>{`
                       .desktop-menu-oval {
                         stroke-dasharray: 1800;
@@ -204,7 +242,7 @@ const AppContent = () => {
                     <path
                       d="M25 120 C 25 45 475 45 475 120 C 475 195 25 195 25 120 M 30 122 C 30 50 470 50 470 120"
                       stroke="var(--color-accent)"
-                      strokeWidth="2.5"
+                      strokeWidth="2"
                       strokeLinecap="round"
                       fill="none"
                       className="desktop-menu-oval"
@@ -217,12 +255,14 @@ const AppContent = () => {
         </div>
 
         {/* Menu Items */}
-        <div className={`pointer-events-auto flex flex-row md:flex-col md:gap-12 text-sm font-bold tracking-widest order-1 md:order-2 md:w-full flex-grow md:justify-start pr-6 md:pr-0 transition-opacity duration-300 justify-between ${isWandering ? 'md:gap-8' : ''} ${isOnboardingVisible ? 'opacity-20 blur-[1px]' : 'opacity-100'}`}>
+        <div
+          className={`pointer-events-auto flex flex-row md:flex-col md:gap-12 text-sm font-bold tracking-widest order-1 md:order-2 md:w-full flex-grow md:justify-start pr-6 md:pr-0 transition-opacity duration-300 justify-between ${isWandering ? 'md:gap-8' : ''} ${isOnboardingVisible ? 'opacity-20 blur-[1px]' : 'opacity-100'}`}
+        >
           {['Projects', 'About', 'Get in Touch'].map((item) => {
             const targetId = item.toLowerCase().replace(/ /g, '-');
             const sectionMap = {
-              'projects': 'project-section',
-              'about': 'about-section',
+              projects: 'project-section',
+              about: 'about-section',
               'get-in-touch': 'contact-section',
             };
             const targetScrollId = sectionMap[targetId] || 'project-section';
@@ -230,9 +270,11 @@ const AppContent = () => {
             return (
               <button
                 key={item}
-                ref={el => buttonRefs.current[item] = el}
+                ref={(el) => (buttonRefs.current[item] = el)}
                 onClick={() => scrollToSection(targetScrollId)}
-                onMouseEnter={() => { if (mode === 'wandering') setMenuHover(item); }}
+                onMouseEnter={() => {
+                  if (mode === 'wandering') setMenuHover(item);
+                }}
                 onMouseLeave={() => setMenuHover(null)}
                 className={`relative group flex items-center justify-center md:w-auto md:pt-[4px] md:pr-[10px] md:pb-[4px] md:pl-[10px] md:rounded-[16px] whitespace-nowrap text-inherit ${isWandering ? 'md:self-end md:mr-12 md:justify-end md:bg-charcoal' : 'md:self-end md:justify-end md:mr-8 md:bg-cream'}`}
               >
@@ -242,12 +284,12 @@ const AppContent = () => {
                 </span>
 
                 {/* Mobile Label Logic */}
-                <span className="md:hidden block text-2xs xs:text-xs">
-                  {item}
-                </span>
+                <span className="md:hidden block text-2xs xs:text-xs">{item}</span>
 
                 {/* Active/Hover Dot - Repositioned to be clearly visible outside the tight padding */}
-                <span className={`w-1.5 h-1.5 rounded-full absolute -bottom-2 md:bottom-auto md:-right-3 md:top-1/2 md:-translate-y-1/2 transition-opacity opacity-0 group-hover:opacity-100 ${isWandering ? 'bg-white' : 'bg-black'}`} />
+                <span
+                  className={`w-1.5 h-1.5 rounded-full absolute -bottom-2 md:bottom-auto md:-right-3 md:top-1/2 md:-translate-y-1/2 transition-opacity opacity-0 group-hover:opacity-100 ${isWandering ? 'bg-white' : 'bg-black'}`}
+                />
               </button>
             );
           })}
@@ -259,7 +301,9 @@ const AppContent = () => {
           >
             <Sparkles size={12} className="text-accent" />
             <span className="block text-2xs xs:text-xs">Ask AI</span>
-            <span className={`w-1.5 h-1.5 rounded-full absolute -bottom-2 transition-opacity ${isMiniChatOpen ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} ${isWandering ? 'bg-white' : 'bg-black'}`} />
+            <span
+              className={`w-1.5 h-1.5 rounded-full absolute -bottom-2 transition-opacity ${isMiniChatOpen ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} ${isWandering ? 'bg-white' : 'bg-black'}`}
+            />
           </button>
         </div>
 
@@ -277,7 +321,6 @@ const AppContent = () => {
       <MiniChat mode={mode} />
 
       <OnboardingModal onVisibilityChange={setIsOnboardingVisible} />
-
     </div>
   );
 };
