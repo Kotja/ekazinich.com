@@ -8,6 +8,394 @@ import CandidateJourneyGraph from '../components/CandidateJourneyGraph';
 import ProjectMeta from '../components/ProjectMeta';
 import { getTheme } from '../theme';
 
+// B2B friction simulator screenshots
+import b2bFrictionAfter from '../assets/b2b-friction-after.png';
+import b2bProcessChallenge from '../assets/B2B_process_challenge_heatmap.webp';
+
+// B2B 4-step friction flow images
+import b2bStep1 from '../assets/B2B_steps_1.png';
+import b2bStep2 from '../assets/B2B_steps_2.png';
+import b2bStep3 from '../assets/B2B_steps_3.png';
+import b2bStep4 from '../assets/B2B_steps_4.png';
+
+const B2B_STEP_IMAGES = [
+  { src: b2bStep1, num: '01', label: 'Login' },
+  { src: b2bStep2, num: '02', label: 'Navigate' },
+  { src: b2bStep3, num: '03', label: 'Scroll' },
+  { src: b2bStep4, num: '04', label: 'Locate' },
+];
+
+// B2B UI component pieces
+import b2bPieceAccountMenu from '../assets/B2B_pieces_account_menu.webp';
+import b2bPieceCreditPrice from '../assets/B2B_pieces_available_credit_price.webp';
+import b2bPieceCreditToggle from '../assets/B2B_pieces_available_credit_toggle.webp';
+import b2bPieceBaseInput from '../assets/B2B_pieces_base_input.webp';
+import b2bPieceGreetingEdit from '../assets/B2B_pieces_greeting_edit.webp';
+import b2bPieceQuickAccess from '../assets/B2B_pieces_quick_access.webp';
+import b2bPieceTotalCredit from '../assets/B2B_pieces_total_credit.webp';
+import b2bPieceUnpaidInvoices from '../assets/B2B_pieces_unpaid_invoices_menu.webp';
+
+// Each piece: src, pixel position (top/right/bottom/left), rotation, display width.
+// Positions are tuned so nothing overlaps the central text safe-zone (~middle 45% of width).
+const FRICTION_STEPS = [
+  {
+    label: 'Login',
+    desc: "Open the app, authenticate. The clock is already ticking — there's a queue.",
+  },
+  {
+    label: 'Navigate',
+    desc: "Find the Account section. It's not on the home screen. Keep looking.",
+  },
+  {
+    label: 'Scroll',
+    desc: 'The Digital Card is buried in a list. Scroll. Keep scrolling. One hand.',
+  },
+  {
+    label: 'Locate',
+    desc: 'Found it. Four steps to reach a button that should have been one tap away.',
+  },
+];
+
+const FrictionSimulator = ({ theme }) => {
+  const [step, setStep] = React.useState(0); // 0=idle, 1–4=steps, 5=revealed
+  const [shaking, setShaking] = React.useState(false);
+
+  const isRevealed = step === 5;
+
+  const handleNext = () => {
+    if (isRevealed) {
+      setStep(0);
+      return;
+    }
+    if (step === 4) {
+      setShaking(true);
+      setTimeout(() => {
+        setShaking(false);
+        setStep(5);
+      }, 550);
+      return;
+    }
+    setStep((s) => s + 1);
+  };
+
+  return (
+    <div className="w-full max-w-5xl mx-auto px-6 py-16">
+      <style>{`
+        @keyframes b2b-shake {
+          0%,100% { transform: translateX(0); }
+          15%      { transform: translateX(-8px) rotate(-1.5deg); }
+          35%      { transform: translateX(8px)  rotate(1.5deg);  }
+          55%      { transform: translateX(-6px) rotate(-1deg);   }
+          75%      { transform: translateX(6px)  rotate(1deg);    }
+        }
+        .b2b-shake { animation: b2b-shake 0.55s ease-in-out; }
+      `}</style>
+
+      <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-center">
+        {/* ── Phone ── fixed 240×460 box so all images stay the same size ── */}
+        <div
+          className={`relative shrink-0 ${shaking ? 'b2b-shake' : ''}`}
+          style={{ width: 240, filter: 'drop-shadow(0 20px 48px rgba(0,0,0,0.32))' }}
+        >
+          {/* Fixed 240×482 container — matches heatmap's natural proportion.
+              object-fit: cover fills every image consistently; phone content stays centred. */}
+          <div
+            style={{
+              width: 240,
+              height: 482,
+              display: 'grid',
+              borderRadius: 36,
+              overflow: 'hidden',
+            }}
+          >
+            {/* Step 0: idle — heatmap */}
+            <img
+              src={b2bProcessChallenge}
+              alt="Heatmap"
+              draggable={false}
+              className="select-none transition-opacity duration-500"
+              style={{
+                gridColumn: 1,
+                gridRow: 1,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center',
+                opacity: step === 0 ? 1 : 0,
+              }}
+            />
+
+            {/* Steps 1–4: actual app screens */}
+            {B2B_STEP_IMAGES.map(({ src, label }, i) => (
+              <img
+                key={i}
+                src={src}
+                alt={label}
+                draggable={false}
+                className="select-none transition-opacity duration-500"
+                style={{
+                  gridColumn: 1,
+                  gridRow: 1,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                  opacity: step === i + 1 ? 1 : 0,
+                }}
+              />
+            ))}
+
+            {/* Step 5: solution — after state */}
+            <img
+              src={b2bFrictionAfter}
+              alt="Target State"
+              draggable={false}
+              className="select-none transition-opacity duration-500"
+              style={{
+                gridColumn: 1,
+                gridRow: 1,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center',
+                opacity: step === 5 ? 1 : 0,
+              }}
+            />
+          </div>
+        </div>
+
+        {/* ── Text / Controls ── */}
+        <div className="flex-1 text-left">
+          {!isRevealed ? (
+            <>
+              <p className="font-sans text-xs font-bold uppercase tracking-[0.2em] text-accent mb-3">
+                {step === 0 ? 'In-Depth · Friction Simulation' : `Step ${step} of 4`}
+              </p>
+              <h3 className={`font-serif text-3xl md:text-4xl mb-5 leading-tight ${theme.text}`}>
+                {step === 0
+                  ? 'What does 4 steps feel like at the counter?'
+                  : step < 4
+                    ? FRICTION_STEPS[step - 1].label + '.'
+                    : 'One more tap.'}
+              </h3>
+              <p className={`font-sans text-lg leading-relaxed mb-8 max-w-sm ${theme.subText}`}>
+                {step === 0
+                  ? 'Every B2B customer lived this. Tap through all four steps to feel the interaction cost.'
+                  : FRICTION_STEPS[step - 1].desc}
+              </p>
+
+              {/* Progress */}
+              <div className="flex gap-2 mb-8">
+                {[1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className="h-1.5 rounded-full transition-all duration-300"
+                    style={{
+                      width: i <= step ? 32 : 16,
+                      background: i <= step ? 'var(--color-accent)' : 'currentColor',
+                      opacity: i <= step ? 1 : 0.2,
+                    }}
+                  />
+                ))}
+              </div>
+
+              <button
+                onClick={handleNext}
+                className="font-sans text-sm font-bold uppercase tracking-widest px-7 py-3.5 border-2 border-accent text-accent hover:bg-accent hover:text-white transition-colors duration-200 cursor-pointer"
+              >
+                {step === 0 ? 'Start simulation →' : step === 4 ? 'Almost there →' : 'Next step →'}
+              </button>
+            </>
+          ) : (
+            <>
+              <p className="font-sans text-xs font-bold uppercase tracking-[0.2em] text-accent mb-3">
+                Target State · FY26 Roadmap
+              </p>
+              <h3 className={`font-serif text-3xl md:text-4xl mb-5 leading-tight ${theme.text}`}>
+                4 steps became 1.
+              </h3>
+              <p className={`font-sans text-lg leading-relaxed mb-8 max-w-sm ${theme.subText}`}>
+                A Persistent Utility Header. Payment assets pinned to the top — always visible,
+                always one tap. The architecture stopped fighting the environment it was being used
+                in.
+              </p>
+              <button
+                onClick={() => setStep(0)}
+                className="font-sans text-sm font-bold uppercase tracking-widest px-7 py-3.5 border-2 border-cream/40 text-cream/70 hover:border-accent hover:text-accent transition-colors duration-200 cursor-pointer"
+              >
+                ← reset
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const B2B_PIECES = [
+  { src: b2bPieceAccountMenu, pos: { top: '4%', left: '1%' }, rot: -5, w: 138 },
+  { src: b2bPieceQuickAccess, pos: { top: '42%', left: '2%' }, rot: 7, w: 92 },
+  { src: b2bPieceCreditToggle, pos: { top: '3%', right: '1%' }, rot: 3, w: 218 },
+  { src: b2bPieceCreditPrice, pos: { top: '41%', right: '2%' }, rot: -6, w: 110 },
+  { src: b2bPieceBaseInput, pos: { bottom: '7%', left: '1%' }, rot: -4, w: 208 },
+  { src: b2bPieceGreetingEdit, pos: { bottom: '21%', left: '4%' }, rot: 6, w: 152 },
+  { src: b2bPieceTotalCredit, pos: { bottom: '6%', right: '1%' }, rot: 4, w: 182 },
+  { src: b2bPieceUnpaidInvoices, pos: { bottom: '19%', right: '3%' }, rot: -7, w: 163 },
+];
+
+const CHASER_W = 210;
+const CHASER_H = 52;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+const B2BScatteredPieces = ({ children }) => {
+  const containerRef = React.useRef(null);
+  const pieceRefs = React.useRef([]);
+  const [chaserXY, setChaserXY] = React.useState(null);
+  const [hidden, setHidden] = React.useState(new Set());
+  const [isChasing, setIsChasing] = React.useState(false);
+  const [label, setLabel] = React.useState('dare to search');
+
+  React.useEffect(() => {
+    const place = () => {
+      if (!containerRef.current) return;
+      const { width, height } = containerRef.current.getBoundingClientRect();
+      setChaserXY({ x: (width - CHASER_W) / 2, y: height - CHASER_H - 28 });
+    };
+    place();
+    window.addEventListener('resize', place);
+    return () => window.removeEventListener('resize', place);
+  }, []);
+
+  const handleClick = async () => {
+    if (isChasing) return;
+    if (hidden.size === B2B_PIECES.length) {
+      setHidden(new Set());
+      return;
+    }
+
+    setIsChasing(true);
+    setLabel('chasing…');
+
+    const cRect = containerRef.current.getBoundingClientRect();
+    const queue = B2B_PIECES.map((_, i) => i).filter((i) => !hidden.has(i));
+
+    for (const idx of queue) {
+      const el = pieceRefs.current[idx];
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      setChaserXY({
+        x: r.left - cRect.left,
+        y: r.top - cRect.top + r.height / 2 - CHASER_H / 2,
+      });
+      await sleep(560);
+      setHidden((prev) => new Set([...prev, idx]));
+      await sleep(120);
+    }
+
+    const { width, height } = containerRef.current.getBoundingClientRect();
+    setChaserXY({ x: (width - CHASER_W) / 2, y: height - CHASER_H - 28 });
+    await sleep(580);
+    setLabel('dare to search');
+    setIsChasing(false);
+  };
+
+  return (
+    <>
+      {/* ── Mobile / Tablet: images above text ── */}
+      <div className="md:hidden flex flex-wrap justify-center gap-3 mb-8 px-4">
+        {B2B_PIECES.map(
+          ({ src, w }, i) =>
+            !hidden.has(i) && (
+              <img
+                key={i}
+                src={src}
+                alt=""
+                draggable={false}
+                className="h-auto object-contain"
+                style={{
+                  width: Math.min(Math.round(w * 0.55), 140),
+                  filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.14))',
+                }}
+              />
+            )
+        )}
+      </div>
+      <div className="md:hidden text-center px-6 pb-10">{children}</div>
+
+      {/* ── Desktop: absolute scattered layout ── */}
+      <div
+        ref={containerRef}
+        className="hidden md:block relative w-full overflow-hidden"
+        style={{ minHeight: 660 }}
+      >
+        {B2B_PIECES.map(({ src, pos, rot, w }, i) => (
+          <div
+            key={i}
+            ref={(el) => (pieceRefs.current[i] = el)}
+            className="absolute pointer-events-none select-none"
+            style={{
+              ...pos,
+              width: w,
+              transform: `rotate(${rot}deg)`,
+              zIndex: 5,
+              opacity: hidden.has(i) ? 0 : 1,
+              transition: 'opacity 0.32s ease-out',
+            }}
+          >
+            <img
+              src={src}
+              alt=""
+              draggable={false}
+              className="w-full h-auto object-contain"
+              style={{ filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.16))' }}
+            />
+          </div>
+        ))}
+
+        {/* Centred text */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="max-w-[460px] w-full text-center px-6">{children}</div>
+        </div>
+
+        {/* Chasing search bar */}
+        {chaserXY && (
+          <div
+            onClick={handleClick}
+            className="absolute z-20 flex items-center gap-3 bg-white rounded-full border-2 border-accent shadow-lg cursor-pointer select-none"
+            style={{
+              left: chaserXY.x,
+              top: chaserXY.y,
+              width: CHASER_W,
+              height: CHASER_H,
+              padding: '0 24px',
+              transition: isChasing
+                ? 'left 0.5s cubic-bezier(.4,0,.2,1), top 0.5s cubic-bezier(.4,0,.2,1)'
+                : 'left 0.55s ease-in-out, top 0.55s ease-in-out',
+            }}
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              className="text-accent shrink-0"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <span className="text-accent font-sans text-base font-semibold tracking-wide whitespace-nowrap">
+              {label}
+            </span>
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
+
 const BoomerangVideo = ({ src }) => {
   const videoRef = React.useRef(null);
   const cycleCount = React.useRef(0);
@@ -49,81 +437,6 @@ const BoomerangVideo = ({ src }) => {
 
   return (
     <video ref={videoRef} src={src} muted playsInline className="w-full h-full object-cover" />
-  );
-};
-
-// Phone-shaped frame for the Officeworks process video
-// All colours are hardcoded inline so the phone is always dark,
-// regardless of whether the page is in Impact (cream) or Wandering (charcoal) mode.
-const PhoneFrame = ({ src }) => {
-  const videoRef = React.useRef(null);
-
-  const handleClick = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.paused ? v.play().catch(() => {}) : v.pause();
-  };
-
-  React.useEffect(() => {
-    const v = videoRef.current;
-    if (v) { v.play().catch(() => {}); }
-  }, [src]);
-
-  const SHELL    = '#1C1C1E';               // near-black body
-  const SCREEN   = '#000000';
-  const BUTTON   = '#2C2C2E';
-  const HOME_BAR = 'rgba(255,255,255,0.30)';
-
-  return (
-    <div style={{ position: 'relative', width: '280px', aspectRatio: '9/19.5', margin: '0 auto' }}>
-
-      {/* ── Outer shell ── */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        background: SHELL,
-        borderRadius: '38px',
-        boxShadow: '0 0 0 1px #3A3A3C, 0 32px 64px rgba(0,0,0,0.5)',
-      }} />
-
-      {/* ── Screen (inset inside bezel so corners never clip the video) ── */}
-      <div style={{
-        position: 'absolute',
-        top: '10px', left: '8px', right: '8px', bottom: '10px',
-        borderRadius: '30px',
-        background: SCREEN,
-        overflow: 'hidden',
-        zIndex: 1,
-      }}>
-        <video
-          ref={videoRef}
-          src={src}
-          muted loop playsInline
-          onClick={handleClick}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', cursor: 'pointer' }}
-        />
-      </div>
-
-      {/* ── Dynamic Island — floats above screen, never clips video ── */}
-      <div style={{
-        position: 'absolute', top: '18px',
-        left: '50%', transform: 'translateX(-50%)',
-        width: '80px', height: '26px',
-        background: SCREEN, borderRadius: '999px', zIndex: 3,
-      }} />
-
-      {/* ── Home indicator bar ── */}
-      <div style={{
-        position: 'absolute', bottom: '18px',
-        left: '50%', transform: 'translateX(-50%)',
-        width: '100px', height: '5px',
-        background: HOME_BAR, borderRadius: '999px', zIndex: 3,
-      }} />
-
-      {/* ── Side buttons ── */}
-      <div style={{ position:'absolute', right:'-3px', top:'28%', width:'3px', height:'60px', background:BUTTON, borderRadius:'0 3px 3px 0', zIndex:4 }} />
-      <div style={{ position:'absolute', left:'-3px', top:'22%', width:'3px', height:'38px', background:BUTTON, borderRadius:'3px 0 0 3px', zIndex:4 }} />
-      <div style={{ position:'absolute', left:'-3px', top:'35%', width:'3px', height:'55px', background:BUTTON, borderRadius:'3px 0 0 3px', zIndex:4 }} />
-    </div>
   );
 };
 
@@ -519,7 +832,16 @@ const ProjectDetail = ({ mode }) => {
                 </p>
               </div>
               {challengeImage && (
-                <div className="md:w-1/2 md:flex-shrink-0">
+                <div
+                  className={
+                    project.id === 1 ? 'md:w-1/4 md:flex-shrink-0' : 'md:w-1/2 md:flex-shrink-0'
+                  }
+                  style={
+                    project.id === 1
+                      ? { filter: 'drop-shadow(0 24px 52px rgba(0,0,0,0.35))' }
+                      : undefined
+                  }
+                >
                   <InteractiveChallengeImage
                     src={challengeImage}
                     isWandering={isWandering}
@@ -563,7 +885,7 @@ const ProjectDetail = ({ mode }) => {
               </div>
             </div>
           ) : (
-            <div className="max-w-6xl mx-auto px-6 py-12 text-center">
+            <div className="w-full px-6 py-12 text-center">
               <h3 className={`font-serif text-3xl mb-4 ${theme.text}`}>My Role</h3>
               <p
                 className={`font-sans text-lg max-w-[600px] mx-auto leading-relaxed whitespace-pre-line ${theme.subText}`}
@@ -669,11 +991,44 @@ const ProjectDetail = ({ mode }) => {
                     className={`max-w-6xl mx-auto px-6 ${showImage ? 'grid md:grid-cols-2 gap-12 items-center' : 'text-center'} mb-12`}
                   >
                     {/* Video, Iframe or Image for Process */}
-                    {showImage && (
-                      // Officeworks (id=1) with a video: render inside phone frame
-                      section.video && project.id === 1 ? (
-                        <div className="flex items-center justify-center w-full py-8">
-                          <PhoneFrame src={section.video} />
+                    {showImage &&
+                      // Officeworks (id=1): plays on hover (desktop) or tap (touch); paused by default
+                      (section.video && project.id === 1 ? (
+                        <div className="flex items-center justify-center w-full">
+                          <div
+                            style={{
+                              maxWidth: '300px',
+                              width: '100%',
+                              filter: 'drop-shadow(0 24px 52px rgba(0,0,0,0.35))',
+                            }}
+                            onMouseEnter={(e) =>
+                              e.currentTarget
+                                .querySelector('video')
+                                ?.play()
+                                .catch(() => {})
+                            }
+                          >
+                            <video
+                              src={section.video}
+                              muted
+                              playsInline
+                              onEnded={(e) => {
+                                e.currentTarget.currentTime = 0;
+                              }}
+                              onClick={(e) => {
+                                e.currentTarget.paused
+                                  ? e.currentTarget.play().catch(() => {})
+                                  : e.currentTarget.pause();
+                              }}
+                              style={{
+                                width: '100%',
+                                height: 'auto',
+                                display: 'block',
+                                cursor: 'pointer',
+                                clipPath: 'inset(1.15% 7.04% 0.68% 6.48% round 52px)',
+                              }}
+                            />
+                          </div>
                         </div>
                       ) : (
                         <div
@@ -689,7 +1044,11 @@ const ProjectDetail = ({ mode }) => {
                               className="w-full h-full object-contain cursor-pointer"
                               onClick={(e) => {
                                 const video = e.currentTarget;
-                                if (video.paused) { video.play(); } else { video.pause(); }
+                                if (video.paused) {
+                                  video.play();
+                                } else {
+                                  video.pause();
+                                }
                               }}
                             >
                               <source src={section.video} type="video/webm" />
@@ -705,8 +1064,7 @@ const ProjectDetail = ({ mode }) => {
                             />
                           )}
                         </div>
-                      )
-                    )}
+                      ))}
                     <div className={showImage ? '' : 'max-w-4xl mx-auto'}>
                       {!displayContent.process.renderComponent && (
                         <h3 className="font-serif text-3xl mb-4 text-accent">The Process</h3>
@@ -973,38 +1331,47 @@ const ProjectDetail = ({ mode }) => {
                 </div>
               </div>
             ) : displayContent.keyTakeaway.image ? (
-              <div className="mt-12 w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div
-                  className="w-full overflow-hidden cursor-zoom-in order-1"
-                  onClick={() => setSelectedImage(displayContent.keyTakeaway.image)}
-                >
-                  <img
-                    src={displayContent.keyTakeaway.image}
-                    alt="Key Takeaway Visual"
-                    className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700"
-                  />
+              // B2B (project 1): scattered UI pieces with key takeaway text centred
+              project.id === 1 ? (
+                <B2BScatteredPieces>
+                  <p className={`font-sans text-lg leading-relaxed ${theme.subText}`}>
+                    {displayContent.keyTakeaway.description}
+                  </p>
+                </B2BScatteredPieces>
+              ) : (
+                <div className="mt-12 w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                  <div
+                    className="w-full overflow-hidden cursor-zoom-in order-1"
+                    onClick={() => setSelectedImage(displayContent.keyTakeaway.image)}
+                  >
+                    <img
+                      src={displayContent.keyTakeaway.image}
+                      alt="Key Takeaway Visual"
+                      className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                  <div className="order-2 flex flex-col gap-8 text-left">
+                    {displayContent.keyTakeaway.description && (
+                      <div
+                        className={`font-sans text-lg leading-relaxed max-w-[600px] ${theme.text}`}
+                      >
+                        {displayContent.keyTakeaway.description}
+                      </div>
+                    )}
+                    {displayContent.keyTakeaway.imageCaption && (
+                      <div
+                        className={`font-sans text-base italic ${theme.subText} flex flex-col gap-4`}
+                      >
+                        {displayContent.keyTakeaway.imageCaption
+                          .split('\n\n')
+                          .map((paragraph, index) => (
+                            <p key={index}>{paragraph}</p>
+                          ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <div className="order-2 flex flex-col gap-8 text-left">
-                  {displayContent.keyTakeaway.description && (
-                    <div
-                      className={`font-sans text-lg leading-relaxed max-w-[600px] ${theme.text}`}
-                    >
-                      {displayContent.keyTakeaway.description}
-                    </div>
-                  )}
-                  {displayContent.keyTakeaway.imageCaption && (
-                    <div
-                      className={`font-sans text-base italic ${theme.subText} flex flex-col gap-4`}
-                    >
-                      {displayContent.keyTakeaway.imageCaption
-                        .split('\n\n')
-                        .map((paragraph, index) => (
-                          <p key={index}>{paragraph}</p>
-                        ))}
-                    </div>
-                  )}
-                </div>
-              </div>
+              )
             ) : (
               displayContent.keyTakeaway.description && (
                 <div className={`font-sans text-lg leading-relaxed ${theme.text} mb-8`}>
@@ -1044,6 +1411,15 @@ const ProjectDetail = ({ mode }) => {
                 <div
                   className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} my-16`}
                 ></div>
+
+                {/* B2B In-Depth: friction simulator directly under Key Takeaway outcomes */}
+                {project.id === 1 && (
+                  <div
+                    className={`w-full border-y border-accent-peach ${theme.projectSectionBg} -mx-6 px-6 mb-16`}
+                  >
+                    <FrictionSimulator theme={theme} />
+                  </div>
+                )}
 
                 {displayContent.refinement.description && (
                   <div
