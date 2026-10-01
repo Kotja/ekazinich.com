@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Sparkles } from 'lucide-react';
@@ -14,6 +14,11 @@ const AppContent = () => {
   const [mode, setMode] = useState('hr');
   const [isOnboardingVisible, setIsOnboardingVisible] = useState(false); // Track visibility of Onboarding Modal
   const [menuHover, setMenuHover] = useState(null); // Track which menu item is being hovered
+  const canPortal = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
   const buttonRefs = useRef({}); // Refs for menu buttons
 
   const location = useLocation();
@@ -246,7 +251,8 @@ const AppContent = () => {
         </div>
       </nav>
 
-      {isProjectPage &&
+      {canPortal &&
+        isProjectPage &&
         createPortal(
           <div className={`project-action-bar ${theme.navBg} backdrop-blur-lg ${theme.text}`}>
             <button
