@@ -131,7 +131,7 @@ const AskChat = ({ mode }) => {
             ref={messagesContainerRef}
             className={
               messages.length === 0 && !hasStarted
-                ? 'px-6 pt-8 pb-2'
+                ? 'px-6 pt-8 pb-10'
                 : 'h-[400px] overflow-y-auto p-6'
             }
           >
@@ -297,8 +297,8 @@ const AskChat = ({ mode }) => {
             </div>
           )}
 
-          <form onSubmit={onSubmit} className={`chat-rule border-t-2 ${theme.borderSoft} p-4`}>
-            <div className={`flex items-center gap-3 ${theme.inputBg} px-4 py-2`}>
+          <form onSubmit={onSubmit} className="px-6 pt-2 pb-6">
+            <div className={`flex items-center gap-3 border-b-2 ${theme.borderSolid} px-1 py-2`}>
               <input
                 ref={inputRef}
                 type="text"

@@ -199,8 +199,8 @@ const MiniChat = ({ mode }) => {
           </div>
         )}
 
-        <form onSubmit={onSubmit} className={`border-t-2 border-charcoal p-3 shrink-0`}>
-          <div className={`flex items-center gap-2 ${theme.inputBg} px-3 py-1.5`}>
+        <form onSubmit={onSubmit} className="px-4 pt-2 pb-4 shrink-0">
+          <div className={`flex items-center gap-2 border-b-2 ${theme.borderSolid} px-1 py-1.5`}>
             <input
               ref={inputRef}
               type="text"

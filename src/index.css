@@ -239,7 +239,7 @@
   top: auto;
   bottom: 0;
   height: 5rem;
-  border-top-width: 1px;
+  border-top-width: 2px;
   border-bottom-width: 0;
 }
 
@@ -252,7 +252,7 @@
     border-color: var(--color-black-900);
     border-top-width: 0 !important;
     border-right-width: 0 !important;
-    border-bottom-width: 1px !important;
+    border-bottom-width: 2px !important;
     border-left-width: 0 !important;
   }
 }
@@ -280,7 +280,7 @@ body > .project-action-bar {
   border-color: var(--color-black-900) !important;
   border-top-width: 0 !important;
   border-right-width: 0 !important;
-  border-bottom-width: 1px !important;
+  border-bottom-width: 2px !important;
   border-left-width: 0 !important;
 }
 
@@ -289,7 +289,7 @@ body > .project-action-bar {
     top: auto;
     bottom: 0;
     height: 5.5rem;
-    border-top-width: 1px !important;
+    border-top-width: 2px !important;
     border-bottom-width: 0 !important;
   }
 }
@@ -475,9 +475,20 @@ h1.hero-display {
     box-shadow 180ms ease;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 768px) and (max-width: 1439px) {
+  .hero-card {
+    width: 100%;
+    max-width: 420px;
+  }
+
   .hero-screen {
-    width: 420px;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .hero-card-copy {
+    width: 100%;
+    max-width: 18rem;
   }
 }
 
@@ -1087,7 +1098,7 @@ h3.text-sm {
   width: 20%;
   aspect-ratio: 1;
   background: var(--color-white-100);
-  border: 3px solid var(--color-black-900);
+  border: 2px solid var(--color-black-900);
   border-radius: 50% !important;
 }
 

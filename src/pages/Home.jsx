@@ -268,7 +268,7 @@ const Home = ({ mode, scrollToSection }) => {
 
       <section
         id="project-section"
-        className="min-h-[100dvh] w-full flex flex-col min-[1440px]:block relative pt-20 md:pt-0 max-w-screen-2xl mx-auto"
+        className="min-h-[100dvh] w-full flex flex-col min-[1440px]:block relative pt-20 md:pt-10 max-w-screen-2xl mx-auto"
       >
         {/* Hero text: stacked until xl, then the centre of the ring */}
         <div className="hero-ring-copy w-full flex flex-col justify-center px-6 md:px-16 relative z-20 overflow-visible">
@@ -292,7 +292,7 @@ const Home = ({ mode, scrollToSection }) => {
         </div>
 
         {/* Product screens around the hero. Titles sit beside the cards — no title blocks. */}
-        <div className="w-full min-[1440px]:contents grid grid-cols-1 min-[1040px]:grid-cols-2 gap-10 px-6 md:px-12 py-8 relative z-20 mt-10 min-[1440px]:mt-0 content-center justify-items-center">
+        <div className="w-full min-[1440px]:contents grid grid-cols-1 md:grid-cols-2 gap-10 px-6 md:px-12 py-8 relative z-20 mt-10 min-[1440px]:mt-0 content-center justify-items-center">
           {heroProjects.map((proj, idx) => (
             <div
               key={proj.id}
