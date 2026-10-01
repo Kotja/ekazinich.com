@@ -3,6 +3,7 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
+import './styles/extracted.css';
 
 export function render(url) {
   return renderToString(

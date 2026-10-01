@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, MessageCircle, Sparkles, RotateCcw } from 'lucide-react';
+import { Send, Sparkles, RotateCcw } from 'lucide-react';
 import { Streamdown } from 'streamdown';
 import {
   useAskChat,
@@ -43,13 +43,10 @@ const AskChat = ({ mode }) => {
 
     return () => {
       observer.disconnect();
-      // When AskChat unmounts (e.g. navigating away from home), mark as not visible
-      // so the MiniChat becomes available on other routes
       setIsMainChatVisible(false);
     };
   }, [setIsMainChatVisible]);
 
-  // Scroll user's question to top when triggered
   useEffect(() => {
     if (shouldScrollToQuestion && lastUserMessageRef.current) {
       setTimeout(() => {
@@ -73,6 +70,12 @@ const AskChat = ({ mode }) => {
     await handleSend(input);
   };
 
+  const chipClass = `
+    inline-block px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-tag chat-chip cursor-pointer
+    disabled:opacity-50 disabled:cursor-not-allowed
+    ${theme.tagBg}
+  `;
+
   return (
     <section
       ref={sectionRef}
@@ -82,17 +85,17 @@ const AskChat = ({ mode }) => {
       {/* Intro Section */}
       <div className="text-center mb-12 max-w-2xl">
         <div className="flex items-center justify-center gap-3 mb-6">
-          <Sparkles className="text-accent" size={28} />
-          <h2 className="font-serif text-5xl md:text-7xl">Ask Me Anything</h2>
+          <Sparkles className={theme.iconBlue} size={28} />
+          <h2 className="font-serif">Ask Me Anything</h2>
         </div>
-        <p className={`font-sans text-lg leading-relaxed ${theme.subText}`}>
+        <p className={`font-sans text-lg leading-relaxed font-normal ${theme.subText}`}>
           Curious about my experience, design process, or projects? Chat with my AI assistant to
           learn more about my work and approach. Prefer to talk with a human?{' '}
           <button
             onClick={() =>
               document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' })
             }
-            className="text-accent hover:underline cursor-pointer"
+            className={`${theme.linkBlue} underline cursor-pointer font-semibold`}
           >
             Message me.
           </button>
@@ -100,36 +103,19 @@ const AskChat = ({ mode }) => {
       </div>
 
       {/* Chat Container */}
-      {/* Outer wrapper: position context for the offset shadow frame */}
       <div className="relative w-full max-w-2xl">
-        {/* Background offset frame — theme-driven colour, matches project frames */}
         <div
-          aria-hidden="true"
-          className={`border transition-colors duration-500 ${theme.borderSolid}`}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            transform: 'translate(-16px, -16px)',
-            borderRadius: '2px',
-            zIndex: 0,
-          }}
-        />
-
-        {/* Main chat container — sharp corners, 1px #D1D1D1 border */}
-        <div
-          className={`relative z-10 w-full shadow-lg ${theme.cardBg} overflow-hidden`}
-          style={{ borderRadius: '2px', border: '1px solid #D1D1D1' }}
+          className={`chat-tile relative z-10 w-full ${theme.cardBg} overflow-hidden border-[2px] border-charcoal`}
         >
-          {/* Chat Header with Restart Button */}
           {messages.length > 0 && (
-            <div className={`flex justify-end px-4 py-2 border-b ${theme.borderSoft}`}>
+            <div className={`flex justify-end px-4 py-2 border-b-2 ${theme.borderSoft}`}>
               <button
                 onClick={handleRestartChat}
                 disabled={isLoading}
                 className={`
-                flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-sans
-                transition-all duration-300
-                hover:bg-accent hover:text-white
+                flex items-center gap-1.5 px-3 py-1 text-xs font-sans font-medium uppercase tracking-wide
+                border-2 border-charcoal transition-all duration-50
+                hover:bg-red-500 hover:text-cream
                 disabled:opacity-50 disabled:cursor-not-allowed
                 ${theme.subText}
               `}
@@ -141,29 +127,36 @@ const AskChat = ({ mode }) => {
             </div>
           )}
 
-          {/* Messages Area */}
-          <div ref={messagesContainerRef} className="h-[400px] overflow-y-auto p-6 rounded-[3px]">
+          <div
+            ref={messagesContainerRef}
+            className={
+              messages.length === 0 && !hasStarted
+                ? 'px-6 pt-8 pb-2'
+                : 'h-[400px] overflow-y-auto p-6'
+            }
+          >
             {messages.length === 0 && !hasStarted ? (
-              <div className={`flex flex-col items-center justify-center h-full ${theme.subText}`}>
-                <MessageCircle size={48} strokeWidth={1} className="mb-4 opacity-30" />
-                <p className="font-sans text-center mb-6">
-                  Start a conversation by clicking a question below
-                  <br />
-                  or type your own
-                </p>
+              <div className="flex flex-col items-center">
+                <div className="bauhaus-idle mb-7" aria-label="System idle">
+                  <span className="bauhaus-idle__red" />
+                  <span className="bauhaus-idle__blue" />
+                  <span className="bauhaus-idle__yellow">
+                    <span className="bauhaus-idle__label">
+                      System idle.
+                      <br />
+                      Enter prompt.
+                    </span>
+                  </span>
+                  <span className="bauhaus-idle__dot" />
+                  <span className="bauhaus-idle__ring" />
+                </div>
                 <div className="flex flex-wrap justify-center gap-2 max-w-md">
                   {STARTER_QUESTIONS.map((question, idx) => (
                     <button
                       key={idx}
                       onClick={() => handleStarterClick(question)}
                       disabled={isLoading}
-                      className={`
-                      px-3 py-1.5 rounded-full text-xs font-sans
-                      border transition-all duration-300
-                      hover:border-accent hover:text-accent hover:scale-105
-                      disabled:opacity-50 disabled:cursor-not-allowed
-                      ${theme.borderSoft} ${theme.text}
-                    `}
+                      className={chipClass}
                     >
                       {question}
                     </button>
@@ -173,25 +166,21 @@ const AskChat = ({ mode }) => {
             ) : (
               <div className="space-y-4">
                 {(() => {
-                  // Find the index of the last user message to apply min-height from there
                   const lastUserIdx = messages.findLastIndex((m) => m.role === 'user');
 
                   return messages.map((message, idx) => {
                     const isLastUserMessage = idx === lastUserIdx;
 
-                    // Skip messages after the last user message - they're rendered in the min-height container
                     if (idx > lastUserIdx) {
                       return null;
                     }
 
-                    // Skip rendering assistant messages with no displayable content (e.g., during reasoning phase)
                     const content =
                       message.role === 'assistant' ? getMessageContent(message) : null;
                     if (message.role === 'assistant' && !content) {
                       return null;
                     }
 
-                    // Wrap last user message + everything after in min-height container
                     if (isLastUserMessage) {
                       const remainingMessages = messages.slice(idx);
 
@@ -208,24 +197,23 @@ const AskChat = ({ mode }) => {
                           className="min-h-[400px]"
                         >
                           <div className="space-y-4">
-                            {/* Last user message */}
-                            <div className="flex justify-end">
-                              <div
-                                className={`max-w-[80%] rounded-2xl rounded-br-md px-4 py-3 ${theme.userBubble}`}
-                              >
-                                <p className="font-sans text-sm">{getMessageContent(message)}</p>
+                            <div className="flex justify-end bauhaus-snap">
+                              <div className={`max-w-[80%] px-4 py-3 ${theme.userBubble}`}>
+                                <p className="font-sans text-sm font-medium">
+                                  {getMessageContent(message)}
+                                </p>
                               </div>
                             </div>
 
-                            {/* Assistant responses after last user message */}
                             {remainingMessages.slice(1).map((m, i) => {
-                              const content = getMessageContent(m);
-                              if (!content) return null;
+                              const msgContent = getMessageContent(m);
+                              if (!msgContent) return null;
                               return (
-                                <div key={m.id || idx + 1 + i} className="flex justify-start">
-                                  <div
-                                    className={`max-w-[80%] rounded-2xl rounded-bl-md px-4 py-3 ${theme.assistantBubble}`}
-                                  >
+                                <div
+                                  key={m.id || idx + 1 + i}
+                                  className="flex justify-start bauhaus-snap"
+                                >
+                                  <div className={`max-w-[80%] px-4 py-3 ${theme.assistantBubble}`}>
                                     <div className="font-sans text-sm streamdown-content">
                                       <Streamdown
                                         mode={
@@ -233,9 +221,9 @@ const AskChat = ({ mode }) => {
                                             ? 'streaming'
                                             : 'static'
                                         }
-                                        caret="circle"
+                                        caret="block"
                                       >
-                                        {content}
+                                        {msgContent}
                                       </Streamdown>
                                     </div>
                                   </div>
@@ -243,27 +231,12 @@ const AskChat = ({ mode }) => {
                               );
                             })}
 
-                            {/* Loading indicator */}
                             {showLoading && (
-                              <div className="flex justify-start">
-                                <div
-                                  className={`rounded-2xl rounded-bl-md px-3 py-2 ${theme.assistantBubble}`}
-                                >
-                                  <div className="flex gap-0.5">
-                                    <span
-                                      className="w-1.5 h-1.5 rounded-full bg-current opacity-60 animate-bounce"
-                                      style={{ animationDelay: '0ms' }}
-                                    />
-                                    <span
-                                      className="w-1.5 h-1.5 rounded-full bg-current opacity-60 animate-bounce"
-                                      style={{ animationDelay: '150ms' }}
-                                    />
-                                    <span
-                                      className="w-1.5 h-1.5 rounded-full bg-current opacity-60 animate-bounce"
-                                      style={{ animationDelay: '300ms' }}
-                                    />
-                                  </div>
-                                </div>
+                              <div className="flex justify-start items-center gap-3 bauhaus-snap">
+                                <div className="bauhaus-think" aria-label="AI thinking" />
+                                <span className="font-sans text-xs font-bold uppercase tracking-widest text-gray-500">
+                                  Processing
+                                </span>
                               </div>
                             )}
                           </div>
@@ -271,28 +244,28 @@ const AskChat = ({ mode }) => {
                       );
                     }
 
-                    // Regular messages before the last user message
                     return (
                       <div
                         key={message.id || idx}
-                        className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                        className={`flex bauhaus-snap ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                       >
                         <div
                           className={`
-                          max-w-[80%] rounded-2xl px-4 py-3
+                          max-w-[80%] px-4 py-3
                           ${message.role === 'user' ? theme.userBubble : theme.assistantBubble}
-                          ${message.role === 'user' ? 'rounded-br-md' : 'rounded-bl-md'}
                         `}
                         >
                           {message.role === 'user' ? (
-                            <p className="font-sans text-sm">{getMessageContent(message)}</p>
+                            <p className="font-sans text-sm font-medium">
+                              {getMessageContent(message)}
+                            </p>
                           ) : (
                             <div className="font-sans text-sm streamdown-content">
                               <Streamdown
                                 mode={
                                   isLoading && idx === messages.length - 1 ? 'streaming' : 'static'
                                 }
-                                caret="circle"
+                                caret="block"
                               >
                                 {content}
                               </Streamdown>
@@ -307,22 +280,15 @@ const AskChat = ({ mode }) => {
             )}
           </div>
 
-          {/* Suggested Follow-up Questions */}
           {!isLoading && getSuggestedPrompts(messages).length > 0 && (
-            <div className={`border-t ${theme.borderSoft} px-4 py-3`}>
+            <div className={`chat-rule border-t-2 ${theme.borderSoft} px-4 py-3`}>
               <div className="flex flex-wrap gap-2 justify-center">
                 {getSuggestedPrompts(messages).map((suggestion, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleStarterClick(suggestion)}
                     disabled={isLoading}
-                    className={`
-                    px-3 py-1.5 rounded-full text-xs font-sans
-                    border transition-all duration-300
-                    hover:border-accent hover:text-accent hover:scale-105
-                    disabled:opacity-50 disabled:cursor-not-allowed
-                    ${theme.borderSoft} ${theme.text}
-                  `}
+                    className={chipClass}
                   >
                     {suggestion}
                   </button>
@@ -331,9 +297,8 @@ const AskChat = ({ mode }) => {
             </div>
           )}
 
-          {/* Input Area */}
-          <form onSubmit={onSubmit} className={`border-t ${theme.borderSoft} p-4`}>
-            <div className={`flex items-center gap-3 rounded-full ${theme.inputBg} px-4 py-2`}>
+          <form onSubmit={onSubmit} className={`chat-rule border-t-2 ${theme.borderSoft} p-4`}>
+            <div className={`flex items-center gap-3 ${theme.inputBg} px-4 py-2`}>
               <input
                 ref={inputRef}
                 type="text"
@@ -351,10 +316,11 @@ const AskChat = ({ mode }) => {
                 type="submit"
                 disabled={isLoading || !input.trim()}
                 className={`
-                p-2 rounded-full transition-all duration-300
+                flex shrink-0 items-center justify-center bg-transparent
+                transition-opacity duration-50
                 disabled:opacity-30 disabled:cursor-not-allowed
-                hover:bg-accent hover:text-white
-                ${theme.text}
+                hover:opacity-70
+                ${theme.iconBlue}
               `}
                 aria-label="Send message"
               >
@@ -365,8 +331,9 @@ const AskChat = ({ mode }) => {
         </div>
       </div>
 
-      {/* Disclaimer */}
-      <p className={`mt-6 font-sans text-xs ${theme.subText} text-center max-w-md`}>
+      <p
+        className={`mt-6 font-sans text-xs ${theme.subText} text-center max-w-md uppercase tracking-widest font-medium`}
+      >
         This AI assistant provides information based on my portfolio. For detailed inquiries, feel
         free to reach out directly.
       </p>

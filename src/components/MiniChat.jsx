@@ -1,31 +1,40 @@
 import React, { useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Sparkles, RotateCcw } from 'lucide-react';
 import { Streamdown } from 'streamdown';
-import { useAskChat, getMessageContent, getSuggestedPrompts, STARTER_QUESTIONS } from './ChatContext';
+import {
+  useAskChat,
+  getMessageContent,
+  getSuggestedPrompts,
+  STARTER_QUESTIONS,
+} from './ChatContext';
 import { getTheme } from '../theme';
 
 const MiniChat = ({ mode }) => {
   const {
-    messages, input, setInput, isLoading,
-    handleRestartChat, handleSend, isMainChatVisible,
-    isMiniChatOpen: isOpen, setIsMiniChatOpen: setIsOpen,
+    messages,
+    input,
+    setInput,
+    isLoading,
+    handleRestartChat,
+    handleSend,
+    isMainChatVisible,
+    isMiniChatOpen: isOpen,
+    setIsMiniChatOpen: setIsOpen,
   } = useAskChat();
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
   const theme = getTheme(mode);
 
-  // Auto-scroll messages to bottom
   useEffect(() => {
     if (isOpen && messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, isOpen]);
 
-  // Focus input when panel opens
   useEffect(() => {
     if (isOpen && inputRef.current) {
-      setTimeout(() => inputRef.current?.focus(), 300);
+      setTimeout(() => inputRef.current?.focus(), 50);
     }
   }, [isOpen]);
 
@@ -35,32 +44,42 @@ const MiniChat = ({ mode }) => {
     handleSend(input);
   };
 
-  const showLoading = isLoading && messages.length > 0 && (
-    messages[messages.length - 1]?.role === 'user' ||
-    (messages[messages.length - 1]?.role === 'assistant' && !getMessageContent(messages[messages.length - 1]))
-  );
+  const showLoading =
+    isLoading &&
+    messages.length > 0 &&
+    (messages[messages.length - 1]?.role === 'user' ||
+      (messages[messages.length - 1]?.role === 'assistant' &&
+        !getMessageContent(messages[messages.length - 1])));
+
+  const chipClass = `
+    inline-block px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-tag chat-chip cursor-pointer
+    disabled:opacity-50 disabled:cursor-not-allowed
+    ${theme.tagBg}
+  `;
 
   return (
     <>
-      {/* Chat Panel - independently positioned */}
       <div
         className={`
           fixed z-50 bottom-24 md:bottom-28 right-4 md:right-9
           w-[calc(100vw-2rem)] md:w-[360px]
           h-[60vh] max-h-[480px]
-          rounded-2xl overflow-hidden
+          overflow-hidden
           flex flex-col
-          border shadow-2xl
-          ${theme.cardBg} ${theme.text} ${theme.borderSoft}
-          transition-all duration-300 origin-bottom-right
-          ${isOpen && !isMainChatVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'}
+          border-[2px] border-charcoal
+          ${theme.cardBg} ${theme.text}
+          transition-all duration-50 origin-bottom-right
+          ${isOpen && !isMainChatVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}
         `}
       >
-        {/* Header */}
-        <div className={`flex items-center justify-between px-4 py-3 border-b ${theme.borderSoft} shrink-0`}>
+        <div
+          className={`flex items-center justify-between px-4 py-3 border-b-[2px] border-charcoal bg-yellow-500 text-charcoal shrink-0`}
+        >
           <div className="flex items-center gap-2">
-            <Sparkles className="text-accent" size={16} />
-            <span className="font-serif text-sm">Ask Eka</span>
+            <Sparkles className={theme.iconBlue} size={16} />
+            <span className="font-serif text-sm uppercase font-semibold tracking-wide">
+              Ask Eka
+            </span>
           </div>
           <div className="flex items-center gap-1">
             {messages.length > 0 && (
@@ -68,10 +87,9 @@ const MiniChat = ({ mode }) => {
                 onClick={handleRestartChat}
                 disabled={isLoading}
                 className={`
-                  p-1.5 rounded-full transition-colors
-                  hover:bg-accent/10
+                  p-1.5 border-2 border-charcoal transition-colors duration-50
+                  hover:bg-red-500 hover:text-cream
                   disabled:opacity-50 disabled:cursor-not-allowed
-                  ${theme.subText}
                 `}
                 title="New chat"
               >
@@ -80,35 +98,36 @@ const MiniChat = ({ mode }) => {
             )}
             <button
               onClick={() => setIsOpen(false)}
-              className={`p-1.5 rounded-full transition-colors hover:bg-accent/10 ${theme.subText}`}
+              className={`p-1.5 border-2 border-charcoal transition-colors duration-50 hover:bg-red-500 hover:text-cream`}
             >
               <X size={16} />
             </button>
           </div>
         </div>
 
-        {/* Messages Area */}
         <div className="flex-1 overflow-y-auto overscroll-contain p-4 space-y-3">
           {messages.length === 0 ? (
-            /* Empty State */
             <div className={`flex flex-col items-center justify-center h-full ${theme.subText}`}>
-              <MessageCircle size={32} strokeWidth={1} className="mb-3 opacity-30" />
-              <p className="font-sans text-xs text-center mb-4">
-                Ask about experience, skills, or projects
-              </p>
+              <div className="bauhaus-idle mb-4" aria-label="System idle">
+                <span className="bauhaus-idle__red" />
+                <span className="bauhaus-idle__blue" />
+                <span className="bauhaus-idle__yellow">
+                  <span className="bauhaus-idle__label">
+                    System idle.
+                    <br />
+                    Enter prompt.
+                  </span>
+                </span>
+                <span className="bauhaus-idle__dot" />
+                <span className="bauhaus-idle__ring" />
+              </div>
               <div className="flex flex-wrap justify-center gap-1.5">
                 {STARTER_QUESTIONS.map((q, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleSend(q)}
                     disabled={isLoading}
-                    className={`
-                      px-2.5 py-1 rounded-full text-2xs font-sans
-                      border transition-all duration-300
-                      hover:border-accent hover:text-accent
-                      disabled:opacity-50 disabled:cursor-not-allowed
-                      ${theme.borderSoft} ${theme.text}
-                    `}
+                    className={chipClass}
                   >
                     {q}
                   </button>
@@ -116,7 +135,6 @@ const MiniChat = ({ mode }) => {
               </div>
             </div>
           ) : (
-            /* Message Bubbles */
             <>
               {messages.map((message, idx) => {
                 const content = getMessageContent(message);
@@ -125,22 +143,21 @@ const MiniChat = ({ mode }) => {
                 return (
                   <div
                     key={message.id || idx}
-                    className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    className={`flex bauhaus-snap ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
                       className={`
-                        max-w-[85%] rounded-2xl px-3 py-2
+                        max-w-[85%] px-3 py-2
                         ${message.role === 'user' ? theme.userBubble : theme.assistantBubble}
-                        ${message.role === 'user' ? 'rounded-br-md' : 'rounded-bl-md'}
                       `}
                     >
                       {message.role === 'user' ? (
-                        <p className="font-sans text-xs">{content}</p>
+                        <p className="font-sans text-xs font-medium">{content}</p>
                       ) : (
                         <div className="font-sans text-xs streamdown-content">
                           <Streamdown
                             mode={isLoading && idx === messages.length - 1 ? 'streaming' : 'static'}
-                            caret="circle"
+                            caret="block"
                           >
                             {content}
                           </Streamdown>
@@ -151,16 +168,12 @@ const MiniChat = ({ mode }) => {
                 );
               })}
 
-              {/* Loading Indicator */}
               {showLoading && (
-                <div className="flex justify-start">
-                  <div className={`rounded-2xl rounded-bl-md px-3 py-2 ${theme.assistantBubble}`}>
-                    <div className="flex gap-0.5">
-                      <span className="w-1 h-1 rounded-full bg-current opacity-60 animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <span className="w-1 h-1 rounded-full bg-current opacity-60 animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <span className="w-1 h-1 rounded-full bg-current opacity-60 animate-bounce" style={{ animationDelay: '300ms' }} />
-                    </div>
-                  </div>
+                <div className="flex justify-start items-center gap-2 bauhaus-snap">
+                  <div className="bauhaus-think" aria-label="AI thinking" />
+                  <span className="font-sans text-2xs font-bold uppercase tracking-widest text-gray-500">
+                    Processing
+                  </span>
                 </div>
               )}
 
@@ -169,22 +182,15 @@ const MiniChat = ({ mode }) => {
           )}
         </div>
 
-        {/* Suggested Follow-up Prompts */}
         {!isLoading && getSuggestedPrompts(messages).length > 0 && (
-          <div className={`border-t ${theme.borderSoft} px-3 py-2 shrink-0`}>
+          <div className={`border-t-2 border-charcoal px-3 py-2 shrink-0`}>
             <div className="flex flex-wrap gap-1.5 justify-center">
               {getSuggestedPrompts(messages).map((s, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleSend(s)}
                   disabled={isLoading}
-                  className={`
-                    px-2.5 py-1 rounded-full text-2xs font-sans
-                    border transition-all duration-300
-                    hover:border-accent hover:text-accent
-                    disabled:opacity-50 disabled:cursor-not-allowed
-                    ${theme.borderSoft} ${theme.text}
-                  `}
+                  className={chipClass}
                 >
                   {s}
                 </button>
@@ -193,9 +199,8 @@ const MiniChat = ({ mode }) => {
           </div>
         )}
 
-        {/* Input Area */}
-        <form onSubmit={onSubmit} className={`border-t ${theme.borderSoft} p-3 shrink-0`}>
-          <div className={`flex items-center gap-2 rounded-full ${theme.inputBg} px-3 py-1.5`}>
+        <form onSubmit={onSubmit} className={`border-t-2 border-charcoal p-3 shrink-0`}>
+          <div className={`flex items-center gap-2 ${theme.inputBg} px-3 py-1.5`}>
             <input
               ref={inputRef}
               type="text"
@@ -213,10 +218,11 @@ const MiniChat = ({ mode }) => {
               type="submit"
               disabled={isLoading || !input.trim()}
               className={`
-                p-1.5 rounded-full transition-all duration-300
+                flex shrink-0 items-center justify-center bg-transparent
+                transition-opacity duration-50
                 disabled:opacity-30 disabled:cursor-not-allowed
-                hover:bg-accent hover:text-white
-                ${theme.text}
+                hover:opacity-70
+                ${theme.iconBlue}
               `}
               aria-label="Send message"
             >
@@ -226,34 +232,32 @@ const MiniChat = ({ mode }) => {
         </form>
       </div>
 
-      {/* Floating Action Button - hidden on mobile, visible on desktop */}
       <div
         className={`
-          hidden md:block fixed bottom-10 right-9 z-50
-          transition-opacity duration-500
+          hidden fixed bottom-10 right-9 z-50
+          transition-opacity duration-50
           ${isMainChatVisible ? 'opacity-0 pointer-events-none' : 'opacity-100'}
         `}
       >
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={`
-            w-14 h-14 rounded-full
+            w-14 h-14
             flex items-center justify-center
-            transition-all duration-300
-            bg-accent-light text-white cursor-pointer shadow-lg
-            hover:bg-accent hover:scale-110
-            active:scale-95
+            transition-colors duration-50
+            bg-transparent text-red-500 cursor-pointer border-0
+            hover:text-yellow-500
           `}
           aria-label={isOpen ? 'Close chat' : 'Open chat'}
         >
           <div className="relative w-6 h-6">
             <MessageCircle
               size={24}
-              className={`absolute inset-0 transition-all duration-300 ${isOpen ? 'opacity-0 rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'}`}
+              className={`absolute inset-0 transition-all duration-50 ${isOpen ? 'opacity-0 scale-0' : 'opacity-100 scale-100'}`}
             />
             <X
               size={24}
-              className={`absolute inset-0 transition-all duration-300 ${isOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-0'}`}
+              className={`absolute inset-0 transition-all duration-50 ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}
             />
           </div>
         </button>

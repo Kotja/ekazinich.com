@@ -128,6 +128,66 @@ Achieving the "Zero-Admin" State. Redesigned the service model to eliminate manu
 
 ---
 
+## Visa Rights & Workforce Matching Platform
+
+**Overview:** SpringBoard — a workforce-matching product for high-skilled international professionals and employers covering parental or sick leave. Makes work-rights duration visible and handovers structured.
+
+**Skills:** Product Design, Hackathon, Accessibility
+
+### The Challenge
+High-skilled international professionals face unnecessary friction tracking work rights, while employers struggle to manage smooth short-term contract handovers. Visa conditions are dense and time-bound. Leave coverage is urgent. Both sides need clarity at the moment of highest stress.
+
+### Eka's Role
+Lead Product Designer / Co-founder. 1st Place Winner at the Cremorne Digital Hub Vibe-a-thon. Owned product direction, the Visa Clock concept, handover workflows, and rapid validation under hackathon constraints.
+
+### Process & Approach
+The Visa Clock: visualising work-right durations as a readable timeline instead of legalese.
+
+Handover Workflows: a step-by-step system so knowledge transfer during leave coverage is structured, not improvised.
+
+Research & AI: synthesised friction points quickly and pressure-tested concepts against real user language.
+
+Craft & Accessibility: WCAG 2.2 contrast, clear hierarchy, and low cognitive load.
+
+### Impact & Results
+1st Place at the Cremorne Digital Hub Vibe-a-thon. A stress-free experience that gives workers and employers transparency over work rights and transition workflows.
+
+**Key Outcomes:**
+- **The Visa Clock:** Complex durations made visible without legal overload.
+- **Structured Handovers:** Leave coverage follows a shared, step-by-step path.
+- **1st Place:** Cremorne Digital Hub Vibe-a-thon.
+
+---
+
+## Custom Configurator: Instant Quotes
+
+**Overview:** A self-serve quote journey for Shed Bonanza. A visual HTML quote, upfront slab and permit costs, and a one-click deposit that logs back into Salesforce.
+
+**Skills:** Systems Thinking, End-to-End UX, Salesforce Integration
+
+### The Challenge
+Quoting a custom shed was a slow manual cycle. An online enquiry started days of phone calls, CRM updates, separate 3D models, and approval emails before an invoice existed. By the time customers saw a complete price, momentum was gone.
+
+### Eka's Role
+Senior Product Designer / UX Lead. Owned the path from enquiry to deposit: the quote letter, the payment handoff, and the Salesforce record.
+
+### Process & Approach
+In-depth, the work starts with the operational reality: hand-calculated slabs and footings, a chase of calls and texts, then a static PDF and a closed-lost lead. Those formulas, including footing counts such as (Length / 4 + 1) × 2 + 4 + 2 × roller doors, were moved into backend calculations.
+
+An internal generator reads a Salesforce Opportunity ID and assembles a personalised HTML quote. A first prototype explored the opening — the structure, a short welcome, the investment in one figure, and four marks of proof — as a layout direction. The quote carries dimensions, slab and permit costs, a milestone tracker, and a secure deposit link. The quote document logs back onto the Opportunity.
+
+Impact mode shows the customer-facing result. In-depth mode shows the generator, the template logic, and the formula translation.
+
+### Impact & Results
+The sales cycle moved from days of follow-ups to a quote the buyer can review and pay in one session.
+
+**Key Outcomes:**
+- **Faster Deals:** Immediate quote review and approval.
+- **Transparent Pricing:** Slab and permit costs are visible before commitment.
+- **Fewer Lost Leads:** The multi-touch chase is no longer the path to a price.
+
+---
+
 `;
 
 export const EKA_CONTEXT = `

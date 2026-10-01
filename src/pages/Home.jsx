@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cvFile from '../assets/Katerina (Eka) Zinich Product designer CV.pdf';
 import {
@@ -19,129 +19,126 @@ import AskChat from '../components/AskChat';
 import { getTheme } from '../theme';
 
 // --- SUB-COMPONENT: PROJECT ITEM ---
-const ProjectItem = ({ proj, idx, openProject, theme }) => {
+// Fixed 3-line titles — no orphan / hangover letters
+const CASE_TITLE_LINES = {
+  'Brand Scaling & Client Acquisition Platform': [
+    'Brand Scaling &',
+    'Client Acquisition',
+    'Platform',
+  ],
+  'Behavioural Product Strategy in Job Search': [
+    'Behavioural',
+    'Product Strategy',
+    'In Job Search',
+  ],
+  'Optimising B2B Workflow & Retention': ['Optimising B2B', 'Workflow &', 'Retention'],
+  'Service Automation: Zero-Touch Model': ['Service', 'Automation:', 'Zero-Touch Model'],
+  'Visa Rights & Workforce Matching Platform': ['Visa Rights &', 'Workforce', 'Matching'],
+  'Custom Configurator: Instant Quotes': ['Custom', 'Configurator:', 'Instant Quotes'],
+};
+
+const PhoneFace = ({ phone, className, loading }) => {
+  if (!phone.frame) {
+    return (
+      <img
+        src={phone.src}
+        alt={phone.alt}
+        width={phone.width}
+        height={phone.height}
+        loading={loading}
+        className={`hero-phone ${className}`}
+      />
+    );
+  }
+
+  return (
+    <span className={`hero-phone hero-phone-shell ${className}`}>
+      <img
+        src={phone.src}
+        alt={phone.alt}
+        width={phone.width}
+        height={phone.height}
+        loading={loading}
+        className="hero-phone-screen"
+      />
+    </span>
+  );
+};
+
+const HeroCard = ({ proj, idx, openProject, isWandering }) => {
   const videoRef = useRef(null);
-  const displayTitle = proj.title;
+  const titleLines = CASE_TITLE_LINES[proj.title] || [proj.title];
+  const side = idx % 2 === 0 ? 'hero-card-left' : 'hero-card-right';
+  const clip = proj.heroVideo || proj.video;
+  const phones = proj.heroPhones;
+  const cover = proj.heroScreen || proj.images?.[0];
 
-  const geometricConfig = [
-    {
-      front: 'rounded-full',
-      back: 'rounded-none',
-      gradient:
-        'linear-gradient(to bottom, var(--color-gradient-gold-dark), var(--color-gradient-gold-light))',
-      className: 'lg:-mt-16',
-      mobileMargin: 'ml-[3rem] mt-[3rem]',
-      frameMobileMargin: '-ml-4 -mt-4',
-      desktopMargin: 'lg:ml-10 lg:mt-10',
-      frameDesktopMargin: '',
-      textPos: 'items-start justify-start text-left pl-3 pt-3',
-    }, // TL
-    {
-      front: 'rounded-none',
-      back: 'rounded-full',
-      gradient:
-        'linear-gradient(to bottom, var(--color-gradient-orange-light), var(--color-gradient-orange-dark))',
-      className: 'lg:translate-y-10',
-      mobileMargin: 'ml-0 mt-0',
-      frameMobileMargin: 'ml-14 mt-[94px]',
-      desktopMargin: 'lg:ml-5 lg:-mt-4',
-      frameDesktopMargin: 'lg:ml-14 lg:mt-[4.5rem] lg:translate-x-4',
-      textPos: 'items-end justify-end text-right pb-10 pr-12',
-      titleContainer: 'absolute -bottom-20 -right-10 w-64 text-right z-20',
-      titleStyle: 'font-sans text-2xl leading-tight',
-    }, // TR
-    {
-      front: 'rounded-none',
-      back: 'rounded-none',
-      gradient:
-        'linear-gradient(to bottom, var(--color-gradient-orange-dark), var(--color-gradient-orange-light))',
-      className: '',
-      mobileMargin: 'ml-10 mt-0',
-      frameMobileMargin: 'mt-16',
-      desktopMargin: 'lg:ml-10 lg:mt-0',
-      frameDesktopMargin: 'lg:mt-16',
-      textPos: 'items-end justify-start text-left pl-4 pb-4',
-    }, // BL
-    {
-      front: 'rounded-full',
-      back: 'rounded-none',
-      gradient:
-        'linear-gradient(to bottom, var(--color-gradient-gold-light), var(--color-gradient-gold-dark))',
-      className: 'lg:translate-y-36',
-      mobileMargin: 'ml-0 mt-0',
-      frameMobileMargin: 'ml-10 mt-16',
-      desktopMargin: 'lg:ml-0 lg:mt-0',
-      frameDesktopMargin: 'lg:ml-10 lg:mt-16',
-      textPos: 'items-end justify-end text-right pr-4 pb-4',
-    }, // BR
-  ];
-
-  const config = geometricConfig[idx];
-
-  let orderClass = '';
-  if (idx === 0) orderClass = 'order-1';
-  if (idx === 1) orderClass = 'order-3 md:order-2';
-  if (idx === 2) orderClass = 'order-2 md:order-3';
-  if (idx === 3) orderClass = 'order-4';
-
-  const handleMouseEnter = () => {
-    if (proj.video && videoRef.current) {
-      videoRef.current.play().catch(() => {});
-    }
+  const playClip = () => {
+    videoRef.current?.play().catch(() => {});
   };
 
-  const handleMouseLeave = () => {
-    if (proj.video && videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0; // Reset to start
-    }
+  const resetClip = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.pause();
+    video.currentTime = 0;
   };
 
   return (
-    <div
-      className={`relative grid grid-cols-1 grid-rows-1 w-fit h-fit group cursor-pointer ${config.className} ${orderClass}`}
+    <button
+      type="button"
+      className={`hero-card ${side}`}
       onClick={() => openProject(proj)}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={playClip}
+      onMouseLeave={resetClip}
+      onFocus={playClip}
+      onBlur={resetClip}
     >
-      {/* Back Frame */}
-      <div
-        className={`col-start-1 row-start-1 w-48 h-48 lg:w-[230px] lg:h-[230px] relative border ${theme.borderSolid} ${config.back} flex ${config.textPos} transition-colors duration-500 group-hover:border-accent z-0 ${config.frameMobileMargin || ''} ${config.frameDesktopMargin || ''}`}
-      >
-        <span
-          className={`font-sans text-sm ${theme.text} leading-tight max-w-[95%] break-words text-balance`}
-        >
-          {displayTitle}
-        </span>
-      </div>
-
-      {/* Front Shape */}
-      <div
-        className={`col-start-1 row-start-1 w-48 h-48 lg:w-[230px] lg:h-[230px] relative ${config.front} overflow-hidden shadow-lg transition-transform duration-500 group-hover:scale-95 z-10 bg-white ${config.mobileMargin} ${config.desktopMargin}`}
-      >
-        {/* Video - Visible on Mobile (Static First Frame) & Desktop (Hover Play) */}
-        {proj.video ? (
-          <video
-            ref={videoRef}
-            src={`${proj.video}#t=0.001`}
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className="w-full h-full object-cover transition-all duration-500 grayscale md:grayscale group-hover:grayscale-0"
-          />
-        ) : (
-          <img
-            src={proj.images[0]}
-            alt={displayTitle}
+      {phones?.length >= 2 ? (
+        <span className="hero-phone-stage">
+          <span className="hero-phone-second-wrap">
+            <PhoneFace phone={phones[1]} className="hero-phone-second" />
+          </span>
+          <PhoneFace
+            phone={phones[0]}
+            className="hero-phone-first"
             loading={idx > 1 ? 'lazy' : 'eager'}
-            width="800"
-            height="600"
-            className="w-full h-full object-cover transition-all duration-500 grayscale md:grayscale group-hover:grayscale-0"
           />
-        )}
-      </div>
-    </div>
+        </span>
+      ) : (
+        <span className={`hero-screen${proj.heroFrame === 'wide' ? ' hero-screen-wide' : ''}`}>
+          <span className="hero-screen-track">
+            {cover && (
+              <img
+                src={cover}
+                alt=""
+                width="800"
+                height="500"
+                loading={idx > 1 ? 'lazy' : 'eager'}
+                className={`hero-screen-still${proj.placeholder ? ' is-placeholder' : ''}`}
+              />
+            )}
+          </span>
+          {clip ? (
+            <video
+              ref={videoRef}
+              className="hero-screen-video"
+              src={clip}
+              poster={cover}
+              muted
+              loop
+              playsInline
+              preload="metadata"
+            />
+          ) : null}
+        </span>
+      )}
+      <span className={`hero-card-copy ${isWandering ? 'text-cream' : 'text-charcoal'}`}>
+        {titleLines.map((line) => (
+          <span key={line}>{line}</span>
+        ))}
+      </span>
+    </button>
   );
 };
 
@@ -153,6 +150,15 @@ const Home = ({ mode, scrollToSection }) => {
   const [isSending, setIsSending] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
   const [showCV, setShowCV] = useState(false);
+  const heroProjects = [...PROJECTS];
+  const swapHeroSlots = (firstId, secondId) => {
+    const first = heroProjects.findIndex((p) => p.id === firstId);
+    const second = heroProjects.findIndex((p) => p.id === secondId);
+    if (first === -1 || second === -1) return;
+    [heroProjects[first], heroProjects[second]] = [heroProjects[second], heroProjects[first]];
+  };
+  swapHeroSlots(3, 6);
+  swapHeroSlots(0, 5);
 
   // --- THEME ENGINE ---
   const isWandering = mode === 'wandering';
@@ -262,16 +268,16 @@ const Home = ({ mode, scrollToSection }) => {
 
       <section
         id="project-section"
-        className="min-h-[100dvh] w-full flex flex-col lg:flex-row relative pt-20 md:pt-0 max-w-screen-2xl mx-auto"
+        className="min-h-[100dvh] w-full flex flex-col min-[1440px]:block relative pt-20 md:pt-0 max-w-screen-2xl mx-auto"
       >
-        {/* Left Column: Text */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 md:px-24 relative z-20">
-          <div>
+        {/* Hero text: stacked until xl, then the centre of the ring */}
+        <div className="hero-ring-copy w-full flex flex-col justify-center px-6 md:px-16 relative z-20 overflow-visible">
+          <div className="overflow-visible pr-4 min-[1440px]:pr-0">
             {currentWords.map((word, i) => (
               <h1
                 key={word}
-                className="font-serif text-display opacity-0 animate-fade-word-in"
-                style={{ animationDelay: `${i * 80}ms` }}
+                className="font-serif hero-display opacity-0 animate-fade-word-in"
+                style={{ '--word-delay': `${i * 80}ms` }}
               >
                 {word}
               </h1>
@@ -279,22 +285,21 @@ const Home = ({ mode, scrollToSection }) => {
           </div>
 
           <p
-            className={`mt-8 md:mt-12 font-sans text-xs md:text-sm tracking-widest uppercase animate-fade-in-up ${theme.subText}`}
+            className={`mt-8 md:mt-12 min-[1440px]:mt-8 font-sans text-xs md:text-sm tracking-widest uppercase font-medium animate-fade-in-up ${theme.subText}`}
           >
             Strategic design that works for the user and the bottom line.
           </p>
         </div>
 
-        {/* Right Column: Geometric Project Navigation */}
-        <div className="w-full lg:w-1/2 grid grid-cols-1 lg:grid-cols-2 gap-20 md:gap-8 p-[10px] md:pr-36 lg:-ml-8 relative z-20 mt-12 md:mt-24 lg:mt-0 content-center justify-items-center">
-          {PROJECTS.slice(0, 4).map((proj, idx) => (
-            <ProjectItem
+        {/* Product screens around the hero. Titles sit beside the cards — no title blocks. */}
+        <div className="w-full min-[1440px]:contents grid grid-cols-1 min-[1040px]:grid-cols-2 gap-10 px-6 md:px-12 py-8 relative z-20 mt-10 min-[1440px]:mt-0 content-center justify-items-center">
+          {heroProjects.map((proj, idx) => (
+            <div
               key={proj.id}
-              proj={proj}
-              idx={idx}
-              openProject={openProject}
-              theme={theme}
-            />
+              className={`hero-card-slot hero-card-slot-${idx} flex justify-center`}
+            >
+              <HeroCard proj={proj} idx={idx} openProject={openProject} isWandering={isWandering} />
+            </div>
           ))}
         </div>
 
@@ -306,7 +311,7 @@ const Home = ({ mode, scrollToSection }) => {
         {/* Scroll Down Arrow */}
         <button
           onClick={() => scrollToSection('about-section')}
-          className="relative lg:absolute mt-16 lg:mt-0 bottom-auto lg:bottom-8 left-auto lg:left-1/2 translate-x-0 lg:-translate-x-1/2 self-center animate-bounce text-accent cursor-pointer hover:scale-110 transition-transform z-30"
+          className="relative lg:absolute mt-16 lg:mt-0 bottom-auto lg:bottom-6 left-auto lg:left-1/2 min-[1440px]:left-[var(--ring-cx)] translate-x-0 lg:-translate-x-1/2 self-center text-accent cursor-pointer hover:scale-110 transition-transform z-30"
           aria-label="Scroll to About"
         >
           <ArrowDown size={32} strokeWidth={1} />
@@ -319,21 +324,27 @@ const Home = ({ mode, scrollToSection }) => {
         className="min-h-[80vh] w-full flex flex-col md:flex-row items-center px-6 md:px-24 py-24 relative overflow-hidden max-w-screen-2xl mx-auto"
       >
         <div className="w-full md:w-1/2 pr-0 md:pr-12 md:pl-20 z-10 mb-12 md:mb-0">
-          <h2 className="font-serif text-5xl md:text-7xl mb-8">About</h2>
+          <h2 className="font-serif mb-8">About</h2>
           {mode === 'wandering' ? (
             <>
-              <p className={`font-sans text-lg leading-relaxed mb-4 max-w-md ${theme.subText}`}>
+              <p
+                className={`font-sans text-lg leading-relaxed mb-4 max-w-md font-normal ${theme.subText}`}
+              >
                 Hi, I'm Eka. I'm a Product Designer who believes the best solutions come from living
                 the problem yourself, or at least getting close enough to feel the friction.
               </p>
-              <p className={`font-sans text-lg leading-relaxed mb-4 max-w-md ${theme.subText}`}>
+              <p
+                className={`font-sans text-lg leading-relaxed mb-4 max-w-md font-normal ${theme.subText}`}
+              >
                 I'm fascinated by the invisible work: the research that uncovers what users can't
                 articulate, the priority battles that separate "must-haves" from "nice-to-haves,"
                 and the small design decisions that prevent cognitive overload. I don't just want to
                 make things look good; I want to understand why someone would abandon a flow at 2am,
                 or why they'd trust one interface over another.
               </p>
-              <p className={`font-sans text-lg leading-relaxed mb-6 max-w-md ${theme.subText}`}>
+              <p
+                className={`font-sans text-lg leading-relaxed mb-6 max-w-md font-normal ${theme.subText}`}
+              >
                 My process starts with validation: Does this problem actually exist? Is solving it
                 worth the cost? From there, I involve technical teams early, treat constraints as
                 creative challenges, and measure outcomes obsessively. When something fails, I don't
@@ -341,7 +352,9 @@ const Home = ({ mode, scrollToSection }) => {
               </p>
             </>
           ) : (
-            <p className={`font-sans text-lg leading-relaxed mb-6 max-w-md ${theme.subText}`}>
+            <p
+              className={`font-sans text-lg leading-relaxed mb-6 max-w-md font-normal ${theme.subText}`}
+            >
               Hi, I'm Eka. I'm a Product Designer who asks "why are we building this?" before
               opening Figma. I validate problems through research, prioritize ruthlessly for MVPs,
               and measure success through real user behavior: heatmaps, session recordings, and task
@@ -349,48 +362,67 @@ const Home = ({ mode, scrollToSection }) => {
               business.
             </p>
           )}
-          <p className={`font-sans text-sm ${theme.subText} border-l-2 border-accent pl-4 italic`}>
+          <p
+            className={`font-sans text-sm font-medium ${theme.subText} border-l-[2px] border-accent pl-4 italic`}
+          >
             "Design is intelligence made visible."
           </p>
         </div>
         <div className="w-full md:w-1/2 mt-12 md:mt-0 relative flex justify-center">
-          <div className={`w-64 h-80 border relative shadow-lg ${theme.borderSolid}`}>
-            {/* Back offset frame — theme-driven colour, matches project frames */}
-            <div
-              aria-hidden="true"
-              className={`border transition-colors duration-500 ${theme.borderSolid}`}
-              style={{
-                position: 'absolute',
-                inset: 0,
-                transform: 'translate(16px, -16px)',
-                zIndex: 0,
-                pointerEvents: 'none',
-              }}
-            />
-            <div className="absolute inset-0 bg-gray-200 z-10 overflow-hidden">
+          {/* Bauhaus geometric composition around portrait */}
+          <div className="relative w-72 h-[22rem]">
+            {/* Yellow portrait block */}
+            <div className="absolute left-6 top-6 w-64 h-80 overflow-hidden z-10 about-portrait-block">
               <img
                 src={profileImage}
                 alt="Eka Profile"
                 width="300"
                 height="400"
                 loading="lazy"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-top"
               />
             </div>
+
+            {/* Blue rectangle accent */}
+            <div className="absolute left-0 top-0 w-16 h-16 bg-blue-500 z-0" aria-hidden="true" />
+            {/* Red circle */}
             <div
-              className={`absolute -bottom-4 -right-4 w-24 h-24 border rounded-full flex items-center justify-center z-10 
-                                ${theme.borderSolid} ${theme.bg} ${theme.text} cursor-pointer hover:scale-105 transition-transform duration-300 group`}
+              className="absolute -right-2 top-16 w-14 h-14 rounded-full bauhaus-circle bg-red-500 z-20"
+              aria-hidden="true"
+            />
+            {/* Black vertical line */}
+            <div
+              className="absolute left-2 top-20 w-[2px] h-40 bg-charcoal z-20"
+              aria-hidden="true"
+            />
+            {/* Dot cluster */}
+            <div className="absolute right-4 bottom-8 flex gap-2 z-20" aria-hidden="true">
+              <span className="w-3 h-3 rounded-full bauhaus-dot bg-charcoal" />
+              <span className="w-3 h-3 rounded-full bauhaus-dot bg-charcoal" />
+              <span className="w-3 h-3 rounded-full bauhaus-dot bg-blue-500" />
+              <span className="w-3 h-3 rounded-full bauhaus-dot bg-red-500" />
+            </div>
+            {/* Yellow square behind */}
+            <div
+              className="absolute -left-4 bottom-12 w-12 h-12 bg-yellow-500 z-0"
+              aria-hidden="true"
+            />
+
+            {/* CV — circle button */}
+            <button
+              type="button"
+              className={`about-cv absolute -bottom-2 -right-2 w-20 h-20 rounded-full bauhaus-circle flex items-center justify-center z-30
+                                border-[2px] border-charcoal bg-cream text-charcoal cursor-pointer bauhaus-interactive group`}
               onClick={() => setShowCV(true)}
+              aria-label="Open curriculum vitae"
             >
-              <span className="font-serif text-xl group-hover:text-accent transition-colors">
+              <span className="font-serif text-xl font-semibold group-hover:text-red-500 transition-colors duration-50">
                 CV
               </span>
-            </div>
+            </button>
           </div>
           {mode === 'wandering' && (
-            <>
-              <div className="absolute top-0 right-0 w-[2px] h-32 bg-accent animate-pulse" />
-            </>
+            <div className="absolute top-0 right-0 w-[2px] h-32 bg-red-500" aria-hidden="true" />
           )}
         </div>
       </section>
@@ -403,7 +435,7 @@ const Home = ({ mode, scrollToSection }) => {
         id="contact-section"
         className="min-h-[60vh] w-full flex flex-col justify-center items-center px-6 md:px-24 pt-32 pb-40 md:pb-24 bg-charcoal text-cream"
       >
-        <h2 className="font-serif text-5xl md:text-7xl mb-12 text-center">Let's Connect</h2>
+        <h2 className="font-serif mb-12 text-center">Let's Connect</h2>
         <div className="flex flex-col md:flex-row gap-12 w-full max-w-4xl">
           <div className="flex-1">
             <form className="flex flex-col gap-6" onSubmit={handleFormSubmit}>
@@ -413,7 +445,7 @@ const Home = ({ mode, scrollToSection }) => {
                   placeholder="Name"
                   value={formState.name}
                   onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                  className={`w-full bg-transparent border-b py-3 focus:outline-none transition-colors text-cream
+                  className={`w-full bg-transparent border-b-[2px] py-3 focus:outline-none transition-colors text-cream
                       ${errors.name ? 'border-accent' : 'border-cream/30 focus:border-cream/60'}
                     `}
                 />
@@ -428,7 +460,7 @@ const Home = ({ mode, scrollToSection }) => {
                   placeholder="Email"
                   value={formState.email}
                   onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                  className={`w-full bg-transparent border-b py-3 focus:outline-none transition-colors text-cream
+                  className={`w-full bg-transparent border-b-[2px] py-3 focus:outline-none transition-colors text-cream
                       ${errors.email ? 'border-accent' : 'border-cream/30 focus:border-cream/60'}
                     `}
                 />
@@ -443,7 +475,7 @@ const Home = ({ mode, scrollToSection }) => {
                   rows="2"
                   value={formState.message}
                   onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                  className={`w-full bg-transparent border-b py-3 focus:outline-none transition-colors resize-none text-cream
+                  className={`w-full bg-transparent border-b-[2px] py-3 focus:outline-none transition-colors resize-none text-cream
                       ${errors.message ? 'border-accent' : 'border-cream/30 focus:border-cream/60'}
                     `}
                 ></textarea>
@@ -470,16 +502,16 @@ const Home = ({ mode, scrollToSection }) => {
                 {isSending ? 'Sending...' : 'Send Message'} {!isSending && <ArrowRight size={16} />}
               </button>
               {submitStatus === 'success' && (
-                <p className="text-sm mt-2 text-success">Message sent successfully!</p>
+                <p className="bauhaus-success text-sm mt-2">Message sent successfully!</p>
               )}
               {submitStatus === 'error' && (
-                <p className="text-sm mt-2 text-red-400">
+                <p className="bauhaus-error text-sm mt-2">
                   Failed to send. Please try again or email directly.
                 </p>
               )}
             </form>
           </div>
-          <div className="flex-1 flex flex-col justify-center gap-8 md:pl-12 border-l-0 md:border-l border-white/10">
+          <div className="flex-1 flex flex-col justify-center gap-8 md:pl-12 border-l-0 md:border-l-[2px] border-white/10">
             <div className="flex items-center gap-4">
               <a
                 href="mailto:ekazinich@gmail.com"
@@ -517,10 +549,10 @@ const Home = ({ mode, scrollToSection }) => {
       {/* CV Overlay */}
       {showCV && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-8">
-          <div className="relative w-full max-w-5xl h-[90vh] bg-white rounded-lg shadow-2xl flex flex-col overflow-hidden animate-fade-in-up">
+          <div className="relative w-full max-w-5xl h-[90vh] bg-cream border-[2px] border-charcoal flex flex-col overflow-hidden animate-snap-in">
             {/* Toolbar */}
-            <div className="flex items-center justify-between px-6 py-4 bg-charcoal text-cream border-b border-gray-700">
-              <h3 className="font-serif text-xl">Curriculum Vitae</h3>
+            <div className="flex items-center justify-between px-6 py-4 bg-charcoal text-cream border-b-[2px] border-charcoal">
+              <h3 className="font-serif">Curriculum Vitae</h3>
               <div className="flex items-center gap-4">
                 <a
                   href={cvFile}

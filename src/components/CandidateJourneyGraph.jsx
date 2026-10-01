@@ -185,20 +185,20 @@ const CandidateJourneyGraph = ({ theme }) => {
 
         {/* Candidate path lines with animation */}
         {candidates.map((candidate, index) => {
-          const pathLength = 500; // Approximate length for animation
           return (
             <path
               key={candidate.id}
               d={candidate.path}
               fill="none"
               stroke={candidate.color}
-              strokeWidth="2"
+              strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
+              className={`journey-path ${isVisible ? 'is-visible' : ''}`}
               style={{
-                strokeDasharray: pathLength,
-                strokeDashoffset: isVisible ? 0 : pathLength,
-                transition: `stroke-dashoffset ${1.5 + index * 0.2}s ease-out ${index * 0.15}s`,
+                '--path-length': 500,
+                '--path-duration': `${1.5 + index * 0.2}s`,
+                '--path-delay': `${index * 0.15}s`,
               }}
             />
           );
@@ -213,9 +213,10 @@ const CandidateJourneyGraph = ({ theme }) => {
                 cy="0"
                 r="4"
                 fill={candidate.color}
+                className={`journey-fade ${isVisible ? 'is-visible' : ''}`}
                 style={{
-                  opacity: isVisible ? 1 : 0,
-                  transition: `opacity 0.5s ease-out ${0.5 + index * 0.1}s`,
+                  '--fade-duration': '0.5s',
+                  '--fade-delay': `${0.5 + index * 0.1}s`,
                 }}
               />
               <text
@@ -224,9 +225,10 @@ const CandidateJourneyGraph = ({ theme }) => {
                 fontSize="8"
                 fill={isDark ? creamAlpha(80) : charcoalAlpha(80)}
                 fontFamily="var(--font-sans)"
+                className={`journey-fade ${isVisible ? 'is-visible' : ''}`}
                 style={{
-                  opacity: isVisible ? 1 : 0,
-                  transition: `opacity 0.5s ease-out ${0.5 + index * 0.1}s`,
+                  '--fade-duration': '0.5s',
+                  '--fade-delay': `${0.5 + index * 0.1}s`,
                 }}
               >
                 {candidate.label}
@@ -244,11 +246,10 @@ const CandidateJourneyGraph = ({ theme }) => {
             <g
               key={`annotation-${index}`}
               transform={`translate(${annotation.x}, ${annotation.y})`}
+              className={`journey-annotation ${shouldShow ? 'is-visible' : ''}`}
               style={{
-                opacity: shouldShow ? 1 : 0,
-                transition: annotation.showAlways
-                  ? `opacity 0.6s ease-out ${annotation.delay}s`
-                  : 'opacity 0.3s ease-in-out',
+                '--anno-duration': annotation.showAlways ? '0.6s' : '0.3s',
+                '--anno-delay': annotation.showAlways ? `${annotation.delay}s` : '0s',
               }}
             >
               <text
@@ -281,38 +282,12 @@ const CandidateJourneyGraph = ({ theme }) => {
                 strokeWidth="1.25"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                style={{
-                  opacity: 0.8,
-                  transition: 'opacity 0.3s ease-in-out',
-                }}
+                className="journey-scribble"
               />
             </g>
           </>
         )}
       </svg>
-
-      <style>{`
-                @keyframes fadeIn {
-                    to {
-                        opacity: 1;
-                    }
-                }
-                
-                @keyframes pulseCircle {
-                    0% {
-                        opacity: 0;
-                        transform: scale(0.8);
-                    }
-                    50% {
-                        opacity: 0.8;
-                        transform: scale(1.05);
-                    }
-                    100% {
-                        opacity: 0;
-                        transform: scale(0.8);
-                    }
-                }
-            `}</style>
     </div>
   );
 };

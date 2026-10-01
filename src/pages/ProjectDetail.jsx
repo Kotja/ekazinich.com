@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { PROJECTS } from '../data/projects';
 import brandChallengeAniOnWhite from '../assets/brand-challenge-ani-onwhite.webp';
 import brandChallengeAniOnBlack from '../assets/brand-challenge-ani-onblack.webp';
@@ -8,14 +8,51 @@ import CandidateJourneyGraph from '../components/CandidateJourneyGraph';
 import ProjectMeta from '../components/ProjectMeta';
 import { getTheme } from '../theme';
 
-// B2B friction simulator screenshots
-
-// B2B friction step screenshots (225×1024 tall screenshots, screen inside iPhone frame 234×511)
-// cover scale ≈ 1.04 → phone margins: sides 4.9%, top 2.45% (step_3 has 0% top)
 import b2bNewStep1 from '../assets/b2b_step_1.png';
 import b2bNewStep2 from '../assets/b2b_step_2.png';
 import b2bNewStep3 from '../assets/b2b_step_3.png';
 import b2bNewStep5 from '../assets/b2b_step_5.png';
+import b2bPieceAccountMenu from '../assets/B2B_pieces_account_menu.webp';
+import b2bPieceCreditPrice from '../assets/B2B_pieces_available_credit_price.webp';
+import b2bPieceCreditToggle from '../assets/B2B_pieces_available_credit_toggle.webp';
+import b2bPieceBaseInput from '../assets/B2B_pieces_base_input.webp';
+import b2bPieceGreetingEdit from '../assets/B2B_pieces_greeting_edit.webp';
+import b2bPieceQuickAccess from '../assets/B2B_pieces_quick_access.webp';
+import b2bPieceTotalCredit from '../assets/B2B_pieces_total_credit.webp';
+import b2bPieceUnpaidInvoices from '../assets/B2B_pieces_unpaid_invoices_menu.webp';
+
+
+// Keep the last two words of each sentence on one line.
+const keepSentenceEnd = (text) => {
+  if (typeof text !== 'string') return text;
+  const glue = (segment) => {
+    const match = segment.match(/^([\s\S]*\S) (\S+)\s*$/);
+    if (!match) return segment;
+    return `${match[1]}\u00A0${match[2]}`;
+  };
+  return text
+    .split(/(\n+)/)
+    .map((part) => {
+      if (!part.trim() || part.includes('\n')) return part;
+      return part
+        .split(/(?<=[.!?…])\s+/)
+        .map(glue)
+        .join(' ');
+    })
+    .join('');
+};
+
+// Titles that name a friction or a challenge stay red. Solution titles do not.
+const isProblemTitle = (text) => {
+  if (typeof text !== 'string') return false;
+  if (/zero[-\s]?friction|frictionless/i.test(text)) return false;
+  return /\b(frictions?|challenges?)\b/i.test(text);
+};
+
+// B2B friction simulator screenshots
+
+// B2B friction step screenshots (225×1024 tall screenshots, screen inside iPhone frame 234×511)
+// cover scale ≈ 1.04 → phone margins: sides 4.9%, top 2.45% (step_3 has 0% top)
 
 // Screen: 203×447px (body 229×473). Phone body=203px fills screen exactly at native res.
 // X = -phoneLeft flushes phone left edge to screen x=0.
@@ -32,14 +69,6 @@ const B2B_STEP_IMAGES = [
 ];
 
 // B2B UI component pieces
-import b2bPieceAccountMenu from '../assets/B2B_pieces_account_menu.webp';
-import b2bPieceCreditPrice from '../assets/B2B_pieces_available_credit_price.webp';
-import b2bPieceCreditToggle from '../assets/B2B_pieces_available_credit_toggle.webp';
-import b2bPieceBaseInput from '../assets/B2B_pieces_base_input.webp';
-import b2bPieceGreetingEdit from '../assets/B2B_pieces_greeting_edit.webp';
-import b2bPieceQuickAccess from '../assets/B2B_pieces_quick_access.webp';
-import b2bPieceTotalCredit from '../assets/B2B_pieces_total_credit.webp';
-import b2bPieceUnpaidInvoices from '../assets/B2B_pieces_unpaid_invoices_menu.webp';
 
 // Each piece: src, pixel position (top/right/bottom/left), rotation, display width.
 // Positions are tuned so nothing overlaps the central text safe-zone (~middle 45% of width).
@@ -497,9 +526,11 @@ const B2BScatteredPieces = ({ children }) => {
   );
 };
 
-const BoomerangVideo = ({ src }) => {
+
+const BoomerangVideo = ({ src, poster }) => {
   const videoRef = React.useRef(null);
   const cycleCount = React.useRef(0);
+  const [ready, setReady] = React.useState(false);
 
   React.useEffect(() => {
     const video = videoRef.current;
@@ -537,7 +568,238 @@ const BoomerangVideo = ({ src }) => {
   }, [src]);
 
   return (
-    <video ref={videoRef} src={src} muted playsInline className="w-full h-full object-cover" />
+    <div className="relative w-full h-full">
+      {poster && (
+        <img
+          src={poster}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      )}
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        muted
+        playsInline
+        onLoadedData={() => setReady(true)}
+        className={`relative w-full h-full object-cover transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}
+      />
+    </div>
+  );
+};
+
+// Starts on its own and keeps looping. A click pauses it; another click plays it again.
+// No native controls — those paint a dark bar over the picture.
+const HoverTapVideo = ({ src, poster }) => {
+  const videoRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.play().catch(() => {});
+  }, [src]);
+
+  const toggle = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) video.play().catch(() => {});
+    else video.pause();
+  };
+
+  return (
+    <div className="cursor-pointer" onClick={toggle}>
+      <video
+        ref={videoRef}
+        className="w-full h-auto block bg-transparent"
+        src={src}
+        poster={poster}
+        autoPlay
+        muted
+        playsInline
+        loop
+        preload="auto"
+      />
+    </div>
+  );
+};
+
+// Knock out only the white padding around a device — not the screen UI —
+// by flooding near-white pixels inward from the frame edges.
+const buildEdgeWhiteMask = (imageData, threshold = 248, dilate = 2) => {
+  const { width, height, data } = imageData;
+  const total = width * height;
+  const keep = new Uint8Array(total);
+  keep.fill(1);
+
+  const isWhite = (i) => {
+    const o = i * 4;
+    return data[o] >= threshold && data[o + 1] >= threshold && data[o + 2] >= threshold;
+  };
+
+  const stack = [];
+  const visit = (x, y) => {
+    if (x < 0 || y < 0 || x >= width || y >= height) return;
+    const i = y * width + x;
+    if (!keep[i] || !isWhite(i)) return;
+    keep[i] = 0;
+    stack.push(i);
+  };
+
+  for (let x = 0; x < width; x++) {
+    visit(x, 0);
+    visit(x, height - 1);
+  }
+  for (let y = 0; y < height; y++) {
+    visit(0, y);
+    visit(width - 1, y);
+  }
+
+  while (stack.length) {
+    const i = stack.pop();
+    const x = i % width;
+    const y = (i - x) / width;
+    visit(x - 1, y);
+    visit(x + 1, y);
+    visit(x, y - 1);
+    visit(x, y + 1);
+  }
+
+  if (dilate > 0) {
+    const next = keep.slice();
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        if (keep[y * width + x]) continue;
+        for (let dy = -dilate; dy <= dilate; dy++) {
+          for (let dx = -dilate; dx <= dilate; dx++) {
+            const nx = x + dx;
+            const ny = y + dy;
+            if (nx < 0 || ny < 0 || nx >= width || ny >= height) continue;
+            next[ny * width + nx] = 0;
+          }
+        }
+      }
+    }
+    return next;
+  }
+
+  return keep;
+};
+
+// Officeworks process clip already includes the device chrome.
+const DeviceVideo = ({ src, knockoutWhite = false }) => {
+  const videoRef = React.useRef(null);
+  const canvasRef = React.useRef(null);
+  const maskRef = React.useRef(null);
+  const rafRef = React.useRef(null);
+  const playingRef = React.useRef(false);
+
+  const handleClick = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.paused ? v.play().catch(() => {}) : v.pause();
+  };
+
+  React.useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (!knockoutWhite) {
+      video.play().catch(() => {});
+      return undefined;
+    }
+
+    const canvas = canvasRef.current;
+    if (!canvas) return undefined;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+    const draw = () => {
+      if (!playingRef.current || !video.videoWidth) {
+        rafRef.current = requestAnimationFrame(draw);
+        return;
+      }
+
+      if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        maskRef.current = null;
+      }
+
+      ctx.drawImage(video, 0, 0);
+      const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const pixels = frame.data;
+      const cornerIsWhite = pixels[0] >= 248 && pixels[1] >= 248 && pixels[2] >= 248;
+
+      if (!maskRef.current && cornerIsWhite) {
+        maskRef.current = buildEdgeWhiteMask(frame);
+      }
+
+      const mask = maskRef.current;
+      if (mask) {
+        for (let i = 0; i < mask.length; i++) {
+          if (!mask[i]) pixels[i * 4 + 3] = 0;
+        }
+        ctx.putImageData(frame, 0, 0);
+      }
+      rafRef.current = requestAnimationFrame(draw);
+    };
+
+    const onPlay = () => {
+      playingRef.current = true;
+      if (!rafRef.current) rafRef.current = requestAnimationFrame(draw);
+    };
+    const onPause = () => {
+      playingRef.current = false;
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    };
+
+    video.addEventListener('play', onPlay);
+    video.addEventListener('pause', onPause);
+    video.addEventListener('loadeddata', onPlay);
+    video.play().catch(() => {});
+
+    return () => {
+      playingRef.current = false;
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+      maskRef.current = null;
+      video.removeEventListener('play', onPlay);
+      video.removeEventListener('pause', onPause);
+      video.removeEventListener('loadeddata', onPlay);
+    };
+  }, [src, knockoutWhite]);
+
+  const frameClass =
+    'max-h-[min(80vh,720px)] w-auto max-w-full object-contain bg-transparent cursor-pointer';
+
+  if (!knockoutWhite) {
+    return (
+      <video
+        ref={videoRef}
+        src={src}
+        muted
+        loop
+        playsInline
+        onClick={handleClick}
+        className={frameClass}
+      />
+    );
+  }
+
+  return (
+    <div className="relative inline-block max-h-[min(80vh,720px)] max-w-full bg-transparent">
+      <video
+        ref={videoRef}
+        src={src}
+        muted
+        loop
+        playsInline
+        className="transparent-video__source"
+      />
+      <canvas ref={canvasRef} onClick={handleClick} className={frameClass} />
+    </div>
   );
 };
 
@@ -592,7 +854,7 @@ const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentInd
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center animate-fade-in ${isWandering ? 'bg-charcoal/95' : 'bg-cream/95'} ${zoom > 1 ? 'overflow-auto cursor-zoom-out' : 'p-4 cursor-default'}`}
+      className={`fixed inset-0 z-50 flex items-center justify-center animate-fade-in ${isBrandChallengeSrc(currentSrc) ? (isWandering ? 'bg-charcoal' : 'bg-cream') : isWandering ? 'bg-charcoal/95' : 'bg-cream/95'} ${zoom > 1 ? 'overflow-auto cursor-zoom-out' : 'p-4 cursor-default'}`}
       onClick={onClose}
     >
       <button
@@ -606,10 +868,10 @@ const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentInd
       </button>
 
       <div
-        className={`relative transition-all duration-75 flex items-center justify-center ${zoom > 1 ? 'min-h-full py-10' : 'w-[80vw] h-[80vh]'}`}
+        className={`relative transition-all duration-75 flex items-center justify-center lightbox-stage ${zoom > 1 ? 'min-h-full py-10' : ''}`}
         style={{
-          width: zoom > 1 ? `${zoom * 100}%` : window.innerWidth < 768 ? '90vw' : '80vw',
-          height: zoom > 1 ? `${zoom * 100}%` : '80vh',
+          '--lightbox-w': zoom > 1 ? `${zoom * 100}%` : window.innerWidth < 768 ? '90vw' : '80vw',
+          '--lightbox-h': zoom > 1 ? `${zoom * 100}%` : '80vh',
         }}
         onClick={(e) => {
           if (zoom > 1) e.stopPropagation();
@@ -662,71 +924,136 @@ const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentInd
             </div>
           </>
         )}
-        <img
-          src={currentSrc}
-          alt="Full Screen View"
-          draggable="false"
-          onClick={(e) => {
-            e.stopPropagation();
-            // Gradual stepped zoom on click: 1 -> 1.25 -> 1.5 ... -> 3 -> 1
-            setZoom((prev) => (prev >= 3 ? 1 : prev + 0.25));
-          }}
-          className={`shadow-2xl p-[30px] transition-all duration-300 w-full h-full object-contain ${zoom > 1 ? 'cursor-zoom-out' : 'cursor-zoom-in'} ${currentSrc.includes('brand-flow-chart') ? (currentSrc.includes('in-depth') ? 'bg-charcoal' : 'bg-cream') : ''}`}
-        />
+        {isBrandChallengeSrc(currentSrc) ? (
+          <div
+            className="challenge-lightbox-fit"
+            onClick={(e) => {
+              e.stopPropagation();
+              setZoom((prev) => (prev >= 3 ? 1 : prev + 0.25));
+            }}
+          >
+            <BrandChallengeFrame src={currentSrc} isWandering={isWandering} />
+          </div>
+        ) : (
+          <img
+            src={currentSrc}
+            alt="Full Screen View"
+            draggable="false"
+            onClick={(e) => {
+              e.stopPropagation();
+              // Gradual stepped zoom on click: 1 -> 1.25 -> 1.5 ... -> 3 -> 1
+              setZoom((prev) => (prev >= 3 ? 1 : prev + 0.25));
+            }}
+            className={` p-[30px] transition-all duration-300 w-full h-full object-contain ${zoom > 1 ? 'cursor-zoom-out' : 'cursor-zoom-in'} ${currentSrc.includes('brand-flow-chart') ? (currentSrc.includes('in-depth') ? 'bg-charcoal' : 'bg-cream') : ''}`}
+          />
+        )}
       </div>
     </div>
   );
 };
 
-// Challenge Image Component - Image display with hover animation swap and zoom functionality
+const BRAND_CHALLENGE_SRC = /brand-challenge-ani-on(black|white)/;
+
+const isBrandChallengeSrc = (src) => typeof src === 'string' && BRAND_CHALLENGE_SRC.test(src);
+
+// Notes baked into the photographer challenge image, in Playfair italic.
+// These sit on top and cover that type with Architects Daughter.
+const CHALLENGE_NOTES = [
+  { text: 'Troubling responsiveness', left: '37.8%', top: '0.7%', width: '27.2%', height: '3.8%' },
+  { text: 'Cognitive dissonance', left: '0.4%', top: '46.4%', width: '24%', height: '3.8%' },
+  // Stop short of the orange arrow that passes over the end of "Genres".
+  { text: 'Conflicting Genres', left: '11.2%', top: '52.55%', width: '21%', height: '3.5%' },
+  {
+    text: 'Hight interaction cost\nTouch tagrgets are\n<44px',
+    left: '70.8%',
+    top: '38.2%',
+    width: '25.6%',
+    height: '12.4%',
+  },
+  {
+    text: 'Unstructured\nTaxonomy',
+    left: '44.2%',
+    top: '75.9%',
+    width: '14.9%',
+    height: '7.7%',
+    onScreen: true,
+  },
+  { text: 'Archive model', left: '42.8%', top: '95.2%', width: '16.8%', height: '3.3%' },
+];
+
+const BrandChallengeFrame = ({ src, isWandering }) => {
+  const onDark = typeof src === 'string' ? src.includes('onblack') : isWandering;
+  const noteInk = onDark ? '#ffffff' : '#000000';
+  const notePaper = onDark ? '#000000' : '#ffffff';
+
+  return (
+    <div className={`challenge-frame relative w-full ${onDark ? 'bg-charcoal' : 'bg-cream'}`}>
+      <img
+        src={src}
+        alt="Annotated mobile site, showing where the old portfolio was hard to use"
+        draggable="false"
+        className="block w-full h-auto"
+      />
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        {CHALLENGE_NOTES.map((note) => (
+          <span
+            key={note.text}
+            className="font-architects absolute flex items-center justify-center text-center whitespace-pre-line"
+            style={{
+              left: note.left,
+              top: note.top,
+              width: note.width,
+              height: note.height,
+              color: note.onScreen ? '#000000' : noteInk,
+              background: note.onScreen ? '#ffffff' : notePaper,
+              fontSize: '1.75cqw',
+              lineHeight: 1.05,
+              overflow: 'hidden',
+            }}
+          >
+            {note.text}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Challenge image. Project 3 shows the original phone, and the notes on hover.
 const InteractiveChallengeImage = ({ src, isWandering, onImageClick, projectId }) => {
   const [isHovered, setIsHovered] = React.useState(false);
-  const [isMobileClicked, setIsMobileClicked] = React.useState(false);
-
-  // Determine which animation to show based on mode (project ID 3 is Brand project)
-  const hoverImage =
+  const [isTouchRevealed, setIsTouchRevealed] = React.useState(false);
+  const annotatedSrc =
     projectId === 3 ? (isWandering ? brandChallengeAniOnBlack : brandChallengeAniOnWhite) : null;
+  const showNotes = Boolean(annotatedSrc && (isHovered || isTouchRevealed));
 
   const handleClick = (e) => {
-    // Detect if device is touch-enabled (mobile/tablet)
-    const isTouchDevice = window.matchMedia('(hover: none)').matches;
-
-    if (isTouchDevice && projectId === 3) {
-      // Mobile/Tablet behavior
-      if (!isMobileClicked) {
-        // First click: Show animation, don't open lightbox
-        e.stopPropagation();
-        setIsMobileClicked(true);
-      } else {
-        // Second click: Open lightbox with animation image
-        onImageClick(hoverImage);
-      }
-    } else {
-      // Desktop behavior: Open lightbox directly with animation image (for Brand project)
-      if (projectId === 3 && hoverImage) {
-        onImageClick(hoverImage);
-      } else {
-        onImageClick(src);
-      }
+    const isTouch = window.matchMedia('(hover: none)').matches;
+    if (isTouch && annotatedSrc && !isTouchRevealed) {
+      e.stopPropagation();
+      setIsTouchRevealed(true);
+      return;
     }
+    onImageClick(showNotes ? annotatedSrc : src);
   };
-
-  // Determine which image to display
-  const displayImage = (isHovered || isMobileClicked) && hoverImage ? hoverImage : src;
 
   return (
     <div
-      className="w-full h-full min-h-[300px] bg-transparent cursor-zoom-in flex items-center justify-center"
+      className={`bg-transparent cursor-zoom-in ${annotatedSrc ? 'challenge-annotated mx-auto h-full w-full' : 'w-full'}`}
       onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <img
-        src={displayImage}
-        alt="Challenge Detail"
-        draggable="false"
-        className="w-full h-full object-contain transition-all duration-500"
-      />
+      {showNotes ? (
+        <BrandChallengeFrame src={annotatedSrc} isWandering={isWandering} />
+      ) : (
+        <img
+          src={src}
+          alt="Challenge Detail"
+          draggable="false"
+          className="block h-auto w-full object-contain md:h-full"
+        />
+      )}
     </div>
   );
 };
@@ -786,10 +1113,6 @@ const ProjectDetail = ({ mode }) => {
     };
   }, [selectedImage]);
 
-  const backToProjectList = () => {
-    navigate('/', { state: { scrollTo: 'project-section' } });
-  };
-
   const openProject = (proj) => {
     const newSlug = proj.title
       .toLowerCase()
@@ -803,44 +1126,27 @@ const ProjectDetail = ({ mode }) => {
 
   return (
     <div
-      className={`min-h-screen animate-fade-in relative flex flex-col ${theme.bg} pb-24 md:pb-0`}
+      className={`min-h-screen animate-fade-in relative flex flex-col ${theme.bg} pb-24 md:pt-20`}
     >
       <ProjectMeta project={project} slug={slug} />
-      {/* Top Bar Navigation */}
-      <div
-        className={`w-full px-6 py-6 flex justify-between items-center border-b ${theme.borderSoft}`}
-      >
-        <button
-          onClick={backToProjectList}
-          className={`flex items-center gap-2 text-sm uppercase tracking-widest hover:text-accent transition-colors ${theme.text}`}
-        >
-          <ArrowLeft size={16} /> Back
-        </button>
-        <button
-          onClick={() => navigate('/', { state: { scrollTo: 'contact-section' } })}
-          className={`text-sm uppercase tracking-widest hover:text-accent transition-colors ${theme.text}`}
-        >
-          Hire Me
-        </button>
-      </div>
 
       {/* Expanded Content Layout - WIDER CONTAINER for Hero, Text Constrained */}
       <div className="flex-1 w-full max-w-[1920px] mx-auto py-12 flex flex-col gap-20">
         {/* Header - Constrained */}
         <div className="w-full max-w-6xl mx-auto px-6 text-center max-w-3xl mb-8">
-          <h1 className={`font-serif text-4xl md:text-7xl mb-4 leading-tight ${theme.text}`}>
-            {project.title}
+          <h1 className={`font-serif mb-4 ${theme.text}`}>
+            {displayContent.headline || project.title}
           </h1>
-          {project.subtitle && (
+          {(displayContent.subtitle || project.subtitle) && (
             <p className={`font-serif text-lg md:text-2xl mb-6 ${theme.subText} opacity-70`}>
-              {project.subtitle}
+              {keepSentenceEnd(displayContent.subtitle || project.subtitle)}
             </p>
           )}
           <div className="flex justify-center gap-3 flex-wrap mb-6">
-            {project.tags.map((tag) => (
+            {(displayContent.tags || project.tags).map((tag) => (
               <span
                 key={tag}
-                className={`inline-block px-3 py-1 text-xs font-bold uppercase tracking-widest ${theme.tagBg}`}
+                className={`inline-block px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-tag ${theme.tagBg}`}
               >
                 {tag}
               </span>
@@ -850,68 +1156,82 @@ const ProjectDetail = ({ mode }) => {
 
         {/* Hero Image/Video - FULL WIDTH (Less Constraint) */}
         {project.video && (
-          <div
-            className={`w-full aspect-video overflow-hidden shadow-lg ${theme.imagePlaceholderBg}`}
-          >
-            <BoomerangVideo src={project.video} />
-          </div>
-        )}
-
-        {project.images && project.images[0] && (
-          <div
-            className={`w-full aspect-video md:max-h-[85vh] overflow-hidden shadow-lg ${theme.imagePlaceholderBg} cursor-zoom-in ${project.video ? 'hidden' : ''}`}
-            onClick={() => setSelectedImage(project.images[0])}
-          >
-            <img
-              src={project.images[0]}
-              alt="Hero"
-              draggable="false"
-              className="w-full h-full object-cover"
+          <div className={`w-full aspect-video overflow-hidden ${theme.imagePlaceholderBg}`}>
+            <BoomerangVideo
+              src={project.video}
+              poster={project.heroPoster === false ? undefined : project.images?.[0]}
             />
           </div>
         )}
 
+        {project.images && project.images[0] && !project.placeholder && (
+          <figure
+            className={`w-full ${project.video ? 'hidden' : ''} ${project.id === 6 ? 'max-w-6xl mx-auto px-6' : ''}`}
+          >
+            <div
+              className={`w-full overflow-hidden cursor-zoom-in ${project.id === 6 ? '' : `aspect-video md:max-h-[85vh] ${theme.imagePlaceholderBg}`}`}
+              onClick={() => setSelectedImage(project.images[0])}
+            >
+              <img
+                src={project.images[0]}
+                alt={project.heroAlt || 'Hero'}
+                draggable="false"
+                className={`w-full ${project.id === 6 ? 'h-auto object-contain' : 'h-full object-cover'}`}
+              />
+            </div>
+            {project.heroCaption && (
+              <figcaption
+                className={`mt-4 font-sans text-sm italic text-center max-w-2xl mx-auto ${theme.subText}`}
+              >
+                {keepSentenceEnd(project.heroCaption)}
+              </figcaption>
+            )}
+          </figure>
+        )}
+
         {/* Impact - Constrained */}
-        <div className="w-full max-w-5xl mx-auto px-6 text-center py-12">
-          <h3 className="font-sans text-sm font-bold uppercase tracking-[0.2em] text-gray-400 mb-8">
+        <div className="w-full max-w-5xl mx-auto px-6 text-center py-20">
+          <h3 className="font-sans text-sm font-bold uppercase tracking-[0.2em] text-gray-400 mb-12">
             The Solution Impact
           </h3>
 
           {typeof displayContent.impact === 'object' ? (
             <div className="flex flex-col items-center">
               <p
-                className={`font-serif text-2xl md:text-5xl leading-tight text-balance whitespace-pre-line ${theme.text} mb-12`}
+                className={`font-serif text-2xl md:text-5xl leading-tight text-balance whitespace-pre-line ${theme.text} mb-16`}
               >
-                {displayContent.impact.description}
+                {keepSentenceEnd(displayContent.impact.description)}
               </p>
 
               <div
-                className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mb-8`}
+                className={`w-full h-[2px] ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mb-12`}
               ></div>
 
-              <h4 className="font-sans text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">
+              <h4 className="font-sans text-xs font-bold uppercase tracking-[0.15em] text-accent mb-12">
                 {displayContent.impact.outcomesTitle || 'Key Outcome'}
               </h4>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:items-start">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-20 w-full max-w-4xl mx-auto md:items-start">
                 {displayContent.impact.outcomes &&
                   displayContent.impact.outcomes.map((outcome, i) => (
                     <div key={i} className="text-left flex flex-col gap-2">
                       <h5 className={`font-serif text-xl ${theme.text}`}>{outcome.title}</h5>
-                      <p className={`font-sans text-base ${theme.subText}`}>{outcome.desc}</p>
+                      <p className={`font-sans text-base ${theme.subText}`}>
+                        {keepSentenceEnd(outcome.desc)}
+                      </p>
                     </div>
                   ))}
               </div>
 
               <div
-                className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mt-12`}
+                className={`w-full h-[2px] ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mt-16`}
               ></div>
             </div>
           ) : (
             <p
               className={`font-serif text-2xl md:text-5xl leading-tight text-balance whitespace-pre-line ${theme.text}`}
             >
-              {displayContent.impact}
+              {keepSentenceEnd(displayContent.impact)}
             </p>
           )}
         </div>
@@ -922,25 +1242,24 @@ const ProjectDetail = ({ mode }) => {
             displayContent.challengeImage || (project.images && project.images[1]);
           return (
             <div
-              className={`w-full max-w-6xl mx-auto px-6 ${challengeImage ? 'md:flex md:gap-12 md:items-center' : 'grid grid-cols-1'}`}
+              className={`w-full mx-auto px-6 ${project.id === 3 ? 'max-w-[1400px] challenge-split' : 'max-w-6xl'} ${challengeImage ? 'md:flex md:gap-12 md:items-center' : 'grid grid-cols-1'}`}
             >
-              <div className="order-2 md:order-1 flex flex-col justify-center md:flex-1">
-                <h3 className="font-serif text-3xl mb-4 text-accent">The Challenge</h3>
+              <div
+                className={`order-2 md:order-1 flex flex-col justify-center md:flex-1 ${project.id === 3 ? 'md:max-w-[37.5rem]' : ''}`}
+              >
+                <h3 className="font-serif mb-4 text-red-500">
+                  {displayContent.challengeTitle || 'The Challenge'}
+                </h3>
                 <p
                   className={`font-sans text-lg leading-relaxed max-w-[600px] whitespace-pre-line ${theme.subText}`}
                 >
-                  {displayContent.challenge}
+                  {keepSentenceEnd(displayContent.challenge)}
                 </p>
               </div>
               {challengeImage && (
                 <div
                   className={
-                    project.id === 1 ? 'md:w-1/4 md:flex-shrink-0' : 'md:w-1/2 md:flex-shrink-0'
-                  }
-                  style={
-                    project.id === 1
-                      ? { filter: 'drop-shadow(0 24px 52px rgba(0,0,0,0.35))' }
-                      : undefined
+                    project.id === 3 ? 'challenge-split__figure' : 'md:w-1/2 md:flex-shrink-0'
                   }
                 >
                   <InteractiveChallengeImage
@@ -957,14 +1276,14 @@ const ProjectDetail = ({ mode }) => {
         })()}
 
         {/* Section 2: Role (Full Width Background, Constrained Content) */}
-        <div className={`w-full border-y border-accent-peach ${theme.projectSectionBg}`}>
+        <div className={`w-full border-y-[2px] border-accent-peach ${theme.projectSectionBg}`}>
           {isWandering ? (
             <div
               className={`max-w-6xl mx-auto px-6 py-12 ${displayContent.roleImage ? 'grid grid-cols-1 md:grid-cols-2 gap-12 items-center' : 'text-center'}`}
             >
               {displayContent.roleImage && (
                 <div
-                  className={`aspect-video overflow-hidden shadow-lg cursor-zoom-in ${theme.imagePlaceholderBg} order-2 md:order-1`}
+                  className={`aspect-video overflow-hidden cursor-zoom-in ${theme.imagePlaceholderBg} order-2 md:order-1`}
                   onClick={() => setSelectedImage(displayContent.roleImage)}
                 >
                   <img
@@ -977,26 +1296,26 @@ const ProjectDetail = ({ mode }) => {
               <div
                 className={`${displayContent.roleImage ? 'order-1 md:order-2 text-left' : 'max-w-4xl mx-auto'}`}
               >
-                <h3 className={`font-serif text-3xl mb-4 ${theme.text}`}>My Role</h3>
+                <h3 className={`font-serif mb-4 ${theme.iconBlue}`}>My Role</h3>
                 <p
                   className={`font-sans text-lg leading-relaxed max-w-[600px] mx-auto whitespace-pre-line ${theme.subText}`}
                 >
-                  {displayContent.role}
+                  {keepSentenceEnd(displayContent.role)}
                 </p>
               </div>
             </div>
           ) : (
-            <div className="w-full px-6 py-12 text-center">
-              <h3 className={`font-serif text-3xl mb-4 ${theme.text}`}>My Role</h3>
+            <div className="max-w-6xl mx-auto px-6 py-12 text-center">
+              <h3 className={`font-serif mb-4 ${theme.iconBlue}`}>My Role</h3>
               <p
                 className={`font-sans text-lg max-w-[600px] mx-auto leading-relaxed whitespace-pre-line ${theme.subText}`}
               >
-                {displayContent.role}
+                {keepSentenceEnd(displayContent.role)}
               </p>
 
               {displayContent.roleImage && (
                 <div
-                  className={`mt-12 max-w-lg mx-auto aspect-video overflow-hidden shadow-lg cursor-zoom-in ${theme.imagePlaceholderBg}`}
+                  className={`mt-12 max-w-lg mx-auto aspect-video overflow-hidden cursor-zoom-in ${theme.imagePlaceholderBg}`}
                   onClick={() => setSelectedImage(displayContent.roleImage)}
                 >
                   <img
@@ -1017,14 +1336,14 @@ const ProjectDetail = ({ mode }) => {
             {displayContent.process.renderComponent === 'CandidateJourneyGraph' && (
               <div className="w-full max-w-6xl mx-auto px-6 mb-12">
                 {/* The Process title at the very top */}
-                <h3 className="font-serif text-3xl mb-12 text-accent text-center">The Process</h3>
+                <h3 className="font-serif mb-12 text-yellow-500 text-center">The Process</h3>
                 {/* Text before graph */}
                 {displayContent.process.beforeGraph && (
                   <div className="max-w-[600px] mx-auto mb-12 text-left">
                     <p
                       className={`font-sans text-lg leading-relaxed whitespace-pre-line ${theme.subText}`}
                     >
-                      {displayContent.process.beforeGraph}
+                      {keepSentenceEnd(displayContent.process.beforeGraph)}
                     </p>
                   </div>
                 )}
@@ -1065,7 +1384,7 @@ const ProjectDetail = ({ mode }) => {
                         <p
                           className={`font-sans text-lg leading-relaxed whitespace-pre-line ${theme.subText}`}
                         >
-                          {displayContent.process.afterGraph}
+                          {keepSentenceEnd(displayContent.process.afterGraph)}
                         </p>
                       </div>
                     )}
@@ -1074,6 +1393,36 @@ const ProjectDetail = ({ mode }) => {
               </div>
             )}
             {displayContent.process.sections.map((section, idx) => {
+              if (section.type === 'text' && section.outcomes) {
+                return (
+                  <div key={idx} className="w-full max-w-5xl mx-auto px-6 text-center py-20">
+                    <p
+                      className={`font-serif text-2xl md:text-5xl leading-tight text-balance whitespace-pre-line ${theme.text} mb-16`}
+                    >
+                      {keepSentenceEnd(section.content)}
+                    </p>
+                    <div
+                      className={`w-full h-[2px] ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mb-12`}
+                    ></div>
+                    <h4 className="font-sans text-xs font-bold uppercase tracking-[0.15em] text-red-500 mb-12">
+                      {section.heading}
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-20 w-full max-w-4xl mx-auto md:items-start">
+                      {section.outcomes.map((outcome, i) => (
+                        <div key={i} className="text-left flex flex-col gap-2">
+                          <h5 className={`font-serif text-xl ${theme.text}`}>{outcome.title}</h5>
+                          <p className={`font-sans text-base ${theme.subText}`}>
+                            {keepSentenceEnd(outcome.desc)}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                    <div
+                      className={`w-full h-[2px] ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mt-16`}
+                    ></div>
+                  </div>
+                );
+              }
               if (section.type === 'text') {
                 // Check if we're showing the animated component - if so, hide the image
                 const showImage =
@@ -1089,237 +1438,178 @@ const ProjectDetail = ({ mode }) => {
                 return (
                   <div
                     key={idx}
-                    className={`max-w-6xl mx-auto px-6 ${showImage ? 'grid md:grid-cols-2 gap-12 items-center' : 'text-center'} mb-12`}
+                    className={`max-w-6xl mx-auto px-6 ${showImage ? 'grid md:grid-cols-2 gap-16 md:gap-20 items-start mb-28' : 'text-center mb-20'}`}
                   >
                     {/* Video, Iframe or Image for Process */}
                     {showImage &&
-                      // Officeworks (id=1): plays on hover (desktop) or tap (touch); paused by default
+                      // Officeworks (id=1) with a video: the file is already a full device
                       (section.video && project.id === 1 ? (
-                        /* iPhone 16 frame — body 280×578, screen 254×552.
-                           Video 1080×1920: scale=552/1862=0.2964 fills screen height.
-                           Screen content (x:91-979, y:28-1890) → left=-22px top=-8px */
-                        <div className="flex items-center justify-center w-full py-4">
-                          <div
-                            style={{
-                              width: 280,
-                              filter: 'drop-shadow(0 28px 60px rgba(0,0,0,0.45))',
-                            }}
-                          >
-                            <div
-                              style={{
-                                width: 280,
-                                height: 578,
-                                background: '#1A1A1A',
-                                borderRadius: 44,
-                                position: 'relative',
-                                boxShadow: '0 0 0 1px #3A3A3C, 0 0 0 2px #111',
-                              }}
-                            >
-                              {/* Screen */}
-                              <div
-                                style={{
-                                  position: 'absolute',
-                                  left: 13,
-                                  top: 13,
-                                  right: 13,
-                                  bottom: 13,
-                                  borderRadius: 34,
-                                  overflow: 'hidden',
-                                  background: '#000',
-                                }}
-                                onMouseEnter={(e) =>
-                                  e.currentTarget
-                                    .querySelector('video')
-                                    ?.play()
-                                    .catch(() => {})
-                                }
-                              >
-                                <video
-                                  src={section.video}
-                                  muted
-                                  playsInline
-                                  onEnded={(e) => {
-                                    e.currentTarget.currentTime = 0;
-                                  }}
-                                  onClick={(e) => {
-                                    e.currentTarget.paused
-                                      ? e.currentTarget.play().catch(() => {})
-                                      : e.currentTarget.pause();
-                                  }}
-                                  style={{
-                                    position: 'absolute',
-                                    top: -18,
-                                    bottom: -18,
-                                    left: 0,
-                                    right: 0,
-                                    width: '100%',
-                                    height: 'calc(100% + 36px)',
-                                    objectFit: 'cover',
-                                    objectPosition: '50% 50%',
-                                    cursor: 'pointer',
-                                  }}
-                                />
-                              </div>
-
-                              {/* Dynamic Island */}
-                              <div
-                                style={{
-                                  position: 'absolute',
-                                  top: 21,
-                                  left: '50%',
-                                  transform: 'translateX(-50%)',
-                                  width: 82,
-                                  height: 26,
-                                  background: '#000',
-                                  borderRadius: 999,
-                                  zIndex: 10,
-                                }}
-                              />
-                              {/* Home indicator */}
-                              <div
-                                style={{
-                                  position: 'absolute',
-                                  bottom: 9,
-                                  left: '50%',
-                                  transform: 'translateX(-50%)',
-                                  width: 110,
-                                  height: 4,
-                                  background: 'rgba(255,255,255,0.28)',
-                                  borderRadius: 999,
-                                  zIndex: 10,
-                                }}
-                              />
-                              {/* Action btn */}
-                              <div
-                                style={{
-                                  position: 'absolute',
-                                  left: -3,
-                                  top: '18%',
-                                  width: 3,
-                                  height: 30,
-                                  background: '#2C2C2E',
-                                  borderRadius: '3px 0 0 3px',
-                                }}
-                              />
-                              {/* Vol up */}
-                              <div
-                                style={{
-                                  position: 'absolute',
-                                  left: -3,
-                                  top: '27%',
-                                  width: 3,
-                                  height: 50,
-                                  background: '#2C2C2E',
-                                  borderRadius: '3px 0 0 3px',
-                                }}
-                              />
-                              {/* Vol down */}
-                              <div
-                                style={{
-                                  position: 'absolute',
-                                  left: -3,
-                                  top: '37%',
-                                  width: 3,
-                                  height: 50,
-                                  background: '#2C2C2E',
-                                  borderRadius: '3px 0 0 3px',
-                                }}
-                              />
-                              {/* Power */}
-                              <div
-                                style={{
-                                  position: 'absolute',
-                                  right: -3,
-                                  top: '29%',
-                                  width: 3,
-                                  height: 70,
-                                  background: '#2C2C2E',
-                                  borderRadius: '0 3px 3px 0',
-                                }}
-                              />
-                            </div>
-                          </div>
+                        <div className="flex items-center justify-center w-full py-8 bg-transparent">
+                          <DeviceVideo src={section.video} knockoutWhite />
                         </div>
                       ) : (
-                        <div
-                          className={`${section.video ? 'w-full aspect-video' : 'aspect-square'} overflow-hidden ${project.id === 2 || project.id === 3 ? '' : 'shadow-sm'} ${project.id === 3 ? (isWandering ? 'bg-charcoal' : 'bg-cream') : theme.imagePlaceholderBg} ${section.video ? '' : 'cursor-zoom-in'}`}
-                          onClick={
-                            section.video
-                              ? undefined
-                              : () => setSelectedImage(section.image || project.images[2])
-                          }
-                        >
-                          {section.video ? (
-                            <video
-                              className="w-full h-full object-contain cursor-pointer"
-                              onClick={(e) => {
-                                const video = e.currentTarget;
-                                if (video.paused) {
-                                  video.play();
-                                } else {
-                                  video.pause();
-                                }
-                              }}
+                        <div>
+                          <div
+                            className={`${section.video ? 'w-full aspect-video' : section.fit === 'contain' ? 'w-full' : 'aspect-square'} overflow-hidden ${project.id === 2 || project.id === 3 ? '' : ''} ${project.id === 3 ? (isWandering ? 'bg-charcoal' : 'bg-cream') : theme.imagePlaceholderBg} ${section.video ? '' : 'cursor-zoom-in'}`}
+                            onClick={
+                              section.video
+                                ? undefined
+                                : () => setSelectedImage(section.image || project.images[2])
+                            }
+                          >
+                            {section.video ? (
+                              <video
+                                className="w-full h-full object-contain cursor-pointer"
+                                onClick={(e) => {
+                                  const video = e.currentTarget;
+                                  if (video.paused) {
+                                    video.play();
+                                  } else {
+                                    video.pause();
+                                  }
+                                }}
+                              >
+                                <source src={section.video} type="video/webm" />
+                                <source src={section.video} type="video/quicktime" />
+                                <source src={section.video} type="video/mp4" />
+                              </video>
+                            ) : (
+                              <img
+                                src={section.image || project.images[2]}
+                                alt={section.alt || section.label || 'Process Detail'}
+                                draggable="false"
+                                className={`w-full ${section.fit === 'contain' || project.id === 3 ? 'h-auto object-contain' : 'h-full object-cover'} hover:scale-105 transition-transform duration-700`}
+                              />
+                            )}
+                          </div>
+                          {section.caption && (
+                            <p
+                              className={`mt-3 font-sans text-sm italic leading-relaxed ${theme.subText}`}
                             >
-                              <source src={section.video} type="video/webm" />
-                              <source src={section.video} type="video/quicktime" />
-                              <source src={section.video} type="video/mp4" />
-                            </video>
-                          ) : (
-                            <img
-                              src={section.image || project.images[2]}
-                              alt="Process Detail"
-                              draggable="false"
-                              className={`w-full h-full ${project.id === 3 ? 'object-contain' : 'object-cover'} hover:scale-105 transition-transform duration-700`}
-                            />
+                              {keepSentenceEnd(section.caption)}
+                            </p>
                           )}
                         </div>
                       ))}
                     <div className={showImage ? '' : 'max-w-4xl mx-auto'}>
-                      {!displayContent.process.renderComponent && (
-                        <h3 className="font-serif text-3xl mb-4 text-accent">The Process</h3>
+                      {!displayContent.process.renderComponent &&
+                        (section.heading || (idx === 0 && !section.hideHeading)) && (
+                          <h3
+                            className={`font-serif mb-4 ${isProblemTitle(section.heading) ? 'text-red-500' : 'text-yellow-500'}`}
+                          >
+                            {section.heading || 'The Process'}
+                          </h3>
+                        )}
+                      {section.label && (
+                        <h4
+                          className={`font-serif text-2xl mb-3 ${isProblemTitle(section.label) ? 'text-red-500' : theme.text}`}
+                        >
+                          {section.label}
+                        </h4>
                       )}
-                      <p
-                        className={`font-sans text-lg leading-relaxed max-w-[600px] whitespace-pre-line ${theme.subText} ${project.id === 3 && isWandering ? 'text-center mx-auto' : ''}`}
+                      <div
+                        className={`font-sans text-lg leading-relaxed max-w-[600px] flex flex-col gap-6 ${theme.subText} ${showImage ? '' : 'mx-auto'}`}
                       >
-                        {section.content}
-                      </p>
+                        {String(section.content || '')
+                          .split(/\n\n+/)
+                          .map((part, i) => (
+                            <p key={i} className="whitespace-pre-line">
+                              {keepSentenceEnd(part)}
+                            </p>
+                          ))}
+                      </div>
                     </div>
                   </div>
                 );
               }
               if (section.type === 'comparison') {
                 return (
-                  <div key={idx} className="w-full py-12" style={{ backgroundColor: section.bg }}>
-                    <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-                      {section.items.map((item, i) => (
-                        <div key={i} className="flex flex-col gap-6">
-                          <div
-                            className={`aspect-[4/3] w-full overflow-hidden shadow-sm ${isWandering ? 'bg-charcoal' : 'bg-white'} cursor-zoom-in group`}
-                            onClick={() => item.img && setSelectedImage(item.img)}
-                          >
-                            {item.img && (
-                              <img
-                                src={item.img}
-                                alt={item.title}
-                                className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
-                              />
-                            )}
-                          </div>
-                          <div>
-                            <h4 className={`font-serif text-xl mb-4 ${theme.text}`}>
-                              {item.title}
-                            </h4>
-                            <p
-                              className={`font-sans text-base leading-relaxed whitespace-pre-line ${theme.subText}`}
+                  <div
+                    key={idx}
+                    className="w-full py-12 comparison-section"
+                    style={{ '--section-bg': section.bg }}
+                  >
+                    <div className="max-w-6xl mx-auto px-6">
+                      {section.heading && (
+                        <h3 className="font-serif mb-12 text-yellow-500 text-center">
+                          {section.heading}
+                        </h3>
+                      )}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                        {section.items.map((item, i) => (
+                          <div key={i} className="flex flex-col gap-6">
+                            <div
+                              className={`${item.natural ? 'w-full' : 'aspect-[4/3] w-full overflow-hidden'} ${isWandering ? 'bg-charcoal' : 'bg-white'} cursor-zoom-in group`}
+                              onClick={() => item.img && setSelectedImage(item.img)}
                             >
-                              {item.desc}
-                            </p>
+                              {item.img && (
+                                <img
+                                  src={item.img}
+                                  alt={item.alt || item.title}
+                                  className={`w-full object-contain transition-transform duration-700 group-hover:scale-105 ${item.natural ? 'h-auto' : 'h-full'}`}
+                                />
+                              )}
+                            </div>
+                            {item.aboveText && (
+                              <div
+                                className={`w-full cursor-zoom-in ${isWandering ? 'bg-charcoal' : 'bg-white'}`}
+                                onClick={() => setSelectedImage(item.aboveText)}
+                              >
+                                <img
+                                  src={item.aboveText}
+                                  alt={item.aboveTextAlt || item.title}
+                                  draggable="false"
+                                  className="w-full h-auto object-contain"
+                                />
+                              </div>
+                            )}
+                            <div>
+                              <h4
+                                className={`font-serif mb-4 ${isProblemTitle(item.title) ? 'text-red-500' : theme.text}`}
+                              >
+                                {item.title}
+                              </h4>
+                              <p
+                                className={`font-sans text-base leading-relaxed whitespace-pre-line ${theme.subText}`}
+                              >
+                                {item.desc}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   </div>
+                );
+              }
+              if (section.type === 'media') {
+                return (
+                  <figure
+                    key={idx}
+                    className={`w-full mx-auto px-6 mb-16 ${section.video ? 'md:max-w-[1600px]' : 'max-w-5xl'}`}
+                  >
+                    <div
+                      className={`overflow-hidden ${section.video ? '' : theme.imagePlaceholderBg}`}
+                    >
+                      {section.video ? (
+                        <HoverTapVideo src={section.video} poster={section.poster} />
+                      ) : (
+                        <img
+                          src={section.image}
+                          alt={section.alt || section.caption || 'Project media'}
+                          className="w-full h-auto object-contain cursor-zoom-in"
+                          onClick={() => setSelectedImage(section.image)}
+                        />
+                      )}
+                    </div>
+                    {section.caption && (
+                      <figcaption
+                        className={`mt-4 font-sans text-sm italic text-center max-w-2xl mx-auto ${theme.subText}`}
+                      >
+                        {keepSentenceEnd(section.caption)}
+                      </figcaption>
+                    )}
+                  </figure>
                 );
               }
               if (section.type === 'gallery') {
@@ -1331,7 +1621,7 @@ const ProjectDetail = ({ mode }) => {
                     {section.items.map((img, i) => (
                       <div
                         key={i}
-                        className={`w-full md:w-64 aspect-auto overflow-hidden shadow-sm ${isWandering ? 'bg-charcoal' : 'bg-white'} cursor-zoom-in group relative`}
+                        className={`w-full md:w-64 aspect-auto overflow-hidden ${isWandering ? 'bg-charcoal' : 'bg-white'} cursor-zoom-in group relative`}
                         onClick={() => setSelectedImage(img)}
                       >
                         <img
@@ -1361,9 +1651,10 @@ const ProjectDetail = ({ mode }) => {
                   {displayContent.keyTakeaway.processImages.map((img, idx) => (
                     <div
                       key={idx}
-                      className="absolute inset-0 w-full h-full transition-all duration-700 ease-out cursor-pointer pointer-events-auto"
+                      className="absolute inset-0 w-full h-full transition-all duration-700 ease-out cursor-pointer pointer-events-auto image-stack__layer"
                       style={{
-                        zIndex: displayContent.keyTakeaway.processImages.length - idx,
+                        '--stack-z': displayContent.keyTakeaway.processImages.length - idx,
+                        '--stack-i': idx,
                       }}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -1389,24 +1680,11 @@ const ProjectDetail = ({ mode }) => {
                         }
                       }}
                     >
-                      <style>{`
-                                                @media (min-width: 768px) {
-                                                    .group:hover .process-stack-img-${idx}, .stack-expanded .process-stack-img-${idx} {
-                                                        transform: translateX(${idx * 144}px);
-                                                    }
-                                                }
-                                                @media (max-width: 767px) {
-                                                    .stack-expanded .process-stack-img-${idx} {
-                                                        transform: translateX(calc(-20% + ${idx * 80}px));
-                                                        transition-delay: ${idx * 50}ms;
-                                                    }
-                                                }
-                                            `}</style>
                       <img
                         src={img}
                         alt={`Process ${idx + 1}`}
                         draggable="false"
-                        className={`w-full h-full object-contain drop-shadow-xl bg-transparent transition-transform duration-700 ease-out origin-bottom-right process-stack-img-${idx}`}
+                        className="w-full h-full object-contain drop- bg-transparent transition-transform duration-700 ease-out origin-bottom-right image-stack__img image-stack__img--process"
                       />
                     </div>
                   ))}
@@ -1414,7 +1692,7 @@ const ProjectDetail = ({ mode }) => {
               </div>
             ) : project.images && project.images[2] && project.id !== 4 ? (
               <div
-                className={`aspect-square overflow-hidden ${project.id === 2 || project.id === 3 ? '' : 'shadow-sm'} ${project.id === 3 ? 'bg-cream' : theme.imagePlaceholderBg} cursor-zoom-in`}
+                className={`aspect-square overflow-hidden ${project.id === 2 || project.id === 3 ? '' : ''} ${project.id === 3 ? 'bg-cream' : theme.imagePlaceholderBg} cursor-zoom-in`}
                 onClick={() => setSelectedImage(project.images[2])}
               >
                 <img
@@ -1426,7 +1704,7 @@ const ProjectDetail = ({ mode }) => {
               </div>
             ) : null}
             <div>
-              <h3 className="font-serif text-3xl mb-4 text-accent text-center md:text-left">
+              <h3 className="font-serif mb-4 text-yellow-500 text-center md:text-left">
                 The Process
               </h3>
               <p
@@ -1441,7 +1719,7 @@ const ProjectDetail = ({ mode }) => {
         {/* Key Takeaway Section (Impact Mode) */}
         {!isWandering && displayContent.keyTakeaway && (
           <div className="w-full max-w-7xl mx-auto px-6 text-center py-12">
-            <div className="w-full h-[0.5px] bg-divider mb-8"></div>
+            <div className="w-full h-[2px] bg-divider mb-8"></div>
 
             <h4 className="font-sans text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">
               {displayContent.keyTakeaway.title || 'Key Takeaway'}
@@ -1451,7 +1729,9 @@ const ProjectDetail = ({ mode }) => {
               {displayContent.keyTakeaway.outcomes.map((outcome, i) => (
                 <div key={i} className="text-left flex flex-col gap-2">
                   <h5 className={`font-serif text-xl ${theme.text}`}>{outcome.title}</h5>
-                  <p className={`font-sans text-base ${theme.subText}`}>{outcome.desc}</p>
+                  <p className={`font-sans text-base ${theme.subText}`}>
+                    {keepSentenceEnd(outcome.desc)}
+                  </p>
                 </div>
               ))}
             </div>
@@ -1468,9 +1748,11 @@ const ProjectDetail = ({ mode }) => {
                   {displayContent.keyTakeaway.stackedImages.map((img, idx) => (
                     <div
                       key={idx}
-                      className="absolute inset-0 w-full h-full transition-all duration-700 ease-out cursor-pointer pointer-events-auto"
+                      className="absolute inset-0 w-full h-full transition-all duration-700 ease-out cursor-pointer pointer-events-auto image-stack__layer"
                       style={{
-                        zIndex: displayContent.keyTakeaway.stackedImages.length - idx, // Top to bottom stacking (first image on top)
+                        '--stack-z': displayContent.keyTakeaway.stackedImages.length - idx,
+                        '--stack-i': idx,
+                        '--stack-rotate': `${img.rotate}deg`,
                       }}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -1496,24 +1778,10 @@ const ProjectDetail = ({ mode }) => {
                         }
                       }}
                     >
-                      {/* We use a local style block to handle the hover state for this specific index */}
-                      <style>{`
-                                                @media (min-width: 768px) {
-                                                    .group:hover .stack-img-${idx}, .stack-expanded .stack-img-${idx} {
-                                                        transform: rotate(${img.rotate}deg) translateX(${idx * 10}px);
-                                                    }
-                                                }
-                                                @media (max-width: 767px) {
-                                                    .stack-expanded .stack-img-${idx} {
-                                                        transform: translateX(calc(-20% + ${idx * 60}px));
-                                                        transition-delay: ${idx * 50}ms;
-                                                    }
-                                                }
-                                             `}</style>
                       <img
                         src={img.src}
                         alt={img.alt}
-                        className={`w-full h-full object-contain drop-shadow-xl bg-transparent transition-transform duration-700 ease-out origin-bottom-right stack-img-${idx}`}
+                        className="w-full h-full object-contain drop- bg-transparent transition-transform duration-700 ease-out origin-bottom-right image-stack__img image-stack__img--fan"
                       />
                     </div>
                   ))}
@@ -1524,7 +1792,7 @@ const ProjectDetail = ({ mode }) => {
                     <div
                       className={`font-sans text-lg leading-relaxed max-w-[600px] text-left mx-auto ${theme.text}`}
                     >
-                      {displayContent.keyTakeaway.description}
+                      {keepSentenceEnd(displayContent.keyTakeaway.description)}
                     </div>
                   )}
                   {displayContent.keyTakeaway.imageCaption && (
@@ -1541,52 +1809,43 @@ const ProjectDetail = ({ mode }) => {
                 </div>
               </div>
             ) : displayContent.keyTakeaway.image ? (
-              // B2B (project 1): scattered UI pieces with key takeaway text centred
-              project.id === 1 ? (
-                <B2BScatteredPieces>
-                  <p className={`font-sans text-lg leading-relaxed ${theme.subText}`}>
-                    {displayContent.keyTakeaway.description}
-                  </p>
-                </B2BScatteredPieces>
-              ) : (
-                <div className="mt-12 w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                  <div
-                    className="w-full overflow-hidden cursor-zoom-in order-1"
-                    onClick={() => setSelectedImage(displayContent.keyTakeaway.image)}
-                  >
-                    <img
-                      src={displayContent.keyTakeaway.image}
-                      alt="Key Takeaway Visual"
-                      className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700"
-                    />
-                  </div>
-                  <div className="order-2 flex flex-col gap-8 text-left">
-                    {displayContent.keyTakeaway.description && (
-                      <div
-                        className={`font-sans text-lg leading-relaxed max-w-[600px] ${theme.text}`}
-                      >
-                        {displayContent.keyTakeaway.description}
-                      </div>
-                    )}
-                    {displayContent.keyTakeaway.imageCaption && (
-                      <div
-                        className={`font-sans text-base italic ${theme.subText} flex flex-col gap-4`}
-                      >
-                        {displayContent.keyTakeaway.imageCaption
-                          .split('\n\n')
-                          .map((paragraph, index) => (
-                            <p key={index}>{paragraph}</p>
-                          ))}
-                      </div>
-                    )}
-                  </div>
+              <div className="mt-12 w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div
+                  className="w-full overflow-hidden cursor-zoom-in order-1"
+                  onClick={() => setSelectedImage(displayContent.keyTakeaway.image)}
+                >
+                  <img
+                    src={displayContent.keyTakeaway.image}
+                    alt="Key Takeaway Visual"
+                    className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700"
+                  />
                 </div>
-              )
+                <div className="order-2 flex flex-col gap-8 text-left">
+                  {displayContent.keyTakeaway.description && (
+                    <div
+                      className={`font-sans text-lg leading-relaxed max-w-[600px] ${theme.text}`}
+                    >
+                      {keepSentenceEnd(displayContent.keyTakeaway.description)}
+                    </div>
+                  )}
+                  {displayContent.keyTakeaway.imageCaption && (
+                    <div
+                      className={`font-sans text-base italic ${theme.subText} flex flex-col gap-4`}
+                    >
+                      {displayContent.keyTakeaway.imageCaption
+                        .split('\n\n')
+                        .map((paragraph, index) => (
+                          <p key={index}>{paragraph}</p>
+                        ))}
+                    </div>
+                  )}
+                </div>
+              </div>
             ) : (
               displayContent.keyTakeaway.description && (
                 <div className={`font-sans text-lg leading-relaxed ${theme.text} mb-8`}>
-                  <div className="max-w-[600px] mx-auto text-left">
-                    {displayContent.keyTakeaway.description}
+                  <div className="max-w-[600px] mx-auto">
+                    {keepSentenceEnd(displayContent.keyTakeaway.description)}
                   </div>
                 </div>
               )
@@ -1600,123 +1859,88 @@ const ProjectDetail = ({ mode }) => {
           <div className="w-full">
             {typeof displayContent.refinement === 'object' ? (
               <>
-                <div className="w-full max-w-7xl mx-auto px-6 text-center py-8">
-                  <div
-                    className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mb-8`}
-                  />
+              <div className="w-full max-w-7xl mx-auto px-6 text-center py-12">
+                <div
+                  className={`w-full h-[2px] ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mb-8`}
+                ></div>
 
-                  <h4 className="font-sans text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">
-                    {displayContent.refinement.outcomesTitle || 'Key Takeaway'}
-                  </h4>
+                <h4 className="font-sans text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">
+                  {displayContent.refinement.outcomesTitle || 'Key Takeaway'}
+                </h4>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:items-start">
-                    {displayContent.refinement.outcomes &&
-                      displayContent.refinement.outcomes.map((outcome, i) => (
-                        <div key={i} className="text-left flex flex-col gap-2">
-                          <h5 className={`font-serif text-xl ${theme.text}`}>{outcome.title}</h5>
-                          <p className={`font-sans text-base ${theme.subText}`}>{outcome.desc}</p>
-                        </div>
-                      ))}
-                  </div>
-
-                  <div
-                    className={`w-full h-px ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mt-12`}
-                  />
-                </div>
-
-                <div className="w-full max-w-7xl mx-auto px-6 py-8 text-center">
-                  {displayContent.refinement.description && (
-                    <div
-                      className={`grid ${project.images && project.images[3] ? 'grid-cols-1 md:grid-cols-2 gap-12' : 'grid-cols-1'} items-center`}
-                    >
-                      <div
-                        className={`font-sans text-lg leading-relaxed text-left order-2 md:order-1 ${!(project.images && project.images[3]) ? 'max-w-[600px] mx-auto text-center' : ''}`}
-                      >
-                        {/* B2B: show only first 2 paragraphs above the simulator; rest go below */}
-                        {displayContent.refinement.description
-                          .split('\n\n')
-                          .slice(0, project.id === 1 ? 2 : undefined)
-                          .map((part, index) => (
-                            <p
-                              key={index}
-                              className={`${index === 1 ? 'text-muted-text' : theme.text} ${index > 0 ? 'mt-8' : ''}`}
-                            >
-                              {part}
-                            </p>
-                          ))}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:items-start">
+                  {displayContent.refinement.outcomes &&
+                    displayContent.refinement.outcomes.map((outcome, i) => (
+                      <div key={i} className="text-left flex flex-col gap-2">
+                        <h5 className={`font-serif text-xl ${theme.text}`}>{outcome.title}</h5>
+                        <p className={`font-sans text-base ${theme.subText}`}>
+                          {keepSentenceEnd(outcome.desc)}
+                        </p>
                       </div>
-                      {project.images && project.images[3] && (
-                        <div
-                          className="w-full h-auto order-1 md:order-2 bg-transparent cursor-zoom-in relative group"
-                          onClick={() => setSelectedImage(project.images[3])}
-                        >
-                          <style>{`
-                                                        .scribble-path {
-                                                            stroke-dasharray: 1000;
-                                                            stroke-dashoffset: 1000;
-                                                            transition: stroke-dashoffset 0.8s ease-out;
-                                                        }
-                                                        .group:hover .scribble-path {
-                                                            stroke-dashoffset: 0;
-                                                        }
-                                                    `}</style>
-                          <img
-                            src={project.images[3]}
-                            alt="Refinement Detail"
-                            draggable="false"
-                            className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700"
-                          />
-                          {/* Burnt orange oval highlight for ABN numbers - Only for Brand Scaling project */}
-                          {project.id === 3 && (
-                            <div className="absolute bottom-2 -left-12 w-56 h-12 pointer-events-none z-10 opacity-90">
-                              <svg
-                                viewBox="0 0 200 60"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="w-full h-full rotate-[-2deg]"
-                              >
-                                <path
-                                  d="M10 30 C 10 10 190 10 190 30 C 190 50 10 50 10 30 M 15 32 C 15 15 185 15 185 30"
-                                  stroke="var(--color-accent)"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  fill="none"
-                                  className="scribble-path"
-                                />
-                              </svg>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  )}
+                    ))}
                 </div>
 
-                {/* B2B: full-width simulator outside max-w-7xl */}
-                {project.id === 1 && (
-                  <div className={`w-full border-y border-accent-peach ${theme.projectSectionBg}`}>
-                    <FrictionSimulator theme={theme} />
-                  </div>
-                )}
+                <div
+                  className={`w-full h-[2px] ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} my-16`}
+                ></div>
 
-                {/* B2B: remaining paragraphs below simulator — same alignment as above */}
-                {project.id === 1 && displayContent.refinement.description && (
-                  <div className="w-full max-w-7xl mx-auto px-6 py-8 text-center">
-                    <div className="font-sans text-lg leading-relaxed text-left max-w-[600px] mx-auto">
-                      {displayContent.refinement.description
-                        .split('\n\n')
-                        .slice(2)
-                        .map((part, index) => (
-                          <p
-                            key={index}
-                            className={`${index === 0 ? theme.text : 'text-muted-text'} ${index > 0 ? 'mt-8' : ''}`}
-                          >
-                            {part}
-                          </p>
-                        ))}
+                {displayContent.refinement.description && (
+                  <div
+                    className={`grid ${project.images && project.images[3] ? 'grid-cols-1 md:grid-cols-2 gap-12' : 'grid-cols-1'} items-center`}
+                  >
+                    <div
+                      className={`font-sans text-lg leading-relaxed text-left order-2 md:order-1 ${!(project.images && project.images[3]) ? 'max-w-[600px] mx-auto text-center' : ''}`}
+                    >
+                      {displayContent.refinement.description.split('\n\n').map((part, index) => (
+                        <p
+                          key={index}
+                          className={`${index === 1 ? 'text-muted-text' : theme.text} ${index > 0 ? 'mt-8' : ''}`}
+                        >
+                          {part}
+                        </p>
+                      ))}
                     </div>
+                    {project.images && project.images[3] && (
+                      <div
+                        className="w-full h-auto order-1 md:order-2 bg-transparent cursor-zoom-in relative group"
+                        onClick={() => setSelectedImage(project.images[3])}
+                      >
+                        <img
+                          src={project.images[3]}
+                          alt="Refinement Detail"
+                          draggable="false"
+                          className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700"
+                        />
+                        {/* Burnt orange oval highlight for ABN numbers - Only for Brand Scaling project */}
+                        {project.id === 3 && (
+                          <div className="absolute bottom-2 -left-12 w-56 h-12 pointer-events-none z-10 opacity-90">
+                            <svg
+                              viewBox="0 0 200 60"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="w-full h-full rotate-[-2deg]"
+                            >
+                              <path
+                                d="M10 30 C 10 10 190 10 190 30 C 190 50 10 50 10 30 M 15 32 C 15 15 185 15 185 30"
+                                stroke="var(--color-accent)"
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                fill="none"
+                                className="scribble-path"
+                              />
+                            </svg>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
+              </div>
+              {project.id === 1 && (
+                <div className={`w-full border-y border-accent-peach ${theme.projectSectionBg}`}>
+                  <FrictionSimulator theme={theme} />
+                </div>
+              )}
               </>
             ) : (
               <div
@@ -1736,7 +1960,7 @@ const ProjectDetail = ({ mode }) => {
                 </div>
                 {project.images && project.images[3] && (
                   <div
-                    className={`w-full h-auto overflow-hidden shadow-sm order-1 md:order-2 ${theme.imagePlaceholderBg} cursor-zoom-in`}
+                    className={`w-full h-auto overflow-hidden order-1 md:order-2 ${theme.imagePlaceholderBg} cursor-zoom-in`}
                     onClick={() => setSelectedImage(project.images[3])}
                   >
                     <img
@@ -1764,7 +1988,7 @@ const ProjectDetail = ({ mode }) => {
               <button
                 key={proj.id}
                 onClick={() => openProject(proj)}
-                className={`text-left p-4 border transition-all duration-300 border-transparent hover:border-accent-peach hover:shadow-md ${isWandering ? 'bg-surface-dark-raised' : 'bg-white'}`}
+                className={`text-left p-4 border transition-all duration-300 border-transparent hover:border-accent-peach hover: ${isWandering ? 'bg-surface-dark-raised' : 'bg-white'}`}
               >
                 <div className="text-xs text-gray-400 mb-2">0{PROJECTS.indexOf(proj) + 1}</div>
                 <div className={`font-serif text-lg leading-tight ${theme.text}`}>{proj.title}</div>

@@ -68,5 +68,8 @@
     "show-component": "^1.2.0",
     "tailwindcss": "^4.1.17",
     "vite": "^7.2.4"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-darwin-arm64": "^4.62.4"
   }
 }

@@ -15,6 +15,7 @@ const TransparentVideo = ({ src, threshold = 228, className = '', style = {} }) 
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
   const isPlayingRef = useRef(false);
+  const drawFrameRef = useRef(() => {});
 
   const drawFrame = useCallback(() => {
     const video = videoRef.current;
@@ -50,8 +51,12 @@ const TransparentVideo = ({ src, threshold = 228, className = '', style = {} }) 
     }
 
     ctx.putImageData(imageData, 0, 0);
-    rafRef.current = requestAnimationFrame(drawFrame);
+    rafRef.current = requestAnimationFrame(() => drawFrameRef.current());
   }, [threshold]);
+
+  useEffect(() => {
+    drawFrameRef.current = drawFrame;
+  }, [drawFrame]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -91,17 +96,16 @@ const TransparentVideo = ({ src, threshold = 228, className = '', style = {} }) 
         muted
         loop
         playsInline
-        style={{ display: 'none' }}
+        className="transparent-video__source"
       />
       {/* Rendered transparent output */}
       <canvas
         ref={canvasRef}
-        className={`w-full h-full object-contain ${className}`}
+        className={`w-full h-full object-contain transparent-video__canvas ${className}`}
         onClick={() => {
           const v = videoRef.current;
           if (v) v.paused ? v.play() : v.pause();
         }}
-        style={{ cursor: 'pointer' }}
       />
     </div>
   );

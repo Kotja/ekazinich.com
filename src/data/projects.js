@@ -1,8 +1,7 @@
-import projectBookingChallenge from '../assets/studio-booking-challenge.webp';
-
-import projectBookingProcess from '../assets/booking-process-new.webp';
 import projectBookingFlow from '../assets/studio-booking-flow.webp';
 import brandTrustSignals from '../assets/brand-trust-signals.webp';
+import heroZhmodikov1 from '../assets/Hero Zhmodikov 1.webp';
+import heroZhmodikov2 from '../assets/Hero Zhmodikov 2.webp';
 import brandCms from '../assets/brand-cms.webp';
 import brandFlowChartBeforeInDepth from '../assets/process-brand-flow-chart-before-in-depth.webp';
 import brandFlowChartAfterInDepth from '../assets/process-brand-flow-chart-after-in-depth.webp';
@@ -12,24 +11,38 @@ import processBrandKeyTakeaway1 from '../assets/process-brand-keytakeaway-1.webp
 import processBrandKeyTakeaway2 from '../assets/process-brand-keytakeaway-2.webp';
 import processBrandKeyTakeaway3 from '../assets/process-brand-keytakeaway-3.webp';
 import projectB2BNew from '../assets/b2b-hero-v2.webp';
-import brandChallengeV2 from '../assets/brand-challenge-v2.webp';
+import b2bShopScreen from '../assets/b2b-mobile-shop.webp';
+import b2bAccountScreen from '../assets/b2b-mobile-account.webp';
 import brandChallengeAniFirstFrame from '../assets/brand-challenge-ani-firstframe.webp';
-import projectB2BProcessNew from '../assets/b2b-flow-audit.svg';
 import OWChallengeHeatmap from '../assets/OW-challenge-heatmap.webp';
-import B2BProcessChallengeHeatmap from '../assets/B2B_process_challenge_heatmap.webp';
 import projectBrandScalingHero from '../assets/brand-scaling-hero.webp';
 import automationHero from '../assets/automation-hero.webp';
 import decisionNode from '../assets/decision-node.png';
 import reviewAndSign from '../assets/review-and-sign.webp';
 import serviceBlueprint from '../assets/service-blue-print.webp';
+import serviceIaBlogCropped from '../assets/service-ia-blog-cropped.png';
+import serviceIaBlogSite from '../assets/service-ia-blog-site.webp';
+import serviceIaSimplified from '../assets/service-ia-simplified.webp';
 import spreadsheetProcess1 from '../assets/Spread_sheet_doom_process_1.webp';
 import spreadsheetProcess2 from '../assets/Spread_sheet_doom_process_2.webp';
 import spreadsheetProcess3 from '../assets/Spread_sheet_doom_process_3.webp';
 import spreadsheetProcess4 from '../assets/Spread_sheet_doom_process_4.webp';
 import spreadsheetProcess5 from '../assets/Spread_sheet_doom_process_5.webp';
+import behaviouralStrategy1 from '../assets/Behavioural strategy1.webp';
+import behaviouralStrategy2 from '../assets/Behavioural startegy2.webp';
 
 import projectB2BVideo from '../assets/HeroB2BOW.mp4';
 import projectCandidateVideo from '../assets/hero-candidate-pipeline.mp4';
+import springboardPlaceholder from '../assets/springboard-placeholder.svg';
+import bookingAutomation from '../assets/booking-automation.webp';
+import shedQuoteSketches from '../assets/shed/quote-sketches.jpg';
+import shedQuoteWelcome from '../assets/shed/quote-welcome.jpg';
+import shedQuoteSpecs from '../assets/shed/quote-specs.jpg';
+import shedPayment from '../assets/shed/payment.jpg';
+import shedCosts from '../assets/shed/costs.jpg';
+import shedVscode from '../assets/shed/vscode.jpg';
+import shedGenerator from '../assets/shed/generator.jpg';
+import shedSalesforceSync from '../assets/shed/salesforce-sync.mp4';
 import candidateChallenge from '../assets/candidate-challenge.webp';
 import candidateOnTheGo from '../assets/candidate-on-the-go.webp';
 import b2bAnimationProcessNoBg from '../assets/B2B_animation_process_nobg.webm';
@@ -168,7 +181,22 @@ export const PROJECTS = [
           "Trust & Compliance: B2B Trust Signals & Regulatory Identifiers.\n\nOne of the more unexpected discoveries was how much a small regulatory detail - the ABN number - mattered to commercial clients. For B2B buyers, it's a standard due-diligence check: is this a real, registered business? Displaying it prominently removed a subtle but real barrier to engagement.\n\nThe broader lesson: in a B2B context, trust isn't assumed - it needs to be demonstrated. Every ambiguous label, every missing detail, every moment of uncertainty is a reason to leave. The design discipline here was ensuring that clarity was built into every touchpoint, so the client's credibility was never in question.",
       },
     },
-    images: [projectBrandScalingHero, brandChallengeV2, brandCms, brandTrustSignals],
+    heroScreen: brandTrustSignals,
+    heroPhones: [
+      {
+        src: heroZhmodikov1,
+        alt: 'Valentin Zhmodikov mobile site, with Portraits and Action as the two categories.',
+        width: 245,
+        height: 492,
+      },
+      {
+        src: heroZhmodikov2,
+        alt: 'Valentin Zhmodikov mobile site, showing a fashion portrait.',
+        width: 245,
+        height: 492,
+      },
+    ],
+    images: [projectBrandScalingHero, undefined, brandCms, brandTrustSignals],
   },
   {
     id: 4,
@@ -269,6 +297,20 @@ export const PROJECTS = [
           "The best products solve problems people are already trying to fix themselves. That's what this one did.\n\nCandidates weren't lacking motivation. They were lacking a system. When you're applying to ten or fifteen roles simultaneously, across multiple platforms, the information load is enormous. Job descriptions blur together. Recruiter names get confused. Salary conversations are forgotten. And when that same recruiter calls back three weeks later about a different role — you have nothing to reference.\n\nThe 'Spreadsheet of Doom' was candidates doing the job themselves, manually, under pressure. That's a market signal, not a failure of organisation.\n\nThe research added a timing insight on top: around two weeks in, when no response has arrived, people quietly stop following up. Not because they lost interest, but because the mental overhead of staying on top of it had become too high. The product needed to address both: store the context, and surface it at the right moment.\n\nThis project proved that a product's success isn't about how many features it has, but how well it fits into the user's reality. The lesson: in emotionally demanding products, retention is a byproduct of empathy and taking the mental weight off the user.",
       },
     },
+    heroPhones: [
+      {
+        src: behaviouralStrategy1,
+        alt: 'joboffer.fit opportunities, filtered by Applied, Interview, Follow up, and Offer, with cards for IBM, Officeworks, and Seed.',
+        width: 393,
+        height: 852,
+      },
+      {
+        src: behaviouralStrategy2,
+        alt: 'joboffer.fit follow-up screen, asking to send a follow-up for the Officeworks and Seed applications.',
+        width: 393,
+        height: 852,
+      },
+    ],
     images: [candidateOnTheGo, candidateChallenge, candidateOnTheGo],
     video: projectCandidateVideo,
   },
@@ -279,7 +321,6 @@ export const PROJECTS = [
     tags: ['Mobile First', 'UX Research', 'Figma'],
     challenge:
       'Retention Risk at the Point of Sale. Payment utilities on the Officeworks mobile account were buried below the fold, inside a scroll-dependent list. At the checkout counter, operating one-handed with a queue behind you, reaching the Digital Card or Barcode required four deliberate steps. The interaction cost was too high for the environment the product was being used in.',
-    challengeImage: B2BProcessChallengeHeatmap,
     role: 'Digital Engagement Designer, Proactive Strategic Lead. This was not an assigned task. I identified the friction firsthand as a regular Officeworks business customer and self-initiated the audit alongside my standard campaign responsibilities.',
     process: {
       type: 'rich',
@@ -330,7 +371,6 @@ export const PROJECTS = [
     wanderingContent: {
       challenge:
         'Environmental Mismatch at the Point of Sale.\n\nThe problem was not visible in campaign data or standard reporting. It surfaced through Contextual Inquiry: using the Officeworks B2B account as a business customer in an actual checkout environment.\n\nCheckout is not a calm experience. You are separating business and personal purchases, holding items, operating one-handed, with a queue forming behind you. In that context, the Digital Card and Barcode needed to be immediately accessible. They were not.\n\nBoth utilities were located below the fold inside a scrollable account list. Reaching them required four sequential steps at the exact moment attention was already at its limit. For a B2B platform where checkout frequency is high, this was not a usability complaint. It was a retention risk.\n\nThe problem was not the features. It was where they were placed.',
-      challengeImage: B2BProcessChallengeHeatmap,
       role: 'Digital Engagement Designer, operating beyond the standard campaign brief.\n\nI positioned this as a research finding, not a design request. Using the platform regularly as a business customer gave me access to context that internal data could not surface. The problem was not a statistic. It was a structural flaw that only becomes visible when you are actually at the counter.\n\nI audited the existing interaction flow, quantified the step cost, and prepared the case for CX leadership. The goal was to make the architectural problem legible in business terms.',
       process: {
         type: 'rich',
@@ -382,7 +422,25 @@ export const PROJECTS = [
         ],
       },
     },
-    images: [projectB2BNew, OWChallengeHeatmap, projectB2BProcessNew],
+    heroScreen: projectB2BNew,
+    heroPoster: false,
+    heroPhones: [
+      {
+        src: b2bShopScreen,
+        alt: 'Officeworks mobile shop home, with shortcuts for laptops, phones, paper, and printing, plus a deals banner.',
+        width: 532,
+        height: 1076,
+        frame: true,
+      },
+      {
+        src: b2bAccountScreen,
+        alt: 'Officeworks mobile account, with quick access to the in-store digital card, 30-day business credit, unpaid invoices, and order tracking.',
+        width: 528,
+        height: 1074,
+        frame: true,
+      },
+    ],
+    images: [projectB2BNew, OWChallengeHeatmap],
     video: projectB2BVideo,
   },
   {
@@ -397,6 +455,26 @@ export const PROJECTS = [
     process: {
       type: 'rich',
       sections: [
+        {
+          type: 'comparison',
+          heading: 'The Process',
+          items: [
+            {
+              title: 'Moving away from a blog',
+              desc: 'The working model was still a blog. Home, news, gallery, policies, and pricing each had their own note, and nothing connected a visitor to a booking.',
+              img: serviceIaBlogSite,
+              alt: 'The Iris Art Studio site laid out as a blog, with a long news archive, tags, and contact details in the footer.',
+              natural: true,
+            },
+            {
+              title: 'A simpler information architecture',
+              desc: 'The structure was reduced to the decisions that matter: what is offered, the program and price, about, gallery, the online or in-person schedule, and contact at the end.',
+              img: serviceIaSimplified,
+              alt: 'Sticky notes for a simpler site: home and what we offer, program description and price plans, about, gallery, online and offline schedule, and contact at the bottom.',
+              natural: true,
+            },
+          ],
+        },
         {
           type: 'text',
           content:
@@ -433,6 +511,26 @@ export const PROJECTS = [
         type: 'rich',
         sections: [
           {
+            type: 'comparison',
+            heading: 'The Process',
+            items: [
+              {
+                title: 'A second thought on the IA',
+                desc: 'It was a second thought on the IA, to make sure everything the client wanted to keep was still covered. Then it moved further, cutting off the unnecessary noise, so only the most important information was left: what tired parents need to be able to grasp when they come to the website.',
+                img: serviceIaBlogCropped,
+                alt: 'Sticky notes gathering everything the client wanted to keep: Home, what we offer, News, Gallery and achievements, policies, free classes, offline and online, contact, and pricing.',
+                natural: true,
+              },
+              {
+                title: 'A simpler information architecture',
+                desc: 'The structure was reduced to the decisions that matter: what is offered, the program and price, about, gallery, the online or in-person schedule, and contact at the end.',
+                img: serviceIaSimplified,
+                alt: 'Sticky notes for a simpler site: home and what we offer, program description and price plans, about, gallery, online and offline schedule, and contact at the bottom.',
+                natural: true,
+              },
+            ],
+          },
+          {
             type: 'text',
             content:
               'Refining the Booking Logic (The Decision Node).\n\n1. The "Tentative" Protocol: I prototyped a flow where the contract\'s not just a checkbox, but a confirmation step. This required users to agree to terms digitally before a booking is confirmed, creating a psychological commitment that reduced no-shows.\n\n2. The Integration of "Trials": Early iterations treated "Class Trials" as a separate product, which fragmented the user journey. I corrected this by integrating the choice as a Decision Node within the main class flow. This allows users to verify that a specific class fits their schedule before deciding on their level of commitment (Trial vs. Term), resulting in a more intuitive, flexible funnel.\n\nThe breakthrough was recognising that the \'Trust Contract\' - the moment when a customer decides to commit - didn\'t need to be manual. By creating a \'Tentative Contract\' model, we automated the entire decision tree from interest to commitment without requiring human intervention.',
@@ -463,8 +561,330 @@ export const PROJECTS = [
           "The outcome validated the diagnosis. Within the first month, admin workload dropped 40%, revenue climbed 36%, and payment disputes — previously a recurring drain on the owner's time — fell by 90%.\n\nThe principle that held across every design decision: when you remove the cost of saying yes, people say yes. The booking didn't get easier because we made a better form. It got easier because we removed the phone call, automated the agreement, and let the product handle the trust layer.\n\nThe reusable lesson: operational pain that feels personal to a business owner is almost always a systemic friction point. The role of service design is to make those invisible costs visible — then design them out.",
       },
     },
-    images: [automationHero, projectBookingChallenge, projectBookingProcess, projectBookingFlow],
+    heroScreen: bookingAutomation,
+    images: [automationHero, undefined, undefined, projectBookingFlow],
     refinement:
       "Refining the Booking Logic: Early iterations of this flow treated 'Class Trials' as a separate product, creating a disjointed experience. In this final architecture, I integrated the 'Trial vs. Term' choice as a decision node within the main class flow. This allows users to verify that a specific class fits their schedule before deciding on their level of commitment, resulting in a more intuitive and flexible path to purchase.",
+  },
+  {
+    id: 5,
+    title: 'Visa Rights & Workforce Matching Platform',
+    subtitle: 'Reducing friction in short-term contract work and visa rights management',
+    desc: 'A workforce-matching product for high-skilled international professionals and employers covering parental or sick leave — making work-rights duration visible, and handovers structured, so neither side is guessing.',
+    tags: ['Product Design', 'Hackathon', 'Accessibility'],
+    challenge:
+      'High-skilled international professionals face unnecessary friction and anxiety tracking work rights, while employers struggle to manage smooth short-term contract handovers. Visa conditions are dense, time-bound, and easy to misread. Leave coverage is urgent. The result is cognitive stress at the exact moment both sides need clarity.',
+    role: 'Lead Product Designer / Co-founder. 1st Place Winner at the Cremorne Digital Hub Vibe-a-thon. Responsible for product direction, interaction design, and rapid concept validation under hackathon constraints.',
+    process:
+      'The Visa Clock: visualising work-right durations as a readable timeline instead of legalese — remaining time, restrictions, and eligibility at a glance.\n\nHandover Workflows: a step-by-step system for leave coverage so knowledge transfer is structured, not improvised.\n\nResearch & AI: used AI tools to synthesise friction points quickly and pressure-test concepts against real user language under a tight build window.\n\nCraft & Accessibility: WCAG 2.2 contrast, clear hierarchy, and low cognitive load so the interface stays usable when the stakes are high.',
+    impact: {
+      description:
+        'Recognised with 1st Place at the Cremorne Digital Hub Vibe-a-thon — a clear, stress-free experience that gives workers and employers transparency over work rights and transition workflows.',
+      outcomes: [
+        { title: 'The Visa Clock', desc: 'Complex durations made visible without legal overload.' },
+        {
+          title: 'Structured Handovers',
+          desc: 'Leave coverage follows a shared, step-by-step path.',
+        },
+        { title: '1st Place', desc: 'Cremorne Digital Hub Vibe-a-thon.' },
+      ],
+    },
+    keyTakeaway: {
+      title: 'Key Takeaway',
+      description:
+        'Work rights are not a settings page. They are a source of anxiety that sits underneath every contract decision. The product only works if it removes that anxiety — for the worker checking remaining time, and for the employer trying to cover a leave gap without breaking compliance.\n\nThe reusable lesson: when the domain is legally dense, the design job is translation. Visualise time. Sequence the handover. Keep the interface quiet enough that people can think.',
+      outcomes: [
+        {
+          title: "Translate, Don't Dump",
+          desc: 'Duration belongs on a clock, not in a policy PDF.',
+        },
+        {
+          title: 'Two Audiences',
+          desc: 'Workers and employers need the same truth, different jobs.',
+        },
+        {
+          title: 'Speed With Standards',
+          desc: 'Hackathon pace still held WCAG 2.2 and low cognitive load.',
+        },
+      ],
+    },
+    wanderingContent: {
+      challenge:
+        'The anxiety is not abstract. International professionals are tracking visa clocks in their heads — how long they can work, under what conditions, and what happens if a contract overruns. Employers covering parental or sick leave need someone in the seat quickly, without creating a compliance problem they cannot see.\n\nBoth sides are operating under time pressure. Both are underserved by tools that treat work rights as fine print. The brief was to make the rights layer as visible as the roster.',
+      role: 'Lead Product Designer / Co-founder at SpringBoard.\n\nContext: 1st Place, Cremorne Digital Hub Vibe-a-thon.\n\nI owned the product framing, the Visa Clock concept, and the handover flow. Under hackathon constraints, the work was to find the sharpest friction — visa opacity and messy leave coverage — and design a system that could be validated in days, not quarters.',
+      process:
+        'The Visa Clock was the core artefact: a visual remaining-time model that replaces dense visa language with duration, constraints, and status. If you cannot see the clock, you cannot plan.\n\nHandover workflows turned leave coverage into a shared sequence — what to transfer, in what order, and when the incoming contractor is actually ready. That is operations design, not decoration.\n\nAI was used as a research accelerator: clustering friction language, testing whether the concept matched how people described the problem, and cutting the time from insight to prototype. Accessibility was non-negotiable even at speed — WCAG 2.2 contrast, clear type hierarchy, and an interface that does not add cognitive load to an already stressful moment.',
+      impact: {
+        description:
+          'The concept won 1st Place at the Cremorne Digital Hub Vibe-a-thon. The win was not polish for its own sake. It was a readable rights layer plus a handover system that treated leave coverage as a designed workflow.',
+        outcomesTitle: 'What Landed',
+        outcomes: [
+          { title: 'Rights, Visualised', desc: 'Duration and constraints without legal theatre.' },
+          { title: 'Handover as a System', desc: 'Coverage is sequenced, not hoped for.' },
+          {
+            title: 'Validated Under Pressure',
+            desc: 'Concept held up in a judged, time-boxed build.',
+          },
+        ],
+      },
+      refinement: {
+        outcomesTitle: 'Key Takeaway',
+        outcomes: [
+          {
+            title: 'Anxiety is the Requirement',
+            desc: 'Design for the feeling of not knowing, not just the form.',
+          },
+          {
+            title: 'Shared Source of Truth',
+            desc: 'Workers and employers should not hold different versions of the clock.',
+          },
+          {
+            title: 'Roadmap',
+            desc: 'Scale the matching layer without losing the clarity that won.',
+          },
+        ],
+        description:
+          'SpringBoard started as a hackathon product and pointed at a longer ecosystem: matching people who can legally work a short contract with businesses that need coverage now.\n\nThe lesson I am taking forward is that compliance UX fails when it asks users to interpret law. It works when it shows remaining time, states the constraint in plain language, and gives both sides a workflow they can finish. Visuals, sequence, and accessibility were the whole strategy — not a later pass.',
+      },
+    },
+    images: [springboardPlaceholder],
+    placeholder: true,
+  },
+  {
+    id: 6,
+    title: 'Custom Configurator: Instant Quotes',
+    headline: 'Custom Configurator: Instant Quotes & Smart Handoff',
+    subtitle:
+      'Accelerating custom shed purchases by turning slow sales chases into an automated, transparent quoting journey.',
+    desc: 'A self-serve quote journey for Shed Bonanza: a visual HTML quote, upfront slab and permit costs, and a one-click deposit that logs back into Salesforce.',
+    tags: ['Systems Thinking', 'End-to-End UX', 'Salesforce Integration'],
+    challenge:
+      'Quoting a custom shed was trapped in a slow manual cycle. When an online enquiry arrived, sales staff faced endless follow-up loops: multiple phone calls, manual CRM updates, separate 3D prototype models, and back-and-forth approval emails before an invoice could even be generated. By the time customers saw a complete price, days had passed, momentum was lost, and high drop-off rates followed.',
+    role: 'Senior Product Designer / UX Lead.\n\nOwned the path from enquiry to deposit: the quote letter, the payment handoff, and the Salesforce record that keeps sales in the loop.',
+    process: {
+      type: 'rich',
+      sections: [
+        {
+          type: 'text',
+          hideImage: true,
+          content:
+            'Designed a self-serve quote journey backed by rich HTML quote summaries and automated two-way Salesforce integration.',
+        },
+        {
+          type: 'text',
+          label: 'On paper first',
+          fit: 'contain',
+          image: shedQuoteSketches,
+          alt: 'Handwritten Shed Bonanza notes for the quote page, slab counts, and shed elevation',
+          content:
+            'The quote was drawn on letterhead before it was a screen. Slab and footing counts, the page the buyer would see, and the shed in elevation sat on the same pages. The generator follows that order.',
+        },
+        {
+          type: 'text',
+          label: 'Progressive configuration',
+          fit: 'contain',
+          image: shedQuoteSpecs,
+          content:
+            'Customers choose their structure step-by-step rather than facing a wall of engineering choices. The quote shows the 3D render, dimensions, and line items that match those selections.',
+        },
+        {
+          type: 'text',
+          label: 'First prototype',
+          hideImage: true,
+          content:
+            'An early pass at how the quote should open: the structure in frame, a short welcome, the investment in one figure, and four marks — Australian made and owned, engineered for durability, high quality steel, built to last. The specification, slab and permit figures, and deposit were built into the quote after this.',
+        },
+        {
+          type: 'text',
+          label: 'Easy handover',
+          hideImage: true,
+          content:
+            'Any picture chosen for the top of the quote is tinted monochrome blue, so the opening stays consistent no matter which view is used.\n\nThe shed the customer agreed to is taken from the 3D planner at a set angle, then placed on the quote.',
+        },
+        {
+          type: 'text',
+          label: 'Upfront slab and permit costs',
+          fit: 'contain',
+          image: shedCosts,
+          content:
+            'Foundation, assembly, and council costs sit in the quote body, so the price the buyer sees is the price they are agreeing to.',
+        },
+        {
+          type: 'text',
+          label: 'Instant payment handoff',
+          fit: 'contain',
+          image: shedPayment,
+          content:
+            'Embedded one-click deposit links into the quote body, letting buyers confirm designs and pay immediately.',
+        },
+        {
+          type: 'text',
+          label: 'Two-way Salesforce sync',
+          hideImage: true,
+          content:
+            'Customer requirements automatically populate Salesforce, and the generated quote document logs straight back into the record to give sales full context.',
+        },
+        {
+          type: 'media',
+          video: shedSalesforceSync,
+          caption: 'The rendered HTML quote and the one-click jump to the secure payment screen.',
+        },
+      ],
+    },
+    impact: {
+      description:
+        'The sales cycle moved from days of follow-ups to a quote the buyer can review and approve in one session.',
+      outcomes: [
+        {
+          title: 'Faster Deals',
+          desc: 'Immediate quote review and approval, instead of a multi-day chase.',
+        },
+        {
+          title: 'Transparent Pricing',
+          desc: 'Slab needs and permit costs are calculated before anyone is asked to commit.',
+        },
+        {
+          title: 'Fewer Lost Leads',
+          desc: 'The multi-touchpoint chase that stalled deals is no longer the path to a price.',
+        },
+      ],
+    },
+    keyTakeaway: {
+      title: 'Key Takeaway',
+      description:
+        'The useful order was already on the letterhead: slab and footing counts, the page the buyer would see, and the shed in elevation. The generator follows that order, so the screen is a faster version of the letter, not a new product the buyer has to learn.\n\nWhat closed the deal was putting the real cost and the deposit on that same page, then logging the document back into Salesforce. Sales stops chasing a price the buyer has already seen.',
+      outcomes: [
+        {
+          title: 'Letter, Then Screen',
+          desc: 'Slab counts, the quote page, and the elevation were settled on paper.',
+        },
+        {
+          title: 'The Full Price',
+          desc: 'Permit, assembly, and the slab sit in the figure the buyer agrees to.',
+        },
+        {
+          title: 'One Record',
+          desc: 'The paid quote is the document that lands on the Salesforce record.',
+        },
+      ],
+    },
+    wanderingContent: {
+      headline: 'Custom Configurator: Turning Envelope Maths into a Guided Digital Experience',
+      subtitle:
+        "How we took chaotic, manual calculations out of sales reps' heads and built an automated, customer-facing quoting engine.",
+      tags: [
+        'Product Design',
+        'Service Design',
+        'Information Architecture',
+        'Systems Architecture',
+      ],
+      challengeTitle: 'The Discovery',
+      challenge:
+        'Custom sheds are structural buildings, not simple catalogue items. Size, roof pitch, cladding, roller doors, and site conditions all dictate concrete thickness, footing count, and council permits.\n\nOn paper, the company had a digital intake form. In reality, the sales journey was a multi-day chase: online enquiry, then call, then another call, then SMS, then a lead marked closed lost.',
+      role: 'Senior Product Designer / UX Lead.\n\nDiscipline: Product Design, Service Design, Information Architecture, Systems Architecture.\n\nI sat with the way quotes were actually produced — scrap-paper footing counts, manual Salesforce updates, static PDFs — and redesigned that operation into a generator the customer could finish.',
+      process: {
+        type: 'rich',
+        sections: [
+          {
+            type: 'text',
+            heading: 'The Friction Behind the Curtain',
+            hideImage: true,
+            content:
+              'An enquiry arrived, kicking off a long manual chase across phone calls and text messages.',
+            outcomes: [
+              {
+                title: 'By Hand',
+                desc: 'Sales reps calculated slab requirements, footings, and structural limits by hand at their desks.',
+              },
+              {
+                title: 'Manual Updates',
+                desc: 'Reps manually updated Salesforce, built 3D prototype renders, and sent static PDFs.',
+              },
+              {
+                title: 'Deals Went Cold',
+                desc: 'Buyers hesitated over hidden installation costs. Deals went cold, and leads were marked closed lost.',
+              },
+            ],
+          },
+          {
+            type: 'text',
+            heading: 'Translating Formulae into Code',
+            fit: 'contain',
+            image: shedVscode,
+            caption:
+              'Developing dynamic HTML templates to parse Opportunity data into visual quotes.',
+            content:
+              'To replace the manual chase, we had to encode engineering logic without exposing technical complexity to the user.\n\nSystematising the maths: formulas that lived on scrap paper, such as (Length / 4 + 1) × 2 + 4 + 2 × roller doors, moved into automated backend calculations.\n\nData pipeline: configurator inputs push to Salesforce and build the Opportunity record. An internal generator pulls that record and assembles an interactive quote package in seconds.',
+          },
+          {
+            type: 'text',
+            label: 'The internal generator',
+            fit: 'contain',
+            image: shedGenerator,
+            content:
+              'Sales paste a Salesforce Opportunity ID. The tool returns the live HTML quote, the stage breakdown, and a test payment link from that record.',
+          },
+          {
+            type: 'text',
+            heading: 'The Quote Engine',
+            fit: 'contain',
+            image: shedCosts,
+            content:
+              'The generator builds a personalised HTML quote from the Opportunity.\n\nThe opening direction started here, as a first prototype: the structure, a short welcome, the investment, and four marks of proof.\n\nThe quote carries the specification, the slab and permit figures, the milestone path, and a secure deposit.',
+          },
+          {
+            type: 'media',
+            video: shedSalesforceSync,
+            caption:
+              'End-to-end flow: from entering the Salesforce Opportunity ID to previewing the live HTML quote and launching the secure payment screen.',
+          },
+        ],
+      },
+      impact: {
+        description:
+          'Desk sketches and waiting days for a draft were replaced by a quote a buyer can inspect and pay against in a single session.',
+        outcomesTitle: 'The Business Impact',
+        outcomes: [
+          {
+            title: 'No Manual Calculation Bottleneck',
+            desc: 'Scrap-paper slab and footing maths now run as system calculations.',
+          },
+          {
+            title: 'No Waiting on a Draft',
+            desc: 'Buyers receive a complete visual proposal immediately.',
+          },
+          {
+            title: 'A Faster Pipeline',
+            desc: 'Specification review and the deposit happen in one session.',
+          },
+        ],
+      },
+      refinement: {
+        outcomesTitle: 'Key Takeaway',
+        outcomes: [
+          {
+            title: 'Letter, Then Screen',
+            desc: 'Slab counts, the quote page, and the elevation were settled on paper.',
+          },
+          {
+            title: 'The Full Price',
+            desc: 'Permit, assembly, and the slab sit in the figure the buyer agrees to.',
+          },
+          {
+            title: 'One Record',
+            desc: 'The paid quote is the document that lands on the Salesforce record.',
+          },
+        ],
+        description:
+          'The useful order was already on the letterhead: slab and footing counts, the page the buyer would see, and the shed in elevation. The generator follows that order, so the screen is a faster version of the letter, not a new product the buyer has to learn.\n\nWhat closed the deal was putting the real cost and the deposit on that same page, then logging the document back into Salesforce. Sales stops chasing a price the buyer has already seen.',
+      },
+    },
+    heroScreen: shedQuoteWelcome,
+    heroFrame: 'wide',
+    images: [shedQuoteWelcome],
+    heroAlt: 'First prototype of the Shed Bonanza quote opening',
+    heroCaption:
+      'First prototype of the quote opening — a layout direction, ahead of the specification, costs, and deposit.',
+    placeholder: false,
   },
 ];
