@@ -197,6 +197,19 @@
   border-radius: 25px !important;
 }
 
+/* User: both top corners and the bottom left. Assistant: both top corners and the bottom right. */
+.chat-bubble-user {
+  border-radius: 50px 50px 0 50px !important;
+}
+
+.chat-bubble-assistant {
+  border-radius: 50px 50px 50px 0 !important;
+}
+
+.chat-new {
+  border-radius: 50px !important;
+}
+
 /* In-depth friction phone. Inline radii lose to the square-corner reset. */
 .friction-phone {
   border-radius: 38px !important;

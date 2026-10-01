@@ -113,11 +113,11 @@ const AskChat = ({ mode }) => {
                 onClick={handleRestartChat}
                 disabled={isLoading}
                 className={`
-                flex items-center gap-1.5 px-3 py-1 text-xs font-sans font-medium uppercase tracking-wide
-                border-2 border-charcoal transition-all duration-50
-                hover:bg-red-500 hover:text-cream
+                chat-new flex items-center gap-1.5 px-4 py-1.5 text-xs font-sans font-bold uppercase tracking-wide
+                border-2 transition-all duration-50
+                hover:bg-red-500 hover:text-cream hover:border-red-500
                 disabled:opacity-50 disabled:cursor-not-allowed
-                ${theme.subText}
+                ${mode === 'wandering' ? 'bg-cream text-charcoal border-cream' : 'bg-charcoal text-cream border-charcoal'}
               `}
                 title="Start new conversation"
               >

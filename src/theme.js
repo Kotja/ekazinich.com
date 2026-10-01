@@ -89,11 +89,7 @@ export const getTheme = (mode) => {
 
     // Chat
     inputBg: isWandering ? 'bg-charcoal' : 'bg-cream-muted',
-    userBubble: isWandering
-      ? 'bg-red-500 text-cream border-[2px] border-cream'
-      : 'bg-charcoal text-cream border-[2px] border-charcoal',
-    assistantBubble: isWandering
-      ? 'bg-blue-200 text-charcoal border-[2px] border-cream'
-      : 'bg-blue-200 text-charcoal border-[2px] border-charcoal',
+    userBubble: 'chat-bubble-user bg-white text-charcoal border-[2px] border-yellow-500',
+    assistantBubble: 'chat-bubble-assistant bg-blue-200 text-charcoal border-[2px] border-blue-500',
   };
 };
