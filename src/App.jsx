@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Sparkles } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import Home from './pages/Home';
 import ProjectDetail from './pages/ProjectDetail';
 import OnboardingModal from './components/OnboardingModal';
 import MiniChat from './components/MiniChat';
-import { ChatProvider, useAskChat } from './components/ChatContext';
+import { ChatProvider } from './components/ChatContext';
 import { getTheme } from './theme';
 
 const AppContent = () => {
@@ -24,7 +24,6 @@ const AppContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { isMiniChatOpen, setIsMiniChatOpen } = useAskChat();
   const isProjectPage = location.pathname.startsWith('/projects/');
 
   // --- HELPER: THEME ENGINE ---
@@ -144,19 +143,6 @@ const AppContent = () => {
               </button>
             );
           })}
-
-          <button
-            onClick={() => setIsMiniChatOpen(!isMiniChatOpen)}
-            className="relative group flex-1 flex items-center justify-center gap-1 whitespace-nowrap text-inherit"
-          >
-            <Sparkles size={12} className={theme.iconBlue} />
-            <span className="text-2xs xs:text-xs md:text-sm font-semibold uppercase tracking-widest">
-              Ask AI
-            </span>
-            <span
-              className={`w-2 h-2 rounded-full bauhaus-circle absolute -bottom-2 transition-opacity ${isMiniChatOpen ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} ${isWandering ? 'bg-yellow-500' : 'bg-red-500'}`}
-            />
-          </button>
 
           {/* Mode switcher */}
           <div

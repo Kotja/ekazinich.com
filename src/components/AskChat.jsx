@@ -84,10 +84,16 @@ const AskChat = ({ mode }) => {
     >
       {/* Intro Section */}
       <div className="text-center mb-12 max-w-2xl">
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <Sparkles className={theme.iconBlue} size={28} />
-          <h2 className="font-serif">Ask Me Anything</h2>
-        </div>
+        <h2 className="font-serif mb-6 flex flex-col items-center">
+          <span className="inline-flex items-start gap-3">
+            Ask Me
+            <Sparkles
+              className={`${theme.iconBlue} w-[0.45em] h-[0.45em] shrink-0`}
+              aria-hidden="true"
+            />
+          </span>
+          <span>Anything</span>
+        </h2>
         <p className={`font-sans text-lg leading-relaxed font-normal ${theme.subText}`}>
           Curious about my experience, design process, or projects? Chat with my AI assistant to
           learn more about my work and approach. Prefer to talk with a human?{' '}

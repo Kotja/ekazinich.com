@@ -61,7 +61,8 @@ const MiniChat = ({ mode }) => {
     <>
       <div
         className={`
-          fixed z-50 bottom-24 md:bottom-28 right-4 md:right-9
+          fixed z-50 right-4 md:right-9
+          bottom-[calc(5rem+1rem+3.5rem+0.75rem)] md:bottom-28
           w-[calc(100vw-2rem)] md:w-[360px]
           h-[60vh] max-h-[480px]
           overflow-hidden
@@ -234,7 +235,8 @@ const MiniChat = ({ mode }) => {
 
       <div
         className={`
-          hidden fixed bottom-10 right-9 z-50
+          fixed z-[60] right-4 md:right-9
+          bottom-[calc(5rem+1rem)] md:bottom-10
           transition-opacity duration-50
           ${isMainChatVisible ? 'opacity-0 pointer-events-none' : 'opacity-100'}
         `}
@@ -242,11 +244,11 @@ const MiniChat = ({ mode }) => {
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={`
-            w-14 h-14
+            w-14 h-14 rounded-full bauhaus-circle
             flex items-center justify-center
-            transition-colors duration-50
-            bg-transparent text-red-500 cursor-pointer border-0
-            hover:text-yellow-500
+            bg-blue-500 text-cream border-0
+            cursor-pointer transition-colors duration-50
+            hover:bg-blue-700
           `}
           aria-label={isOpen ? 'Close chat' : 'Open chat'}
         >
