@@ -21,7 +21,6 @@ import b2bPieceQuickAccess from '../assets/B2B_pieces_quick_access.webp';
 import b2bPieceTotalCredit from '../assets/B2B_pieces_total_credit.webp';
 import b2bPieceUnpaidInvoices from '../assets/B2B_pieces_unpaid_invoices_menu.webp';
 
-
 // Keep the last two words of each sentence on one line.
 const keepSentenceEnd = (text) => {
   if (typeof text !== 'string') return text;
@@ -134,24 +133,24 @@ const FrictionSimulator = ({ theme }) => {
           style={{ width: 229, filter: 'drop-shadow(0 24px 56px rgba(0,0,0,0.55))' }}
         >
           <div
+            className="friction-phone"
             style={{
               width: 229,
               height: 473,
               background: '#1A1A1A',
-              borderRadius: 38,
               position: 'relative',
               boxShadow: '0 0 0 1px #3A3A3C, 0 0 0 2.5px #111',
             }}
           >
             {/* Screen — white bg so image margins blend invisibly */}
             <div
+              className="friction-phone__screen"
               style={{
                 position: 'absolute',
                 left: 13,
                 top: 13,
                 right: 13,
                 bottom: 13,
-                borderRadius: 28,
                 overflow: 'hidden',
                 background: '#fff',
               }}
@@ -217,6 +216,7 @@ const FrictionSimulator = ({ theme }) => {
 
             {/* Dynamic Island */}
             <div
+              className="friction-phone__island"
               style={{
                 position: 'absolute',
                 top: 19,
@@ -225,12 +225,12 @@ const FrictionSimulator = ({ theme }) => {
                 width: 72,
                 height: 22,
                 background: '#000',
-                borderRadius: 999,
                 zIndex: 10,
               }}
             />
             {/* Home indicator */}
             <div
+              className="friction-phone__home"
               style={{
                 position: 'absolute',
                 bottom: 7,
@@ -239,12 +239,12 @@ const FrictionSimulator = ({ theme }) => {
                 width: 88,
                 height: 4,
                 background: 'rgba(255,255,255,0.28)',
-                borderRadius: 999,
                 zIndex: 10,
               }}
             />
             {/* Action btn */}
             <div
+              className="friction-phone__key friction-phone__key--left"
               style={{
                 position: 'absolute',
                 left: -3,
@@ -252,11 +252,11 @@ const FrictionSimulator = ({ theme }) => {
                 width: 3,
                 height: 24,
                 background: '#2C2C2E',
-                borderRadius: '3px 0 0 3px',
               }}
             />
             {/* Vol up */}
             <div
+              className="friction-phone__key friction-phone__key--left"
               style={{
                 position: 'absolute',
                 left: -3,
@@ -264,11 +264,11 @@ const FrictionSimulator = ({ theme }) => {
                 width: 3,
                 height: 40,
                 background: '#2C2C2E',
-                borderRadius: '3px 0 0 3px',
               }}
             />
             {/* Vol down */}
             <div
+              className="friction-phone__key friction-phone__key--left"
               style={{
                 position: 'absolute',
                 left: -3,
@@ -276,11 +276,11 @@ const FrictionSimulator = ({ theme }) => {
                 width: 3,
                 height: 40,
                 background: '#2C2C2E',
-                borderRadius: '3px 0 0 3px',
               }}
             />
             {/* Power */}
             <div
+              className="friction-phone__key friction-phone__key--right"
               style={{
                 position: 'absolute',
                 right: -3,
@@ -288,7 +288,6 @@ const FrictionSimulator = ({ theme }) => {
                 width: 3,
                 height: 58,
                 background: '#2C2C2E',
-                borderRadius: '0 3px 3px 0',
               }}
             />
           </div>
@@ -525,7 +524,6 @@ const B2BScatteredPieces = ({ children }) => {
     </>
   );
 };
-
 
 const BoomerangVideo = ({ src, poster }) => {
   const videoRef = React.useRef(null);
@@ -803,7 +801,15 @@ const DeviceVideo = ({ src, knockoutWhite = false }) => {
   );
 };
 
-const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentIndex = 0 }) => {
+const Lightbox = ({
+  src,
+  alt = 'Full Screen View',
+  onClose,
+  isWandering,
+  theme,
+  gallery = null,
+  currentIndex = 0,
+}) => {
   const [zoom, setZoom] = useState(1);
   const [index, setIndex] = useState(currentIndex);
 
@@ -937,7 +943,7 @@ const Lightbox = ({ src, onClose, isWandering, theme, gallery = null, currentInd
         ) : (
           <img
             src={currentSrc}
-            alt="Full Screen View"
+            alt={alt}
             draggable="false"
             onClick={(e) => {
               e.stopPropagation();
@@ -1020,7 +1026,13 @@ const BrandChallengeFrame = ({ src, isWandering }) => {
 };
 
 // Challenge image. Project 3 shows the original phone, and the notes on hover.
-const InteractiveChallengeImage = ({ src, isWandering, onImageClick, projectId }) => {
+const InteractiveChallengeImage = ({
+  src,
+  alt = 'Challenge Detail',
+  isWandering,
+  onImageClick,
+  projectId,
+}) => {
   const [isHovered, setIsHovered] = React.useState(false);
   const [isTouchRevealed, setIsTouchRevealed] = React.useState(false);
   const annotatedSrc =
@@ -1049,7 +1061,7 @@ const InteractiveChallengeImage = ({ src, isWandering, onImageClick, projectId }
       ) : (
         <img
           src={src}
-          alt="Challenge Detail"
+          alt={alt}
           draggable="false"
           className="block h-auto w-full object-contain md:h-full"
         />
@@ -1264,9 +1276,15 @@ const ProjectDetail = ({ mode }) => {
                 >
                   <InteractiveChallengeImage
                     src={challengeImage}
+                    alt={displayContent.challengeAlt || 'Challenge Detail'}
                     isWandering={isWandering}
                     theme={theme}
-                    onImageClick={(img) => setSelectedImage(img || challengeImage)}
+                    onImageClick={(img) =>
+                      setSelectedImage({
+                        src: img || challengeImage,
+                        alt: displayContent.challengeAlt || 'Challenge Detail',
+                      })
+                    }
                     projectId={project.id}
                   />
                 </div>
@@ -1809,38 +1827,46 @@ const ProjectDetail = ({ mode }) => {
                 </div>
               </div>
             ) : displayContent.keyTakeaway.image ? (
-              <div className="mt-12 w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div
-                  className="w-full overflow-hidden cursor-zoom-in order-1"
-                  onClick={() => setSelectedImage(displayContent.keyTakeaway.image)}
-                >
-                  <img
-                    src={displayContent.keyTakeaway.image}
-                    alt="Key Takeaway Visual"
-                    className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700"
-                  />
+              project.id === 1 ? (
+                <B2BScatteredPieces>
+                  <p className={`font-sans text-lg leading-relaxed ${theme.text}`}>
+                    {keepSentenceEnd(displayContent.keyTakeaway.description)}
+                  </p>
+                </B2BScatteredPieces>
+              ) : (
+                <div className="mt-12 w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                  <div
+                    className="w-full overflow-hidden cursor-zoom-in order-1"
+                    onClick={() => setSelectedImage(displayContent.keyTakeaway.image)}
+                  >
+                    <img
+                      src={displayContent.keyTakeaway.image}
+                      alt="Key Takeaway Visual"
+                      className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                  <div className="order-2 flex flex-col gap-8 text-left">
+                    {displayContent.keyTakeaway.description && (
+                      <div
+                        className={`font-sans text-lg leading-relaxed max-w-[600px] ${theme.text}`}
+                      >
+                        {keepSentenceEnd(displayContent.keyTakeaway.description)}
+                      </div>
+                    )}
+                    {displayContent.keyTakeaway.imageCaption && (
+                      <div
+                        className={`font-sans text-base italic ${theme.subText} flex flex-col gap-4`}
+                      >
+                        {displayContent.keyTakeaway.imageCaption
+                          .split('\n\n')
+                          .map((paragraph, index) => (
+                            <p key={index}>{paragraph}</p>
+                          ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <div className="order-2 flex flex-col gap-8 text-left">
-                  {displayContent.keyTakeaway.description && (
-                    <div
-                      className={`font-sans text-lg leading-relaxed max-w-[600px] ${theme.text}`}
-                    >
-                      {keepSentenceEnd(displayContent.keyTakeaway.description)}
-                    </div>
-                  )}
-                  {displayContent.keyTakeaway.imageCaption && (
-                    <div
-                      className={`font-sans text-base italic ${theme.subText} flex flex-col gap-4`}
-                    >
-                      {displayContent.keyTakeaway.imageCaption
-                        .split('\n\n')
-                        .map((paragraph, index) => (
-                          <p key={index}>{paragraph}</p>
-                        ))}
-                    </div>
-                  )}
-                </div>
-              </div>
+              )
             ) : (
               displayContent.keyTakeaway.description && (
                 <div className={`font-sans text-lg leading-relaxed ${theme.text} mb-8`}>
@@ -1859,88 +1885,88 @@ const ProjectDetail = ({ mode }) => {
           <div className="w-full">
             {typeof displayContent.refinement === 'object' ? (
               <>
-              <div className="w-full max-w-7xl mx-auto px-6 text-center py-12">
-                <div
-                  className={`w-full h-[2px] ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mb-8`}
-                ></div>
-
-                <h4 className="font-sans text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">
-                  {displayContent.refinement.outcomesTitle || 'Key Takeaway'}
-                </h4>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:items-start">
-                  {displayContent.refinement.outcomes &&
-                    displayContent.refinement.outcomes.map((outcome, i) => (
-                      <div key={i} className="text-left flex flex-col gap-2">
-                        <h5 className={`font-serif text-xl ${theme.text}`}>{outcome.title}</h5>
-                        <p className={`font-sans text-base ${theme.subText}`}>
-                          {keepSentenceEnd(outcome.desc)}
-                        </p>
-                      </div>
-                    ))}
-                </div>
-
-                <div
-                  className={`w-full h-[2px] ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} my-16`}
-                ></div>
-
-                {displayContent.refinement.description && (
+                <div className="w-full max-w-7xl mx-auto px-6 text-center py-12">
                   <div
-                    className={`grid ${project.images && project.images[3] ? 'grid-cols-1 md:grid-cols-2 gap-12' : 'grid-cols-1'} items-center`}
-                  >
-                    <div
-                      className={`font-sans text-lg leading-relaxed text-left order-2 md:order-1 ${!(project.images && project.images[3]) ? 'max-w-[600px] mx-auto text-center' : ''}`}
-                    >
-                      {displayContent.refinement.description.split('\n\n').map((part, index) => (
-                        <p
-                          key={index}
-                          className={`${index === 1 ? 'text-muted-text' : theme.text} ${index > 0 ? 'mt-8' : ''}`}
-                        >
-                          {part}
-                        </p>
+                    className={`w-full h-[2px] ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} mb-8`}
+                  ></div>
+
+                  <h4 className="font-sans text-xs font-bold uppercase tracking-[0.15em] text-accent mb-8">
+                    {displayContent.refinement.outcomesTitle || 'Key Takeaway'}
+                  </h4>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 w-full max-w-3xl mx-auto md:items-start">
+                    {displayContent.refinement.outcomes &&
+                      displayContent.refinement.outcomes.map((outcome, i) => (
+                        <div key={i} className="text-left flex flex-col gap-2">
+                          <h5 className={`font-serif text-xl ${theme.text}`}>{outcome.title}</h5>
+                          <p className={`font-sans text-base ${theme.subText}`}>
+                            {keepSentenceEnd(outcome.desc)}
+                          </p>
+                        </div>
                       ))}
-                    </div>
-                    {project.images && project.images[3] && (
+                  </div>
+
+                  <div
+                    className={`w-full h-[2px] ${isWandering ? 'bg-cream/20' : 'bg-charcoal/20'} my-16`}
+                  ></div>
+
+                  {displayContent.refinement.description && (
+                    <div
+                      className={`grid ${project.images && project.images[3] ? 'grid-cols-1 md:grid-cols-2 gap-12' : 'grid-cols-1'} items-center`}
+                    >
                       <div
-                        className="w-full h-auto order-1 md:order-2 bg-transparent cursor-zoom-in relative group"
-                        onClick={() => setSelectedImage(project.images[3])}
+                        className={`font-sans text-lg leading-relaxed text-left order-2 md:order-1 ${!(project.images && project.images[3]) ? 'max-w-[600px] mx-auto text-center' : ''}`}
                       >
-                        <img
-                          src={project.images[3]}
-                          alt="Refinement Detail"
-                          draggable="false"
-                          className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700"
-                        />
-                        {/* Burnt orange oval highlight for ABN numbers - Only for Brand Scaling project */}
-                        {project.id === 3 && (
-                          <div className="absolute bottom-2 -left-12 w-56 h-12 pointer-events-none z-10 opacity-90">
-                            <svg
-                              viewBox="0 0 200 60"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="w-full h-full rotate-[-2deg]"
-                            >
-                              <path
-                                d="M10 30 C 10 10 190 10 190 30 C 190 50 10 50 10 30 M 15 32 C 15 15 185 15 185 30"
-                                stroke="var(--color-accent)"
-                                strokeWidth="3"
-                                strokeLinecap="round"
-                                fill="none"
-                                className="scribble-path"
-                              />
-                            </svg>
-                          </div>
-                        )}
+                        {displayContent.refinement.description.split('\n\n').map((part, index) => (
+                          <p
+                            key={index}
+                            className={`${index === 1 ? 'text-muted-text' : theme.text} ${index > 0 ? 'mt-8' : ''}`}
+                          >
+                            {part}
+                          </p>
+                        ))}
                       </div>
-                    )}
+                      {project.images && project.images[3] && (
+                        <div
+                          className="w-full h-auto order-1 md:order-2 bg-transparent cursor-zoom-in relative group"
+                          onClick={() => setSelectedImage(project.images[3])}
+                        >
+                          <img
+                            src={project.images[3]}
+                            alt="Refinement Detail"
+                            draggable="false"
+                            className="w-full h-auto object-contain hover:scale-105 transition-transform duration-700"
+                          />
+                          {/* Burnt orange oval highlight for ABN numbers - Only for Brand Scaling project */}
+                          {project.id === 3 && (
+                            <div className="absolute bottom-2 -left-12 w-56 h-12 pointer-events-none z-10 opacity-90">
+                              <svg
+                                viewBox="0 0 200 60"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-full h-full rotate-[-2deg]"
+                              >
+                                <path
+                                  d="M10 30 C 10 10 190 10 190 30 C 190 50 10 50 10 30 M 15 32 C 15 15 185 15 185 30"
+                                  stroke="var(--color-accent)"
+                                  strokeWidth="3"
+                                  strokeLinecap="round"
+                                  fill="none"
+                                  className="scribble-path"
+                                />
+                              </svg>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+                {project.id === 1 && (
+                  <div className={`w-full border-y border-accent-peach ${theme.projectSectionBg}`}>
+                    <FrictionSimulator theme={theme} />
                   </div>
                 )}
-              </div>
-              {project.id === 1 && (
-                <div className={`w-full border-y border-accent-peach ${theme.projectSectionBg}`}>
-                  <FrictionSimulator theme={theme} />
-                </div>
-              )}
               </>
             ) : (
               <div
@@ -2002,6 +2028,7 @@ const ProjectDetail = ({ mode }) => {
       {selectedImage && (
         <Lightbox
           src={selectedImage.src || selectedImage}
+          alt={selectedImage.alt || 'Full Screen View'}
           gallery={selectedImage.gallery || null}
           currentIndex={selectedImage.index || 0}
           onClose={() => setSelectedImage(null)}

@@ -42,6 +42,8 @@ import shedPayment from '../assets/shed/payment.jpg';
 import shedCosts from '../assets/shed/costs.jpg';
 import shedVscode from '../assets/shed/vscode.jpg';
 import shedGenerator from '../assets/shed/generator.jpg';
+import shedChallengeChase from '../assets/shed/challenge-manual-chase.webp';
+import shedDiscoveryQuote from '../assets/shed/discovery-quote-pages.webp';
 import shedSalesforceSync from '../assets/shed/salesforce-sync.mp4';
 import candidateChallenge from '../assets/candidate-challenge.webp';
 import candidateOnTheGo from '../assets/candidate-on-the-go.webp';
@@ -660,6 +662,9 @@ export const PROJECTS = [
     tags: ['Systems Thinking', 'End-to-End UX', 'Salesforce Integration'],
     challenge:
       'Quoting a custom shed was trapped in a slow manual cycle. When an online enquiry arrived, sales staff faced endless follow-up loops: multiple phone calls, manual CRM updates, separate 3D prototype models, and back-and-forth approval emails before an invoice could even be generated. By the time customers saw a complete price, days had passed, momentum was lost, and high drop-off rates followed.',
+    challengeImage: shedChallengeChase,
+    challengeAlt:
+      'A person mapping the shed quote chase on a whiteboard. It runs from quote through request, change, price objection and follow-up, then invoice, signed invoice and permit invoice. Below, online enquiry leads through repeated calls, SMS and email, and ends at closed lost.',
     role: 'Senior Product Designer / UX Lead.\n\nOwned the path from enquiry to deposit: the quote letter, the payment handoff, and the Salesforce record that keeps sales in the loop.',
     process: {
       type: 'rich',
@@ -781,6 +786,9 @@ export const PROJECTS = [
       challengeTitle: 'The Discovery',
       challenge:
         'Custom sheds are structural buildings, not simple catalogue items. Size, roof pitch, cladding, roller doors, and site conditions all dictate concrete thickness, footing count, and council permits.\n\nOn paper, the company had a digital intake form. In reality, the sales journey was a multi-day chase: online enquiry, then call, then another call, then SMS, then a lead marked closed lost.',
+      challengeImage: shedDiscoveryQuote,
+      challengeAlt:
+        'A person sketching the quote pages on the same whiteboard: a new quote and a timeline marked payment, beside a six-day chain of calls, SMS and email that ends at closed lost and a dissatisfied price.',
       role: 'Senior Product Designer / UX Lead.\n\nDiscipline: Product Design, Service Design, Information Architecture, Systems Architecture.\n\nI sat with the way quotes were actually produced — scrap-paper footing counts, manual Salesforce updates, static PDFs — and redesigned that operation into a generator the customer could finish.',
       process: {
         type: 'rich',

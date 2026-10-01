@@ -197,6 +197,28 @@
   border-radius: 25px !important;
 }
 
+/* In-depth friction phone. Inline radii lose to the square-corner reset. */
+.friction-phone {
+  border-radius: 38px !important;
+}
+
+.friction-phone__screen {
+  border-radius: 28px !important;
+}
+
+.friction-phone__island,
+.friction-phone__home {
+  border-radius: 999px !important;
+}
+
+.friction-phone__key--left {
+  border-radius: 3px 0 0 3px !important;
+}
+
+.friction-phone__key--right {
+  border-radius: 0 3px 3px 0 !important;
+}
+
 /* In-depth tags: secondary outline. Impact tags stay filled yellow. */
 .mode-wandering .rounded-tag {
   background-color: transparent !important;
@@ -632,43 +654,23 @@ h1.hero-display {
   transform: translateY(-6px);
 }
 
-/* Narrow screens: a short fan, so both phones slide like cards and stay on the page. */
-@media (max-width: 1023px) {
-  .hero-card:hover .hero-phone-first,
-  .hero-card:focus-visible .hero-phone-first,
-  .hero-card:active .hero-phone-first {
-    transform: translateX(-1%) rotate(-0.5deg);
-  }
-
-  .hero-card:hover .hero-phone-second-wrap,
-  .hero-card:focus-visible .hero-phone-second-wrap,
-  .hero-card:active .hero-phone-second-wrap {
-    transform: translateX(12%);
-  }
-
-  .hero-card:hover .hero-phone-second,
-  .hero-card:focus-visible .hero-phone-second,
-  .hero-card:active .hero-phone-second {
-    transform: rotate(1deg);
-  }
+/* Same lean on phone, tablet, and desktop. The second screen stays under the first. */
+.hero-card:hover .hero-phone-first,
+.hero-card:focus-visible .hero-phone-first,
+.hero-card:active .hero-phone-first {
+  transform: translateX(-2%) rotate(-1deg);
 }
 
-/* Desktop: a short slide. The second screen leans 35° to the right, under the first. */
-@media (min-width: 1024px) {
-  .hero-card:hover .hero-phone-first,
-  .hero-card:focus-visible .hero-phone-first {
-    transform: translateX(-2%) rotate(-1deg);
-  }
+.hero-card:hover .hero-phone-second-wrap,
+.hero-card:focus-visible .hero-phone-second-wrap,
+.hero-card:active .hero-phone-second-wrap {
+  transform: translateX(14%);
+}
 
-  .hero-card:hover .hero-phone-second-wrap,
-  .hero-card:focus-visible .hero-phone-second-wrap {
-    transform: translateX(14%);
-  }
-
-  .hero-card:hover .hero-phone-second,
-  .hero-card:focus-visible .hero-phone-second {
-    transform: rotate(35deg);
-  }
+.hero-card:hover .hero-phone-second,
+.hero-card:focus-visible .hero-phone-second,
+.hero-card:active .hero-phone-second {
+  transform: rotate(35deg);
 }
 
 @media (prefers-reduced-motion: reduce) {
