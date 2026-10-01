@@ -491,7 +491,7 @@ const B2BScatteredPieces = ({ children }) => {
         {chaserXY && (
           <div
             onClick={handleClick}
-            className="absolute z-20 flex items-center gap-3 bg-white rounded-full border-2 border-accent shadow-lg cursor-pointer select-none"
+            className="search-pill absolute z-20 flex items-center gap-3 bg-white border-2 border-accent cursor-pointer select-none"
             style={{
               left: chaserXY.x,
               top: chaserXY.y,

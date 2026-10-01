@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Sparkles, RotateCcw } from 'lucide-react';
+import { MessageCircle, MessageCircleMore, X, Sparkles, RotateCcw } from 'lucide-react';
 import { Streamdown } from 'streamdown';
 import {
   useAskChat,
@@ -21,15 +21,15 @@ const MiniChat = ({ mode }) => {
     isMiniChatOpen: isOpen,
     setIsMiniChatOpen: setIsOpen,
   } = useAskChat();
-  const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
   const inputRef = useRef(null);
 
   const theme = getTheme(mode);
 
   useEffect(() => {
-    if (isOpen && messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
+    const container = messagesContainerRef.current;
+    if (!isOpen || !container) return;
+    container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
   }, [messages, isOpen]);
 
   useEffect(() => {
@@ -76,10 +76,10 @@ const MiniChat = ({ mode }) => {
         <div
           className={`flex items-center justify-between px-4 py-3 border-b-[2px] border-charcoal bg-yellow-500 text-charcoal shrink-0`}
         >
-          <div className="flex items-center gap-2">
-            <Sparkles className={theme.iconBlue} size={16} />
-            <span className="font-serif text-sm uppercase font-semibold tracking-wide">
-              Ask Eka
+          <div className="flex min-w-0 items-center gap-2">
+            <Sparkles className={`${theme.iconBlue} shrink-0`} size={16} />
+            <span className="font-serif text-sm uppercase font-semibold tracking-wide leading-tight">
+              Ask Eka's assistant
             </span>
           </div>
           <div className="flex items-center gap-1">
@@ -88,7 +88,7 @@ const MiniChat = ({ mode }) => {
                 onClick={handleRestartChat}
                 disabled={isLoading}
                 className={`
-                  p-1.5 border-2 border-charcoal transition-colors duration-50
+                  p-1.5 transition-colors duration-50
                   hover:bg-red-500 hover:text-cream
                   disabled:opacity-50 disabled:cursor-not-allowed
                 `}
@@ -99,14 +99,17 @@ const MiniChat = ({ mode }) => {
             )}
             <button
               onClick={() => setIsOpen(false)}
-              className={`p-1.5 border-2 border-charcoal transition-colors duration-50 hover:bg-red-500 hover:text-cream`}
+              className="p-1.5 transition-colors duration-50 hover:bg-red-500 hover:text-cream"
             >
               <X size={16} />
             </button>
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto overscroll-contain p-4 space-y-3">
+        <div
+          ref={messagesContainerRef}
+          className="flex-1 overflow-y-auto overscroll-contain p-4 space-y-3"
+        >
           {messages.length === 0 ? (
             <div className={`flex flex-col items-center justify-center h-full ${theme.subText}`}>
               <div className="bauhaus-idle mb-4" aria-label="System idle">
@@ -177,8 +180,6 @@ const MiniChat = ({ mode }) => {
                   </span>
                 </div>
               )}
-
-              <div ref={messagesEndRef} />
             </>
           )}
         </div>
@@ -200,7 +201,7 @@ const MiniChat = ({ mode }) => {
           </div>
         )}
 
-        <form onSubmit={onSubmit} className="px-4 pt-2 pb-4 shrink-0">
+        <form onSubmit={onSubmit} className="px-4 pt-2 pb-5 shrink-0">
           <div className={`flex items-center gap-2 border-b-2 ${theme.borderSolid} px-1 py-1.5`}>
             <input
               ref={inputRef}
@@ -219,15 +220,16 @@ const MiniChat = ({ mode }) => {
               type="submit"
               disabled={isLoading || !input.trim()}
               className={`
-                flex shrink-0 items-center justify-center bg-transparent
-                transition-opacity duration-50
-                disabled:opacity-30 disabled:cursor-not-allowed
-                hover:opacity-70
-                ${theme.iconBlue}
+                chat-send flex h-9 w-9 shrink-0 items-center justify-center
+                bauhaus-circle border-0 bg-[#FFCC01] text-charcoal cursor-pointer
+                transition-colors duration-50
+                enabled:hover:bg-red-500 enabled:hover:text-cream
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2
+                disabled:cursor-not-allowed
               `}
               aria-label="Send message"
             >
-              <Send size={14} />
+              <MessageCircleMore size={18} strokeWidth={2.25} />
             </button>
           </div>
         </form>
@@ -244,10 +246,10 @@ const MiniChat = ({ mode }) => {
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={`
-            w-14 h-14 rounded-full bauhaus-circle
+            chat-launcher w-14 h-14 rounded-full bauhaus-circle
             flex items-center justify-center
             bg-blue-500 text-cream border-0
-            cursor-pointer transition-colors duration-50
+            cursor-pointer
             hover:bg-blue-700
           `}
           aria-label={isOpen ? 'Close chat' : 'Open chat'}

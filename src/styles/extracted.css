@@ -15,7 +15,7 @@
 
 /* ── About portrait yellow block ── */
 .about-portrait-block {
-  background: var(--color-yellow-500, #ffcc00);
+  background: var(--color-yellow-500, #ffcc01);
 }
 
 /* ── Lightbox stage ── */

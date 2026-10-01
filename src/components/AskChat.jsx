@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Send, Sparkles, RotateCcw } from 'lucide-react';
+import React, { useRef, useEffect, useLayoutEffect } from 'react';
+import { MessageCircleMore, Sparkles, RotateCcw } from 'lucide-react';
 import { Streamdown } from 'streamdown';
 import {
   useAskChat,
@@ -25,8 +25,8 @@ const AskChat = ({ mode }) => {
   const inputRef = useRef(null);
   const lastUserMessageRef = useRef(null);
   const sectionRef = useRef(null);
-
-  const [shouldScrollToQuestion, setShouldScrollToQuestion] = useState(false);
+  const scrollToQuestionRef = useRef(false);
+  const pageScrollRef = useRef(null);
 
   const theme = getTheme(mode);
 
@@ -47,26 +47,45 @@ const AskChat = ({ mode }) => {
     };
   }, [setIsMainChatVisible]);
 
-  useEffect(() => {
-    if (shouldScrollToQuestion && lastUserMessageRef.current) {
-      setTimeout(() => {
-        if (lastUserMessageRef.current) {
-          lastUserMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-        setShouldScrollToQuestion(false);
-      }, 50);
+  // Scroll the question to the top of the chat panel only. scrollIntoView also
+  // moves the page, and the page should stay where the reader left it.
+  useLayoutEffect(() => {
+    if (!scrollToQuestionRef.current) return;
+    const container = messagesContainerRef.current;
+    const target = lastUserMessageRef.current;
+    if (!container || !target) return;
+
+    const paddingTop = parseFloat(getComputedStyle(container).paddingTop) || 0;
+    const top =
+      target.getBoundingClientRect().top -
+      container.getBoundingClientRect().top +
+      container.scrollTop -
+      paddingTop;
+    container.scrollTo({ top, behavior: 'smooth' });
+
+    const savedPage = pageScrollRef.current;
+    scrollToQuestionRef.current = false;
+    pageScrollRef.current = null;
+    if (savedPage != null) {
+      window.scrollTo(0, savedPage);
+      requestAnimationFrame(() => window.scrollTo(0, savedPage));
     }
-  }, [shouldScrollToQuestion]);
+  }, [messages]);
+
+  const markQuestionScroll = () => {
+    pageScrollRef.current = window.scrollY;
+    scrollToQuestionRef.current = true;
+  };
 
   const handleStarterClick = async (question) => {
-    setShouldScrollToQuestion(true);
+    markQuestionScroll();
     await handleSend(question);
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
-    setShouldScrollToQuestion(true);
+    markQuestionScroll();
     await handleSend(input);
   };
 
@@ -88,7 +107,7 @@ const AskChat = ({ mode }) => {
           <span className="inline-flex items-start gap-3">
             Ask Me
             <Sparkles
-              className={`${theme.iconBlue} w-[0.45em] h-[0.45em] shrink-0`}
+              className={`${theme.iconBlue} w-[0.45em] h-[0.45em] shrink-0 -translate-y-[0.24em]`}
               aria-hidden="true"
             />
           </span>
@@ -120,10 +139,10 @@ const AskChat = ({ mode }) => {
                 disabled={isLoading}
                 className={`
                 chat-new flex items-center gap-1.5 px-4 py-1.5 text-xs font-sans font-bold uppercase tracking-wide
-                border-2 transition-all duration-50
+                bg-transparent border-2 transition-all duration-50
                 hover:bg-red-500 hover:text-cream hover:border-red-500
                 disabled:opacity-50 disabled:cursor-not-allowed
-                ${mode === 'wandering' ? 'bg-cream text-charcoal border-cream' : 'bg-charcoal text-cream border-charcoal'}
+                ${mode === 'wandering' ? 'text-cream border-cream' : 'text-charcoal border-charcoal'}
               `}
                 title="Start new conversation"
               >
@@ -322,15 +341,16 @@ const AskChat = ({ mode }) => {
                 type="submit"
                 disabled={isLoading || !input.trim()}
                 className={`
-                flex shrink-0 items-center justify-center bg-transparent
-                transition-opacity duration-50
-                disabled:opacity-30 disabled:cursor-not-allowed
-                hover:opacity-70
-                ${theme.iconBlue}
+                chat-send flex h-11 w-11 shrink-0 items-center justify-center
+                bauhaus-circle border-0 bg-[#FFCC01] text-charcoal cursor-pointer
+                transition-colors duration-50
+                enabled:hover:bg-red-500 enabled:hover:text-cream
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2
+                disabled:cursor-not-allowed
               `}
                 aria-label="Send message"
               >
-                <Send size={18} />
+                <MessageCircleMore size={24} strokeWidth={2.25} />
               </button>
             </div>
           </form>

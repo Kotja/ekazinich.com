@@ -99,7 +99,7 @@
 
   /* ── Bauhaus Yellow (Process / Focus) ── */
   --color-yellow-700: #cc9900;
-  --color-yellow-500: #ffcc00;
+  --color-yellow-500: #ffcc01;
   --color-yellow-200: #fff4cc;
 
   /* ── Semantic aliases (legacy class compatibility) ── */
@@ -123,20 +123,20 @@
   --color-scrollbar-hover: #e63946;
 
   --color-success: #0047ab;
-  --color-mustard: #ffcc00;
+  --color-mustard: #ffcc01;
   --color-deep-orange: #e63946;
 
   /* ── Candidate journey graph ── */
   --color-candidate-1: #e63946;
-  --color-candidate-2: #ffcc00;
+  --color-candidate-2: #ffcc01;
   --color-candidate-3: #0047ab;
   --color-candidate-4: #767676;
   --color-candidate-5: #990000;
   --color-candidate-6: #d0e1ff;
 
   /* ── Project card fills (flat Bauhaus blocks, no gradients) ── */
-  --color-gradient-gold-dark: #ffcc00;
-  --color-gradient-gold-light: #ffcc00;
+  --color-gradient-gold-dark: #ffcc01;
+  --color-gradient-gold-light: #ffcc01;
   --color-gradient-orange-light: #e63946;
   --color-gradient-orange-dark: #e63946;
 }
@@ -169,7 +169,7 @@
     transform: rotate(0deg);
   }
   33% {
-    background-color: #ffcc00;
+    background-color: #ffcc01;
     transform: rotate(90deg);
   }
   66% {
@@ -223,6 +223,10 @@
   border-radius: 25px !important;
 }
 
+.search-pill {
+  border-radius: 26px !important;
+}
+
 /* User: both top corners and the bottom left. Assistant: both top corners and the bottom right. */
 .chat-bubble-user {
   border-radius: 26px 26px 0 26px !important;
@@ -234,6 +238,27 @@
 
 .chat-new {
   border-radius: 50px !important;
+}
+
+.chat-send {
+  background-color: #ffcc01;
+  border: 0;
+  color: #000;
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.22);
+}
+
+.chat-send:hover:not(:disabled) {
+  background-color: var(--color-red-500);
+  color: var(--color-cream);
+  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.32);
+}
+
+.mode-wandering .chat-send {
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.55);
+}
+
+.mode-wandering .chat-send:hover:not(:disabled) {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.65);
 }
 
 /* In-depth friction phone. Inline radii lose to the square-corner reset. */
@@ -598,15 +623,9 @@ h6 {
   }
 }
 
-/* Quote banner is ~2:1. The frame follows it so the shed and the price stay in view. */
+/* ~2:1 frame, same size as the custom quote. */
 .hero-screen-wide {
   aspect-ratio: 1003 / 508;
-}
-
-.hero-screen-wide .hero-screen-still,
-.hero-screen-wide .hero-screen-video {
-  object-fit: contain;
-  object-position: center;
 }
 
 .hero-screen-still,
@@ -840,6 +859,32 @@ h6 {
   box-shadow:
     0 18px 36px rgba(0, 0, 0, 0.55),
     0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+.chat-launcher {
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.22);
+  transition:
+    background-color 50ms linear,
+    box-shadow 50ms linear,
+    transform 50ms linear;
+}
+
+.chat-launcher:hover {
+  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.32);
+  transform: translateY(-2px);
+}
+
+.chat-launcher:active {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(0);
+}
+
+.mode-wandering .chat-launcher {
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.55);
+}
+
+.mode-wandering .chat-launcher:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.65);
 }
 
 .chat-tile {

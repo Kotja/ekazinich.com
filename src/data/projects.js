@@ -564,6 +564,7 @@ export const PROJECTS = [
       },
     },
     heroScreen: bookingAutomation,
+    heroFrame: 'wide',
     images: [automationHero, undefined, undefined, projectBookingFlow],
     refinement:
       "Refining the Booking Logic: Early iterations of this flow treated 'Class Trials' as a separate product, creating a disjointed experience. In this final architecture, I integrated the 'Trial vs. Term' choice as a decision node within the main class flow. This allows users to verify that a specific class fits their schedule before deciding on their level of commitment, resulting in a more intuitive and flexible path to purchase.",
@@ -650,6 +651,7 @@ export const PROJECTS = [
       },
     },
     images: [springboardPlaceholder],
+    heroFrame: 'wide',
     placeholder: true,
   },
   {

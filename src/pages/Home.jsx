@@ -87,7 +87,7 @@ const HeroCard = ({ proj, idx, openProject, isWandering }) => {
   return (
     <button
       type="button"
-      className={`hero-card ${side}`}
+      className={`hero-card ${side} group`}
       onClick={() => openProject(proj)}
       onMouseEnter={playClip}
       onMouseLeave={resetClip}
@@ -133,7 +133,9 @@ const HeroCard = ({ proj, idx, openProject, isWandering }) => {
           ) : null}
         </span>
       )}
-      <span className={`hero-card-copy ${isWandering ? 'text-cream' : 'text-charcoal'}`}>
+      <span
+        className={`hero-card-copy transition-colors duration-50 group-hover:text-red-500 group-focus-visible:text-red-500 ${isWandering ? 'text-cream' : 'text-charcoal'}`}
+      >
         {titleLines.map((line) => (
           <span key={line}>{line}</span>
         ))}

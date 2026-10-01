@@ -149,7 +149,7 @@ const AppContent = () => {
             className={`flex-1 flex flex-col items-center justify-center relative ${isOnboardingVisible ? 'z-[105]' : ''}`}
           >
             <span
-              className={`hidden md:block text-2xs font-semibold tracking-widest uppercase leading-none mb-1 ${theme.iconBlue}`}
+              className={`text-2xs font-semibold tracking-widest uppercase leading-none mb-1 whitespace-nowrap ${theme.iconBlue}`}
             >
               Modes
             </span>
@@ -189,8 +189,9 @@ const AppContent = () => {
                     playSound('mode');
                   }
                 }}
-                onMouseEnter={() => setMenuHover('Impact')}
-                onMouseLeave={() => setMenuHover(null)}
+                onPointerEnter={() => setMenuHover('Impact')}
+                onPointerLeave={() => setMenuHover(null)}
+                onPointerCancel={() => setMenuHover(null)}
                 role="button"
                 tabIndex={0}
                 aria-label="Impact Mode"
@@ -216,8 +217,9 @@ const AppContent = () => {
                     playSound('mode');
                   }
                 }}
-                onMouseEnter={() => setMenuHover('In-Depth')}
-                onMouseLeave={() => setMenuHover(null)}
+                onPointerEnter={() => setMenuHover('In-Depth')}
+                onPointerLeave={() => setMenuHover(null)}
+                onPointerCancel={() => setMenuHover(null)}
                 role="button"
                 tabIndex={0}
                 aria-label="In-Depth Mode"
@@ -225,7 +227,7 @@ const AppContent = () => {
               />
             </div>
             <span
-              className={`hidden md:block text-2xs font-semibold tracking-widest uppercase leading-none mt-1 translate-y-[2px] ${isOnboardingVisible ? 'text-charcoal bg-yellow-500 px-2 py-0.5' : theme.iconBlue}`}
+              className={`mode-tooltip text-2xs font-semibold tracking-widest uppercase leading-none mt-1 translate-y-[2px] whitespace-nowrap ${isOnboardingVisible ? 'text-charcoal bg-yellow-500 px-2 py-0.5' : theme.iconBlue}`}
             >
               {menuHover === 'Impact' || menuHover === 'In-Depth'
                 ? menuHover
