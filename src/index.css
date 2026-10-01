@@ -199,11 +199,11 @@
 
 /* User: both top corners and the bottom left. Assistant: both top corners and the bottom right. */
 .chat-bubble-user {
-  border-radius: 50px 50px 0 50px !important;
+  border-radius: 26px 26px 0 26px !important;
 }
 
 .chat-bubble-assistant {
-  border-radius: 50px 50px 50px 0 !important;
+  border-radius: 26px 26px 26px 0 !important;
 }
 
 .chat-new {
