@@ -52,7 +52,7 @@ for (const url of routes) {
       const pageTitle = escapeAttr(`${project.title} | Eka Zinich`);
       const pageDesc = escapeAttr(project.desc);
       const pageUrl = `https://ekazinich.com${url}`;
-      const pageImage = `https://ekazinich.com/profile.webp`;
+      const pageImage = `https://ekazinich.com/profile.webp?v=3`;
 
       html = html
         .replace(/<title>[^<]*<\/title>/, `<title>${pageTitle}</title>`)

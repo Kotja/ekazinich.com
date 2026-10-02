@@ -362,7 +362,7 @@ const Home = ({ mode }) => {
                 width="300"
                 height="400"
                 loading="lazy"
-                className="w-full h-full object-cover object-top"
+                className="h-full w-full object-cover object-top"
               />
             </div>
 
@@ -373,14 +373,18 @@ const Home = ({ mode }) => {
               className="absolute -right-2 top-16 w-14 h-14 rounded-full bauhaus-circle bg-red-500 z-20"
               aria-hidden="true"
             />
-            {/* Black vertical line */}
+            {/* Vertical line: white on the In-Depth ground, black on Impact */}
             <div
-              className="absolute left-2 top-20 w-[2px] h-40 bg-charcoal z-20"
+              className={`absolute left-2 top-20 w-[2px] h-40 z-20 ${isWandering ? 'bg-cream' : 'bg-charcoal'}`}
+              aria-hidden="true"
+            />
+            {/* Dot the annotation pointed to, on the portrait */}
+            <span
+              className="absolute left-[66px] top-[259px] z-20 h-3 w-3 rounded-full bauhaus-dot bg-blue-500"
               aria-hidden="true"
             />
             {/* Dot cluster */}
             <div className="absolute right-4 bottom-8 flex gap-2 z-20" aria-hidden="true">
-              <span className="w-3 h-3 rounded-full bauhaus-dot bg-charcoal" />
               <span className="w-3 h-3 rounded-full bauhaus-dot bg-charcoal" />
               <span className="w-3 h-3 rounded-full bauhaus-dot bg-blue-500" />
               <span className="w-3 h-3 rounded-full bauhaus-dot bg-red-500" />

@@ -18,6 +18,10 @@
   background: var(--color-yellow-500, #ffcc01);
 }
 
+.about-portrait-block img {
+  transform: translateY(0.45rem);
+}
+
 /* ── Lightbox stage ── */
 .lightbox-stage {
   width: var(--lightbox-w, 80vw);
