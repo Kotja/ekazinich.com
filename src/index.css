@@ -215,8 +215,10 @@
 
 .rounded-full,
 .bauhaus-circle,
-.bauhaus-dot {
-  border-radius: 50% !important;
+.bauhaus-dot,
+.mode-toggle__track,
+.mode-toggle__thumb {
+  border-radius: 999px !important;
 }
 
 .rounded-tag {
@@ -339,6 +341,77 @@
     border-right-width: 0 !important;
     border-bottom-width: 2px !important;
     border-left-width: 0 !important;
+  }
+}
+
+/* Mode switch: pill track, sliding knob. Blue is Impact, yellow is In-Depth. */
+.mode-toggle {
+  --mode-w: 2.625rem;
+  --mode-h: 1.375rem;
+  --mode-pad: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.25rem;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.mode-toggle:focus {
+  outline: none;
+}
+
+.mode-toggle:focus-visible {
+  outline: 2px solid var(--color-black-900);
+  outline-offset: 3px;
+}
+
+.mode-wandering .mode-toggle:focus-visible {
+  outline-color: var(--color-cream);
+}
+
+.mode-toggle__track {
+  position: relative;
+  width: var(--mode-w);
+  height: var(--mode-h);
+  background: var(--color-blue-500);
+  transition: background-color 180ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.mode-toggle.is-indepth .mode-toggle__track {
+  background: var(--color-yellow-500);
+}
+
+.mode-toggle__thumb {
+  position: absolute;
+  top: var(--mode-pad);
+  left: var(--mode-pad);
+  width: calc(var(--mode-h) - var(--mode-pad) * 2);
+  height: calc(var(--mode-h) - var(--mode-pad) * 2);
+  background: radial-gradient(circle at 50% 32%, #ffffff 0%, #f4f4f4 62%, #e4e4e4 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
+  transition: transform 180ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.mode-toggle.is-indepth .mode-toggle__thumb {
+  transform: translateX(calc(var(--mode-w) - var(--mode-h)));
+}
+
+.mode-toggle:active .mode-toggle__thumb {
+  transform: scale(0.94);
+}
+
+.mode-toggle.is-indepth:active .mode-toggle__thumb {
+  transform: translateX(calc(var(--mode-w) - var(--mode-h))) scale(0.94);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mode-toggle__track,
+  .mode-toggle__thumb {
+    transition: none;
   }
 }
 

@@ -13,7 +13,6 @@ const AppContent = () => {
   // --- STATE MANAGEMENT ---
   const [mode, setMode] = useState('hr');
   const [isOnboardingVisible, setIsOnboardingVisible] = useState(false); // Track visibility of Onboarding Modal
-  const [menuHover, setMenuHover] = useState(null); // Track which menu item is being hovered
   const canPortal = useSyncExternalStore(
     () => () => {},
     () => true,
@@ -128,10 +127,6 @@ const AppContent = () => {
                 key={item}
                 ref={(el) => (buttonRefs.current[item] = el)}
                 onClick={() => scrollToSection(targetScrollId)}
-                onMouseEnter={() => {
-                  if (mode === 'wandering') setMenuHover(item);
-                }}
-                onMouseLeave={() => setMenuHover(null)}
                 className="relative group flex-1 flex items-center justify-center whitespace-nowrap text-inherit uppercase tracking-widest"
               >
                 <span className="cursor-pointer text-2xs xs:text-xs md:text-sm font-semibold uppercase tracking-widest">
@@ -149,11 +144,11 @@ const AppContent = () => {
             className={`flex-1 flex flex-col items-center justify-center relative ${isOnboardingVisible ? 'z-[105]' : ''}`}
           >
             <span
-              className={`text-2xs font-semibold tracking-widest uppercase leading-none mb-1 whitespace-nowrap ${theme.iconBlue}`}
+              className={`text-2xs font-semibold tracking-widest uppercase leading-none -mb-2 whitespace-nowrap ${theme.iconBlue}`}
             >
               Modes
             </span>
-            <div className="flex items-center gap-2 relative group/mode">
+            <div className="relative flex items-center justify-center">
               {isOnboardingVisible && (
                 <span className="absolute -inset-x-8 -inset-y-7 pointer-events-none z-10">
                   <svg
@@ -174,66 +169,26 @@ const AppContent = () => {
                 </span>
               )}
 
-              <div
-                className={`w-4 h-4 rounded-full bauhaus-circle border-2 cursor-pointer transition-all duration-50 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2
-                    ${isWandering ? 'border-cream focus:ring-offset-charcoal' : 'border-charcoal focus:ring-offset-cream'}
-                    ${mode === 'hr' ? (isWandering ? 'bg-cream' : 'bg-charcoal') : 'bg-transparent'}`}
+              <button
+                type="button"
+                role="switch"
+                aria-checked={isWandering}
+                aria-label="In-Depth mode"
                 onClick={() => {
-                  setMode('hr');
+                  setMode(isWandering ? 'hr' : 'wandering');
                   playSound('mode');
                 }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setMode('hr');
-                    playSound('mode');
-                  }
-                }}
-                onPointerEnter={() => setMenuHover('Impact')}
-                onPointerLeave={() => setMenuHover(null)}
-                onPointerCancel={() => setMenuHover(null)}
-                role="button"
-                tabIndex={0}
-                aria-label="Impact Mode"
-                aria-pressed={mode === 'hr'}
-              />
-
-              <div
-                className={`h-[2px] w-2 transition-colors duration-50 ${mode === 'wandering' ? 'bg-red-500' : isWandering ? 'bg-cream/40' : 'bg-charcoal/40'}`}
-              />
-
-              <div
-                className={`w-4 h-4 rounded-full bauhaus-circle border-2 cursor-pointer transition-all duration-50 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2
-                    ${isWandering ? 'border-cream focus:ring-offset-charcoal' : 'border-charcoal focus:ring-offset-cream'}
-                    ${mode === 'wandering' ? (isWandering ? 'bg-cream' : 'bg-charcoal') : 'bg-transparent'}`}
-                onClick={() => {
-                  setMode('wandering');
-                  playSound('mode');
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setMode('wandering');
-                    playSound('mode');
-                  }
-                }}
-                onPointerEnter={() => setMenuHover('In-Depth')}
-                onPointerLeave={() => setMenuHover(null)}
-                onPointerCancel={() => setMenuHover(null)}
-                role="button"
-                tabIndex={0}
-                aria-label="In-Depth Mode"
-                aria-pressed={mode === 'wandering'}
-              />
+                className={`mode-toggle ${isWandering ? 'is-indepth' : ''}`}
+              >
+                <span className="mode-toggle__track" aria-hidden="true">
+                  <span className="mode-toggle__thumb" />
+                </span>
+              </button>
             </div>
             <span
-              className={`mode-tooltip text-2xs font-semibold tracking-widest uppercase leading-none mt-1 translate-y-[2px] whitespace-nowrap ${isOnboardingVisible ? 'text-charcoal bg-yellow-500 px-2 py-0.5' : theme.iconBlue}`}
+              className={`mode-tooltip text-2xs font-semibold tracking-widest uppercase leading-none -mt-2 whitespace-nowrap ${isOnboardingVisible ? 'text-charcoal bg-yellow-500 px-2 py-0.5' : theme.iconBlue}`}
             >
-              {menuHover === 'Impact' || menuHover === 'In-Depth'
-                ? menuHover
-                : isWandering
-                  ? 'In-Depth'
-                  : 'Impact'}
+              {isWandering ? 'In-Depth' : 'Impact'}
             </span>
           </div>
         </div>

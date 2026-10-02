@@ -73,14 +73,20 @@ for (const route of PROJECT_ROUTES) {
   });
 }
 
-test('mode toggle buttons are keyboard accessible', async ({ page }) => {
+test('mode toggle is a keyboard accessible switch', async ({ page }) => {
   await page.goto('/');
 
-  const impactBtn = page.locator('[aria-label="Impact Mode"]');
-  const indepthBtn = page.locator('[aria-label="In-Depth Mode"]');
+  const toggle = page.getByRole('switch', { name: 'In-Depth mode' });
+  await expect(toggle).toBeVisible();
+  await expect(toggle).toHaveAttribute('aria-checked', 'false');
+  await expect(page.locator('.mode-impact')).toBeVisible();
 
-  await expect(impactBtn).toHaveAttribute('role', 'button');
-  await expect(indepthBtn).toHaveAttribute('role', 'button');
-  await expect(impactBtn).toHaveAttribute('tabindex', '0');
-  await expect(indepthBtn).toHaveAttribute('tabindex', '0');
+  await toggle.focus();
+  await page.keyboard.press('Enter');
+  await expect(toggle).toHaveAttribute('aria-checked', 'true');
+  await expect(page.locator('.mode-wandering')).toBeVisible();
+
+  await page.keyboard.press('Space');
+  await expect(toggle).toHaveAttribute('aria-checked', 'false');
+  await expect(page.locator('.mode-impact')).toBeVisible();
 });
