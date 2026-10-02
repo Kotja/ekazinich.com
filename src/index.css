@@ -294,6 +294,26 @@
   color: #fff !important;
 }
 
+/* Mini chat prompts: yellow stroke so the idle block and send button keep the fill. */
+.chat-chip-outline.rounded-tag {
+  background-color: transparent !important;
+  color: var(--color-black-900) !important;
+  border: 2px solid var(--color-yellow-500) !important;
+}
+
+.chat-chip-outline.rounded-tag:hover:not(:disabled) {
+  background-color: var(--color-yellow-500) !important;
+  color: var(--color-black-900) !important;
+}
+
+.mode-wandering .chat-chip-outline.rounded-tag {
+  color: #fff !important;
+}
+
+.mode-wandering .chat-chip-outline.rounded-tag:hover:not(:disabled) {
+  color: var(--color-black-900) !important;
+}
+
 .mode-wandering .chat-rule {
   border-color: #000 !important;
 }

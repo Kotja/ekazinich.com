@@ -52,9 +52,8 @@ const MiniChat = ({ mode }) => {
         !getMessageContent(messages[messages.length - 1])));
 
   const chipClass = `
-    inline-block px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-tag chat-chip cursor-pointer
+    chat-chip-outline inline-block px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-tag chat-chip cursor-pointer
     disabled:opacity-50 disabled:cursor-not-allowed
-    ${theme.tagBg}
   `;
 
   return (
