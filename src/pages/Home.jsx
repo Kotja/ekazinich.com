@@ -1,17 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cvFile from '../assets/Katerina (Eka) Zinich Product designer CV.pdf';
-import {
-  ArrowDown,
-  Check,
-  Copy,
-  Linkedin,
-  Mail,
-  ArrowRight,
-  AlertCircle,
-  X,
-  Download,
-} from 'lucide-react';
+import { Check, Copy, Linkedin, Mail, ArrowRight, AlertCircle, X, Download } from 'lucide-react';
 import profileImage from '../assets/profile.webp';
 import { PROJECTS } from '../data/projects';
 import emailjs from '@emailjs/browser';
@@ -115,7 +105,7 @@ const HeroCard = ({ proj, idx, openProject, isWandering }) => {
                 width="800"
                 height="500"
                 loading={idx > 1 ? 'lazy' : 'eager'}
-                className={`hero-screen-still${proj.placeholder ? ' is-placeholder' : ''}`}
+                className={`hero-screen-still${proj.placeholder ? ' is-placeholder' : ''}${proj.heroFit === 'contain' || proj.heroScreenFit === 'contain' ? ' is-contain' : ''}`}
               />
             )}
           </span>
@@ -144,7 +134,7 @@ const HeroCard = ({ proj, idx, openProject, isWandering }) => {
   );
 };
 
-const Home = ({ mode, scrollToSection }) => {
+const Home = ({ mode }) => {
   const navigate = useNavigate();
   const [emailCopied, setEmailCopied] = useState(false);
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
@@ -309,15 +299,6 @@ const Home = ({ mode, scrollToSection }) => {
         <div
           className={`absolute inset-0 pointer-events-none transition-opacity duration-1000 ${mode === 'wandering' ? 'opacity-100' : 'opacity-0'}`}
         ></div>
-
-        {/* Scroll Down Arrow */}
-        <button
-          onClick={() => scrollToSection('about-section')}
-          className="relative lg:absolute mt-16 lg:mt-0 bottom-auto lg:bottom-6 left-auto lg:left-1/2 min-[1440px]:left-[var(--ring-cx)] translate-x-0 lg:-translate-x-1/2 self-center text-accent cursor-pointer hover:scale-110 transition-transform z-30"
-          aria-label="Scroll to About"
-        >
-          <ArrowDown size={32} strokeWidth={1} />
-        </button>
       </section>
 
       {/* About Section */}

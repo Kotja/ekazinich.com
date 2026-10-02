@@ -375,7 +375,15 @@ const B2B_PIECES = [
 
 const CHASER_W = 210;
 const CHASER_H = 52;
+const CHASER_PAD = 12;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Keep the pill fully inside the frame. Right-hand pieces sit too close to
+// the edge for a left-aligned pill, and overflow-hidden was clipping it.
+const fitChaser = (x, y, width, height) => ({
+  x: Math.min(Math.max(CHASER_PAD, x), Math.max(CHASER_PAD, width - CHASER_W - CHASER_PAD)),
+  y: Math.min(Math.max(CHASER_PAD, y), Math.max(CHASER_PAD, height - CHASER_H - CHASER_PAD)),
+});
 
 const B2BScatteredPieces = ({ children }) => {
   const containerRef = React.useRef(null);
@@ -389,7 +397,7 @@ const B2BScatteredPieces = ({ children }) => {
     const place = () => {
       if (!containerRef.current) return;
       const { width, height } = containerRef.current.getBoundingClientRect();
-      setChaserXY({ x: (width - CHASER_W) / 2, y: height - CHASER_H - 28 });
+      setChaserXY(fitChaser((width - CHASER_W) / 2, height - CHASER_H - 28, width, height));
     };
     place();
     window.addEventListener('resize', place);
@@ -413,17 +421,21 @@ const B2BScatteredPieces = ({ children }) => {
       const el = pieceRefs.current[idx];
       if (!el) continue;
       const r = el.getBoundingClientRect();
-      setChaserXY({
-        x: r.left - cRect.left,
-        y: r.top - cRect.top + r.height / 2 - CHASER_H / 2,
-      });
+      setChaserXY(
+        fitChaser(
+          r.left - cRect.left,
+          r.top - cRect.top + r.height / 2 - CHASER_H / 2,
+          cRect.width,
+          cRect.height
+        )
+      );
       await sleep(560);
       setHidden((prev) => new Set([...prev, idx]));
       await sleep(120);
     }
 
     const { width, height } = containerRef.current.getBoundingClientRect();
-    setChaserXY({ x: (width - CHASER_W) / 2, y: height - CHASER_H - 28 });
+    setChaserXY(fitChaser((width - CHASER_W) / 2, height - CHASER_H - 28, width, height));
     await sleep(580);
     setLabel('dare to search');
     setIsChasing(false);
@@ -1178,17 +1190,17 @@ const ProjectDetail = ({ mode }) => {
 
         {project.images && project.images[0] && !project.placeholder && (
           <figure
-            className={`w-full ${project.video ? 'hidden' : ''} ${project.id === 6 ? 'max-w-6xl mx-auto px-6' : ''}`}
+            className={`w-full ${project.video ? 'hidden' : ''} ${project.id === 6 || project.heroFit === 'contain' ? 'max-w-6xl mx-auto px-6' : ''}`}
           >
             <div
-              className={`w-full overflow-hidden cursor-zoom-in ${project.id === 6 ? '' : `aspect-video md:max-h-[85vh] ${theme.imagePlaceholderBg}`}`}
+              className={`w-full overflow-hidden cursor-zoom-in ${project.id === 6 || project.heroFit === 'contain' ? '' : `aspect-video md:max-h-[85vh] ${theme.imagePlaceholderBg}`}`}
               onClick={() => setSelectedImage(project.images[0])}
             >
               <img
                 src={project.images[0]}
                 alt={project.heroAlt || 'Hero'}
                 draggable="false"
-                className={`w-full ${project.id === 6 ? 'h-auto object-contain' : 'h-full object-cover'}`}
+                className={`w-full ${project.id === 6 || project.heroFit === 'contain' ? 'h-auto object-contain' : 'h-full object-cover'}`}
               />
             </div>
             {project.heroCaption && (
@@ -1271,7 +1283,11 @@ const ProjectDetail = ({ mode }) => {
               {challengeImage && (
                 <div
                   className={
-                    project.id === 3 ? 'challenge-split__figure' : 'md:w-1/2 md:flex-shrink-0'
+                    project.id === 3
+                      ? 'challenge-split__figure'
+                      : project.id === 1
+                        ? 'md:w-1/4 md:flex-shrink-0'
+                        : 'md:w-1/2 md:flex-shrink-0'
                   }
                 >
                   <InteractiveChallengeImage

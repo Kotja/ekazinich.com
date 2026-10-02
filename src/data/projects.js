@@ -33,7 +33,7 @@ import behaviouralStrategy2 from '../assets/Behavioural startegy2.webp';
 
 import projectB2BVideo from '../assets/HeroB2BOW.mp4';
 import projectCandidateVideo from '../assets/hero-candidate-pipeline.mp4';
-import springboardPlaceholder from '../assets/springboard-placeholder.svg';
+import visaRightsClock from '../assets/visa-rights-clock.png';
 import bookingAutomation from '../assets/booking-automation.webp';
 import shedQuoteSketches from '../assets/shed/quote-sketches.jpg';
 import shedQuoteWelcome from '../assets/shed/quote-welcome.jpg';
@@ -565,6 +565,7 @@ export const PROJECTS = [
     },
     heroScreen: bookingAutomation,
     heroFrame: 'wide',
+    heroScreenFit: 'contain',
     images: [automationHero, undefined, undefined, projectBookingFlow],
     refinement:
       "Refining the Booking Logic: Early iterations of this flow treated 'Class Trials' as a separate product, creating a disjointed experience. In this final architecture, I integrated the 'Trial vs. Term' choice as a decision node within the main class flow. This allows users to verify that a specific class fits their schedule before deciding on their level of commitment, resulting in a more intuitive and flexible path to purchase.",
@@ -650,9 +651,11 @@ export const PROJECTS = [
           'SpringBoard started as a hackathon product and pointed at a longer ecosystem: matching people who can legally work a short contract with businesses that need coverage now.\n\nThe lesson I am taking forward is that compliance UX fails when it asks users to interpret law. It works when it shows remaining time, states the constraint in plain language, and gives both sides a workflow they can finish. Visuals, sequence, and accessibility were the whole strategy — not a later pass.',
       },
     },
-    images: [springboardPlaceholder],
+    images: [visaRightsClock],
+    heroAlt: 'Visa clock: yellow, blue, and red blocks with clock hands',
     heroFrame: 'wide',
-    placeholder: true,
+    heroFit: 'contain',
+    placeholder: false,
   },
   {
     id: 6,

@@ -225,6 +225,7 @@
 
 .search-pill {
   border-radius: 26px !important;
+  box-shadow: 0 8px 14px -3px rgba(0, 0, 0, 0.22);
 }
 
 /* User: both top corners and the bottom left. Assistant: both top corners and the bottom right. */
@@ -375,6 +376,15 @@ body > .project-action-bar {
     height: 5.5rem;
     border-top-width: 2px !important;
     border-bottom-width: 0 !important;
+  }
+
+  /* Bubble and its panel sit above the Hire Me line, with the same gap used over the mobile menu. */
+  .is-project .chat-fab {
+    bottom: calc(5.5rem + 1rem);
+  }
+
+  .is-project .chat-panel {
+    bottom: calc(5.5rem + 1rem + 3.5rem + 0.75rem);
   }
 }
 
@@ -668,10 +678,15 @@ h6 {
   min-width: 100%;
 }
 
-.hero-screen-still.is-placeholder {
+.hero-screen-still.is-placeholder,
+.hero-screen-still.is-contain {
   object-fit: contain;
-  padding: 0.75rem;
+  object-position: center;
   background: #fff;
+}
+
+.hero-screen-still.is-placeholder {
+  padding: 0.75rem;
 }
 
 .hero-screen-video {

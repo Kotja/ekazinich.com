@@ -60,7 +60,7 @@ const MiniChat = ({ mode }) => {
     <>
       <div
         className={`
-          fixed z-50 right-4 md:right-9
+          chat-panel fixed z-50 right-4 md:right-9
           bottom-[calc(5rem+1rem+3.5rem+0.75rem)] md:bottom-28
           w-[calc(100vw-2rem)] md:w-[360px]
           h-[60vh] max-h-[480px]
@@ -236,7 +236,7 @@ const MiniChat = ({ mode }) => {
 
       <div
         className={`
-          fixed z-[60] right-4 md:right-9
+          chat-fab fixed z-[60] right-4 md:right-9
           bottom-[calc(5rem+1rem)] md:bottom-10
           transition-opacity duration-50
           ${isMainChatVisible ? 'opacity-0 pointer-events-none' : 'opacity-100'}

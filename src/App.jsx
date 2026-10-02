@@ -94,7 +94,7 @@ const AppContent = () => {
 
   return (
     <div
-      className={`min-h-[100dvh] transition-colors duration-150 ${theme.bg} ${theme.text} font-sans overflow-x-hidden selection:bg-yellow-500 selection:text-charcoal pb-28 md:pt-20 ${isProjectPage ? 'pt-20 md:pb-24' : 'md:pb-0'} ${isWandering ? 'mode-wandering' : 'mode-impact'}`}
+      className={`min-h-[100dvh] transition-colors duration-150 ${theme.bg} ${theme.text} font-sans overflow-x-hidden selection:bg-yellow-500 selection:text-charcoal pb-28 md:pt-20 ${isProjectPage ? 'is-project pt-20 md:pb-24' : 'md:pb-0'} ${isWandering ? 'mode-wandering' : 'mode-impact'}`}
     >
       <a
         href="#main-content"
@@ -261,7 +261,7 @@ const AppContent = () => {
 
       <main id="main-content">
         <Routes>
-          <Route path="/" element={<Home mode={mode} scrollToSection={scrollToSection} />} />
+          <Route path="/" element={<Home mode={mode} />} />
           <Route path="/projects/:slug" element={<ProjectDetail mode={mode} />} />
         </Routes>
       </main>
