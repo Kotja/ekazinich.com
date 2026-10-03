@@ -900,12 +900,12 @@ h6 {
 
 .hero-screen-still,
 .hero-phone:not(.hero-phone-shell),
-.hero-phone-screen {
+.hero-phone-shell {
   filter: grayscale(1);
 }
 
 .hero-screen-still,
-.hero-phone-screen {
+.hero-phone:not(.hero-phone-shell) {
   transition: filter 500ms ease;
 }
 
@@ -914,8 +914,8 @@ h6 {
   .hero-card:focus-visible .hero-screen-still,
   .hero-card:hover .hero-phone:not(.hero-phone-shell),
   .hero-card:focus-visible .hero-phone:not(.hero-phone-shell),
-  .hero-card:hover .hero-phone-screen,
-  .hero-card:focus-visible .hero-phone-screen {
+  .hero-card:hover .hero-phone-shell,
+  .hero-card:focus-visible .hero-phone-shell {
     filter: grayscale(0);
   }
 
@@ -964,7 +964,8 @@ h6 {
 .hero-phone-shell {
   position: relative;
   box-sizing: border-box;
-  display: flex;
+  display: block;
+  overflow: hidden;
   padding: 6px 5px 7px;
   background: linear-gradient(180deg, #f4f4f6 0%, #d7d7dc 46%, #b7b7bd 100%);
   border-radius: 26px !important;
@@ -987,10 +988,12 @@ h6 {
 }
 
 .hero-phone-screen {
+  position: absolute;
+  top: 6px;
+  left: 5px;
+  width: calc(100% - 10px);
+  height: calc(100% - 13px);
   display: block;
-  width: 100%;
-  height: 100%;
-  min-height: 0;
   object-fit: cover;
   object-position: top center;
   border-radius: 20px !important;
@@ -1068,7 +1071,7 @@ h6 {
 @media (prefers-reduced-motion: reduce) {
   .hero-screen-still,
   .hero-phone:not(.hero-phone-shell),
-  .hero-phone-screen {
+  .hero-phone-shell {
     transition: none;
   }
 }
