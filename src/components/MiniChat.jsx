@@ -59,6 +59,9 @@ const MiniChat = ({ mode }) => {
   return (
     <>
       <div
+        role="dialog"
+        aria-label="Ask Eka's assistant"
+        aria-hidden={!(isOpen && !isMainChatVisible)}
         className={`
           chat-panel fixed z-50 right-4 md:right-9
           bottom-[calc(5rem+1rem+3.5rem+0.75rem)] md:bottom-28
@@ -84,6 +87,7 @@ const MiniChat = ({ mode }) => {
           <div className="flex items-center gap-1">
             {messages.length > 0 && (
               <button
+                type="button"
                 onClick={handleRestartChat}
                 disabled={isLoading}
                 className={`
@@ -91,27 +95,32 @@ const MiniChat = ({ mode }) => {
                   hover:bg-red-500 hover:text-cream
                   disabled:opacity-50 disabled:cursor-not-allowed
                 `}
-                title="New chat"
+                aria-label="New chat"
               >
-                <RotateCcw size={14} />
+                <RotateCcw size={14} aria-hidden="true" />
               </button>
             )}
             <button
+              type="button"
               onClick={() => setIsOpen(false)}
               className="p-1.5 transition-colors duration-50 hover:bg-red-500 hover:text-cream"
+              aria-label="Close chat"
             >
-              <X size={16} />
+              <X size={16} aria-hidden="true" />
             </button>
           </div>
         </div>
 
         <div
           ref={messagesContainerRef}
+          role="log"
+          aria-live="polite"
+          aria-relevant="additions"
           className="flex-1 overflow-y-auto overscroll-contain p-4 space-y-3"
         >
           {messages.length === 0 ? (
             <div className={`flex flex-col items-center justify-center h-full ${theme.subText}`}>
-              <div className="bauhaus-idle mb-4" aria-label="System idle">
+              <div className="bauhaus-idle mb-4">
                 <span className="bauhaus-idle__red" />
                 <span className="bauhaus-idle__blue" />
                 <span className="bauhaus-idle__yellow">
@@ -172,10 +181,10 @@ const MiniChat = ({ mode }) => {
               })}
 
               {showLoading && (
-                <div className="flex justify-start items-center gap-2 bauhaus-snap">
-                  <div className="bauhaus-think" aria-label="AI thinking" />
+                <div className="flex justify-start items-center gap-2 bauhaus-snap" role="status">
+                  <div className="bauhaus-think" aria-hidden="true" />
                   <span className="font-sans text-2xs font-bold uppercase tracking-widest text-gray-500">
-                    Processing
+                    Processing…
                   </span>
                 </div>
               )}
@@ -202,15 +211,21 @@ const MiniChat = ({ mode }) => {
 
         <form onSubmit={onSubmit} className="px-4 pt-2 pb-5 shrink-0">
           <div className={`flex items-center gap-2 border-b-2 ${theme.borderSolid} px-1 py-1.5`}>
+            <label htmlFor="mini-chat-input" className="sr-only">
+              Message
+            </label>
             <input
+              id="mini-chat-input"
               ref={inputRef}
               type="text"
+              name="message"
+              autoComplete="off"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask me anything..."
+              placeholder="Ask me anything…"
               disabled={isLoading}
               className={`
-                flex-1 bg-transparent border-none outline-none
+                flex-1 bg-transparent border-none
                 font-sans text-xs placeholder:opacity-50
                 ${theme.text}
               `}

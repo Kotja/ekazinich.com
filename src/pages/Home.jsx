@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import cvFile from '../assets/Katerina (Eka) Zinich Product designer CV.pdf';
 import { Check, Copy, Linkedin, Mail, ArrowRight, AlertCircle, X, Download } from 'lucide-react';
 import profileImage from '../assets/profile.webp';
@@ -34,16 +34,27 @@ function useSoftMode(mode) {
 }
 
 function HeroLines({ words, intro = false }) {
-  return words.map((word, i) => (
-    <h1
-      key={word}
-      className={`font-serif hero-display${intro ? ' opacity-0 animate-fade-word-in' : ''}`}
-      style={intro ? { '--word-delay': `${i * 80}ms` } : undefined}
-    >
-      {word}
+  return (
+    <h1 className="font-serif hero-display">
+      {words.map((word, i) => (
+        <span
+          key={word}
+          className={`block${intro ? ' opacity-0 animate-fade-word-in' : ''}`}
+          style={intro ? { '--word-delay': `${i * 80}ms` } : undefined}
+        >
+          {word}
+        </span>
+      ))}
     </h1>
-  ));
+  );
 }
+
+const projectPath = (project) =>
+  `/projects/${project.title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')}`;
 
 // --- SUB-COMPONENT: PROJECT ITEM ---
 // Fixed 3-line titles — no orphan / hangover letters
@@ -92,7 +103,7 @@ const PhoneFace = ({ phone, className, loading }) => {
   );
 };
 
-const HeroCard = ({ proj, idx, openProject, isWandering }) => {
+const HeroCard = ({ proj, idx, isWandering }) => {
   const videoRef = useRef(null);
   const titleLines = CASE_TITLE_LINES[proj.title] || [proj.title];
   const side = idx % 2 === 0 ? 'hero-card-left' : 'hero-card-right';
@@ -101,6 +112,7 @@ const HeroCard = ({ proj, idx, openProject, isWandering }) => {
   const cover = proj.heroScreen || proj.images?.[0];
 
   const playClip = () => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     videoRef.current?.play().catch(() => {});
   };
 
@@ -112,10 +124,9 @@ const HeroCard = ({ proj, idx, openProject, isWandering }) => {
   };
 
   return (
-    <button
-      type="button"
+    <Link
+      to={projectPath(proj)}
       className={`hero-card ${side} group`}
-      onClick={() => openProject(proj)}
       onMouseEnter={playClip}
       onMouseLeave={resetClip}
       onFocus={playClip}
@@ -156,6 +167,7 @@ const HeroCard = ({ proj, idx, openProject, isWandering }) => {
               loop
               playsInline
               preload="metadata"
+              aria-hidden="true"
             />
           ) : null}
         </span>
@@ -167,18 +179,22 @@ const HeroCard = ({ proj, idx, openProject, isWandering }) => {
           <span key={line}>{line}</span>
         ))}
       </span>
-    </button>
+    </Link>
   );
 };
 
 const Home = ({ mode }) => {
-  const navigate = useNavigate();
   const [emailCopied, setEmailCopied] = useState(false);
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
   const [errors, setErrors] = useState({});
   const [isSending, setIsSending] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
   const [showCV, setShowCV] = useState(false);
+  const nameRef = useRef(null);
+  const emailRef = useRef(null);
+  const messageRef = useRef(null);
+  const cvDialogRef = useRef(null);
+  const cvCloseRef = useRef(null);
   const heroProjects = [...PROJECTS];
   const swapHeroSlots = (firstId, secondId) => {
     const first = heroProjects.findIndex((p) => p.id === firstId);
@@ -207,19 +223,44 @@ const Home = ({ mode }) => {
     return () => window.clearTimeout(id);
   }, [mode, shownMode]);
 
+  useEffect(() => {
+    if (!showCV) return undefined;
+    const previouslyFocused = document.activeElement;
+    cvCloseRef.current?.focus();
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setShowCV(false);
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const dialog = cvDialogRef.current;
+      if (!dialog) return;
+      const focusable = [...dialog.querySelectorAll('a, button')].filter(
+        (node) => !node.hasAttribute('disabled')
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      if (previouslyFocused instanceof HTMLElement) previouslyFocused.focus();
+    };
+  }, [showCV]);
+
   const heroWords = {
     hr: ['Clarity.', 'Precision.', 'Impact.'],
     wandering: ['Canvas.', 'Perspective.', 'Insights.'],
-  };
-
-  const openProject = (project) => {
-    const slug = project.title
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, '')
-      .trim()
-      .replace(/\s+/g, '-');
-    navigate(`/projects/${slug}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const copyEmail = async () => {
@@ -274,34 +315,39 @@ const Home = ({ mode }) => {
 
     setErrors(newErrors);
 
-    if (Object.keys(newErrors).length === 0) {
-      setIsSending(true);
-
-      const SERVICE_ID = 'service_wq60eto';
-      const TEMPLATE_ID = 'template_1df4kxc';
-      const PUBLIC_KEY = '37ejt9ZKC30gtKM3h';
-
-      const templateParams = {
-        from_name: formState.name,
-        from_email: formState.email,
-        message: formState.message,
-        to_email: 'ekazinich@gmail.com',
-      };
-
-      emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY).then(
-        () => {
-          setSubmitStatus('success');
-          setFormState({ name: '', email: '', message: '' });
-          setIsSending(false);
-          setTimeout(() => setSubmitStatus(null), 4000);
-        },
-        (err) => {
-          console.error('EmailJS failed:', err);
-          setSubmitStatus('error');
-          setIsSending(false);
-        }
-      );
+    if (Object.keys(newErrors).length > 0) {
+      const firstInvalid = ['name', 'email', 'message'].find((field) => newErrors[field]);
+      const fieldRefs = { name: nameRef, email: emailRef, message: messageRef };
+      fieldRefs[firstInvalid]?.current?.focus();
+      return;
     }
+
+    setIsSending(true);
+
+    const SERVICE_ID = 'service_wq60eto';
+    const TEMPLATE_ID = 'template_1df4kxc';
+    const PUBLIC_KEY = '37ejt9ZKC30gtKM3h';
+
+    const templateParams = {
+      from_name: formState.name,
+      from_email: formState.email,
+      message: formState.message,
+      to_email: 'ekazinich@gmail.com',
+    };
+
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY).then(
+      () => {
+        setSubmitStatus('success');
+        setFormState({ name: '', email: '', message: '' });
+        setIsSending(false);
+        setTimeout(() => setSubmitStatus(null), 4000);
+      },
+      (err) => {
+        console.error('EmailJS failed:', err);
+        setSubmitStatus('error');
+        setIsSending(false);
+      }
+    );
   };
 
   return (
@@ -339,7 +385,7 @@ const Home = ({ mode }) => {
               key={proj.id}
               className={`hero-card-slot hero-card-slot-${idx} flex justify-center`}
             >
-              <HeroCard proj={proj} idx={idx} openProject={openProject} isWandering={isWandering} />
+              <HeroCard proj={proj} idx={idx} isWandering={isWandering} />
             </div>
           ))}
         </div>
@@ -477,53 +523,103 @@ const Home = ({ mode }) => {
         <h2 className="font-serif mb-12 text-center">Let's Connect</h2>
         <div className="flex flex-col md:flex-row gap-12 w-full max-w-4xl">
           <div className="flex-1">
-            <form className="flex flex-col gap-6" onSubmit={handleFormSubmit}>
+            <form className="flex flex-col gap-6" onSubmit={handleFormSubmit} noValidate>
               <div className="relative">
+                <label htmlFor="contact-name" className="sr-only">
+                  Name
+                </label>
                 <input
+                  id="contact-name"
+                  ref={nameRef}
                   type="text"
+                  name="name"
+                  autoComplete="name"
                   placeholder="Name"
                   value={formState.name}
+                  aria-invalid={errors.name ? 'true' : undefined}
+                  aria-describedby={errors.name ? 'contact-name-error' : undefined}
                   onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                  className={`w-full bg-transparent border-b-[2px] py-3 focus:outline-none transition-colors text-cream
-                      ${errors.name ? 'border-accent' : 'border-cream/30 focus:border-cream/60'}
+                  className={`w-full bg-transparent border-b-[2px] py-3 transition-colors text-cream
+                      ${errors.name ? 'border-accent' : 'border-cream/30 focus-visible:border-cream/60'}
                     `}
                 />
                 {errors.name && (
-                  <AlertCircle className="absolute right-0 top-3 text-accent" size={16} />
+                  <AlertCircle
+                    className="absolute right-0 top-3 text-accent"
+                    size={16}
+                    aria-hidden="true"
+                  />
                 )}
-                {errors.name && <p className="text-accent text-xs mt-1">{errors.name}</p>}
+                {errors.name && (
+                  <p id="contact-name-error" className="text-accent text-xs mt-1">
+                    {errors.name}
+                  </p>
+                )}
               </div>
               <div className="relative">
+                <label htmlFor="contact-email" className="sr-only">
+                  Email
+                </label>
                 <input
+                  id="contact-email"
+                  ref={emailRef}
                   type="email"
+                  name="email"
+                  autoComplete="email"
+                  spellCheck={false}
                   placeholder="Email"
                   value={formState.email}
+                  aria-invalid={errors.email ? 'true' : undefined}
+                  aria-describedby={errors.email ? 'contact-email-error' : undefined}
                   onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                  className={`w-full bg-transparent border-b-[2px] py-3 focus:outline-none transition-colors text-cream
-                      ${errors.email ? 'border-accent' : 'border-cream/30 focus:border-cream/60'}
+                  className={`w-full bg-transparent border-b-[2px] py-3 transition-colors text-cream
+                      ${errors.email ? 'border-accent' : 'border-cream/30 focus-visible:border-cream/60'}
                     `}
                 />
                 {errors.email && (
-                  <AlertCircle className="absolute right-0 top-3 text-accent" size={16} />
+                  <AlertCircle
+                    className="absolute right-0 top-3 text-accent"
+                    size={16}
+                    aria-hidden="true"
+                  />
                 )}
-                {errors.email && <p className="text-accent text-xs mt-1">{errors.email}</p>}
+                {errors.email && (
+                  <p id="contact-email-error" className="text-accent text-xs mt-1">
+                    {errors.email}
+                  </p>
+                )}
               </div>
               <div className="relative">
+                <label htmlFor="contact-message" className="sr-only">
+                  Message
+                </label>
                 <textarea
+                  id="contact-message"
+                  ref={messageRef}
+                  name="message"
+                  autoComplete="off"
                   placeholder="Message"
                   rows="2"
                   value={formState.message}
+                  aria-invalid={errors.message ? 'true' : undefined}
+                  aria-describedby={errors.message ? 'contact-message-error' : undefined}
                   onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                  className={`w-full bg-transparent border-b-[2px] py-3 focus:outline-none transition-colors resize-none text-cream
-                      ${errors.message ? 'border-accent' : 'border-cream/30 focus:border-cream/60'}
+                  className={`w-full bg-transparent border-b-[2px] py-3 transition-colors resize-none text-cream
+                      ${errors.message ? 'border-accent' : 'border-cream/30 focus-visible:border-cream/60'}
                     `}
                 ></textarea>
                 {errors.message && (
-                  <AlertCircle className="absolute right-0 top-3 text-accent" size={16} />
+                  <AlertCircle
+                    className="absolute right-0 top-3 text-accent"
+                    size={16}
+                    aria-hidden="true"
+                  />
                 )}
                 <div className="flex justify-between items-center mt-1">
                   {errors.message ? (
-                    <p className="text-accent text-xs">{errors.message}</p>
+                    <p id="contact-message-error" className="text-accent text-xs">
+                      {errors.message}
+                    </p>
                   ) : (
                     <span />
                   )}
@@ -538,25 +634,28 @@ const Home = ({ mode }) => {
                 className="self-start mt-4 flex items-center gap-2 text-sm uppercase tracking-widest text-cream transition-colors enabled:hover:text-accent disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isSending}
               >
-                {isSending ? 'Sending...' : 'Send Message'} {!isSending && <ArrowRight size={16} />}
+                {isSending ? 'Sending…' : 'Send Message'}{' '}
+                {!isSending && <ArrowRight size={16} aria-hidden="true" />}
               </button>
-              {submitStatus === 'success' && (
-                <p className="bauhaus-success text-sm mt-2">Message sent successfully!</p>
-              )}
-              {submitStatus === 'error' && (
-                <p className="bauhaus-error text-sm mt-2">
-                  Failed to send. Please try again or email directly.
-                </p>
-              )}
+              <div role="status" aria-live="polite">
+                {submitStatus === 'success' && (
+                  <p className="bauhaus-success text-sm mt-2">Message sent successfully!</p>
+                )}
+                {submitStatus === 'error' && (
+                  <p className="bauhaus-error text-sm mt-2">
+                    Failed to send. Please try again or email directly.
+                  </p>
+                )}
+              </div>
             </form>
           </div>
           <div className="flex-1 flex flex-col justify-center gap-8 md:pl-12 border-l-0 md:border-l-[2px] border-white/10">
             <div className="flex items-center gap-4">
               <a
                 href="mailto:ekazinich@gmail.com"
-                className="flex items-center gap-4 text-xl font-serif text-cream hover:text-accent hover:translate-x-2 transition-all duration-300"
+                className="flex items-center gap-4 text-xl font-serif text-cream hover:text-accent hover:translate-x-2 transition-colors duration-300"
               >
-                <Mail size={24} />
+                <Mail size={24} aria-hidden="true" />
                 <span className="break-all">ekazinich@gmail.com</span>
               </a>
               <button
@@ -564,8 +663,15 @@ const Home = ({ mode }) => {
                 className={`p-2 transition-colors duration-300 ${emailCopied ? 'text-success' : 'text-cream hover:text-accent'}`}
                 aria-label="Copy email address"
               >
-                {emailCopied ? <Check size={20} /> : <Copy size={20} />}
+                {emailCopied ? (
+                  <Check size={20} aria-hidden="true" />
+                ) : (
+                  <Copy size={20} aria-hidden="true" />
+                )}
               </button>
+              <span className="sr-only" role="status" aria-live="polite">
+                {emailCopied ? 'Email address copied' : ''}
+              </span>
             </div>
             <a
               href="https://www.linkedin.com/in/katerina-eka-zinich"
@@ -573,7 +679,7 @@ const Home = ({ mode }) => {
               rel="noopener noreferrer"
               className="flex items-center gap-4 text-xl font-serif text-cream hover:text-accent hover:translate-x-2 transition-all duration-300"
             >
-              <Linkedin size={24} />
+              <Linkedin size={24} aria-hidden="true" />
               <span>LinkedIn Profile</span>
             </a>
           </div>
@@ -587,25 +693,36 @@ const Home = ({ mode }) => {
 
       {/* CV Overlay */}
       {showCV && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-8">
+        <div
+          ref={cvDialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="cv-title"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-8 overscroll-contain"
+        >
           <div className="relative w-full max-w-5xl h-[90vh] bg-cream border-[2px] border-charcoal flex flex-col overflow-hidden animate-snap-in">
             {/* Toolbar */}
             <div className="flex items-center justify-between px-6 py-4 bg-charcoal text-cream border-b-[2px] border-charcoal">
-              <h3 className="font-serif">Curriculum Vitae</h3>
+              <h2 id="cv-title" className="dialog-title">
+                Curriculum Vitae
+              </h2>
               <div className="flex items-center gap-4">
                 <a
                   href={cvFile}
                   download="Katerina_(Eka)_Zinich_Product_designer_CV.pdf"
                   className="flex items-center gap-2 text-sm uppercase tracking-widest hover:text-accent transition-colors"
                 >
-                  <Download size={18} />
+                  <Download size={18} aria-hidden="true" />
                   <span className="hidden md:inline">Download</span>
                 </a>
                 <button
+                  ref={cvCloseRef}
+                  type="button"
                   onClick={() => setShowCV(false)}
                   className="hover:text-accent transition-colors"
+                  aria-label="Close curriculum vitae"
                 >
-                  <X size={24} />
+                  <X size={24} aria-hidden="true" />
                 </button>
               </div>
             </div>

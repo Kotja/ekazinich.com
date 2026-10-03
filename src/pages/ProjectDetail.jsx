@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react';
 import { PROJECTS } from '../data/projects';
 import brandChallengeAniOnWhite from '../assets/brand-challenge-ani-onwhite.webp';
@@ -22,6 +22,15 @@ import b2bPieceTotalCredit from '../assets/B2B_pieces_total_credit.webp';
 import b2bPieceUnpaidInvoices from '../assets/B2B_pieces_unpaid_invoices_menu.webp';
 
 // Keep the last two words of each sentence on one line.
+const projectPath = (project) =>
+  `/projects/${project.title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')}`;
+
+const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 const keepSentenceEnd = (text) => {
   if (typeof text !== 'string') return text;
   const glue = (segment) => {
@@ -548,6 +557,7 @@ const BoomerangVideo = ({ src, poster }) => {
 
     video.playbackRate = 1.0;
     cycleCount.current = 0;
+    if (prefersReducedMotion()) return undefined;
     video.play().catch(() => {});
 
     const handleEnded = () => {
@@ -578,14 +588,9 @@ const BoomerangVideo = ({ src, poster }) => {
   }, [src]);
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full" aria-hidden="true">
       {poster && (
-        <img
-          src={poster}
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <img src={poster} alt="" className="absolute inset-0 w-full h-full object-cover" />
       )}
       <video
         ref={videoRef}
@@ -604,34 +609,49 @@ const BoomerangVideo = ({ src, poster }) => {
 // No native controls — those paint a dark bar over the picture.
 const HoverTapVideo = ({ src, poster }) => {
   const videoRef = React.useRef(null);
+  const [paused, setPaused] = React.useState(() => prefersReducedMotion());
 
   React.useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+    if (prefersReducedMotion()) {
+      video.pause();
+      return;
+    }
     video.play().catch(() => {});
   }, [src]);
 
   const toggle = () => {
     const video = videoRef.current;
     if (!video) return;
-    if (video.paused) video.play().catch(() => {});
-    else video.pause();
+    if (video.paused) {
+      video.play().catch(() => {});
+      setPaused(false);
+    } else {
+      video.pause();
+      setPaused(true);
+    }
   };
 
   return (
-    <div className="cursor-pointer" onClick={toggle}>
+    <button
+      type="button"
+      className="media-control cursor-pointer"
+      onClick={toggle}
+      aria-label={paused ? 'Play video' : 'Pause video'}
+    >
       <video
         ref={videoRef}
+        aria-hidden="true"
         className="w-full h-auto block bg-transparent"
         src={src}
         poster={poster}
-        autoPlay
         muted
         playsInline
         loop
         preload="auto"
       />
-    </div>
+    </button>
   );
 };
 
@@ -705,15 +725,28 @@ const DeviceVideo = ({ src, knockoutWhite = false }) => {
   const rafRef = React.useRef(null);
   const playingRef = React.useRef(false);
 
+  const [paused, setPaused] = React.useState(() => prefersReducedMotion());
+
   const handleClick = () => {
     const v = videoRef.current;
     if (!v) return;
-    v.paused ? v.play().catch(() => {}) : v.pause();
+    if (v.paused) {
+      v.play().catch(() => {});
+      setPaused(false);
+    } else {
+      v.pause();
+      setPaused(true);
+    }
   };
 
   React.useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
+    if (prefersReducedMotion()) {
+      video.pause();
+      return undefined;
+    }
 
     if (!knockoutWhite) {
       video.play().catch(() => {});
@@ -786,30 +819,43 @@ const DeviceVideo = ({ src, knockoutWhite = false }) => {
 
   if (!knockoutWhite) {
     return (
-      <video
-        ref={videoRef}
-        src={src}
-        muted
-        loop
-        playsInline
+      <button
+        type="button"
+        className="media-control"
         onClick={handleClick}
-        className={frameClass}
-      />
+        aria-label={paused ? 'Play video' : 'Pause video'}
+      >
+        <video
+          ref={videoRef}
+          src={src}
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+          className={frameClass}
+        />
+      </button>
     );
   }
 
   return (
-    <div className="relative inline-block max-h-[min(80vh,720px)] max-w-full bg-transparent">
+    <button
+      type="button"
+      className="media-control relative inline-block max-h-[min(80vh,720px)] max-w-full bg-transparent"
+      onClick={handleClick}
+      aria-label={paused ? 'Play video' : 'Pause video'}
+    >
       <video
         ref={videoRef}
         src={src}
         muted
         loop
         playsInline
+        aria-hidden="true"
         className="transparent-video__source"
       />
-      <canvas ref={canvasRef} onClick={handleClick} className={frameClass} />
-    </div>
+      <canvas ref={canvasRef} aria-hidden="true" className={frameClass} />
+    </button>
   );
 };
 
@@ -824,6 +870,7 @@ const Lightbox = ({
 }) => {
   const [zoom, setZoom] = useState(1);
   const [index, setIndex] = useState(currentIndex);
+  const closeRef = useRef(null);
 
   const hasGallery = gallery && gallery.length > 1;
   const currentSrc = hasGallery ? gallery[index] : src;
@@ -839,6 +886,14 @@ const Lightbox = ({
     setIndex((prev) => (prev + 1) % gallery.length);
     setZoom(1);
   };
+
+  useEffect(() => {
+    const previouslyFocused = document.activeElement;
+    closeRef.current?.focus();
+    return () => {
+      if (previouslyFocused instanceof HTMLElement) previouslyFocused.focus();
+    };
+  }, []);
 
   // Lock body scroll when lightbox is open
   useEffect(() => {
@@ -872,17 +927,26 @@ const Lightbox = ({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center animate-fade-in ${isBrandChallengeSrc(currentSrc) ? (isWandering ? 'bg-charcoal' : 'bg-cream') : isWandering ? 'bg-charcoal/95' : 'bg-cream/95'} ${zoom > 1 ? 'overflow-auto cursor-zoom-out' : 'p-4 cursor-default'}`}
+      role="dialog"
+      aria-modal="true"
+      aria-label={alt}
+      className={`fixed inset-0 z-50 flex items-center justify-center overscroll-contain animate-fade-in ${isBrandChallengeSrc(currentSrc) ? (isWandering ? 'bg-charcoal' : 'bg-cream') : isWandering ? 'bg-charcoal/95' : 'bg-cream/95'} ${zoom > 1 ? 'overflow-auto cursor-zoom-out' : 'p-4 cursor-default'}`}
       onClick={onClose}
+      onKeyDown={(event) => {
+        if (event.key === 'Escape') onClose();
+      }}
     >
       <button
+        ref={closeRef}
+        type="button"
         className={`fixed top-6 right-6 hover:opacity-70 transition-colors z-[60] ${theme.text}`}
+        aria-label="Close image"
         onClick={(e) => {
           e.stopPropagation();
           onClose();
         }}
       >
-        <X size={32} />
+        <X size={32} aria-hidden="true" />
       </button>
 
       <div
@@ -937,33 +1001,41 @@ const Lightbox = ({
             </button>
             <div
               className={`absolute bottom-2 md:bottom-4 left-1/2 -translate-x-1/2 z-[70] ${theme.text} text-sm px-3 py-1 rounded-full ${isWandering ? 'bg-surface-dark-raised/80' : 'bg-white/80'} backdrop-blur-sm`}
+              aria-live="polite"
             >
               {index + 1} / {gallery.length}
             </div>
           </>
         )}
         {isBrandChallengeSrc(currentSrc) ? (
-          <div
-            className="challenge-lightbox-fit"
+          <button
+            type="button"
+            className="media-control challenge-lightbox-fit"
+            aria-label={zoom > 1 ? 'Zoom out' : 'Zoom in'}
             onClick={(e) => {
               e.stopPropagation();
               setZoom((prev) => (prev >= 3 ? 1 : prev + 0.25));
             }}
           >
             <BrandChallengeFrame src={currentSrc} isWandering={isWandering} />
-          </div>
+          </button>
         ) : (
-          <img
-            src={currentSrc}
-            alt={alt}
-            draggable="false"
+          <button
+            type="button"
+            className="media-control"
+            aria-label={zoom > 1 ? 'Zoom out' : 'Zoom in'}
             onClick={(e) => {
               e.stopPropagation();
-              // Gradual stepped zoom on click: 1 -> 1.25 -> 1.5 ... -> 3 -> 1
               setZoom((prev) => (prev >= 3 ? 1 : prev + 0.25));
             }}
-            className={` p-[30px] transition-all duration-300 w-full h-full object-contain ${zoom > 1 ? 'cursor-zoom-out' : 'cursor-zoom-in'} ${currentSrc.includes('brand-flow-chart') ? (currentSrc.includes('in-depth') ? 'bg-charcoal' : 'bg-cream') : ''}`}
-          />
+          >
+            <img
+              src={currentSrc}
+              alt={alt}
+              draggable="false"
+              className={` p-[30px] transition-all duration-300 w-full h-full object-contain ${zoom > 1 ? 'cursor-zoom-out' : 'cursor-zoom-in'} ${currentSrc.includes('brand-flow-chart') ? (currentSrc.includes('in-depth') ? 'bg-charcoal' : 'bg-cream') : ''}`}
+            />
+          </button>
         )}
       </div>
     </div>
@@ -1062,11 +1134,13 @@ const InteractiveChallengeImage = ({
   };
 
   return (
-    <div
-      className={`bg-transparent cursor-zoom-in ${annotatedSrc ? 'challenge-annotated mx-auto h-full w-full' : 'w-full'}`}
+    <button
+      type="button"
+      className={`media-control bg-transparent cursor-zoom-in ${annotatedSrc ? 'challenge-annotated mx-auto h-full w-full' : 'w-full'}`}
       onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      aria-label="Open challenge image"
     >
       {showNotes ? (
         <BrandChallengeFrame src={annotatedSrc} isWandering={isWandering} />
@@ -1078,7 +1152,7 @@ const InteractiveChallengeImage = ({
           className="block h-auto w-full object-contain md:h-full"
         />
       )}
-    </div>
+    </button>
   );
 };
 
@@ -1136,15 +1210,6 @@ const ProjectDetail = ({ mode }) => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [selectedImage]);
-
-  const openProject = (proj) => {
-    const newSlug = proj.title
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, '')
-      .trim()
-      .replace(/\s+/g, '-');
-    navigate(`/projects/${newSlug}`);
-  };
 
   if (!project) return null;
 
@@ -2027,14 +2092,14 @@ const ProjectDetail = ({ mode }) => {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {PROJECTS.filter((p) => p.id !== project.id).map((proj) => (
-              <button
+              <Link
                 key={proj.id}
-                onClick={() => openProject(proj)}
-                className={`text-left p-4 border transition-all duration-300 border-transparent hover:border-accent-peach hover: ${isWandering ? 'bg-surface-dark-raised' : 'bg-white'}`}
+                to={projectPath(proj)}
+                className={`block text-left no-underline p-4 border transition-colors duration-300 border-transparent hover:border-accent-peach ${isWandering ? 'bg-surface-dark-raised' : 'bg-white'}`}
               >
                 <div className="text-xs text-gray-400 mb-2">0{PROJECTS.indexOf(proj) + 1}</div>
                 <div className={`font-serif text-lg leading-tight ${theme.text}`}>{proj.title}</div>
-              </button>
+              </Link>
             ))}
           </div>
         </div>

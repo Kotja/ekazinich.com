@@ -770,7 +770,54 @@ h6 {
   color: inherit;
   font: inherit;
   text-align: center;
+  text-decoration: none;
   cursor: pointer;
+}
+
+.media-control {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+.dialog-title {
+  font-family: var(--font-h3);
+  font-size: var(--text-h3);
+  line-height: var(--leading-subhead);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-h3);
+  text-transform: uppercase;
+}
+
+#project-section,
+#about-section,
+#chat-section,
+#contact-section,
+#main-content {
+  scroll-margin-top: 6rem;
+}
+
+@media (max-width: 767px) {
+  #project-section,
+  #about-section,
+  #chat-section,
+  #contact-section,
+  #main-content {
+    scroll-margin-top: 1.5rem;
+    scroll-margin-bottom: 6rem;
+  }
+}
+
+:where(a, button, input, textarea, summary):focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
 }
 
 .hero-screen {

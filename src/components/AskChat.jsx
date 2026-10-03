@@ -116,14 +116,9 @@ const AskChat = ({ mode }) => {
         <p className={`font-sans text-lg leading-relaxed font-normal ${theme.subText}`}>
           Curious about my experience, design process, or projects? Chat with my AI assistant to
           learn more about my work and approach. Prefer to talk with a human?{' '}
-          <button
-            onClick={() =>
-              document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' })
-            }
-            className={`${theme.linkBlue} underline cursor-pointer font-semibold`}
-          >
+          <a href="#contact-section" className={`${theme.linkBlue} underline font-semibold`}>
             Message me.
-          </button>
+          </a>
         </p>
       </div>
 
@@ -154,6 +149,9 @@ const AskChat = ({ mode }) => {
 
           <div
             ref={messagesContainerRef}
+            role="log"
+            aria-live="polite"
+            aria-relevant="additions"
             className={
               messages.length === 0 && !hasStarted
                 ? 'px-6 pt-8 pb-10'
@@ -162,7 +160,7 @@ const AskChat = ({ mode }) => {
           >
             {messages.length === 0 && !hasStarted ? (
               <div className="flex flex-col items-center">
-                <div className="bauhaus-idle mb-7" aria-label="System idle">
+                <div className="bauhaus-idle mb-7">
                   <span className="bauhaus-idle__red" />
                   <span className="bauhaus-idle__blue" />
                   <span className="bauhaus-idle__yellow">
@@ -257,10 +255,14 @@ const AskChat = ({ mode }) => {
                             })}
 
                             {showLoading && (
-                              <div className="flex justify-start items-center gap-3 bauhaus-snap">
-                                <div className="bauhaus-think" aria-label="AI thinking" />
+                              <div
+                                className="flex justify-start items-center gap-3 bauhaus-snap"
+                                role="status"
+                                aria-live="polite"
+                              >
+                                <div className="bauhaus-think" aria-hidden="true" />
                                 <span className="font-sans text-xs font-bold uppercase tracking-widest text-gray-500">
-                                  Processing
+                                  Processing…
                                 </span>
                               </div>
                             )}
@@ -324,15 +326,21 @@ const AskChat = ({ mode }) => {
 
           <form onSubmit={onSubmit} className="px-6 pt-2 pb-6">
             <div className={`flex items-center gap-3 border-b-2 ${theme.borderSolid} px-1 py-2`}>
+              <label htmlFor="ask-chat-input" className="sr-only">
+                Message
+              </label>
               <input
+                id="ask-chat-input"
                 ref={inputRef}
                 type="text"
+                name="message"
+                autoComplete="off"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about my experience, skills, or projects..."
+                placeholder="Ask about my experience, skills, or projects…"
                 disabled={isLoading}
                 className={`
-                flex-1 bg-transparent border-none outline-none
+                flex-1 bg-transparent border-none
                 font-sans text-sm placeholder:opacity-50
                 ${theme.text}
               `}

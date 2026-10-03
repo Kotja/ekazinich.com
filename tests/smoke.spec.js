@@ -36,9 +36,9 @@ test('home page loads and shows navigation', async ({ page }) => {
   await page.waitForLoadState('networkidle');
 
   // Core nav items are rendered
-  await expect(page.getByRole('button', { name: /projects/i }).first()).toBeVisible();
-  await expect(page.getByRole('button', { name: /about/i }).first()).toBeVisible();
-  await expect(page.getByRole('button', { name: /get in touch/i }).first()).toBeVisible();
+  await expect(page.getByRole('link', { name: /^projects$/i })).toBeVisible();
+  await expect(page.getByRole('link', { name: /^about$/i })).toBeVisible();
+  await expect(page.getByRole('link', { name: /get in touch/i })).toBeVisible();
 
   // Page title is set
   await expect(page).toHaveTitle(/Eka Zinich/i);
@@ -67,7 +67,7 @@ for (const route of PROJECT_ROUTES) {
     await expect(page).toHaveTitle(new RegExp(route.title.split(':')[0].trim(), 'i'));
 
     // Back button present
-    await expect(page.getByRole('button', { name: /back/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /^back$/i })).toBeVisible();
 
     expect(errors, `JS errors on ${route.path}: ${errors.join(', ')}`).toHaveLength(0);
   });

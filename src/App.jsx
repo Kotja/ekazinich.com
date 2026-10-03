@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Routes, Route, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import Home from './pages/Home';
 import ProjectDetail from './pages/ProjectDetail';
@@ -20,10 +20,8 @@ const AppContent = () => {
     () => true,
     () => false
   );
-  const buttonRefs = useRef({}); // Refs for menu buttons
 
   const location = useLocation();
-  const navigate = useNavigate();
 
   const isProjectPage = location.pathname.startsWith('/projects/');
 
@@ -98,27 +96,14 @@ const AppContent = () => {
     });
   };
 
-  // --- NAVIGATION LOGIC ---
-  const scrollToSection = (id) => {
-    if (location.pathname !== '/') {
-      navigate('/', { state: { scrollTo: id } });
-    } else {
-      const element = document.getElementById(id);
-      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  };
-
-  // Handle scroll from navigation state
+  // Hash links (/#about-section) are the navigation. Scroll once the home page is ready.
   useEffect(() => {
-    if (location.pathname === '/' && location.state?.scrollTo) {
-      // Small timeout to ensure DOM is ready
-      setTimeout(() => {
-        const element = document.getElementById(location.state.scrollTo);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }, 100);
-    }
+    const id = (location.hash || '').replace('#', '') || location.state?.scrollTo;
+    if (location.pathname !== '/' || !id) return undefined;
+    const timer = window.setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+    return () => window.clearTimeout(timer);
   }, [location]);
 
   return (
@@ -141,31 +126,24 @@ const AppContent = () => {
       `}
       >
         <div
-          className={`pointer-events-auto w-full h-full flex flex-row items-center justify-evenly px-3 md:px-6 ${isOnboardingVisible ? '[&>button]:opacity-20 [&>button]:blur-[1px]' : ''}`}
+          className={`pointer-events-auto w-full h-full flex flex-row items-center justify-evenly px-3 md:px-6 ${isOnboardingVisible ? '[&>a]:opacity-20 [&>a]:blur-[1px]' : ''}`}
         >
-          {['Projects', 'About', 'Get in Touch'].map((item) => {
-            const targetId = item.toLowerCase().replace(/ /g, '-');
-            const sectionMap = {
-              projects: 'project-section',
-              about: 'about-section',
-              'get-in-touch': 'contact-section',
-            };
-            const targetScrollId = sectionMap[targetId] || 'project-section';
-
-            return (
-              <button
-                key={item}
-                ref={(el) => (buttonRefs.current[item] = el)}
-                onClick={() => scrollToSection(targetScrollId)}
-                className="relative group flex-1 flex items-center justify-center whitespace-nowrap text-inherit uppercase tracking-widest"
-              >
-                <span className="cursor-pointer text-2xs xs:text-xs md:text-sm font-semibold uppercase tracking-widest">
-                  {item}
-                </span>
-                <span className="w-2 h-2 rounded-full bauhaus-circle absolute -bottom-2 transition-opacity opacity-0 group-hover:opacity-100 bg-red-500" />
-              </button>
-            );
-          })}
+          {[
+            ['Projects', 'project-section'],
+            ['About', 'about-section'],
+            ['Get in Touch', 'contact-section'],
+          ].map(([item, targetScrollId]) => (
+            <Link
+              key={item}
+              to={`/#${targetScrollId}`}
+              className="relative group flex-1 flex items-center justify-center whitespace-nowrap text-inherit no-underline uppercase tracking-widest focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+            >
+              <span className="cursor-pointer text-2xs xs:text-xs md:text-sm font-semibold uppercase tracking-widest">
+                {item}
+              </span>
+              <span className="w-2 h-2 rounded-full bauhaus-circle absolute -bottom-2 transition-opacity opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 bg-red-500" />
+            </Link>
+          ))}
 
           {/* Mode switcher */}
           <div
@@ -223,18 +201,18 @@ const AppContent = () => {
         isProjectPage &&
         createPortal(
           <div className={`project-action-bar ${theme.navBg} backdrop-blur-lg ${theme.text}`}>
-            <button
-              onClick={() => navigate('/', { state: { scrollTo: 'project-section' } })}
-              className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest hover:text-accent transition-colors"
+            <Link
+              to="/#project-section"
+              className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest no-underline hover:text-accent transition-colors"
             >
-              <ArrowLeft size={16} /> Back
-            </button>
-            <button
-              onClick={() => navigate('/', { state: { scrollTo: 'contact-section' } })}
-              className="text-sm font-semibold uppercase tracking-widest hover:text-accent transition-colors"
+              <ArrowLeft size={16} aria-hidden="true" /> Back
+            </Link>
+            <Link
+              to="/#contact-section"
+              className="text-sm font-semibold uppercase tracking-widest no-underline hover:text-accent transition-colors"
             >
               Hire Me
-            </button>
+            </Link>
           </div>,
           document.body
         )}

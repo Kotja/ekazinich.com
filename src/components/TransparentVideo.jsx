@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useCallback, useState } from 'react';
 
 /**
  * TransparentVideo
@@ -15,6 +15,9 @@ const TransparentVideo = ({ src, threshold = 228, className = '', style = {} }) 
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
   const isPlayingRef = useRef(false);
+  const [paused, setPaused] = useState(
+    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
   const drawFrameRef = useRef(() => {});
 
   const drawFrame = useCallback(() => {
@@ -75,8 +78,11 @@ const TransparentVideo = ({ src, threshold = 228, className = '', style = {} }) 
     video.addEventListener('pause', onPause);
     video.addEventListener('ended', onPause);
 
-    // Auto-play
-    video.play().catch(() => {});
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      video.pause();
+    } else {
+      video.play().catch(() => {});
+    }
 
     return () => {
       isPlayingRef.current = false;
@@ -87,27 +93,41 @@ const TransparentVideo = ({ src, threshold = 228, className = '', style = {} }) 
     };
   }, [src, drawFrame]);
 
+  const toggle = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      video.play().catch(() => {});
+      setPaused(false);
+    } else {
+      video.pause();
+      setPaused(true);
+    }
+  };
+
   return (
-    <div className="relative w-full h-full" style={style}>
-      {/* Hidden video source */}
+    <button
+      type="button"
+      className="media-control relative h-full w-full"
+      style={style}
+      onClick={toggle}
+      aria-label={paused ? 'Play video' : 'Pause video'}
+    >
       <video
         ref={videoRef}
         src={src}
         muted
         loop
         playsInline
+        aria-hidden="true"
         className="transparent-video__source"
       />
-      {/* Rendered transparent output */}
       <canvas
         ref={canvasRef}
+        aria-hidden="true"
         className={`w-full h-full object-contain transparent-video__canvas ${className}`}
-        onClick={() => {
-          const v = videoRef.current;
-          if (v) v.paused ? v.play() : v.pause();
-        }}
       />
-    </div>
+    </button>
   );
 };
 
