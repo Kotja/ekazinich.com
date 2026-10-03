@@ -249,7 +249,7 @@ const MiniChat = ({ mode }) => {
             flex items-center justify-center
             bg-blue-500 text-cream border-0
             cursor-pointer
-            hover:bg-blue-700
+            hover:bg-red-500
           `}
           aria-label={isOpen ? 'Close chat' : 'Open chat'}
         >

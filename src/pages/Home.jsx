@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cvFile from '../assets/Katerina (Eka) Zinich Product designer CV.pdf';
 import { Check, Copy, Linkedin, Mail, ArrowRight, AlertCircle, X, Download } from 'lucide-react';
@@ -7,6 +7,43 @@ import { PROJECTS } from '../data/projects';
 import emailjs from '@emailjs/browser';
 import AskChat from '../components/AskChat';
 import { getTheme } from '../theme';
+
+// Fade copy out, swap it, then fade the new lines in. Colors ease on their own.
+function useSoftMode(mode) {
+  const [shown, setShown] = useState(mode);
+  const [dim, setDim] = useState(false);
+
+  useEffect(() => {
+    if (mode === shown) return undefined;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fade = reduceMotion ? 0 : window.setTimeout(() => setDim(true), 0);
+    const swap = window.setTimeout(
+      () => {
+        setShown(mode);
+        setDim(false);
+      },
+      reduceMotion ? 0 : 180
+    );
+    return () => {
+      window.clearTimeout(fade);
+      window.clearTimeout(swap);
+    };
+  }, [mode, shown]);
+
+  return { shown, dim };
+}
+
+function HeroLines({ words, intro = false }) {
+  return words.map((word, i) => (
+    <h1
+      key={word}
+      className={`font-serif hero-display${intro ? ' opacity-0 animate-fade-word-in' : ''}`}
+      style={intro ? { '--word-delay': `${i * 80}ms` } : undefined}
+    >
+      {word}
+    </h1>
+  ));
+}
 
 // --- SUB-COMPONENT: PROJECT ITEM ---
 // Fixed 3-line titles — no orphan / hangover letters
@@ -155,12 +192,25 @@ const Home = ({ mode }) => {
   // --- THEME ENGINE ---
   const isWandering = mode === 'wandering';
   const theme = getTheme(mode);
+  const { shown: shownMode, dim: modeDim } = useSoftMode(mode);
+  const shownWandering = shownMode === 'wandering';
+  const [heroIntro, setHeroIntro] = useState(true);
+
+  useEffect(() => {
+    const id = window.setTimeout(() => setHeroIntro(false), 480);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  useEffect(() => {
+    if (mode === shownMode) return undefined;
+    const id = window.setTimeout(() => setHeroIntro(false), 0);
+    return () => window.clearTimeout(id);
+  }, [mode, shownMode]);
 
   const heroWords = {
     hr: ['Clarity.', 'Precision.', 'Impact.'],
     wandering: ['Canvas.', 'Perspective.', 'Insights.'],
   };
-  const currentWords = isWandering ? heroWords.wandering : heroWords.hr;
 
   const openProject = (project) => {
     const slug = project.title
@@ -264,20 +314,19 @@ const Home = ({ mode }) => {
       >
         {/* Hero text: stacked until xl, then the centre of the ring */}
         <div className="hero-ring-copy w-full flex flex-col justify-center px-6 md:px-16 relative z-20 overflow-visible">
-          <div className="overflow-visible pr-4 min-[1440px]:pr-0">
-            {currentWords.map((word, i) => (
-              <h1
-                key={word}
-                className="font-serif hero-display opacity-0 animate-fade-word-in"
-                style={{ '--word-delay': `${i * 80}ms` }}
-              >
-                {word}
-              </h1>
-            ))}
+          <div
+            className={`hero-mode-swap${isWandering ? ' is-indepth' : ''} pr-4 min-[1440px]:pr-0`}
+          >
+            <div className="hero-mode-swap__set" data-set="hr" aria-hidden={isWandering}>
+              <HeroLines words={heroWords.hr} intro={heroIntro && !isWandering} />
+            </div>
+            <div className="hero-mode-swap__set" data-set="wandering" aria-hidden={!isWandering}>
+              <HeroLines words={heroWords.wandering} />
+            </div>
           </div>
 
           <p
-            className={`mt-8 md:mt-12 min-[1440px]:mt-8 font-sans text-xs md:text-sm tracking-widest uppercase font-medium animate-fade-in-up ${theme.subText}`}
+            className={`hero-tagline mt-3 md:mt-4 min-[1440px]:mt-3 font-sans text-xs md:text-sm tracking-widest uppercase font-medium ${theme.subText}`}
           >
             Strategic design that works for the user and the bottom line.
           </p>
@@ -308,43 +357,46 @@ const Home = ({ mode }) => {
       >
         <div className="w-full md:w-1/2 pr-0 md:pr-12 md:pl-20 z-10 mb-12 md:mb-0">
           <h2 className="font-serif mb-8">About</h2>
-          {mode === 'wandering' ? (
-            <>
-              <p
-                className={`font-sans text-lg leading-relaxed mb-4 max-w-md font-normal ${theme.subText}`}
-              >
-                Hi, I'm Eka. I'm a Product Designer who believes the best solutions come from living
-                the problem yourself, or at least getting close enough to feel the friction.
-              </p>
-              <p
-                className={`font-sans text-lg leading-relaxed mb-4 max-w-md font-normal ${theme.subText}`}
-              >
-                I'm fascinated by the invisible work: the research that uncovers what users can't
-                articulate, the priority battles that separate "must-haves" from "nice-to-haves,"
-                and the small design decisions that prevent cognitive overload. I don't just want to
-                make things look good; I want to understand why someone would abandon a flow at 2am,
-                or why they'd trust one interface over another.
-              </p>
+          <div className={`mode-fade ${modeDim ? 'is-dim' : ''}`}>
+            {shownWandering ? (
+              <>
+                <p
+                  className={`font-sans text-lg leading-relaxed mb-4 max-w-md font-normal ${theme.subText}`}
+                >
+                  Hi, I'm Eka. I'm a Product Designer who believes the best solutions come from
+                  living the problem yourself, or at least getting close enough to feel the
+                  friction.
+                </p>
+                <p
+                  className={`font-sans text-lg leading-relaxed mb-4 max-w-md font-normal ${theme.subText}`}
+                >
+                  I'm fascinated by the invisible work: the research that uncovers what users can't
+                  articulate, the priority battles that separate "must-haves" from "nice-to-haves,"
+                  and the small design decisions that prevent cognitive overload. I don't just want
+                  to make things look good; I want to understand why someone would abandon a flow at
+                  2am, or why they'd trust one interface over another.
+                </p>
+                <p
+                  className={`font-sans text-lg leading-relaxed mb-6 max-w-md font-normal ${theme.subText}`}
+                >
+                  My process starts with validation: Does this problem actually exist? Is solving it
+                  worth the cost? From there, I involve technical teams early, treat constraints as
+                  creative challenges, and measure outcomes obsessively. When something fails, I
+                  don't see a dead end. I see data that points toward a better iteration.
+                </p>
+              </>
+            ) : (
               <p
                 className={`font-sans text-lg leading-relaxed mb-6 max-w-md font-normal ${theme.subText}`}
               >
-                My process starts with validation: Does this problem actually exist? Is solving it
-                worth the cost? From there, I involve technical teams early, treat constraints as
-                creative challenges, and measure outcomes obsessively. When something fails, I don't
-                see a dead end. I see data that points toward a better iteration.
+                Hi, I'm Eka. I'm a Product Designer who asks "why are we building this?" before
+                opening Figma. I validate problems through research, prioritize ruthlessly for MVPs,
+                and measure success through real user behavior: heatmaps, session recordings, and
+                task completion rates. My goal is simple: design that works for both the user and
+                the business.
               </p>
-            </>
-          ) : (
-            <p
-              className={`font-sans text-lg leading-relaxed mb-6 max-w-md font-normal ${theme.subText}`}
-            >
-              Hi, I'm Eka. I'm a Product Designer who asks "why are we building this?" before
-              opening Figma. I validate problems through research, prioritize ruthlessly for MVPs,
-              and measure success through real user behavior: heatmaps, session recordings, and task
-              completion rates. My goal is simple: design that works for both the user and the
-              business.
-            </p>
-          )}
+            )}
+          </div>
           <p
             className={`font-sans text-sm font-medium ${theme.subText} border-l-[2px] border-accent pl-4 italic`}
           >

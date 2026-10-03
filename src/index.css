@@ -204,6 +204,9 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --mode-switch: 480ms;
+  --mode-switch-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ── Sharp mechanical edges (rects) — circles allowed via utility ── */
@@ -344,6 +347,10 @@
   }
 }
 
+.mode-wandering .site-nav {
+  border-color: #fff;
+}
+
 /* Mode switch: pill track, sliding knob. Blue is Impact, yellow is In-Depth. */
 .mode-toggle {
   --mode-w: 2.625rem;
@@ -379,7 +386,7 @@
   height: var(--mode-h);
   background: var(--color-blue-500);
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.28);
-  transition: background-color 180ms cubic-bezier(0, 0, 0.2, 1);
+  transition: background-color 360ms var(--mode-switch-ease);
 }
 
 .mode-toggle.is-indepth .mode-toggle__track {
@@ -394,7 +401,7 @@
   height: calc(var(--mode-h) - var(--mode-pad) * 2);
   background: radial-gradient(circle at 50% 32%, #ffffff 0%, #f4f4f4 62%, #e4e4e4 100%);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
-  transition: transform 180ms cubic-bezier(0, 0, 0.2, 1);
+  transition: transform 360ms var(--mode-switch-ease);
 }
 
 .mode-toggle.is-indepth .mode-toggle__thumb {
@@ -409,9 +416,82 @@
   transform: translateX(calc(var(--mode-w) - var(--mode-h))) scale(0.94);
 }
 
+/* Armed for one frame before the palette flips, so backgrounds, type, and borders ease together. */
+.mode-settling,
+.mode-settling
+  :where(
+    :not(.mode-toggle, .mode-toggle *, .mode-fade, .mode-fade *, .hero-mode-swap, .hero-mode-swap *)
+  ) {
+  transition:
+    background-color var(--mode-switch) var(--mode-switch-ease),
+    color var(--mode-switch) var(--mode-switch-ease),
+    border-color var(--mode-switch) var(--mode-switch-ease),
+    outline-color var(--mode-switch) var(--mode-switch-ease),
+    box-shadow var(--mode-switch) var(--mode-switch-ease),
+    fill var(--mode-switch) var(--mode-switch-ease),
+    stroke var(--mode-switch) var(--mode-switch-ease) !important;
+}
+
+.mode-fade {
+  transition: opacity 180ms var(--mode-switch-ease);
+}
+
+.mode-fade.is-dim {
+  opacity: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mode-toggle__track,
-  .mode-toggle__thumb {
+  .mode-toggle__thumb,
+  .mode-fade {
+    transition: none;
+  }
+
+  .mode-settling,
+  .mode-settling
+    :where(
+      :not(
+        .mode-toggle,
+        .mode-toggle *,
+        .mode-fade,
+        .mode-fade *,
+        .hero-mode-swap,
+        .hero-mode-swap *
+      )
+    ) {
+    transition: none !important;
+  }
+}
+
+/* Both phrases share one frame. A single edge swaps them: left to right into In-Depth, right to left back to Impact. */
+.hero-mode-swap {
+  display: grid;
+}
+
+.hero-mode-swap__set {
+  grid-area: 1 / 1;
+  transition: clip-path 340ms cubic-bezier(0.45, 0.05, 0.55, 0.95);
+}
+
+.hero-mode-swap__set[data-set='hr'] {
+  clip-path: inset(-12% 0 -12% 0);
+}
+
+.hero-mode-swap.is-indepth .hero-mode-swap__set[data-set='hr'] {
+  clip-path: inset(-12% 0 -12% 100%);
+}
+
+.hero-mode-swap__set[data-set='wandering'] {
+  z-index: 1;
+  clip-path: inset(-12% 100% -12% 0);
+}
+
+.hero-mode-swap.is-indepth .hero-mode-swap__set[data-set='wandering'] {
+  clip-path: inset(-12% 0 -12% 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-mode-swap__set {
     transition: none;
   }
 }

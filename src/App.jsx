@@ -12,6 +12,8 @@ import { getTheme } from './theme';
 const AppContent = () => {
   // --- STATE MANAGEMENT ---
   const [mode, setMode] = useState('hr');
+  const [modeSettling, setModeSettling] = useState(false);
+  const modeSettleTimer = useRef(0);
   const [isOnboardingVisible, setIsOnboardingVisible] = useState(false); // Track visibility of Onboarding Modal
   const canPortal = useSyncExternalStore(
     () => () => {},
@@ -68,6 +70,34 @@ const AppContent = () => {
     }
   };
 
+  const releaseModeSettle = () => {
+    window.clearTimeout(modeSettleTimer.current);
+    modeSettleTimer.current = window.setTimeout(() => setModeSettling(false), 520);
+  };
+
+  const switchMode = () => {
+    const next = isWandering ? 'hr' : 'wandering';
+    playSound('mode');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      setMode(next);
+      return;
+    }
+    // The transition has to be on the tree before the palette classes change.
+    if (modeSettling) {
+      setMode(next);
+      releaseModeSettle();
+      return;
+    }
+    setModeSettling(true);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setMode(next);
+        releaseModeSettle();
+      });
+    });
+  };
+
   // --- NAVIGATION LOGIC ---
   const scrollToSection = (id) => {
     if (location.pathname !== '/') {
@@ -93,7 +123,7 @@ const AppContent = () => {
 
   return (
     <div
-      className={`min-h-[100dvh] transition-colors duration-150 ${theme.bg} ${theme.text} font-sans overflow-x-hidden selection:bg-yellow-500 selection:text-charcoal pb-28 md:pt-20 ${isProjectPage ? 'is-project pt-20 md:pb-24' : 'md:pb-0'} ${isWandering ? 'mode-wandering' : 'mode-impact'}`}
+      className={`min-h-[100dvh] ${modeSettling ? 'mode-settling' : ''} ${theme.bg} ${theme.text} font-sans overflow-x-hidden selection:bg-yellow-500 selection:text-charcoal pb-28 md:pt-20 ${isProjectPage ? 'is-project pt-20 md:pb-24' : 'md:pb-0'} ${isWandering ? 'mode-wandering' : 'mode-impact'}`}
     >
       <a
         href="#main-content"
@@ -132,9 +162,7 @@ const AppContent = () => {
                 <span className="cursor-pointer text-2xs xs:text-xs md:text-sm font-semibold uppercase tracking-widest">
                   {item}
                 </span>
-                <span
-                  className={`w-2 h-2 rounded-full bauhaus-circle absolute -bottom-2 transition-opacity opacity-0 group-hover:opacity-100 ${isWandering ? 'bg-yellow-500' : 'bg-red-500'}`}
-                />
+                <span className="w-2 h-2 rounded-full bauhaus-circle absolute -bottom-2 transition-opacity opacity-0 group-hover:opacity-100 bg-red-500" />
               </button>
             );
           })}
@@ -174,10 +202,7 @@ const AppContent = () => {
                 role="switch"
                 aria-checked={isWandering}
                 aria-label="In-Depth mode"
-                onClick={() => {
-                  setMode(isWandering ? 'hr' : 'wandering');
-                  playSound('mode');
-                }}
+                onClick={switchMode}
                 className={`mode-toggle ${isWandering ? 'is-indepth' : ''}`}
               >
                 <span className="mode-toggle__track" aria-hidden="true">
